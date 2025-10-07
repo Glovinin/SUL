@@ -117,33 +117,25 @@ export default function InitialLoading() {
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="fixed inset-0 z-[9999] w-screen h-screen overflow-hidden bg-[#044050]"
         >
-          {/* Placeholder gradient enquanto carrega - oculta mais rápido se já está em cache */}
+          {/* Background gradient - sempre visível */}
           <motion.div 
-            className={`absolute inset-0 transition-opacity ${
-              splinePreloaded ? 'duration-300' : 'duration-1000'
-            } bg-gradient-to-br from-blue-900 via-slate-900 to-black`}
+            className="absolute inset-0 bg-gradient-to-br from-[#044050] via-[#033842] to-[#022c33]"
             animate={{ 
-              opacity: (iframeLoaded || splinePreloaded) ? (logoTransitioning ? 0 : 0) : 1
+              opacity: logoTransitioning ? 0 : 1
             }}
-            transition={{ duration: logoTransitioning ? 0.6 : 1 }}
+            transition={{ duration: 0.6 }}
           />
           
-          {/* Spline 3D Animation - Crystal Ball com watermark escondido */}
-          <motion.iframe 
+          {/* Spline 3D Animation - Carrega em background mas não aparece */}
+          <iframe 
             src='https://my.spline.design/crystalball-35c36a2f9650bec5da71971cf512f33f/' 
             frameBorder='0' 
             width='100%' 
             height='100%'
-            animate={{ 
-              opacity: logoTransitioning ? 0 : ((iframeLoaded || splinePreloaded) ? 1 : 0)
-            }}
-            transition={{ 
-              duration: logoTransitioning ? 0.6 : (splinePreloaded ? 0.3 : 1)
-            }}
             style={{
               position: 'absolute',
-              // Desktop: aumenta o iframe e desloca para esconder o watermark
-              // Mobile: mantém normal
+              opacity: 0, // Sempre invisível no loading
+              pointerEvents: 'none',
               top: isMobile ? 0 : '-5%',
               left: isMobile ? 0 : '-5%',
               width: isMobile ? '100%' : '110%',
@@ -152,7 +144,7 @@ export default function InitialLoading() {
               overflow: 'hidden'
             }}
             onLoad={() => {
-              console.log('🔮 Spline Crystal Ball carregado - watermark escondido')
+              console.log('🔮 Spline Crystal Ball carregado em background - pronto para homepage')
               setIframeLoaded(true)
               
               // Salvar no cache local
@@ -164,21 +156,9 @@ export default function InitialLoading() {
                 console.error('Erro ao salvar cache do Spline:', error)
               }
             }}
-            title="Crystal Ball 3D Loading Animation"
+            title="Crystal Ball 3D Preload"
           />
 
-          {/* Bloco sólido para esconder watermark - Desktop apenas */}
-          {!isMobile && (
-            <div 
-              className="absolute bottom-0 right-0 pointer-events-none"
-              style={{
-                width: '300px',
-                height: '100px',
-                backgroundColor: '#044050',
-                zIndex: 10
-              }}
-            />
-          )}
 
           {/* Logo GreenCheck - Transição épica do centro para o navbar */}
           <motion.div 

@@ -389,6 +389,7 @@ export default function ValidacaoPage() {
       {/* Hero Section - Apple Style Minimalista */}
       <section 
         className={`fixed inset-0 ${containerClass} ${heroSpacing} h-screen`}
+        style={{ paddingBottom: '120px' }}
       >
         {/* Cor de fundo padrão */}
         <div className="absolute inset-0 bg-[#044050]" />

@@ -133,12 +133,15 @@ export const Navbar = () => {
 
   return (
     <motion.nav 
-      className="fixed top-0 w-full z-[100] flex items-center justify-center"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      className={`fixed w-full z-[100] flex items-center justify-center transition-all duration-700 ${
+        breakpoints.isDesktop && !isScrolled ? 'top-6' : 'top-0'
+      }`}
+      initial={{ opacity: 0, y: -100 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ 
-        duration: 0.5,
-        ease: "easeOut"
+        duration: 0.8,
+        ease: [0.22, 1, 0.36, 1], // cubic-bezier suave e profissional
+        delay: 0.3 // Delay para aparecer depois do logo começar a transição
       }}
     >
       <div 
@@ -193,10 +196,10 @@ export const Navbar = () => {
                 !isScrolled ? 'group-hover:text-white/80' : 'group-hover:text-[#003631]/80'
               } tracking-wide ${
                 breakpoints.isXs
-                  ? (!isScrolled ? 'text-base' : 'text-sm')
+                  ? (!isScrolled ? 'text-sm' : 'text-xs')
                   : breakpoints.isMobile 
-                  ? (!isScrolled ? 'text-lg' : 'text-base')
-                  : (!isScrolled ? 'text-3xl' : 'text-xl')
+                  ? (!isScrolled ? 'text-base' : 'text-sm')
+                  : (!isScrolled ? 'text-2xl' : 'text-lg')
               }`}
               style={{
                 transition: 'all 0.7s cubic-bezier(0.4, 0, 0.2, 1)'

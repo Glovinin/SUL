@@ -374,6 +374,7 @@ export default function SobrePage() {
       {/* Hero Section - Design moderno da homepage */}
       <section 
         className={`fixed inset-0 ${containerClass} ${heroSpacing} h-screen`}
+        style={{ paddingBottom: '120px' }}
       >
         {/* Cor de fundo padrão */}
         <div className="absolute inset-0 bg-[#044050]" />
@@ -473,7 +474,7 @@ export default function SobrePage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 1.5, duration: 0.5 }}
                   >
-                    IA + Blockchain + Ciência
+                    AI + Blockchain + Science
                   </motion.span>
                   <motion.div 
                     className="w-8 h-[1px] bg-gradient-to-l from-transparent to-emerald-400"

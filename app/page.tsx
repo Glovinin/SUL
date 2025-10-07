@@ -486,6 +486,7 @@ export default function Home() {
       {/* Hero Section - Fixed Background (All devices) - Design limpo igual outras páginas */}
       <section 
         className={`fixed inset-0 ${containerClass} ${heroSpacing} h-screen`}
+        style={{ paddingBottom: '120px' }}
       >
         {/* Cor de fundo padrão */}
         <div className="absolute inset-0 bg-[#044050]" />
@@ -583,7 +584,7 @@ export default function Home() {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1.4, duration: 0.6 }}
                 >
-                  IA + Blockchain + Ciência
+                  AI + Blockchain + Science
                 </motion.p>
               </motion.div>
               
@@ -1027,8 +1028,95 @@ export default function Home() {
         </div>
       </section>
 
-    {/* Footer - Clean Minimal */}
-    <footer className="bg-[#044050] text-white">
+      {/* Investor CTA - Clean Minimal */}
+      <section className={`${sectionPadding} relative bg-gradient-to-br from-[#044050] to-[#033842]`}>
+        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
+          <div className="text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <p className="text-sm font-medium text-white/70 uppercase tracking-[0.2em] mb-6">
+                For Investors
+              </p>
+              <h2 className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-8' : 'mb-12'} tracking-tight leading-[1.1] text-white`}>
+                <span className="font-extralight">Join the future</span>
+                <br />
+                <span className="font-normal">of ESG certification</span>
+              </h2>
+              
+              <div className="flex flex-col items-center gap-6 max-w-2xl mx-auto mb-12">
+                <p className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} text-white/80 font-light leading-relaxed`}>
+                  €8.5B market opportunity · 2.4M target companies · First-mover advantage
+                </p>
+              </div>
+
+              {/* Stats Grid */}
+              <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : 'grid-cols-4'} ${breakpoints.isMobile ? 'gap-8' : 'gap-12'} max-w-4xl mx-auto mb-12`}>
+                {[
+                  { value: '€8.5B', label: 'Market Size' },
+                  { value: '2.4M', label: 'Target SMEs' },
+                  { value: '23%', label: 'CAGR' },
+                  { value: '4×', label: 'ROI Potential' }
+                ].map((stat, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.2 + index * 0.1 }}
+                    viewport={{ once: true }}
+                    className="text-center"
+                  >
+                    <div className="text-3xl lg:text-4xl font-extralight text-[#E5FFBA] mb-2">{stat.value}</div>
+                    <div className="text-xs text-white/60 font-light uppercase tracking-wider">{stat.label}</div>
+                  </motion.div>
+                ))}
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                viewport={{ once: true }}
+              >
+                <Button 
+                  size="lg"
+                  onClick={() => router.push('/investidores/acesso')}
+                  className={`group ${breakpoints.isMobile ? 'w-full max-w-sm' : 'min-w-[240px]'} ${
+                    breakpoints.isXs 
+                      ? 'h-12 text-sm' 
+                      : breakpoints.isMobile 
+                      ? 'h-12 text-base' 
+                      : 'h-[56px] text-lg'
+                  } rounded-full transition-all duration-500 bg-[#5FA037] text-white hover:bg-[#4d8c2d] font-normal tracking-tight shadow-lg hover:shadow-xl hover:shadow-[#5FA037]/25 border-0 relative overflow-hidden`}
+                >
+                  <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                  
+                  <span className="relative flex items-center justify-center gap-2.5">
+                    <span className="font-medium">View Investment Opportunity</span>
+                    <TrendingUp className={`${breakpoints.isXs ? 'h-4 w-4' : 'h-5 w-5'} transition-transform duration-300 group-hover:translate-x-0.5 group-hover:scale-105`} />
+                  </span>
+                </Button>
+              </motion.div>
+
+              <motion.p 
+                className="mt-8 text-sm text-white/50 font-light"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.8 }}
+                viewport={{ once: true }}
+              >
+                Seeking strategic investors for Series A · Confidential deck available
+              </motion.p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+   {/* Footer - Clean Minimal */}
+   <footer className="bg-[#044050] text-white">
       <div className={`${maxWidth} mx-auto ${containerPadding}`}>
         {/* Links Grid */}
         <div className={`${breakpoints.isMobile ? 'py-12' : 'py-16'} border-b border-white/10`}>
@@ -1050,9 +1138,9 @@ export default function Home() {
               <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Company</h4>
               <ul className="space-y-3">
                 <li><a href="/sobre" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">About</a></li>
+                <li><a href="/investidores/acesso" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Investors</a></li>
                 <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Careers</a></li>
                 <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Press</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Blog</a></li>
               </ul>
             </div>
 
