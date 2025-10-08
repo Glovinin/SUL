@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { cn } from '../lib/utils'
 import { useTheme } from "next-themes"
+import { playESGAudio, playMarketplaceAudio } from '../lib/audio-manager'
 import { 
   House,
   MagnifyingGlass,
@@ -32,7 +33,8 @@ import {
   CheckCircle,
   Globe,
   ChartLine,
-  FileText
+  FileText,
+  WhatsappLogo
 } from '@phosphor-icons/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from './ui/button'
@@ -59,6 +61,7 @@ const allNavItems = [
   { href: '/validacao', label: 'Validation', icon: Shield },
   { href: '/marketplace', label: 'Marketplace', icon: Storefront },
   { href: '/sobre', label: 'About', icon: Info },
+  { href: '/investidores', label: 'Investors', icon: ChartLine },
   { href: '/login', label: 'Login', icon: UserCircle },
 ]
 
@@ -75,11 +78,44 @@ export function MobileNav() {
   const [isNavExpanded, setIsNavExpanded] = useState(false)
   const [isOutOfHero, setIsOutOfHero] = useState(false)
   const pathname = usePathname()
+  const router = useRouter()
   const { theme, setTheme } = useTheme()
   const menuRef = useRef<HTMLDivElement>(null)
   const menuContentRef = useRef<HTMLDivElement>(null)
   const menuItemsRef = useRef<HTMLUListElement>(null)
   const scrollTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+
+  // Handle navigation to validation page with audio
+  const handleValidationNavigation = () => {
+    playESGAudio()
+    setMenuOpen(false) // Close mobile menu
+    router.push('/validacao')
+  }
+
+  // Handle navigation to marketplace page with audio
+  const handleMarketplaceNavigation = () => {
+    playMarketplaceAudio()
+    setMenuOpen(false) // Close mobile menu
+    router.push('/marketplace')
+  }
+
+  // Handle navigation to investors page
+  const handleInvestorsNavigation = () => {
+    // Note: Investors audio plays only on /investidores/acesso page (once per session)
+    setMenuOpen(false) // Close mobile menu
+    router.push('/investidores')
+  }
+
+  // Handle Invest Now - Opens WhatsApp Web
+  const handleInvestNow = () => {
+    const phone = '+351931721901' // Diego Rocha's phone
+    const message = encodeURIComponent('Hi Diego, I\'m interested in investing in GreenCheck. I\'d like to learn more about the investment opportunities.')
+    const whatsappUrl = `https://wa.me/${phone}?text=${message}`
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
+  }
+
+  // Check if we're on investors page
+  const isInvestorsPage = pathname.startsWith('/investidores')
 
   // Prevenir scroll quando o menu está aberto
   useEffect(() => {
@@ -226,7 +262,45 @@ export function MobileNav() {
         }}
       >
         <div className="flex items-center justify-around px-4 py-4 pb-safe">
-          {bottomNavItems.map((item, index) => {
+          {/* Show Invest Now button only on investors page */}
+          {isInvestorsPage ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ 
+                duration: 0.3,
+                ease: "easeOut"
+              }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="flex-1 px-2"
+            >
+              <button
+                onClick={handleInvestNow}
+                className={cn(
+                  "group w-full flex items-center justify-center gap-3 py-4 px-6",
+                  "bg-[#5FA037] text-white font-medium rounded-full",
+                  "shadow-md hover:shadow-lg hover:shadow-[#5FA037]/25",
+                  "transition-all duration-500 ease-out",
+                  "hover:bg-[#4d8c2d]",
+                  "border-0 relative overflow-hidden"
+                )}
+              >
+                {/* Subtle shine effect on hover */}
+                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                
+                <WhatsappLogo 
+                  weight="fill" 
+                  className="h-5 w-5 transition-transform duration-300 group-hover:scale-105" 
+                />
+                <span className="text-sm font-medium tracking-tight relative">
+                  Invest Now
+                </span>
+              </button>
+            </motion.div>
+          ) : (
+            // Show regular navigation items on other pages
+            bottomNavItems.map((item, index) => {
             const ItemIcon = item.icon
             const isActive = pathname === item.href
             return (
@@ -242,40 +316,107 @@ export function MobileNav() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Link
-                  href={item.href}
-                  className={cn(
-                    "flex flex-col items-center justify-center flex-1 transition-all duration-300 ease-spring",
-                    isActive 
-                      ? "text-[#5FA037]" 
-                      : "text-[#044050]/70 hover:text-[#5FA037]"
-                  )}
-                >
-                  <div className="relative p-2 rounded-2xl transition-all duration-300">
-                    {isActive && (
-                      <motion.div 
-                        layoutId="activeNavBackground"
-                        className="absolute inset-0 rounded-2xl -z-10 bg-[#5FA037]/10"
-                        transition={{
-                          type: "spring",
-                          stiffness: 300,
-                          damping: 30
-                        }}
-                      />
+                {item.href === '/validacao' ? (
+                  <button
+                    onClick={handleValidationNavigation}
+                    className={cn(
+                      "flex flex-col items-center justify-center flex-1 transition-all duration-300 ease-spring",
+                      isActive 
+                        ? "text-[#5FA037]" 
+                        : "text-[#044050]/70 hover:text-[#5FA037]"
                     )}
-                    <ItemIcon 
-                      weight={isActive ? "fill" : "regular"} 
-                      className="h-6 w-6 transition-all duration-300 sm:h-7 sm:w-7" 
-                    />
-                  </div>
-                  <span className={cn(
-                    "text-xs mt-1 font-medium transition-all duration-300 sm:text-sm",
-                    isActive && "font-bold"
-                  )}>{item.label}</span>
-                </Link>
+                  >
+                    <div className="relative p-2 rounded-2xl transition-all duration-300">
+                      {isActive && (
+                        <motion.div 
+                          layoutId="activeNavBackground"
+                          className="absolute inset-0 rounded-2xl -z-10 bg-[#5FA037]/10"
+                          transition={{
+                            type: "spring",
+                            stiffness: 300,
+                            damping: 30
+                          }}
+                        />
+                      )}
+                      <ItemIcon 
+                        weight={isActive ? "fill" : "regular"} 
+                        className="h-6 w-6 transition-all duration-300 sm:h-7 sm:w-7" 
+                      />
+                    </div>
+                    <span className={cn(
+                      "text-xs mt-1 font-medium transition-all duration-300 sm:text-sm",
+                      isActive && "font-bold"
+                    )}>{item.label}</span>
+                  </button>
+                ) : item.href === '/marketplace' ? (
+                  <button
+                    onClick={handleMarketplaceNavigation}
+                    className={cn(
+                      "flex flex-col items-center justify-center flex-1 transition-all duration-300 ease-spring",
+                      isActive 
+                        ? "text-[#5FA037]" 
+                        : "text-[#044050]/70 hover:text-[#5FA037]"
+                    )}
+                  >
+                    <div className="relative p-2 rounded-2xl transition-all duration-300">
+                      {isActive && (
+                        <motion.div 
+                          layoutId="activeNavBackground"
+                          className="absolute inset-0 rounded-2xl -z-10 bg-[#5FA037]/10"
+                          transition={{
+                            type: "spring",
+                            stiffness: 300,
+                            damping: 30
+                          }}
+                        />
+                      )}
+                      <ItemIcon 
+                        weight={isActive ? "fill" : "regular"} 
+                        className="h-6 w-6 transition-all duration-300 sm:h-7 sm:w-7" 
+                      />
+                    </div>
+                    <span className={cn(
+                      "text-xs mt-1 font-medium transition-all duration-300 sm:text-sm",
+                      isActive && "font-bold"
+                    )}>{item.label}</span>
+                  </button>
+                ) : (
+                  <Link
+                    href={item.href}
+                    className={cn(
+                      "flex flex-col items-center justify-center flex-1 transition-all duration-300 ease-spring",
+                      isActive 
+                        ? "text-[#5FA037]" 
+                        : "text-[#044050]/70 hover:text-[#5FA037]"
+                    )}
+                  >
+                    <div className="relative p-2 rounded-2xl transition-all duration-300">
+                      {isActive && (
+                        <motion.div 
+                          layoutId="activeNavBackground"
+                          className="absolute inset-0 rounded-2xl -z-10 bg-[#5FA037]/10"
+                          transition={{
+                            type: "spring",
+                            stiffness: 300,
+                            damping: 30
+                          }}
+                        />
+                      )}
+                      <ItemIcon 
+                        weight={isActive ? "fill" : "regular"} 
+                        className="h-6 w-6 transition-all duration-300 sm:h-7 sm:w-7" 
+                      />
+                    </div>
+                    <span className={cn(
+                      "text-xs mt-1 font-medium transition-all duration-300 sm:text-sm",
+                      isActive && "font-bold"
+                    )}>{item.label}</span>
+                  </Link>
+                )}
               </motion.div>
             )
-          })}
+          })
+          )}
           
           {/* Botão do menu - Adaptativo com animação */}
           <motion.div
@@ -425,37 +566,135 @@ export function MobileNav() {
                         ease: "easeOut"
                       }}
                     >
-                      <Link 
-                        href={item.href}
-                        className={cn(
-                          "flex items-center py-4 px-4 rounded-2xl transition-all",
-                          isActive 
-                            ? "bg-[#5FA037]/10 border border-[#5FA037]/20"
-                            : "hover:bg-gray-50"
-                        )}
-                      >
-                        <div className={cn(
-                          "h-12 w-12 rounded-xl flex items-center justify-center",
-                          isActive 
-                            ? "bg-[#5FA037] text-white"
-                            : "bg-gray-100 text-[#044050]"
-                        )}>
-                          <ItemIcon weight={isActive ? "fill" : "regular"} className="h-6 w-6" />
-                        </div>
-                        
-                        <span className={cn(
-                          "text-lg ml-4 font-medium",
-                          isActive 
-                            ? "text-[#5FA037]"
-                            : "text-[#044050]"
-                        )}>
-                          {item.label}
-                        </span>
-                        
-                        {isActive && (
-                          <div className="ml-auto h-2 w-2 rounded-full bg-[#5FA037]" />
-                        )}
-                      </Link>
+                      {item.href === '/validacao' ? (
+                        <button
+                          onClick={handleValidationNavigation}
+                          className={cn(
+                            "flex items-center py-4 px-4 rounded-2xl transition-all w-full text-left",
+                            isActive 
+                              ? "bg-[#5FA037]/10 border border-[#5FA037]/20"
+                              : "hover:bg-gray-50"
+                          )}
+                        >
+                          <div className={cn(
+                            "h-12 w-12 rounded-xl flex items-center justify-center",
+                            isActive 
+                              ? "bg-[#5FA037] text-white"
+                              : "bg-gray-100 text-[#044050]"
+                          )}>
+                            <ItemIcon weight={isActive ? "fill" : "regular"} className="h-6 w-6" />
+                          </div>
+                          
+                          <span className={cn(
+                            "text-lg ml-4 font-medium",
+                            isActive 
+                              ? "text-[#5FA037]"
+                              : "text-[#044050]"
+                          )}>
+                            {item.label}
+                          </span>
+                          
+                          {isActive && (
+                            <div className="ml-auto h-2 w-2 rounded-full bg-[#5FA037]" />
+                          )}
+                        </button>
+                      ) : item.href === '/marketplace' ? (
+                        <button
+                          onClick={handleMarketplaceNavigation}
+                          className={cn(
+                            "flex items-center py-4 px-4 rounded-2xl transition-all w-full text-left",
+                            isActive 
+                              ? "bg-[#5FA037]/10 border border-[#5FA037]/20"
+                              : "hover:bg-gray-50"
+                          )}
+                        >
+                          <div className={cn(
+                            "h-12 w-12 rounded-xl flex items-center justify-center",
+                            isActive 
+                              ? "bg-[#5FA037] text-white"
+                              : "bg-gray-100 text-[#044050]"
+                          )}>
+                            <ItemIcon weight={isActive ? "fill" : "regular"} className="h-6 w-6" />
+                          </div>
+                          
+                          <span className={cn(
+                            "text-lg ml-4 font-medium",
+                            isActive 
+                              ? "text-[#5FA037]"
+                              : "text-[#044050]"
+                          )}>
+                            {item.label}
+                          </span>
+                          
+                          {isActive && (
+                            <div className="ml-auto h-2 w-2 rounded-full bg-[#5FA037]" />
+                          )}
+                        </button>
+                      ) : item.href === '/investidores' ? (
+                        <button
+                          onClick={handleInvestorsNavigation}
+                          className={cn(
+                            "flex items-center py-4 px-4 rounded-2xl transition-all w-full text-left",
+                            isActive 
+                              ? "bg-[#5FA037]/10 border border-[#5FA037]/20"
+                              : "hover:bg-gray-50"
+                          )}
+                        >
+                          <div className={cn(
+                            "h-12 w-12 rounded-xl flex items-center justify-center",
+                            isActive 
+                              ? "bg-[#5FA037] text-white"
+                              : "bg-gray-100 text-[#044050]"
+                          )}>
+                            <ItemIcon weight={isActive ? "fill" : "regular"} className="h-6 w-6" />
+                          </div>
+                          
+                          <span className={cn(
+                            "text-lg ml-4 font-medium",
+                            isActive 
+                              ? "text-[#5FA037]"
+                              : "text-[#044050]"
+                          )}>
+                            {item.label}
+                          </span>
+                          
+                          {isActive && (
+                            <div className="ml-auto h-2 w-2 rounded-full bg-[#5FA037]" />
+                          )}
+                        </button>
+                      ) : (
+                        <Link 
+                          href={item.href}
+                          className={cn(
+                            "flex items-center py-4 px-4 rounded-2xl transition-all",
+                            isActive 
+                              ? "bg-[#5FA037]/10 border border-[#5FA037]/20"
+                              : "hover:bg-gray-50"
+                          )}
+                        >
+                          <div className={cn(
+                            "h-12 w-12 rounded-xl flex items-center justify-center",
+                            isActive 
+                              ? "bg-[#5FA037] text-white"
+                              : "bg-gray-100 text-[#044050]"
+                          )}>
+                            <ItemIcon weight={isActive ? "fill" : "regular"} className="h-6 w-6" />
+                          </div>
+                          
+                          <span className={cn(
+                            "text-lg ml-4 font-medium",
+                            isActive 
+                              ? "text-[#5FA037]"
+                              : "text-[#044050]"
+                          )}>
+                            {item.label}
+                          </span>
+                          
+                          {isActive && (
+                            <div className="ml-auto h-2 w-2 rounded-full bg-[#5FA037]" />
+                          )}
+                        </Link>
+                      )}
                     </motion.div>
                   )
                 })}

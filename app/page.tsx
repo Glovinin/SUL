@@ -7,6 +7,7 @@ import { Navbar } from '../components/navbar'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import SplineBackground from '../components/spline-background'
 import { useRouter } from 'next/navigation'
+import Footer from '@/components/ui/footer'
 import Image from 'next/image'
 
 // Interface para breakpoints inteligentes
@@ -1116,79 +1117,7 @@ export default function Home() {
       </section>
 
    {/* Footer - Clean Minimal */}
-   <footer className="bg-[#044050] text-white">
-      <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-        {/* Links Grid */}
-        <div className={`${breakpoints.isMobile ? 'py-12' : 'py-16'} border-b border-white/10`}>
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2 gap-x-8 gap-y-12' : breakpoints.isTablet ? 'grid-cols-3 gap-12' : 'grid-cols-5 gap-8'}`}>
-            
-            {/* Platform */}
-            <div>
-              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Platform</h4>
-              <ul className="space-y-3">
-                <li><a href="/validacao" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">ESG Validation</a></li>
-                <li><a href="/marketplace" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Marketplace</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">NFT Certificates</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">API</a></li>
-              </ul>
-            </div>
-
-            {/* Company */}
-            <div>
-              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Company</h4>
-              <ul className="space-y-3">
-                <li><a href="/sobre" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">About</a></li>
-                <li><a href="/investidores/acesso" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Investors</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Careers</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Press</a></li>
-              </ul>
-            </div>
-
-            {/* Support */}
-            <div>
-              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Support</h4>
-              <ul className="space-y-3">
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Help Center</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Documentation</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Contact</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Status</a></li>
-              </ul>
-            </div>
-
-            {/* Legal */}
-            <div>
-              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Legal</h4>
-              <ul className="space-y-3">
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Privacy</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Terms</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Cookies</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Licenses</a></li>
-              </ul>
-        </div>
-
-            {/* Connect */}
-            <div>
-              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Connect</h4>
-              <ul className="space-y-3">
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">LinkedIn</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Twitter</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">GitHub</a></li>
-              </ul>
-          </div>
-          </div>
-        </div>
-
-        {/* Bottom Bar */}
-        <div className={`${breakpoints.isMobile ? 'py-8' : 'py-10'} flex ${breakpoints.isMobile ? 'flex-col gap-4 text-center' : 'flex-row justify-between items-center'}`}>
-          <p className="text-sm text-white/60 font-light">
-            © 2025 GreenCheck. All rights reserved.
-          </p>
-          <p className="text-sm text-white/60 font-light">
-            Made with care for the planet
-          </p>
-        </div>
-      </div>
-    </footer>
+   <Footer />
     </main>
     </div>
   )

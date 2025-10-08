@@ -11,6 +11,7 @@ import SplineBackground from '@/components/spline-background'
 import { useRouter } from 'next/navigation'
 import { useLoading } from '@/contexts/loading-context'
 import Image from 'next/image'
+import Footer from '@/components/ui/footer'
 
 // Interface para breakpoints inteligentes
 interface ScreenBreakpoints {
@@ -429,11 +430,31 @@ export default function MarketplacePage() {
   const [selectedCategory, setSelectedCategory] = useState('todos')
   const [cart, setCart] = useState<{id: number, quantity: number}[]>([])
   const [userFootprint] = useState(85) // Pegada de carbono do usuário em tCO₂e
+  const [email, setEmail] = useState('')
+  const [emailStatus, setEmailStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   
   // Hook de breakpoints inteligentes 
   const breakpoints = useSmartBreakpoints()
   
   const { scrollY } = useScroll()
+
+  // Handle email notification signup
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email || !email.includes('@')) {
+      setEmailStatus('error')
+      return
+    }
+    
+    setEmailStatus('loading')
+    
+    // Simulate API call
+    setTimeout(() => {
+      setEmailStatus('success')
+      setEmail('')
+      setTimeout(() => setEmailStatus('idle'), 3000)
+    }, 1500)
+  }
 
   // Funções do carrinho
   const addToCart = (creditId: number) => {
@@ -578,97 +599,185 @@ export default function MarketplacePage() {
             className={`w-full max-w-6xl mx-auto text-center ${heroContentClass}`}
           >
             <div className={spacingY}>
-              {/* Badge - Animação em cascata */}
+              {/* Badge minimalista */}
               <motion.div 
-                className={`inline-block ${breakpoints.isTablet ? 'mt-8' : breakpoints.isDesktop ? 'mt-12' : ''}`}
-                initial={{ opacity: 0, scale: 0.8, y: 30 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
+                className={`inline-block ${breakpoints.isTablet ? 'mt-6' : breakpoints.isDesktop ? 'mt-8' : 'mt-4'}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ 
-                  duration: 0.8, 
+                  duration: 0.6, 
                   delay: 0.2,
-                  ease: [0.25, 0.46, 0.45, 0.94]
+                  ease: [0.22, 1, 0.36, 1]
                 }}
               >
                 <motion.div 
-                  className={`${breakpoints.isXs ? 'text-xs' : breakpoints.isMobile ? 'text-sm' : 'text-sm md:text-base'} font-medium tracking-[0.2em] uppercase text-white/80 transition-all duration-300 ${
+                  className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} font-light tracking-[0.3em] uppercase text-[#E5FFBA]/90 drop-shadow-md ${
                     breakpoints.isMobile 
-                      ? '' // Mobile: sem fundo, apenas texto
-                      : 'bg-white/5 border border-white/10 px-6 py-3 rounded-full backdrop-blur-xl hover:bg-white/10 hover:border-white/20'
-                  } ${breakpoints.isXs ? 'px-0 py-0' : breakpoints.isMobile ? 'px-0 py-0' : 'px-6 py-3'}`}
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.2 }}
+                      ? 'px-4 py-2' 
+                      : 'px-6 py-2.5 bg-[#E5FFBA]/10 border border-[#E5FFBA]/30 rounded-full backdrop-blur-md'
+                  }`}
+                  whileHover={{ scale: 1.02, backgroundColor: 'rgba(229, 255, 186, 0.08)' }}
+                  transition={{ duration: 0.3 }}
                 >
                   Carbon Marketplace
                 </motion.div>
               </motion.div>
               
-              {/* Título principal com animação letra por letra */}
+              {/* Título principal elegante */}
               <motion.div 
-                className={`${breakpoints.isMobile ? 'mt-8' : 'mt-12'}`}
+                className={`${breakpoints.isMobile ? 'mt-12' : 'mt-16'}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.5, duration: 0.6 }}
+                transition={{ delay: 0.4, duration: 0.8 }}
               >
                 <motion.h1 
-                  className={`${titleSize} font-light tracking-[-0.02em] leading-[0.9] text-white`}
-                  initial={{ opacity: 0, y: 50, scale: 0.9 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  className={`${titleSize} font-extralight tracking-[-0.03em] leading-[0.95] text-white drop-shadow-lg`}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ 
-                    duration: 1.2, 
-                    delay: 0.6,
-                    ease: [0.25, 0.46, 0.45, 0.94]
+                    duration: 0.8, 
+                    delay: 0.5,
+                    ease: [0.22, 1, 0.36, 1]
                   }}
                 >
                   <motion.span 
-                    className="font-extralight inline-block"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.8, duration: 0.6 }}
+                    className="inline-block font-extralight"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.7, duration: 0.6 }}
                   >
                     Verified
                   </motion.span>
-                  <br />
+                  {' '}
                   <motion.span 
-                    className="font-medium inline-block"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 1.0, duration: 0.6 }}
+                    className="inline-block font-light"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.9, duration: 0.6 }}
                   >
                     Credits
                   </motion.span>
                 </motion.h1>
                 
+                {/* Linha decorativa minimalista */}
                 <motion.div 
-                  className={`${breakpoints.isMobile ? 'mt-4' : 'mt-6'} flex items-center justify-center space-x-2`}
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ 
-                    delay: 1.2, 
-                    duration: 0.8,
-                    ease: "backOut"
-                  }}
+                  className={`${breakpoints.isMobile ? 'mt-6' : 'mt-8'} flex items-center justify-center gap-4`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.1, duration: 0.6 }}
                 >
                   <motion.div 
-                    className="w-8 h-[1px] bg-gradient-to-r from-transparent to-emerald-400"
+                    className="h-px bg-gradient-to-r from-transparent via-[#E5FFBA]/40 to-transparent"
                     initial={{ width: 0 }}
-                    animate={{ width: 32 }}
-                    transition={{ delay: 1.4, duration: 0.6 }}
-                  />
-                  <motion.span 
-                    className={`${breakpoints.isXs ? 'text-base' : breakpoints.isMobile ? 'text-lg' : 'text-xl'} font-light tracking-[0.15em] text-emerald-400/90 uppercase`}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.5, duration: 0.5 }}
-                  >
-                    Blockchain + Science
-                  </motion.span>
-                  <motion.div 
-                    className="w-8 h-[1px] bg-gradient-to-l from-transparent to-emerald-400"
-                    initial={{ width: 0 }}
-                    animate={{ width: 32 }}
-                    transition={{ delay: 1.4, duration: 0.6 }}
+                    animate={{ width: breakpoints.isMobile ? '60%' : '280px' }}
+                    transition={{ delay: 1.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                   />
                 </motion.div>
+                
+                <motion.p 
+                  className={`${breakpoints.isXs ? 'text-sm' : breakpoints.isMobile ? 'text-base' : 'text-lg'} font-light tracking-[0.2em] text-[#E5FFBA]/80 uppercase mt-6 drop-shadow-md`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.4, duration: 0.6 }}
+                >
+                  Blockchain + Science
+                </motion.p>
+              </motion.div>
+              
+              {/* In Development Badge - minimalista */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ 
+                  duration: 0.6, 
+                  delay: 1.6,
+                  ease: [0.22, 1, 0.36, 1]
+                }}
+                className={`${breakpoints.isMobile ? 'mt-8' : 'mt-10'}`}
+              >
+                <div className={`inline-flex items-center gap-2 ${breakpoints.isXs ? 'text-xs' : 'text-sm'} font-light text-[#E5FFBA]/70 px-4 py-1.5`}>
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#E5FFBA]/70 animate-pulse" />
+                  <span className="tracking-wide">In Development</span>
+                </div>
+              </motion.div>
+
+              {/* Email Notification Form */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ 
+                  duration: 0.6, 
+                  delay: 1.8,
+                  ease: [0.22, 1, 0.36, 1]
+                }}
+                className={`${breakpoints.isMobile ? 'mt-6' : 'mt-8'} max-w-md mx-auto`}
+              >
+                {emailStatus === 'success' ? (
+                  <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="flex items-center justify-center gap-2 text-[#5FA037] bg-[#5FA037]/10 border border-[#5FA037]/30 px-6 py-3 rounded-full backdrop-blur-sm"
+                  >
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} font-light`}>
+                      We'll notify you when ready!
+                    </span>
+                  </motion.div>
+                ) : (
+                  <form onSubmit={handleEmailSubmit} className="flex flex-col sm:flex-row gap-3 w-full">
+                    <div className="flex-1">
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => {
+                          setEmail(e.target.value)
+                          if (emailStatus === 'error') setEmailStatus('idle')
+                        }}
+                        placeholder="Enter your email"
+                        className={`w-full ${breakpoints.isXs ? 'text-xs px-4 py-2.5' : 'text-sm px-5 py-3'} bg-white/5 border ${
+                          emailStatus === 'error' ? 'border-red-400/50' : 'border-white/10'
+                        } text-white placeholder:text-white/40 rounded-lg backdrop-blur-sm focus:outline-none focus:border-[#E5FFBA]/40 focus:bg-white/10 transition-all duration-300`}
+                        disabled={emailStatus === 'loading'}
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={emailStatus === 'loading'}
+                      className={`${breakpoints.isXs ? 'text-xs px-5 py-2.5' : 'text-sm px-6 py-3'} bg-[#5FA037] text-white font-medium rounded-full hover:bg-[#4d8c2d] active:scale-[0.98] transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-[#5FA037]/25 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 whitespace-nowrap relative overflow-hidden group`}
+                    >
+                      {/* Subtle shine effect on hover */}
+                      <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                      
+                      {emailStatus === 'loading' ? (
+                        <span className="relative flex items-center gap-2">
+                          <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          <span>Sending...</span>
+                        </span>
+                      ) : (
+                        <span className="relative flex items-center gap-2">
+                          <span>Notify Me</span>
+                          <svg className="w-4 h-4 transition-transform duration-300 group-hover:scale-105" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                          </svg>
+                        </span>
+                      )}
+                    </button>
+                  </form>
+                )}
+                {emailStatus === 'error' && (
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} text-red-400/80 mt-2 text-center font-light`}
+                  >
+                    Please enter a valid email address
+                  </motion.p>
+                )}
               </motion.div>
             </div>
           </div>
@@ -1081,6 +1190,9 @@ export default function MarketplacePage() {
           </motion.div>
         </div>
       </section>
+
+      {/* Footer */}
+      <Footer />
       </main>
 
       {/* Carrinho Fixo - Apple Style */}

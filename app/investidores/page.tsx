@@ -2,11 +2,14 @@
 
 import { useState, useEffect } from 'react'
 import { Button } from '../../components/ui/button'
-import { ArrowRight, TrendingUp, Users, Globe, Zap, Shield, Target, Rocket, DollarSign, BarChart3, CheckCircle2, Star, Mail, Calendar } from 'lucide-react'
+import { ArrowRight, TrendingUp, Users, Globe, Zap, Shield, Target, Rocket, DollarSign, BarChart3, CheckCircle2, Star, Mail, Calendar, X, Cpu, Leaf } from 'lucide-react'
 import { Navbar } from '../../components/navbar'
 import { motion } from 'framer-motion'
 import SplineBackground from '../../components/spline-background'
 import { useRouter } from 'next/navigation'
+import TeamSection from '../../components/ui/team'
+import { teamMembers } from '../../lib/team-data'
+import Footer from '../../components/ui/footer'
 
 // Interface para breakpoints inteligentes
 interface ScreenBreakpoints {
@@ -413,8 +416,8 @@ export default function InvestidoresPage() {
                     <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
                     
                     <span className="relative flex items-center justify-center gap-2.5">
-                      <span className="font-medium">Get in Touch</span>
-                      <Mail className={`${breakpoints.isXs ? 'h-4 w-4' : 'h-[18px] w-[18px]'} transition-transform duration-300 group-hover:translate-x-0.5 group-hover:scale-105`} />
+                      <span className="font-medium">Schedule a Meeting</span>
+                      <Calendar className={`${breakpoints.isXs ? 'h-4 w-4' : 'h-[18px] w-[18px]'} transition-transform duration-300 group-hover:translate-x-0.5 group-hover:scale-105`} />
                     </span>
                   </Button>
                 </motion.div>
@@ -567,51 +570,62 @@ export default function InvestidoresPage() {
         </div>
       </section>
 
-      {/* Competitive Advantages */}
+      {/* What We Do */}
       <section className={`${sectionPadding} relative bg-slate-50`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
           <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
-            <p className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4">
-              Competitive Moat
-            </p>
-            <h2 className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}>
-              <span className="font-extralight text-[#044050]">Defensible</span>
+            <motion.p 
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4"
+            >
+              What We Do
+            </motion.p>
+            <motion.h2 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+            >
+              <span className="font-extralight text-[#044050]">Sustainability</span>
               <br />
-              <span className="font-normal text-[#044050]">advantages</span>
-            </h2>
+              <span className="font-normal text-[#044050]">without complexity</span>
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+            >
+              Integrated platform for ESG certification and carbon neutralization
+            </motion.p>
           </div>
-          
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1 gap-8' : 'md:grid-cols-2 lg:grid-cols-3 gap-12'}`}>
+
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : breakpoints.isTablet ? 'grid-cols-2' : 'grid-cols-4'} ${breakpoints.isMobile ? 'gap-8' : 'gap-12'}`}>
             {[
               {
-                icon: Rocket,
-                title: "First-Mover Advantage",
-                description: "First automated ESG platform with scientific validation and blockchain certification"
+                icon: CheckCircle2,
+                title: "Automated ESG Certification",
+                description: "Accurate carbon footprint calculation using AI with 98.5% accuracy"
               },
               {
                 icon: Shield,
-                title: "Technology Barriers",
-                description: "Proprietary AI algorithms trained on 50,000+ ESG documents with 98.5% accuracy"
+                title: "Traceability in Blockchain",
+                description: "Immutable certificates registered as NFTs on Polygon for full verification"
               },
               {
-                icon: CheckCircle2,
-                title: "Institutional Partnerships",
-                description: "Exclusive agreements with scientific institutions for validation credibility"
+                icon: Leaf,
+                title: "Verifiable Compensation",
+                description: "Scientifically validated reforestation projects guarantee a real impact"
               },
               {
                 icon: Globe,
-                title: "Network Effects",
-                description: "Integrated marketplace creates lock-in as both buyers and sellers join"
-              },
-              {
-                icon: Zap,
-                title: "Cost Leadership",
-                description: "40% cheaper than traditional methods with 4x faster processing"
-              },
-              {
-                icon: BarChart3,
-                title: "Regulatory Compliance",
-                description: "Built-in CSRD, EU Taxonomy, and GDPR compliance from day one"
+                title: "Simplified Experience",
+                description: "100% digital and intuitive process for companies and individuals"
               }
             ].map((item, index) => {
               const ItemIcon = item.icon
@@ -622,15 +636,19 @@ export default function InvestidoresPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="group"
+                  className="group text-center"
                 >
-                  <div className="mb-6">
-                    <div className="w-12 h-12 rounded-full bg-[#044050] flex items-center justify-center transition-all duration-300 group-hover:bg-[#5FA037]">
-                      <ItemIcon className="w-6 h-6 text-white" />
+                  <div className="mb-6 flex justify-center">
+                    <div className="w-14 h-14 rounded-full bg-[#044050] flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:bg-[#5FA037]">
+                      <ItemIcon className="w-7 h-7 text-white" />
                     </div>
                   </div>
-                  <h3 className="text-xl font-medium text-[#044050] mb-3">{item.title}</h3>
-                  <p className="text-base text-gray-600 font-light leading-relaxed">{item.description}</p>
+                  <h3 className={`${breakpoints.isXs ? 'text-base' : 'text-lg'} font-medium text-[#044050] mb-2`}>
+                    {item.title}
+                  </h3>
+                  <p className={`${breakpoints.isXs ? 'text-sm' : 'text-base'} text-gray-600 font-light`}>
+                    {item.description}
+                  </p>
                 </motion.div>
               )
             })}
@@ -638,18 +656,451 @@ export default function InvestidoresPage() {
         </div>
       </section>
 
-      {/* Revenue Streams */}
+      {/* Target Market */}
       <section className={`${sectionPadding} relative bg-white`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
           <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
-            <p className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4">
+            <motion.p 
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4"
+            >
+              Target Market
+            </motion.p>
+            <motion.h2 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+            >
+              <span className="font-extralight text-[#044050]">Our audience,</span>{' '}
+              <span className="font-normal text-[#5FA037]">our impact</span>
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+            >
+              We serve those who want to lead the transition to a greener, more transparent economy
+            </motion.p>
+          </div>
+
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : 'grid-cols-3'} ${breakpoints.isMobile ? 'gap-6' : 'gap-8'} max-w-5xl mx-auto`}>
+            {[
+              {
+                title: "European SMEs",
+                number: "25 million",
+                description: "companies need CSRD certification",
+                color: "text-[#5FA037]"
+              },
+              {
+                title: "Individuals",
+                number: "500 million",
+                description: "globally conscious consumers",
+                color: "text-[#044050]"
+              },
+              {
+                title: "Large Corporations",
+                number: "Supply chains",
+                description: "requiring supplier certification",
+                color: "text-gray-600"
+              }
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-3xl p-8 border border-gray-200 shadow-sm text-center"
+              >
+                <h3 className="text-2xl font-semibold text-[#044050] mb-6">{item.title}</h3>
+                <div className="flex justify-center gap-1.5 mb-6">
+                  <span className={`w-2 h-2 rounded-full ${item.color === 'text-[#5FA037]' ? 'bg-[#5FA037]' : item.color === 'text-[#044050]' ? 'bg-[#044050]' : 'bg-gray-400'}`} />
+                  <span className={`w-2 h-2 rounded-full ${item.color === 'text-[#5FA037]' ? 'bg-[#5FA037]' : item.color === 'text-[#044050]' ? 'bg-[#044050]' : 'bg-gray-400'}`} />
+                  <span className={`w-2 h-2 rounded-full ${item.color === 'text-[#5FA037]' ? 'bg-[#5FA037]' : item.color === 'text-[#044050]' ? 'bg-[#044050]' : 'bg-gray-400'}`} />
+                </div>
+                <p className="text-3xl font-light text-gray-900 mb-4">{item.number}</p>
+                <p className="text-base text-gray-600 font-light">{item.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Technology Solution */}
+      <section className={`${sectionPadding} relative bg-slate-50`}>
+        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1 gap-16' : 'md:grid-cols-2 gap-20'} items-center`}>
+            {/* Left Column - Text */}
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className={breakpoints.isMobile ? 'text-center' : ''}
+            >
+              <p className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-6">
+                Unique Technological Solution
+              </p>
+              <h2 className={`${breakpoints.isMobile ? 'text-3xl' : 'text-4xl lg:text-5xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.15]`}>
+                <span className="font-extralight">The power of</span>
+                <br />
+                <span className="font-medium text-[#044050]">innovation</span>{' '}
+                <span className="font-extralight">at</span>
+                <br />
+                <span className="font-extralight">the service</span>
+                <br />
+                <span className="font-medium text-[#044050]">of the planet</span>
+              </h2>
+              <p className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} text-gray-600 font-light leading-relaxed`}>
+                We are the only platform that integrates the best cutting-edge technology to ensure accuracy and reliability
+              </p>
+            </motion.div>
+
+            {/* Right Column - Tech Stack */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="space-y-8"
+            >
+              {/* AI */}
+              <div className="border-b border-gray-200 pb-8">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-full bg-[#044050] flex items-center justify-center">
+                    <Cpu className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-[#044050]">Artificial Intelligence</h3>
+                </div>
+                <ul className="space-y-2 ml-16">
+                  <li className="flex items-start gap-3 text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
+                    <span className="text-sm leading-relaxed">Automatic data extraction from documents</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
+                    <span className="text-sm leading-relaxed">Accurate calculation of carbon emissions</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
+                    <span className="text-sm leading-relaxed">Analysis of compliance with multiple standards (CSRD, ABNT, GRI)</span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Blockchain */}
+              <div className="border-b border-gray-200 pb-8">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-full bg-[#044050] flex items-center justify-center">
+                    <Shield className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-[#044050]">Blockchain (Polygon)</h3>
+                </div>
+                <ul className="space-y-2 ml-16">
+                  <li className="flex items-start gap-3 text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
+                    <span className="text-sm leading-relaxed">NFT certificates with full metadata</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
+                    <span className="text-sm leading-relaxed">Cost per transaction: &lt; €0.01</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
+                    <span className="text-sm leading-relaxed">Instant public verification via QR code</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
+                    <span className="text-sm leading-relaxed">Immutable history of compensation</span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Scientific Validation */}
+              <div>
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-full bg-[#044050] flex items-center justify-center">
+                    <Star className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-[#044050]">Scientific Validation</h3>
+                </div>
+                <ul className="space-y-2 ml-16">
+                  <li className="flex items-start gap-3 text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
+                    <span className="text-sm leading-relaxed">Exclusive partnership with Plantarum Botanical Garden</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
+                    <span className="text-sm leading-relaxed">Internationally approved methodologies</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
+                    <span className="text-sm leading-relaxed">Continuous project monitoring</span>
+                  </li>
+                </ul>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Competitive Advantages */}
+      <section className={`${sectionPadding} relative bg-white`}>
+        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
+            <motion.p 
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4"
+            >
               Business Model
-            </p>
-            <h2 className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}>
+            </motion.p>
+            <motion.h2 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+            >
+              <span className="font-extralight text-[#044050]">Competitive</span>
+              <br />
+              <span className="font-normal text-[#044050]">advantages</span>
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+            >
+              Our solution revolutionizes the market with unique and measurable benefits
+            </motion.p>
+          </div>
+          
+          {/* Top Row - 2 Cards */}
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : 'grid-cols-2'} ${breakpoints.isMobile ? 'gap-5' : 'gap-6'} ${breakpoints.isMobile ? 'mb-5' : 'mb-6'} max-w-5xl mx-auto`}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              viewport={{ once: true }}
+              className="group bg-white rounded-[28px] p-10 shadow-[0_2px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(95,160,55,0.12)] transition-all duration-500 border border-gray-100/50"
+            >
+              <div className="flex items-start gap-5">
+                <div className="w-[60px] h-[60px] rounded-[18px] bg-[#044050] flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:scale-110 group-hover:bg-[#5FA037]">
+                  <DollarSign className="w-7 h-7 text-white" strokeWidth={2.5} />
+                </div>
+                <div className="flex-1 pt-1">
+                  <h3 className="text-[26px] font-semibold text-black mb-3 tracking-tight">40% Cheaper</h3>
+                  <p className="text-[15px] text-gray-600 font-light leading-relaxed">
+                    Significant cost reduction compared to traditional market solutions
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              viewport={{ once: true }}
+              className="group bg-white rounded-[28px] p-10 shadow-[0_2px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(95,160,55,0.12)] transition-all duration-500 border border-gray-100/50"
+            >
+              <div className="flex items-start gap-5">
+                <div className="w-[60px] h-[60px] rounded-[18px] bg-[#044050] flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:scale-110 group-hover:bg-[#5FA037]">
+                  <Zap className="w-7 h-7 text-white" strokeWidth={2.5} />
+                </div>
+                <div className="flex-1 pt-1">
+                  <h3 className="text-[26px] font-semibold text-black mb-3 tracking-tight">75% Faster</h3>
+                  <p className="text-[15px] text-gray-600 font-light leading-relaxed">
+                    Implementation in weeks instead of months, accelerating your results
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Bottom Row - 3 Cards with Badges */}
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : 'grid-cols-3'} ${breakpoints.isMobile ? 'gap-5' : 'gap-6'} ${breakpoints.isMobile ? 'mb-20' : 'mb-24'} max-w-6xl mx-auto`}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              viewport={{ once: true }}
+              className="group bg-white rounded-[28px] p-9 shadow-[0_2px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(95,160,55,0.12)] transition-all duration-500 text-center border border-gray-100/50"
+            >
+              <div className="w-[72px] h-[72px] rounded-full bg-[#044050] flex items-center justify-center mx-auto mb-7 transition-all duration-300 group-hover:scale-110 group-hover:bg-[#5FA037]">
+                <CheckCircle2 className="w-9 h-9 text-white" strokeWidth={2.5} />
+              </div>
+              <h3 className="text-[22px] font-semibold text-black mb-3 tracking-tight">100% Transparent</h3>
+              <p className="text-[15px] text-gray-600 font-light mb-7 leading-relaxed">Verifiable Blockchain</p>
+              <div className="inline-flex items-center gap-2.5 px-5 py-2.5 bg-[#5FA037]/8 rounded-full border border-[#5FA037]/15">
+                <Shield className="w-[15px] h-[15px] text-[#5FA037]" strokeWidth={2.5} />
+                <span className="text-[13px] font-medium text-[#5FA037] tracking-wide">Full Verification</span>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              viewport={{ once: true }}
+              className="group bg-white rounded-[28px] p-9 shadow-[0_2px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(95,160,55,0.12)] transition-all duration-500 text-center border border-gray-100/50"
+            >
+              <div className="w-[72px] h-[72px] rounded-full bg-[#044050] flex items-center justify-center mx-auto mb-7 transition-all duration-300 group-hover:scale-110 group-hover:bg-[#5FA037]">
+                <CheckCircle2 className="w-9 h-9 text-white" strokeWidth={2.5} />
+              </div>
+              <h3 className="text-[22px] font-semibold text-black mb-3 tracking-tight">Scientific Validation</h3>
+              <p className="text-[15px] text-gray-600 font-light mb-7 leading-relaxed">J. Botanical Plantarum Partnership</p>
+              <div className="inline-flex items-center gap-2.5 px-5 py-2.5 bg-[#5FA037]/8 rounded-full border border-[#5FA037]/15">
+                <Star className="w-[15px] h-[15px] text-[#5FA037]" strokeWidth={2.5} />
+                <span className="text-[13px] font-medium text-[#5FA037] tracking-wide">Scientific Rigor</span>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              viewport={{ once: true }}
+              className="group bg-white rounded-[28px] p-9 shadow-[0_2px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(95,160,55,0.12)] transition-all duration-500 text-center border border-gray-100/50"
+            >
+              <div className="w-[72px] h-[72px] rounded-full bg-[#044050] flex items-center justify-center mx-auto mb-7 transition-all duration-300 group-hover:scale-110 group-hover:bg-[#5FA037]">
+                <CheckCircle2 className="w-9 h-9 text-white" strokeWidth={2.5} />
+              </div>
+              <h3 className="text-[22px] font-semibold text-black mb-3 tracking-tight">Dual Certification</h3>
+              <p className="text-[15px] text-gray-600 font-light mb-7 leading-relaxed">EU & BR Standards</p>
+              <div className="inline-flex items-center gap-2.5 px-5 py-2.5 bg-[#5FA037]/8 rounded-full border border-[#5FA037]/15">
+                <Globe className="w-[15px] h-[15px] text-[#5FA037]" strokeWidth={2.5} />
+                <span className="text-[13px] font-medium text-[#5FA037] tracking-wide">Double</span>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Comparison Section */}
+          <div className="max-w-6xl mx-auto">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              viewport={{ once: true }}
+              className={`text-center ${breakpoints.isMobile ? 'mb-14' : 'mb-16'}`}
+            >
+              <h3 className={`${breakpoints.isMobile ? 'text-2xl' : 'text-3xl'} font-light text-gray-900 tracking-tight`}>
+                Why choose our solution?
+              </h3>
+            </motion.div>
+
+            <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : 'grid-cols-2'} ${breakpoints.isMobile ? 'gap-6' : 'gap-8'}`}>
+              {/* Traditional Solutions */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                viewport={{ once: true }}
+                className="bg-white rounded-3xl p-8 border border-gray-200 shadow-sm"
+              >
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="flex-shrink-0">
+                    <X className="w-6 h-6 text-red-500" strokeWidth={2.5} />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 tracking-tight">Traditional Solutions</h3>
+                </div>
+                <ul className="space-y-3">
+                  <li className="flex items-start gap-3 text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-gray-400 flex-shrink-0 mt-2" />
+                    <span className="text-sm leading-relaxed">High costs</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-gray-400 flex-shrink-0 mt-2" />
+                    <span className="text-sm leading-relaxed">Slow implementation (months)</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-gray-400 flex-shrink-0 mt-2" />
+                    <span className="text-sm leading-relaxed">Lack of transparency</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-gray-400 flex-shrink-0 mt-2" />
+                    <span className="text-sm leading-relaxed">Limited validation</span>
+                  </li>
+                </ul>
+              </motion.div>
+
+              {/* Our Solution */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                viewport={{ once: true }}
+                className="bg-white rounded-3xl p-8 border border-gray-200 shadow-sm"
+              >
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="flex-shrink-0">
+                    <CheckCircle2 className="w-6 h-6 text-[#5FA037]" strokeWidth={2.5} />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 tracking-tight">Our Solution</h3>
+                </div>
+                <ul className="space-y-3">
+                  <li className="flex items-start gap-3 text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
+                    <span className="text-sm leading-relaxed">40% cheaper</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
+                    <span className="text-sm leading-relaxed">75% faster (weeks)</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
+                    <span className="text-sm leading-relaxed">100% transparent (blockchain)</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
+                    <span className="text-sm leading-relaxed">Scientific validation (Plantarum)</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
+                    <span className="text-sm leading-relaxed">Dual certification (EU + BR)</span>
+                  </li>
+                </ul>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Revenue Streams */}
+      <section className={`${sectionPadding} relative bg-slate-50`}>
+        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
+            <motion.p 
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4"
+            >
+              Business Model
+            </motion.p>
+            <motion.h2 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+            >
               <span className="font-extralight text-[#044050]">Multiple</span>
               <br />
               <span className="font-normal text-[#044050]">revenue streams</span>
-            </h2>
+            </motion.h2>
           </div>
           
           <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : breakpoints.isTablet ? 'grid-cols-2' : 'grid-cols-4'} ${breakpoints.isMobile ? 'gap-6' : 'gap-8'}`}>
@@ -709,23 +1160,68 @@ export default function InvestidoresPage() {
       </section>
 
       {/* Traction */}
-      <section className={`${sectionPadding} relative bg-slate-50`}>
+      <section className={`${sectionPadding} relative bg-white`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
           <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
-            <p className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4">
-              Progress
-            </p>
-            <h2 className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}>
-              <span className="font-extralight text-[#044050]">Building</span>
+            <motion.p 
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4"
+            >
+              Real Impact
+            </motion.p>
+            <motion.h2 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+            >
+              <span className="font-extralight text-[#044050]">Transforming</span>
               <br />
-              <span className="font-normal text-[#044050]">momentum</span>
-            </h2>
+              <span className="font-normal text-[#044050]">the future</span>
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+            >
+              Concrete results with measurable impact
+            </motion.p>
           </div>
           
+          {/* Impact Metrics */}
           <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : 'grid-cols-4'} ${breakpoints.isMobile ? 'gap-8' : 'gap-12'} max-w-5xl mx-auto ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
             {[
+              { value: '50K+', label: 'tCO₂e Compensated', sublabel: 'Carbon offset achieved' },
+              { value: '5K', label: 'Reforestation Hectares', sublabel: 'Forest restoration' },
+              { value: '1.5K+', label: 'Jobs Created', sublabel: 'Social impact' },
+              { value: '€15M+', label: 'Generated Economy', sublabel: 'Economic value' }
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="text-center group"
+              >
+                <div className="text-4xl lg:text-5xl font-extralight text-[#044050] mb-2 transition-all duration-300 group-hover:text-[#5FA037]">{stat.value}</div>
+                <div className="text-sm text-gray-700 font-medium mb-1">{stat.label}</div>
+                <div className="text-xs text-gray-500 font-light">{stat.sublabel}</div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Technology Metrics */}
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : 'grid-cols-4'} ${breakpoints.isMobile ? 'gap-6' : 'gap-8'} max-w-5xl mx-auto ${breakpoints.isMobile ? 'mb-16' : 'mb-24'} pt-12 border-t border-gray-200`}>
+            {[
               { value: '98.5%', label: 'AI Accuracy', sublabel: 'ESG data extraction' },
-              { value: '3 weeks', label: 'Time to Market', sublabel: 'MVP launched' },
+              { value: '1,000+', label: 'Beta Users', sublabel: 'Active user base' },
               { value: '€0.01', label: 'Blockchain Cost', sublabel: 'Per transaction' },
               { value: '100%', label: 'Patent Filed', sublabel: 'IP protection' }
             ].map((stat, index) => (
@@ -737,21 +1233,66 @@ export default function InvestidoresPage() {
                 viewport={{ once: true }}
                 className="text-center"
               >
-                <div className="text-4xl lg:text-5xl font-extralight text-[#044050] mb-2">{stat.value}</div>
+                <div className="text-3xl lg:text-4xl font-extralight text-[#044050] mb-2">{stat.value}</div>
                 <div className="text-sm text-gray-700 font-medium mb-1">{stat.label}</div>
                 <div className="text-xs text-gray-500 font-light">{stat.sublabel}</div>
               </motion.div>
             ))}
           </div>
 
-          {/* Milestones Timeline */}
+          {/* Strategic Roadmap */}
           <div className="max-w-4xl mx-auto">
+            <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-16'}`}>
+              <p className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4">
+                Next Steps
+              </p>
+              <h3 className={`${breakpoints.isMobile ? 'text-2xl' : 'text-3xl'} font-light tracking-tight leading-[1.1] text-[#044050]`}>
+                Strategic roadmap to transform the sustainability market
+              </h3>
+            </div>
+
             <div className="space-y-8">
               {[
-                { quarter: 'Q1 2025', status: 'completed', items: ['MVP launched', 'Patent filed', 'Botanical garden partnership'] },
-                { quarter: 'Q2 2025', status: 'current', items: ['Beta testing with 10 SMEs', 'Fundraising round', 'Polygon integration'] },
-                { quarter: 'Q3 2025', status: 'planned', items: ['Public launch', '100 paying customers', 'Marketplace v1'] },
-                { quarter: 'Q4 2025', status: 'planned', items: ['Break-even', '€1M ARR', 'EU expansion'] }
+                { 
+                  period: 'Q1 2025', 
+                  year: '2025',
+                  status: 'completed', 
+                  items: [
+                    'GreenCheck MVP Launch - Minimum viable product in production',
+                    'Patent filed - IP protection secured',
+                    'Plantarum Botanical Garden Partnership - Scientific validation'
+                  ] 
+                },
+                { 
+                  period: 'Q2 2025', 
+                  year: '2025',
+                  status: 'current', 
+                  items: [
+                    '50 SME Pilots - Validation with real companies',
+                    'Fundraising round - Strategic capital raise',
+                    'Polygon blockchain integration - NFT certification'
+                  ] 
+                },
+                { 
+                  period: 'Q1 2026', 
+                  year: '2026',
+                  status: 'planned', 
+                  items: [
+                    'EU Expansion - Spain and France market entry',
+                    'Marketplace v1 launch - Carbon credit trading platform',
+                    '€1M ARR milestone - Revenue traction'
+                  ] 
+                },
+                { 
+                  period: '2027-2030', 
+                  year: '2027',
+                  status: 'planned', 
+                  items: [
+                    'Expansion and accelerated growth across Europe',
+                    'Break-even and profitability',
+                    'Market leadership in automated ESG certification'
+                  ] 
+                }
               ].map((milestone, index) => (
                 <motion.div
                   key={index}
@@ -759,33 +1300,50 @@ export default function InvestidoresPage() {
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="flex gap-6 items-start"
+                  className="flex gap-6 items-start group"
                 >
-                  <div className="flex-shrink-0">
-                    <div className={`w-3 h-3 rounded-full ${
-                      milestone.status === 'completed' ? 'bg-[#5FA037]' : 
-                      milestone.status === 'current' ? 'bg-[#044050] animate-pulse' : 
-                      'bg-gray-300'
+                  <div className="flex-shrink-0 flex flex-col items-center">
+                    <div className={`w-4 h-4 rounded-full border-2 transition-all duration-300 ${
+                      milestone.status === 'completed' 
+                        ? 'bg-[#5FA037] border-[#5FA037]' 
+                        : milestone.status === 'current' 
+                        ? 'bg-[#044050] border-[#044050] animate-pulse shadow-lg shadow-[#044050]/30' 
+                        : 'bg-white border-gray-300'
                     }`} />
+                    {index < 3 && (
+                      <div className={`w-0.5 h-16 mt-2 ${
+                        milestone.status === 'completed' 
+                          ? 'bg-[#5FA037]' 
+                          : 'bg-gray-200'
+                      }`} />
+                    )}
                   </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-lg font-medium text-[#044050]">{milestone.quarter}</h3>
-                      <span className={`text-xs px-3 py-1 rounded-full ${
-                        milestone.status === 'completed' ? 'bg-[#5FA037]/10 text-[#5FA037]' : 
-                        milestone.status === 'current' ? 'bg-[#044050]/10 text-[#044050]' : 
-                        'bg-gray-100 text-gray-600'
+                  <div className="flex-1 pb-8">
+                    <div className="flex items-center gap-3 mb-3">
+                      <h3 className="text-xl font-medium text-[#044050]">{milestone.period}</h3>
+                      <span className={`text-xs px-3 py-1 rounded-full font-medium transition-all duration-300 ${
+                        milestone.status === 'completed' 
+                          ? 'bg-[#5FA037]/10 text-[#5FA037]' 
+                          : milestone.status === 'current' 
+                          ? 'bg-[#044050]/10 text-[#044050]' 
+                          : 'bg-gray-100 text-gray-600'
                       }`}>
                         {milestone.status === 'completed' ? '✓ Completed' : 
                          milestone.status === 'current' ? '→ In Progress' : 
                          'Planned'}
                       </span>
                     </div>
-                    <ul className="space-y-1">
+                    <ul className="space-y-2">
                       {milestone.items.map((item, idx) => (
-                        <li key={idx} className="text-sm text-gray-600 font-light flex items-center gap-2">
-                          <span className="w-1 h-1 rounded-full bg-gray-400" />
-                          {item}
+                        <li key={idx} className="text-sm text-gray-600 font-light flex items-start gap-2 group-hover:text-gray-900 transition-colors">
+                          <span className={`w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 ${
+                            milestone.status === 'completed' 
+                              ? 'bg-[#5FA037]' 
+                              : milestone.status === 'current'
+                              ? 'bg-[#044050]'
+                              : 'bg-gray-400'
+                          }`} />
+                          <span>{item}</span>
                         </li>
                       ))}
                     </ul>
@@ -797,18 +1355,118 @@ export default function InvestidoresPage() {
         </div>
       </section>
 
-      {/* Use of Funds */}
-      <section className={`${sectionPadding} relative bg-white`}>
+      {/* SDGs Contribution */}
+      <section className={`${sectionPadding} relative bg-slate-50`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
           <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
-            <p className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4">
+            <motion.p 
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4"
+            >
+              Real Impact
+            </motion.p>
+            <motion.h2 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+            >
+              <span className="font-extralight text-[#044050]">Contribution to</span>
+              <br />
+              <span className="font-normal text-[#044050]">SDGs</span>
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+            >
+              Aligned with the UN Sustainable Development Goals
+            </motion.p>
+          </div>
+
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : 'grid-cols-4'} ${breakpoints.isMobile ? 'gap-8' : 'gap-12'} max-w-5xl mx-auto`}>
+            {[
+              {
+                number: '13',
+                title: 'Climate Action',
+                color: 'bg-[#3F7E44]',
+                icon: '🌍'
+              },
+              {
+                number: '15',
+                title: 'Terrestrial Life',
+                color: 'bg-[#56C02B]',
+                icon: '🌳'
+              },
+              {
+                number: '8',
+                title: 'Decent Work',
+                color: 'bg-[#A21942]',
+                icon: '📈'
+              },
+              {
+                number: '17',
+                title: 'Partnerships',
+                color: 'bg-[#19486A]',
+                icon: '🤝'
+              }
+            ].map((sdg, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="group text-center"
+              >
+                <div className={`${sdg.color} rounded-2xl p-8 mb-4 aspect-square flex flex-col items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-xl`}>
+                  <div className="text-6xl mb-4">{sdg.icon}</div>
+                  <div className="text-white">
+                    <div className="text-5xl font-bold mb-2">{sdg.number}</div>
+                    <div className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} font-semibold uppercase tracking-wider`}>
+                      {sdg.title}
+                    </div>
+                  </div>
+                </div>
+                <h3 className={`${breakpoints.isXs ? 'text-base' : 'text-lg'} font-medium text-gray-800`}>
+                  {sdg.title}
+                </h3>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Use of Funds */}
+      <section className={`${sectionPadding} relative bg-slate-50`}>
+        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
+            <motion.p 
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4"
+            >
               Investment Use
-            </p>
-            <h2 className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}>
+            </motion.p>
+            <motion.h2 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+            >
               <span className="font-extralight text-[#044050]">Capital</span>
               <br />
               <span className="font-normal text-[#044050]">allocation</span>
-            </h2>
+            </motion.h2>
           </div>
           
           <div className="max-w-4xl mx-auto">
@@ -848,63 +1506,17 @@ export default function InvestidoresPage() {
         </div>
       </section>
 
-      {/* Team */}
-      <section className={`${sectionPadding} relative bg-slate-50`}>
-        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
-            <p className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4">
-              Team
-            </p>
-            <h2 className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}>
-              <span className="font-extralight text-[#044050]">Expert</span>
-              <br />
-              <span className="font-normal text-[#044050]">leadership</span>
-            </h2>
-            <p className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light`}>
-              Combined 40+ years in SaaS, sustainability, and blockchain
-            </p>
-          </div>
-          
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : 'md:grid-cols-3'} ${breakpoints.isMobile ? 'gap-12' : 'gap-16'} max-w-5xl mx-auto`}>
-            {[
-              {
-                name: "Bruno Silva",
-                role: "Founder & CEO",
-                description: "10+ years building SaaS platforms. Previously scaled 3 B2B startups to €5M+ ARR."
-              },
-              {
-                name: "Technical Team",
-                role: "Engineering",
-                description: "AI/ML specialists from top universities. Blockchain developers with proven track record."
-              },
-              {
-                name: "Advisory Board",
-                role: "Strategic Advisors",
-                description: "ESG experts, sustainability scientists, and blockchain infrastructure specialists."
-              }
-            ].map((member, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="text-center group"
-              >
-                <div className="w-24 h-24 rounded-full bg-[#044050] flex items-center justify-center mx-auto mb-6 transition-all duration-300 group-hover:bg-[#5FA037]">
-                  <Star className="w-12 h-12 text-white" />
-                </div>
-                <h3 className="text-xl font-medium text-[#044050] mb-2">{member.name}</h3>
-                <p className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">{member.role}</p>
-                <p className="text-base text-gray-600 font-light leading-relaxed">{member.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Team Section - Modern Design */}
+      <TeamSection 
+        members={teamMembers}
+        title="Expert"
+        titleHighlight="leadership"
+        subtitle="Our multidisciplinary team combines technical expertise and scientific knowledge with strategy, legal insight, finance, sustainability, and operations to revolutionize ESG certification through innovative AI, blockchain, and data-driven solutions, transforming ESG commitments into verifiable, transparent, and impactful outcomes."
+        className="bg-white"
+      />
 
       {/* Contact CTA */}
-      <section id="contact" className={`${sectionPadding} relative bg-[#044050]`}>
+      <section id="contact" className={`${sectionPadding} relative bg-gradient-to-br from-[#044050] to-[#033842]`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
           <div className="text-center">
             <motion.div
@@ -970,29 +1582,9 @@ export default function InvestidoresPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#044050] text-white border-t border-white/10">
-        <div className={`${maxWidth} mx-auto ${containerPadding} ${breakpoints.isMobile ? 'py-8' : 'py-10'}`}>
-          <div className="flex flex-col items-center gap-4">
-            <p className="text-sm text-white/60 font-light">
-              © 2025 GreenCheck. All rights reserved.
-            </p>
-            <p className="text-xs text-white/40 font-light">
-              This presentation is confidential and intended for accredited investors only
-            </p>
-            
-            {/* Logout button */}
-            <button
-              onClick={() => {
-                localStorage.removeItem('greencheck_investor_access')
-                router.push('/investidores/acesso')
-              }}
-              className="text-xs text-white/50 hover:text-white/80 font-light transition-colors underline"
-            >
-              Logout from Investor Portal
-            </button>
-          </div>
-        </div>
-      </footer>
+      <Footer 
+        showSpecialMessage={false}
+      />
       </main>
     </div>
   )

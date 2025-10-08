@@ -4,9 +4,10 @@ import Link from "next/link"
 import { Button } from "./ui/button"
 import { Globe, User, ChevronDown, Upload, Languages } from "lucide-react"
 import Image from "next/image"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { usePathname, useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
+import { playESGAudio, playMarketplaceAudio } from '../lib/audio-manager'
 
 import {
   DropdownMenu,
@@ -26,6 +27,7 @@ const primaryNavItems = [
 // Secondary items (grouped in dropdown on smaller screens)
 const secondaryNavItems = [
   { href: "/sobre", label: "About" },
+  { href: "/investidores", label: "Investors" },
 ]
 
 export const Navbar = () => {
@@ -91,7 +93,36 @@ export const Navbar = () => {
   }, [])
 
   const handleIniciarUpload = () => {
+    // Play ESG audio when navigating to validation page
+    playESGAudio()
     router.push('/validacao')
+  }
+
+  // Handle navigation to validation page with audio
+  const handleValidationNavigation = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault()
+    }
+    playESGAudio()
+    router.push('/validacao')
+  }
+
+  // Handle navigation to marketplace page with audio
+  const handleMarketplaceNavigation = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault()
+    }
+    playMarketplaceAudio()
+    router.push('/marketplace')
+  }
+
+  // Handle navigation to investors page
+  const handleInvestorsNavigation = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault()
+    }
+    // Note: Investors audio plays only on /investidores/acesso page (once per session)
+    router.push('/investidores')
   }
 
   // Evita flash de conteúdo não hidratado
@@ -219,60 +250,142 @@ export const Navbar = () => {
         <div className="hidden xl:flex items-center space-x-8">
           {primaryNavItems.map((item) => (
             <div key={item.href}>
-              <Link 
-                href={item.href} 
-                style={{
-                  transition: 'color 0.7s cubic-bezier(0.4, 0, 0.2, 1)'
-                }}
-                className={`group relative text-sm font-light tracking-wide ${
-                  pathname === item.href 
-                    ? navStyles.textColor
-                    : `${navStyles.textColorSecondary} ${navStyles.hoverColor}`
-                }`}
-              >
-                {item.label}
-                {/* Indicador ativo - bolinha pequena */}
-                {pathname === item.href && (
-                  <div 
-                    className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full transition-colors duration-500 ${
-                      !isScrolled ? 'bg-[#5FA037]' : 'bg-[#5FA037]'
-                    }`}
-                  />
-                )}
-                {/* Indicador hover - bolinha pequena */}
-                <div className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-0 rounded-full transition-all duration-300 group-hover:w-0.5 group-hover:h-0.5 ${
-                  !isScrolled ? 'bg-white/60' : 'bg-[#5FA037]/60'
-                }`} />
-              </Link>
+              {item.href === '/validacao' ? (
+                <button
+                  onClick={handleValidationNavigation}
+                  style={{
+                    transition: 'color 0.7s cubic-bezier(0.4, 0, 0.2, 1)'
+                  }}
+                  className={`group relative text-sm font-light tracking-wide ${
+                    pathname === item.href 
+                      ? navStyles.textColor
+                      : `${navStyles.textColorSecondary} ${navStyles.hoverColor}`
+                  }`}
+                >
+                  {item.label}
+                  {/* Indicador ativo - bolinha pequena */}
+                  {pathname === item.href && (
+                    <div 
+                      className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full transition-colors duration-500 ${
+                        !isScrolled ? 'bg-[#5FA037]' : 'bg-[#5FA037]'
+                      }`}
+                    />
+                  )}
+                  {/* Indicador hover - bolinha pequena */}
+                  <div className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-0 rounded-full transition-all duration-300 group-hover:w-0.5 group-hover:h-0.5 ${
+                    !isScrolled ? 'bg-white/60' : 'bg-[#5FA037]/60'
+                  }`} />
+                </button>
+              ) : item.href === '/marketplace' ? (
+                <button
+                  onClick={handleMarketplaceNavigation}
+                  style={{
+                    transition: 'color 0.7s cubic-bezier(0.4, 0, 0.2, 1)'
+                  }}
+                  className={`group relative text-sm font-light tracking-wide ${
+                    pathname === item.href 
+                      ? navStyles.textColor
+                      : `${navStyles.textColorSecondary} ${navStyles.hoverColor}`
+                  }`}
+                >
+                  {item.label}
+                  {/* Indicador ativo - bolinha pequena */}
+                  {pathname === item.href && (
+                    <div 
+                      className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full transition-colors duration-500 ${
+                        !isScrolled ? 'bg-[#5FA037]' : 'bg-[#5FA037]'
+                      }`}
+                    />
+                  )}
+                  {/* Indicador hover - bolinha pequena */}
+                  <div className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-0 rounded-full transition-all duration-300 group-hover:w-0.5 group-hover:h-0.5 ${
+                    !isScrolled ? 'bg-white/60' : 'bg-[#5FA037]/60'
+                  }`} />
+                </button>
+              ) : (
+                <Link 
+                  href={item.href} 
+                  style={{
+                    transition: 'color 0.7s cubic-bezier(0.4, 0, 0.2, 1)'
+                  }}
+                  className={`group relative text-sm font-light tracking-wide ${
+                    pathname === item.href 
+                      ? navStyles.textColor
+                      : `${navStyles.textColorSecondary} ${navStyles.hoverColor}`
+                  }`}
+                >
+                  {item.label}
+                  {/* Indicador ativo - bolinha pequena */}
+                  {pathname === item.href && (
+                    <div 
+                      className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full transition-colors duration-500 ${
+                        !isScrolled ? 'bg-[#5FA037]' : 'bg-[#5FA037]'
+                      }`}
+                    />
+                  )}
+                  {/* Indicador hover - bolinha pequena */}
+                  <div className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-0 rounded-full transition-all duration-300 group-hover:w-0.5 group-hover:h-0.5 ${
+                    !isScrolled ? 'bg-white/60' : 'bg-[#5FA037]/60'
+                  }`} />
+                </Link>
+              )}
             </div>
           ))}
           {secondaryNavItems.map((item) => (
             <div key={item.href}>
-              <Link 
-                href={item.href} 
-                style={{
-                  transition: 'color 0.7s cubic-bezier(0.4, 0, 0.2, 1)'
-                }}
-                className={`group relative text-sm font-light tracking-wide ${
-                  pathname === item.href 
-                    ? navStyles.textColor
-                    : `${navStyles.textColorSecondary} ${navStyles.hoverColor}`
-                }`}
-              >
-                {item.label}
-                {/* Indicador ativo - bolinha pequena */}
-                {pathname === item.href && (
-                  <div 
-                    className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full transition-colors duration-500 ${
-                      !isScrolled ? 'bg-[#5FA037]' : 'bg-[#5FA037]'
-                    }`}
-                  />
-                )}
-                {/* Indicador hover - bolinha pequena */}
-                <div className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-0 rounded-full transition-all duration-300 group-hover:w-0.5 group-hover:h-0.5 ${
-                  !isScrolled ? 'bg-white/60' : 'bg-[#5FA037]/60'
-                }`} />
-              </Link>
+              {item.href === '/investidores' ? (
+                <button
+                  onClick={handleInvestorsNavigation}
+                  style={{
+                    transition: 'color 0.7s cubic-bezier(0.4, 0, 0.2, 1)'
+                  }}
+                  className={`group relative text-sm font-light tracking-wide ${
+                    pathname === item.href 
+                      ? navStyles.textColor
+                      : `${navStyles.textColorSecondary} ${navStyles.hoverColor}`
+                  }`}
+                >
+                  {item.label}
+                  {/* Indicador ativo - bolinha pequena */}
+                  {pathname === item.href && (
+                    <div 
+                      className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full transition-colors duration-500 ${
+                        !isScrolled ? 'bg-[#5FA037]' : 'bg-[#5FA037]'
+                      }`}
+                    />
+                  )}
+                  {/* Indicador hover - bolinha pequena */}
+                  <div className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-0 rounded-full transition-all duration-300 group-hover:w-0.5 group-hover:h-0.5 ${
+                    !isScrolled ? 'bg-white/60' : 'bg-[#5FA037]/60'
+                  }`} />
+                </button>
+              ) : (
+                <Link 
+                  href={item.href} 
+                  style={{
+                    transition: 'color 0.7s cubic-bezier(0.4, 0, 0.2, 1)'
+                  }}
+                  className={`group relative text-sm font-light tracking-wide ${
+                    pathname === item.href 
+                      ? navStyles.textColor
+                      : `${navStyles.textColorSecondary} ${navStyles.hoverColor}`
+                  }`}
+                >
+                  {item.label}
+                  {/* Indicador ativo - bolinha pequena */}
+                  {pathname === item.href && (
+                    <div 
+                      className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full transition-colors duration-500 ${
+                        !isScrolled ? 'bg-[#5FA037]' : 'bg-[#5FA037]'
+                      }`}
+                    />
+                  )}
+                  {/* Indicador hover - bolinha pequena */}
+                  <div className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-0 rounded-full transition-all duration-300 group-hover:w-0.5 group-hover:h-0.5 ${
+                    !isScrolled ? 'bg-white/60' : 'bg-[#5FA037]/60'
+                  }`} />
+                </Link>
+              )}
             </div>
           ))}
         </div>

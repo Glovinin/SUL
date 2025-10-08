@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { ArrowRight, Lock, Mail, Phone, CheckCircle2 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useRouter } from 'next/navigation'
+import { playInvestorsAudio } from '../../../lib/audio-manager'
 
 // Hook para detectar mobile
 const useIsMobile = () => {
@@ -39,6 +40,9 @@ export default function AcessoInvestidoresPage() {
     const hasAccess = localStorage.getItem('greencheck_investor_access')
     if (hasAccess === 'true') {
       router.push('/investidores')
+    } else {
+      // Play investors audio only once per session when accessing the portal
+      playInvestorsAudio(true)
     }
   }, [router])
 

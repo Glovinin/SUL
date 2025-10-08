@@ -8,6 +8,7 @@ import { Navbar } from '@/components/navbar'
 import { motion } from 'framer-motion'
 import SplineBackground from '@/components/spline-background'
 import { useRouter } from 'next/navigation'
+import Footer from '@/components/ui/footer'
 
 // Interface para breakpoints inteligentes
 interface ScreenBreakpoints {
@@ -269,11 +270,55 @@ export default function ValidacaoPage() {
   const [file, setFile] = useState<File | null>(null)
   const [progress, setProgress] = useState(0)
   const [currentStep, setCurrentStep] = useState(0)
+  const [email, setEmail] = useState('')
+  const [emailStatus, setEmailStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [showOfflinePopup, setShowOfflinePopup] = useState(false)
+  const [popupEmail, setPopupEmail] = useState('')
+  const [popupEmailStatus, setPopupEmailStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [result, setResult] = useState<any>(null)
   const [mounted, setMounted] = useState(false)
   
   // Hook de breakpoints inteligentes 
   const breakpoints = useSmartBreakpoints()
+
+  // Handle email notification signup
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email || !email.includes('@')) {
+      setEmailStatus('error')
+      return
+    }
+    
+    setEmailStatus('loading')
+    
+    // Simulate API call
+    setTimeout(() => {
+      setEmailStatus('success')
+      setEmail('')
+      setTimeout(() => setEmailStatus('idle'), 3000)
+    }, 1500)
+  }
+
+  // Handle popup email notification signup
+  const handlePopupEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!popupEmail || !popupEmail.includes('@')) {
+      setPopupEmailStatus('error')
+      return
+    }
+    
+    setPopupEmailStatus('loading')
+    
+    // Simulate API call
+    setTimeout(() => {
+      setPopupEmailStatus('success')
+      setPopupEmail('')
+      setTimeout(() => {
+        setPopupEmailStatus('idle')
+        setShowOfflinePopup(false)
+      }, 2000)
+    }, 1500)
+  }
 
   // Fix viewport height for mobile to prevent browser UI from hiding
   useEffect(() => {
@@ -308,10 +353,9 @@ export default function ValidacaoPage() {
   }, [])
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const uploadedFile = event.target.files?.[0]
-    if (uploadedFile && uploadedFile.type === 'application/pdf') {
-      setFile(uploadedFile)
-    }
+    // Instead of handling file upload, show offline popup
+    event.preventDefault()
+    setShowOfflinePopup(true)
   }
 
   const handleProcess = () => {
@@ -454,7 +498,7 @@ export default function ValidacaoPage() {
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.7, duration: 0.6 }}
                   >
-                    Validation
+                    Scientific
                   </motion.span>
                   {' '}
                   <motion.span 
@@ -463,7 +507,7 @@ export default function ValidacaoPage() {
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.9, duration: 0.6 }}
                   >
-                    ESG
+                    Validation
                   </motion.span>
                 </motion.h1>
                 
@@ -488,8 +532,104 @@ export default function ValidacaoPage() {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1.4, duration: 0.6 }}
                 >
-                  Fast + Accurate + Scientific
+                  AI + Blockchain + Science
                 </motion.p>
+              </motion.div>
+              
+              {/* In Development Badge - minimalista */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ 
+                  duration: 0.6, 
+                  delay: 1.6,
+                  ease: [0.22, 1, 0.36, 1]
+                }}
+                className={`${breakpoints.isMobile ? 'mt-8' : 'mt-10'}`}
+              >
+                <div className={`inline-flex items-center gap-2 ${breakpoints.isXs ? 'text-xs' : 'text-sm'} font-light text-[#E5FFBA]/70 px-4 py-1.5`}>
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#E5FFBA]/70 animate-pulse" />
+                  <span className="tracking-wide">In Development</span>
+                </div>
+              </motion.div>
+
+              {/* Email Notification Form */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ 
+                  duration: 0.6, 
+                  delay: 1.8,
+                  ease: [0.22, 1, 0.36, 1]
+                }}
+                className={`${breakpoints.isMobile ? 'mt-6' : 'mt-8'} max-w-md mx-auto`}
+              >
+                {emailStatus === 'success' ? (
+                  <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="flex items-center justify-center gap-2 text-[#5FA037] bg-[#5FA037]/10 border border-[#5FA037]/30 px-6 py-3 rounded-full backdrop-blur-sm"
+                  >
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} font-light`}>
+                      We'll notify you when ready!
+                    </span>
+                  </motion.div>
+                ) : (
+                  <form onSubmit={handleEmailSubmit} className="flex flex-col sm:flex-row gap-3 w-full">
+                    <div className="flex-1">
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => {
+                          setEmail(e.target.value)
+                          if (emailStatus === 'error') setEmailStatus('idle')
+                        }}
+                        placeholder="Enter your email"
+                        className={`w-full ${breakpoints.isXs ? 'text-xs px-4 py-2.5' : 'text-sm px-5 py-3'} bg-white/5 border ${
+                          emailStatus === 'error' ? 'border-red-400/50' : 'border-white/10'
+                        } text-white placeholder:text-white/40 rounded-lg backdrop-blur-sm focus:outline-none focus:border-[#E5FFBA]/40 focus:bg-white/10 transition-all duration-300`}
+                        disabled={emailStatus === 'loading'}
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={emailStatus === 'loading'}
+                      className={`${breakpoints.isXs ? 'text-xs px-5 py-2.5' : 'text-sm px-6 py-3'} bg-[#5FA037] text-white font-medium rounded-full hover:bg-[#4d8c2d] active:scale-[0.98] transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-[#5FA037]/25 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 whitespace-nowrap relative overflow-hidden group`}
+                    >
+                      {/* Subtle shine effect on hover */}
+                      <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                      
+                      {emailStatus === 'loading' ? (
+                        <span className="relative flex items-center gap-2">
+                          <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          <span>Sending...</span>
+                        </span>
+                      ) : (
+                        <span className="relative flex items-center gap-2">
+                          <span>Notify Me</span>
+                          <svg className="w-4 h-4 transition-transform duration-300 group-hover:scale-105" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                          </svg>
+                        </span>
+                      )}
+                    </button>
+                  </form>
+                )}
+                {emailStatus === 'error' && (
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} text-red-400/80 mt-2 text-center font-light`}
+                  >
+                    Please enter a valid email address
+                  </motion.p>
+                )}
               </motion.div>
             </div>
           </div>
@@ -637,18 +777,12 @@ export default function ValidacaoPage() {
                     <p className={`text-gray-600 font-light ${breakpoints.isMobile ? 'mb-4' : 'mb-6'} ${breakpoints.isXs ? 'text-sm' : 'text-base'}`}>
                       Drag and drop your PDF file here or
                     </p>
-                    <input
-                      type="file"
-                      accept=".pdf"
-                      onChange={handleFileUpload}
-                      className="hidden"
-                      id="file-upload"
-                    />
-                    <label htmlFor="file-upload">
-                      <Button className={`${buttonHeight} bg-[#5FA037] hover:bg-[#4d8c2d] text-white rounded-full transition-all duration-300 font-normal cursor-pointer`}>
-                        Select File
-                      </Button>
-                    </label>
+                    <Button 
+                      onClick={() => setShowOfflinePopup(true)}
+                      className={`${buttonHeight} bg-[#5FA037] hover:bg-[#4d8c2d] text-white rounded-full transition-all duration-300 font-normal cursor-pointer`}
+                    >
+                      Select File
+                    </Button>
                     {file && (
                       <motion.p 
                         initial={{ opacity: 0, scale: 0.9 }}
@@ -910,7 +1044,161 @@ export default function ValidacaoPage() {
           )}
         </div>
       </section>
+
+      {/* Footer */}
+      <Footer />
       </main>
+
+      {/* Offline System Popup - Minimalista e Elegante */}
+      {showOfflinePopup && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/30 backdrop-blur-md z-50 flex items-center justify-center p-4"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setShowOfflinePopup(false)
+              setPopupEmailStatus('idle')
+              setPopupEmail('')
+            }
+          }}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+            className={`bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 ${
+              breakpoints.isMobile ? 'w-full max-w-sm mx-4' : 'w-full max-w-md'
+            } overflow-hidden`}
+          >
+            {/* Header Minimalista */}
+            <div className="relative px-8 pt-8 pb-4">
+              <button
+                onClick={() => {
+                  setShowOfflinePopup(false)
+                  setPopupEmailStatus('idle')
+                  setPopupEmail('')
+                }}
+                className="absolute top-6 right-6 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-all duration-200 group"
+              >
+                <svg className="w-4 h-4 text-gray-500 group-hover:text-gray-700 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-[#044050] to-[#5FA037] flex items-center justify-center shadow-lg">
+                  <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-light text-gray-900 mb-2">System Offline</h3>
+                <p className="text-sm text-gray-500 font-light">Currently in development</p>
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="px-8 pb-8">
+              <div className="text-center mb-6">
+                <p className="text-gray-600 text-sm font-light leading-relaxed mb-4">
+                  Our ESG validation system is currently under development. We're working hard to bring you the most advanced AI-powered ESG certification platform.
+                </p>
+                
+                {/* Badge "In Development" - Minimalista */}
+                <div className="inline-flex items-center gap-2 text-xs font-light text-[#5FA037] bg-[#5FA037]/5 px-4 py-2 rounded-full border border-[#5FA037]/10">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#5FA037] animate-pulse" />
+                  <span className="tracking-wide">In Development</span>
+                </div>
+              </div>
+
+              {/* Email Notification Form */}
+              <div className="space-y-4">
+                <div className="text-center">
+                  <p className="text-sm font-medium text-gray-700 mb-4">
+                    Get notified when we launch
+                  </p>
+                </div>
+                
+                {popupEmailStatus === 'success' ? (
+                  <motion.div
+                    initial={{ scale: 0.95, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="flex items-center justify-center gap-3 text-[#5FA037] bg-[#5FA037]/5 border border-[#5FA037]/20 px-6 py-4 rounded-2xl"
+                  >
+                    <div className="w-5 h-5 rounded-full bg-[#5FA037] flex items-center justify-center">
+                      <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <span className="text-sm font-medium">Thank you! We'll notify you when ready.</span>
+                  </motion.div>
+                ) : (
+                  <form onSubmit={handlePopupEmailSubmit} className="space-y-4">
+                    <div className="relative">
+                      <input
+                        type="email"
+                        value={popupEmail}
+                        onChange={(e) => {
+                          setPopupEmail(e.target.value)
+                          if (popupEmailStatus === 'error') setPopupEmailStatus('idle')
+                        }}
+                        placeholder="Enter your email address"
+                        className={`w-full px-5 py-4 bg-gray-50 border ${
+                          popupEmailStatus === 'error' ? 'border-red-300 bg-red-50' : 'border-transparent'
+                        } rounded-2xl focus:outline-none focus:bg-white focus:border-[#5FA037]/30 focus:ring-4 focus:ring-[#5FA037]/10 transition-all duration-300 text-sm font-light placeholder:text-gray-400`}
+                        disabled={popupEmailStatus === 'loading'}
+                      />
+                    </div>
+                    
+                    {/* Botão no estilo da Homepage */}
+                    <motion.div
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.99 }}
+                    >
+                      <button
+                        type="submit"
+                        disabled={popupEmailStatus === 'loading'}
+                        className="group w-full h-12 rounded-full transition-all duration-500 bg-[#5FA037] text-white hover:bg-[#4d8c2d] font-medium tracking-tight shadow-md hover:shadow-lg hover:shadow-[#5FA037]/25 border-0 relative overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                      >
+                        {/* Subtle shine effect on hover */}
+                        <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                        
+                        {popupEmailStatus === 'loading' ? (
+                          <span className="relative flex items-center gap-2">
+                            <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <span>Sending...</span>
+                          </span>
+                        ) : (
+                          <span className="relative flex items-center gap-2">
+                            <span>Notify Me When Ready</span>
+                            <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:scale-105" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg>
+                          </span>
+                        )}
+                      </button>
+                    </motion.div>
+                  </form>
+                )}
+
+                {popupEmailStatus === 'error' && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-red-500 text-xs text-center font-light"
+                  >
+                    Please enter a valid email address
+                  </motion.p>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
     </div>
   )
 }

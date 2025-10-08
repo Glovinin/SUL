@@ -7,6 +7,7 @@ import { MobileNav } from '../components/mobile-nav'
 import InitialLoading from '../components/initial-loading'
 import { LoadingProvider } from '../contexts/loading-context'
 import MainContent from '../components/main-content'
+import { AudioController } from '../components/audio-controller'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -120,6 +121,7 @@ export default function RootLayout({
       >
         <LoadingProvider>
           <InitialLoading />
+          <AudioController />
           <MainContent>
             {children}
             <MobileNav />
