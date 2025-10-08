@@ -150,7 +150,7 @@ export default function TeamSection({
           >
             <span className="font-extralight text-[#044050]">{title}</span>
             <br />
-            <span className="font-normal text-[#044050]">{titleHighlight}</span>
+            <span className="font-normal text-[#5FA037]">{titleHighlight}</span>
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0 }}

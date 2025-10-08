@@ -827,7 +827,7 @@ export default function MarketplacePage() {
             >
               <span className="font-extralight text-[#044050]">Active</span>
               <br />
-              <span className="font-normal text-[#044050]">marketplace</span>
+              <span className="font-normal text-[#5FA037]">marketplace</span>
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0 }}
@@ -858,7 +858,7 @@ export default function MarketplacePage() {
                       <StatIcon className="w-6 h-6 text-white" />
                     </div>
                   </div>
-                  <div className={`${breakpoints.isXs ? 'text-3xl' : breakpoints.isMobile ? 'text-4xl' : 'text-5xl'} font-extralight text-[#044050] mb-2`}>
+                  <div className={`${breakpoints.isXs ? 'text-3xl' : breakpoints.isMobile ? 'text-4xl' : 'text-5xl'} font-extralight text-[#5FA037] mb-2`}>
                     {stat.value}
                   </div>
                   <h3 className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} font-medium text-gray-500 uppercase tracking-wider`}>
@@ -942,7 +942,7 @@ export default function MarketplacePage() {
             >
               <span className="font-extralight text-[#044050]">Verified</span>
               {' '}
-              <span className="font-normal text-[#044050]">projects</span>
+              <span className="font-normal text-[#5FA037]">projects</span>
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0 }}
@@ -1115,7 +1115,7 @@ export default function MarketplacePage() {
                 >
                   <span className="font-extralight text-[#044050]">Marketplace</span>
                   <br />
-                  <span className="font-normal text-[#044050]">in development</span>
+                  <span className="font-normal text-[#5FA037]">in development</span>
                 </motion.h3>
 
                 {/* Description */}

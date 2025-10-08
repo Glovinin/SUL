@@ -679,7 +679,7 @@ export default function ValidacaoPage() {
             >
               <span className="font-extralight text-[#044050]">5 Automated</span>
               <br />
-              <span className="font-normal text-[#044050]">steps</span>
+              <span className="font-normal text-[#5FA037]">steps</span>
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0 }}
@@ -753,7 +753,7 @@ export default function ValidacaoPage() {
                 >
                   <span className="font-extralight text-[#044050]">ESG report</span>
                   <br />
-                  <span className="font-medium text-[#044050]">upload</span>
+                  <span className="font-medium text-[#5FA037]">upload</span>
                 </motion.h2>
                 <motion.p 
                   initial={{ opacity: 0 }}
@@ -853,7 +853,7 @@ export default function ValidacaoPage() {
                 >
                   <span className="font-extralight text-[#044050]">Analysis</span>
                   <br />
-                  <span className="font-medium text-[#044050]">in progress</span>
+                  <span className="font-medium text-[#5FA037]">in progress</span>
                 </motion.h2>
                 <motion.p 
                   initial={{ opacity: 0 }}
@@ -872,7 +872,7 @@ export default function ValidacaoPage() {
                 className={`border border-gray-200 ${breakpoints.isMobile ? 'rounded-2xl' : 'rounded-3xl'} bg-white max-w-4xl mx-auto overflow-hidden p-8`}
               >
                 <div className="text-center mb-8">
-                  <div className="text-5xl font-extralight text-[#044050] mb-4">{Math.round(progress)}%</div>
+                  <div className="text-5xl font-extralight text-[#5FA037] mb-4">{Math.round(progress)}%</div>
                   <Progress value={progress} className="w-full h-2" />
                 </div>
                 
@@ -970,7 +970,7 @@ export default function ValidacaoPage() {
                 >
                   <span className="font-extralight text-[#044050]">Analysis</span>
                   <br />
-                  <span className="font-medium text-[#044050]">completed</span>
+                  <span className="font-medium text-[#5FA037]">completed</span>
                 </motion.h2>
                 <motion.p 
                   initial={{ opacity: 0 }}

@@ -746,7 +746,7 @@ export default function Home() {
               >
               <span className="font-extralight text-[#044050]">Sustainability</span>
               <br />
-              <span className="font-normal text-[#044050]">without complexity</span>
+              <span className="font-normal text-[#5FA037]">without complexity</span>
               </motion.h2>
               <motion.p 
                 initial={{ opacity: 0 }}
@@ -828,7 +828,7 @@ export default function Home() {
               <h2 className={`${breakpoints.isMobile ? 'text-3xl' : 'text-4xl lg:text-5xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.15]`}>
                 <span className="font-extralight text-[#044050]">The power of</span>
                 <br />
-                <span className="font-medium text-[#044050]">innovation</span>
+                <span className="font-medium text-[#5FA037]">innovation</span>
               </h2>
               <p className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} text-gray-600 font-light leading-relaxed`}>
                 Cutting-edge technology for accurate and reliable ESG certification
@@ -902,7 +902,7 @@ export default function Home() {
             <h2 className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}>
               <span className="font-extralight text-[#044050]">Simple pricing</span>
               <br />
-              <span className="font-normal text-[#044050]">for everyone</span>
+              <span className="font-normal text-[#5FA037]">for everyone</span>
             </h2>
             <p className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light`}>
               From individuals to large enterprises
@@ -956,7 +956,7 @@ export default function Home() {
             <h2 className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}>
               <span className="font-extralight text-[#044050]">Better, faster</span>
               <br />
-              <span className="font-normal text-[#044050]">more affordable</span>
+              <span className="font-normal text-[#5FA037]">more affordable</span>
             </h2>
             <p className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light`}>
               Measurable advantages over traditional solutions
@@ -979,7 +979,7 @@ export default function Home() {
                 viewport={{ once: true }}
                 className="text-center"
               >
-                <div className="text-5xl lg:text-6xl font-extralight text-[#044050] mb-2">{stat.value}</div>
+                <div className="text-5xl lg:text-6xl font-extralight text-[#5FA037] mb-2">{stat.value}</div>
                 <div className="text-sm text-gray-500 font-light uppercase tracking-wider">{stat.label}</div>
               </motion.div>
             ))}
@@ -997,7 +997,7 @@ export default function Home() {
             <h2 className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}>
               <span className="font-extralight text-[#044050]">Scientific</span>
               <br />
-              <span className="font-normal text-[#044050]">validation</span>
+              <span className="font-normal text-[#5FA037]">validation</span>
             </h2>
             <p className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light`}>
               Working with leading institutions for certification credibility

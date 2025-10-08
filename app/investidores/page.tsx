@@ -750,12 +750,12 @@ export default function InvestidoresPage() {
               <h2 className={`${breakpoints.isMobile ? 'text-3xl' : 'text-4xl lg:text-5xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.15]`}>
                 <span className="font-light text-gray-700">The power of</span>
                 <br />
-                <span className="font-medium text-[#044050]">innovation</span>{' '}
+                <span className="font-medium text-[#5FA037]">innovation</span>{' '}
                 <span className="font-light text-gray-700">at</span>
                 <br />
                 <span className="font-light text-gray-700">the service</span>
                 <br />
-                <span className="font-medium text-[#044050]">of the planet</span>
+                <span className="font-medium text-[#5FA037]">of the planet</span>
               </h2>
               <p className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} text-gray-600 font-light leading-relaxed`}>
                 We are the only platform that integrates the best cutting-edge technology to ensure accuracy and reliability
@@ -1335,7 +1335,7 @@ export default function InvestidoresPage() {
             >
               <span className="font-extralight text-[#044050]">Contribution to</span>
               <br />
-              <span className="font-normal text-[#044050]">SDGs</span>
+              <span className="font-normal text-[#5FA037]">SDGs</span>
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0 }}
@@ -1423,7 +1423,7 @@ export default function InvestidoresPage() {
             >
               <span className="font-extralight text-[#044050]">Capital</span>
               <br />
-              <span className="font-normal text-[#044050]">allocation</span>
+              <span className="font-normal text-[#5FA037]">allocation</span>
             </motion.h2>
           </div>
           

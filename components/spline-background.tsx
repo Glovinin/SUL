@@ -108,7 +108,7 @@ export default function SplineBackground({ className = "" }: SplineBackgroundPro
               </svg>
             </div>
             <span className="text-xs font-light tracking-[0.2em] uppercase text-[#003631]/60 transition-all duration-300 group-hover:text-[#003631]">
-              Saiba mais
+              Learn more
             </span>
           </button>
         </div>
@@ -119,12 +119,12 @@ export default function SplineBackground({ className = "" }: SplineBackgroundPro
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse shadow-lg shadow-amber-500/50" />
               <span className="text-xs font-semibold tracking-[0.15em] text-[#003631]/70 uppercase">
-                CSRD Obrigatório 2025
+                CSRD Mandatory 2025
               </span>
             </div>
             <p className="text-sm font-medium text-[#003631]/80 leading-relaxed">
-              Sua empresa precisa de certificação ESG<br />
-              <span className="text-xs font-light text-[#003631]/60">Conformidade garantida com EU Taxonomy</span>
+              Your company needs ESG certification<br />
+              <span className="text-xs font-light text-[#003631]/60">Guaranteed compliance with EU Taxonomy</span>
             </p>
           </div>
         </div>
@@ -134,20 +134,20 @@ export default function SplineBackground({ className = "" }: SplineBackgroundPro
           <div className="flex items-start gap-6">
             <div className="text-right">
               <div className="text-xl font-bold text-emerald-600">€35</div>
-              <div className="text-xs font-light text-[#003631]/60 tracking-wide">por tCO₂e</div>
-              <div className="text-[10px] font-light text-emerald-600/70 mt-0.5">Economize 40%</div>
+              <div className="text-xs font-light text-[#003631]/60 tracking-wide">per tCO₂e</div>
+              <div className="text-[10px] font-light text-emerald-600/70 mt-0.5">Save 40%</div>
             </div>
             <div className="w-px h-12 bg-[#003631]/20" />
             <div className="text-right">
-              <div className="text-xl font-bold text-[#003631]/80">21 dias</div>
-              <div className="text-xs font-light text-[#003631]/60 tracking-wide">Certificado</div>
+              <div className="text-xl font-bold text-[#003631]/80">21 days</div>
+              <div className="text-xs font-light text-[#003631]/60 tracking-wide">Certified</div>
               <div className="text-[10px] font-light text-[#003631]/40 mt-0.5">NFT Blockchain</div>
             </div>
             <div className="w-px h-12 bg-[#003631]/20" />
             <div className="text-right">
               <div className="text-xl font-bold text-[#003631]/80">100%</div>
-              <div className="text-xs font-light text-[#003631]/60 tracking-wide">Científico</div>
-              <div className="text-[10px] font-light text-[#003631]/40 mt-0.5">Validado</div>
+              <div className="text-xs font-light text-[#003631]/60 tracking-wide">Scientific</div>
+              <div className="text-[10px] font-light text-[#003631]/40 mt-0.5">Validated</div>
             </div>
           </div>
         </div>

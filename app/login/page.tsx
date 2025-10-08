@@ -210,11 +210,11 @@ export default function LoginPage() {
   } = getSmartLayout(breakpoints)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-white to-slate-50 relative overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay" />
-      <div className={`absolute top-0 left-0 ${breakpoints.isMobile ? 'w-48 h-48' : 'w-96 h-96'} bg-emerald-200/30 rounded-full blur-[100px] opacity-60`} />
-      <div className={`absolute bottom-0 right-0 ${breakpoints.isMobile ? 'w-48 h-48' : 'w-96 h-96'} bg-emerald-200/30 rounded-full blur-[100px] opacity-60`} />
+      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.02] mix-blend-overlay" />
+      <div className={`absolute top-0 left-0 ${breakpoints.isMobile ? 'w-48 h-48' : 'w-96 h-96'} bg-[#5FA037]/10 rounded-full blur-[120px] opacity-40`} />
+      <div className={`absolute bottom-0 right-0 ${breakpoints.isMobile ? 'w-48 h-48' : 'w-96 h-96'} bg-[#044050]/10 rounded-full blur-[120px] opacity-40`} />
       
       {/* Header com Botão Voltar - Mobile e Desktop */}
       <div className={`flex items-center justify-between relative z-10 ${
@@ -223,13 +223,13 @@ export default function LoginPage() {
         {/* Botão Voltar */}
         <Link 
           href="/"
-          className={`flex items-center gap-2 text-slate-600 hover:text-slate-900 transition-colors group ${
+          className={`flex items-center gap-2 text-[#044050] hover:text-[#5FA037] transition-all duration-300 group ${
             breakpoints.isMobile ? '' : 'hover:gap-3'
           }`}
         >
           <div className={`${
             breakpoints.isMobile ? 'w-10 h-10' : 'w-12 h-12'
-          } rounded-full bg-white/80 backdrop-blur-sm border border-slate-200 flex items-center justify-center group-hover:bg-white transition-colors`}>
+          } rounded-full bg-white/80 backdrop-blur-sm border border-gray-200 flex items-center justify-center group-hover:bg-white group-hover:border-[#5FA037]/30 transition-all duration-300`}>
             <ArrowLeft className={`${breakpoints.isMobile ? 'w-5 h-5' : 'w-6 h-6'}`} />
           </div>
           {!breakpoints.isMobile && (
@@ -241,14 +241,14 @@ export default function LoginPage() {
         {breakpoints.isMobile && (
           <Link href="/" className="flex items-center gap-2">
             <Image
-              src="/images/logo greencheck.png"
+              src="/favicon.png"
               alt="GreenCheck Logo"
-              width={28}
-              height={28}
+              width={32}
+              height={32}
               className="transition-all duration-300"
               priority
             />
-            <span className="font-light text-slate-900 tracking-wide text-lg">
+            <span className="font-light text-[#044050] tracking-wide text-lg">
               <span className="font-extralight">Green</span><span className="font-medium">Check</span>
             </span>
           </Link>
@@ -267,23 +267,24 @@ export default function LoginPage() {
           >
             {/* Logo apenas no desktop */}
             {!breakpoints.isMobile && (
-              <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-emerald-600/20 p-3">
+              <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm border border-gray-100 p-3">
                 <Image
-                  src="/images/logo greencheck.png"
+                  src="/favicon.png"
                   alt="GreenCheck Logo"
-                  width={40}
-                  height={40}
+                  width={48}
+                  height={48}
                   className="object-contain"
                   priority
                 />
               </div>
             )}
             
-            <h1 className={`${breakpoints.isMobile ? 'text-2xl' : 'text-3xl'} font-light text-slate-900 ${breakpoints.isMobile ? 'mb-2' : 'mb-3'} tracking-tight`}>
-              {breakpoints.isMobile ? 'Entrar' : 'Bem-vindo de volta'}
+            <h1 className={`${breakpoints.isMobile ? 'text-2xl' : 'text-3xl lg:text-4xl'} font-light text-[#044050] ${breakpoints.isMobile ? 'mb-2' : 'mb-3'} tracking-tight`}>
+              <span className="font-extralight">{breakpoints.isMobile ? 'Welcome' : 'Welcome'}</span>{' '}
+              <span className="font-normal">{breakpoints.isMobile ? 'back' : 'back'}</span>
             </h1>
-            <p className={`${subtitleSize} text-slate-500 font-light`}>
-              {breakpoints.isMobile ? 'Entre na sua conta' : 'Entre na sua conta para continuar'}
+            <p className={`${subtitleSize} text-gray-600 font-light`}>
+              {breakpoints.isMobile ? 'Sign in to your account' : 'Sign in to your account to continue'}
             </p>
           </motion.div>
 
@@ -292,49 +293,49 @@ export default function LoginPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-            <Card className={`backdrop-blur-sm ${cardPadding} ${breakpoints.isMobile ? 'rounded-2xl' : 'rounded-3xl'} shadow-lg border transition-all duration-500 group relative overflow-hidden bg-white/90 border-slate-200 shadow-slate-200/60`}>
+            <Card className={`backdrop-blur-sm ${cardPadding} ${breakpoints.isMobile ? 'rounded-2xl' : 'rounded-3xl'} shadow-sm border transition-all duration-500 group relative overflow-hidden bg-white border-gray-200`}>
               <CardHeader>
-                <CardTitle className="text-slate-900 flex items-center gap-2">
-                  <User className="w-5 h-5 text-emerald-600" />
+                <CardTitle className="text-[#044050] flex items-center gap-2 text-xl font-medium">
+                  <User className="w-5 h-5 text-[#5FA037]" />
                   Login
                 </CardTitle>
-                <CardDescription className="text-slate-600">
-                  Entre com suas credenciais
+                <CardDescription className="text-gray-600 font-light">
+                  Enter your credentials
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="text-slate-700 font-medium">
+                    <Label htmlFor="email" className="text-[#044050] font-medium text-sm">
                       Email
                     </Label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                       <Input
                         id="email"
                         type="email"
-                        placeholder="seu@email.com"
+                        placeholder="your@email.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className={`pl-10 ${inputHeight} bg-white/80 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-emerald-400 focus:ring-emerald-400/20 transition-all duration-300`}
+                        className={`pl-10 ${inputHeight} bg-white border-gray-200 text-[#044050] placeholder:text-gray-400 focus:border-[#5FA037] focus:ring-[#5FA037]/20 transition-all duration-300 rounded-xl`}
                         required
                       />
                     </div>
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="password" className="text-slate-700 font-medium">
-                      Senha
+                    <Label htmlFor="password" className="text-[#044050] font-medium text-sm">
+                      Password
                     </Label>
                     <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                       <Input
                         id="password"
                         type="password"
                         placeholder="••••••••"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className={`pl-10 ${inputHeight} bg-white/80 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-emerald-400 focus:ring-emerald-400/20 transition-all duration-300`}
+                        className={`pl-10 ${inputHeight} bg-white border-gray-200 text-[#044050] placeholder:text-gray-400 focus:border-[#5FA037] focus:ring-[#5FA037]/20 transition-all duration-300 rounded-xl`}
                         required
                       />
                     </div>
@@ -342,35 +343,35 @@ export default function LoginPage() {
 
                   <Button 
                     type="submit" 
-                    className={`w-full ${buttonHeight} bg-emerald-600 hover:bg-emerald-700 text-white rounded-full transition-all duration-300 hover:scale-105 font-medium tracking-wide shadow-lg hover:shadow-emerald-600/30`}
+                    className={`w-full ${buttonHeight} bg-[#5FA037] hover:bg-[#4d8c2d] text-white rounded-full transition-all duration-300 hover:scale-[1.02] font-medium tracking-wide shadow-sm hover:shadow-md active:scale-[0.98]`}
                     disabled={isLoading}
                   >
                     {isLoading ? (
-                      "Entrando..."
+                      "Signing in..."
                     ) : (
                       <>
-                        Entrar
+                        Sign in
                         <ArrowRight className="ml-2 w-4 h-4 transition-all duration-300 group-hover:translate-x-0.5" />
                       </>
                     )}
                   </Button>
                 </form>
 
-                <div className="mt-6 pt-6 border-t border-slate-200">
+                <div className="mt-6 pt-6 border-t border-gray-100">
                   <div className="text-center space-y-2">
                     <Button 
                       variant="ghost" 
-                      className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 transition-all duration-300"
+                      className="text-[#5FA037] hover:text-[#4d8c2d] hover:bg-[#5FA037]/5 transition-all duration-300 font-medium"
                     >
-                      Esqueci minha senha
+                      Forgot password?
                     </Button>
-                    <div className="text-sm text-slate-500">
-                      Não tem conta? {" "}
+                    <div className="text-sm text-gray-600 font-light">
+                      Don't have an account? {" "}
                       <Button 
                         variant="link" 
-                        className="text-emerald-600 hover:text-emerald-700 p-0 h-auto font-medium"
+                        className="text-[#5FA037] hover:text-[#4d8c2d] p-0 h-auto font-medium"
                       >
-                        Criar conta
+                        Create account
                       </Button>
                     </div>
                   </div>
@@ -386,11 +387,11 @@ export default function LoginPage() {
             transition={{ delay: 0.2 }}
             className="mt-6"
           >
-            <Card className={`backdrop-blur-sm ${breakpoints.isMobile ? 'p-4' : 'p-5'} ${breakpoints.isMobile ? 'rounded-xl' : 'rounded-2xl'} shadow-lg border bg-emerald-50/80 border-emerald-200 shadow-emerald-200/40`}>
+            <Card className={`backdrop-blur-sm ${breakpoints.isMobile ? 'p-4' : 'p-5'} ${breakpoints.isMobile ? 'rounded-xl' : 'rounded-2xl'} shadow-sm border bg-[#5FA037]/5 border-[#5FA037]/20`}>
               <CardContent className="p-0 text-center">
-                <p className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} text-emerald-700 leading-relaxed`}>
-                  🚧 Esta é uma versão de demonstração. O sistema de autenticação completo 
-                  estará disponível em breve.
+                <p className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} text-[#044050] leading-relaxed font-light`}>
+                  🚧 This is a demo version. The complete authentication system 
+                  will be available soon.
                 </p>
               </CardContent>
             </Card>
