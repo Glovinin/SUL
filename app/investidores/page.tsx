@@ -499,9 +499,8 @@ export default function InvestidoresPage() {
               viewport={{ once: true }}
               className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
-              <span className="font-extralight text-[#044050]">Massive market</span>
-              <br />
-              <span className="font-normal text-[#044050]">perfect timing</span>
+              <span className="font-extralight text-[#044050]">Massive market,</span>{' '}
+              <span className="font-normal text-[#5FA037]">perfect timing</span>
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0 }}
@@ -592,7 +591,7 @@ export default function InvestidoresPage() {
             >
               <span className="font-extralight text-[#044050]">Sustainability</span>
               <br />
-              <span className="font-normal text-[#044050]">without complexity</span>
+              <span className="font-normal text-[#5FA037]">without complexity</span>
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0 }}
@@ -873,7 +872,7 @@ export default function InvestidoresPage() {
             >
               <span className="font-extralight text-[#044050]">Competitive</span>
               <br />
-              <span className="font-normal text-[#044050]">advantages</span>
+              <span className="font-normal text-[#5FA037]">advantages</span>
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0 }}
@@ -1058,7 +1057,7 @@ export default function InvestidoresPage() {
             >
               <span className="font-extralight text-[#044050]">Multiple</span>
               <br />
-              <span className="font-normal text-[#044050]">revenue streams</span>
+              <span className="font-normal text-[#5FA037]">revenue streams</span>
             </motion.h2>
           </div>
           
@@ -1140,7 +1139,7 @@ export default function InvestidoresPage() {
             >
               <span className="font-extralight text-[#044050]">Transforming</span>
               <br />
-              <span className="font-normal text-[#044050]">the future</span>
+              <span className="font-normal text-[#5FA037]">the future</span>
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0 }}
