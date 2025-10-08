@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Button } from '../../components/ui/button'
-import { ArrowRight, TrendingUp, Users, Globe, Zap, Shield, Target, Rocket, DollarSign, BarChart3, CheckCircle2, Star, Mail, Calendar, X, Cpu, Leaf } from 'lucide-react'
+import { ArrowRight, TrendingUp, Users, Globe, Shield, Target, Rocket, BarChart3, CheckCircle2, Star, Mail, Calendar, X, Cpu, Leaf, DollarSign } from 'lucide-react'
 import { Navbar } from '../../components/navbar'
 import { motion } from 'framer-motion'
 import SplineBackground from '../../components/spline-background'
@@ -749,12 +749,12 @@ export default function InvestidoresPage() {
                 Unique Technological Solution
               </p>
               <h2 className={`${breakpoints.isMobile ? 'text-3xl' : 'text-4xl lg:text-5xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.15]`}>
-                <span className="font-extralight">The power of</span>
+                <span className="font-light text-gray-700">The power of</span>
                 <br />
                 <span className="font-medium text-[#044050]">innovation</span>{' '}
-                <span className="font-extralight">at</span>
+                <span className="font-light text-gray-700">at</span>
                 <br />
-                <span className="font-extralight">the service</span>
+                <span className="font-light text-gray-700">the service</span>
                 <br />
                 <span className="font-medium text-[#044050]">of the planet</span>
               </h2>
@@ -886,104 +886,63 @@ export default function InvestidoresPage() {
             </motion.p>
           </div>
           
-          {/* Top Row - 2 Cards */}
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : 'grid-cols-2'} ${breakpoints.isMobile ? 'gap-5' : 'gap-6'} ${breakpoints.isMobile ? 'mb-5' : 'mb-6'} max-w-5xl mx-auto`}>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              viewport={{ once: true }}
-              className="group bg-white rounded-[28px] p-10 shadow-[0_2px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(95,160,55,0.12)] transition-all duration-500 border border-gray-100/50"
-            >
-              <div className="flex items-start gap-5">
-                <div className="w-[60px] h-[60px] rounded-[18px] bg-[#044050] flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:scale-110 group-hover:bg-[#5FA037]">
-                  <DollarSign className="w-7 h-7 text-white" strokeWidth={2.5} />
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : breakpoints.isTablet ? 'grid-cols-2' : 'grid-cols-3'} ${breakpoints.isMobile ? 'gap-6' : 'gap-8'} max-w-6xl mx-auto mb-20`}>
+            {[
+              {
+                title: "Cost Reduction",
+                number: "40%",
+                description: "Cheaper than traditional",
+                color: "text-[#5FA037]"
+              },
+              {
+                title: "Implementation Speed",
+                number: "75%",
+                description: "Faster (weeks vs months)",
+                color: "text-[#044050]"
+              },
+              {
+                title: "AI Accuracy",
+                number: "98.5%",
+                description: "ESG data extraction",
+                color: "text-[#5FA037]"
+              },
+              {
+                title: "Blockchain Transparency",
+                number: "100%",
+                description: "Verifiable certificates",
+                color: "text-[#044050]"
+              },
+              {
+                title: "Scientific Validation",
+                number: "Plantarum",
+                description: "Botanical Garden partnership",
+                color: "text-[#5FA037]"
+              },
+              {
+                title: "Market Opportunity",
+                number: "€8.5B",
+                description: "Annual potential",
+                color: "text-[#044050]"
+              }
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-3xl p-8 border border-gray-200 shadow-sm text-center"
+              >
+                <h3 className="text-2xl font-semibold text-[#044050] mb-6">{item.title}</h3>
+                <div className="flex justify-center gap-1.5 mb-6">
+                  <span className={`w-2 h-2 rounded-full ${item.color === 'text-[#5FA037]' ? 'bg-[#5FA037]' : 'bg-[#044050]'}`} />
+                  <span className={`w-2 h-2 rounded-full ${item.color === 'text-[#5FA037]' ? 'bg-[#5FA037]' : 'bg-[#044050]'}`} />
+                  <span className={`w-2 h-2 rounded-full ${item.color === 'text-[#5FA037]' ? 'bg-[#5FA037]' : 'bg-[#044050]'}`} />
                 </div>
-                <div className="flex-1 pt-1">
-                  <h3 className="text-[26px] font-semibold text-black mb-3 tracking-tight">40% Cheaper</h3>
-                  <p className="text-[15px] text-gray-600 font-light leading-relaxed">
-                    Significant cost reduction compared to traditional market solutions
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              viewport={{ once: true }}
-              className="group bg-white rounded-[28px] p-10 shadow-[0_2px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(95,160,55,0.12)] transition-all duration-500 border border-gray-100/50"
-            >
-              <div className="flex items-start gap-5">
-                <div className="w-[60px] h-[60px] rounded-[18px] bg-[#044050] flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:scale-110 group-hover:bg-[#5FA037]">
-                  <Zap className="w-7 h-7 text-white" strokeWidth={2.5} />
-                </div>
-                <div className="flex-1 pt-1">
-                  <h3 className="text-[26px] font-semibold text-black mb-3 tracking-tight">75% Faster</h3>
-                  <p className="text-[15px] text-gray-600 font-light leading-relaxed">
-                    Implementation in weeks instead of months, accelerating your results
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Bottom Row - 3 Cards with Badges */}
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : 'grid-cols-3'} ${breakpoints.isMobile ? 'gap-5' : 'gap-6'} ${breakpoints.isMobile ? 'mb-20' : 'mb-24'} max-w-6xl mx-auto`}>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              viewport={{ once: true }}
-              className="group bg-white rounded-[28px] p-9 shadow-[0_2px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(95,160,55,0.12)] transition-all duration-500 text-center border border-gray-100/50"
-            >
-              <div className="w-[72px] h-[72px] rounded-full bg-[#044050] flex items-center justify-center mx-auto mb-7 transition-all duration-300 group-hover:scale-110 group-hover:bg-[#5FA037]">
-                <CheckCircle2 className="w-9 h-9 text-white" strokeWidth={2.5} />
-              </div>
-              <h3 className="text-[22px] font-semibold text-black mb-3 tracking-tight">100% Transparent</h3>
-              <p className="text-[15px] text-gray-600 font-light mb-7 leading-relaxed">Verifiable Blockchain</p>
-              <div className="inline-flex items-center gap-2.5 px-5 py-2.5 bg-[#5FA037]/8 rounded-full border border-[#5FA037]/15">
-                <Shield className="w-[15px] h-[15px] text-[#5FA037]" strokeWidth={2.5} />
-                <span className="text-[13px] font-medium text-[#5FA037] tracking-wide">Full Verification</span>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              viewport={{ once: true }}
-              className="group bg-white rounded-[28px] p-9 shadow-[0_2px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(95,160,55,0.12)] transition-all duration-500 text-center border border-gray-100/50"
-            >
-              <div className="w-[72px] h-[72px] rounded-full bg-[#044050] flex items-center justify-center mx-auto mb-7 transition-all duration-300 group-hover:scale-110 group-hover:bg-[#5FA037]">
-                <CheckCircle2 className="w-9 h-9 text-white" strokeWidth={2.5} />
-              </div>
-              <h3 className="text-[22px] font-semibold text-black mb-3 tracking-tight">Scientific Validation</h3>
-              <p className="text-[15px] text-gray-600 font-light mb-7 leading-relaxed">J. Botanical Plantarum Partnership</p>
-              <div className="inline-flex items-center gap-2.5 px-5 py-2.5 bg-[#5FA037]/8 rounded-full border border-[#5FA037]/15">
-                <Star className="w-[15px] h-[15px] text-[#5FA037]" strokeWidth={2.5} />
-                <span className="text-[13px] font-medium text-[#5FA037] tracking-wide">Scientific Rigor</span>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              viewport={{ once: true }}
-              className="group bg-white rounded-[28px] p-9 shadow-[0_2px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_32px_rgba(95,160,55,0.12)] transition-all duration-500 text-center border border-gray-100/50"
-            >
-              <div className="w-[72px] h-[72px] rounded-full bg-[#044050] flex items-center justify-center mx-auto mb-7 transition-all duration-300 group-hover:scale-110 group-hover:bg-[#5FA037]">
-                <CheckCircle2 className="w-9 h-9 text-white" strokeWidth={2.5} />
-              </div>
-              <h3 className="text-[22px] font-semibold text-black mb-3 tracking-tight">Dual Certification</h3>
-              <p className="text-[15px] text-gray-600 font-light mb-7 leading-relaxed">EU & BR Standards</p>
-              <div className="inline-flex items-center gap-2.5 px-5 py-2.5 bg-[#5FA037]/8 rounded-full border border-[#5FA037]/15">
-                <Globe className="w-[15px] h-[15px] text-[#5FA037]" strokeWidth={2.5} />
-                <span className="text-[13px] font-medium text-[#5FA037] tracking-wide">Double</span>
-              </div>
-            </motion.div>
+                <p className="text-3xl font-light text-gray-900 mb-4">{item.number}</p>
+                <p className="text-base text-gray-600 font-light">{item.description}</p>
+              </motion.div>
+            ))}
           </div>
 
           {/* Comparison Section */}
