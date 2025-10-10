@@ -55,3 +55,5 @@ echo "   2. Edite lib/team-data.ts com as informações corretas"
 echo "   3. Execute 'npm run dev' para ver as mudanças"
 echo ""
 echo "💡 Dica: Use ferramentas online como TinyPNG para otimizar as fotos antes do upload"
+
+

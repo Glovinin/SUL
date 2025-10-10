@@ -47,3 +47,5 @@ echo "🚀 Para otimizar automaticamente (se tiver ImageMagick):"
 echo "   find $TEAM_DIR -name '*.png' -exec convert {} -resize 800x1200^ -gravity center -extent 800x1200 -quality 85 {} \;"
 echo ""
 echo "✨ Ou use: https://tinypng.com para otimização online"
+
+

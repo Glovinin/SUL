@@ -39,7 +39,7 @@ export default function AcessoInvestidoresPage() {
     setMounted(true)
     const hasAccess = localStorage.getItem('greencheck_investor_access')
     if (hasAccess === 'true') {
-      router.push('/investidores')
+      router.push('/investidores/login')
     } else {
       // Play investors audio only once per session when accessing the portal
       playInvestorsAudio(true)
@@ -58,7 +58,7 @@ export default function AcessoInvestidoresPage() {
       localStorage.setItem('greencheck_investor_access', 'true')
       
       setTimeout(() => {
-        router.push('/investidores')
+        router.push('/investidores/login')
       }, 1800)
     } else {
       setError('Invalid code')
@@ -167,7 +167,7 @@ export default function AcessoInvestidoresPage() {
                         onFocus={() => setIsFocused(true)}
                         onBlur={() => setIsFocused(false)}
                         placeholder="CODE"
-                        className={`w-full h-14 sm:h-16 px-5 bg-gray-50/80 border-2 rounded-[16px] sm:rounded-[20px] focus:outline-none transition-all duration-500 text-center text-sm sm:text-base font-light tracking-[0.3em] placeholder:tracking-[0.15em] placeholder:text-gray-300 text-[#044050] uppercase ${
+                        className={`w-full h-14 sm:h-16 px-5 bg-gray-50/80 border-2 rounded-[16px] sm:rounded-[20px] focus:outline-none transition-all duration-500 text-center text-sm sm:text-base font-light tracking-[0.3em] placeholder:tracking-[0.15em] placeholder:text-gray-400 text-[#044050] uppercase ${
                           isFocused 
                             ? 'border-[#044050] bg-white scale-[1.01]' 
                             : error 

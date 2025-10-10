@@ -199,3 +199,5 @@ Se encontrar problemas com o sistema de áudio:
 **Versão:** 1.0
 **Autor:** GreenCheck Development Team
 
+
+

@@ -10,6 +10,9 @@ import { useRouter } from 'next/navigation'
 import TeamSection from '../../components/ui/team'
 import { teamMembers } from '../../lib/team-data'
 import Footer from '../../components/ui/footer'
+import { auth } from '../../lib/firebase'
+import { onAuthStateChanged } from 'firebase/auth'
+import { getInvestor } from '../../lib/firebase-helpers'
 
 // Interface para breakpoints inteligentes
 interface ScreenBreakpoints {
@@ -194,21 +197,71 @@ export default function InvestidoresPage() {
   const router = useRouter()
   const [mounted, setMounted] = useState(false)
   const [hasAccess, setHasAccess] = useState(false)
+  const [loading, setLoading] = useState(true)
   const breakpoints = useSmartBreakpoints()
 
   // Verificar acesso antes de mostrar conteúdo
   useEffect(() => {
-    const checkAccess = () => {
-      const access = localStorage.getItem('greencheck_investor_access')
-      if (access === 'true') {
-        setHasAccess(true)
-        setMounted(true)
-      } else {
-        router.push('/investidores/acesso')
-      }
+    // First check localStorage access code
+    const access = localStorage.getItem('greencheck_investor_access')
+    if (access !== 'true') {
+      router.push('/investidores/acesso')
+      return
     }
 
-    checkAccess()
+    // Check if Firebase auth is initialized
+    if (!auth) {
+      console.error('Firebase auth not initialized yet')
+      setLoading(false)
+      return
+    }
+
+    // Subscribe to auth state changes
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        router.push('/investidores/login')
+        return
+      }
+
+      try {
+        const investor = await getInvestor(user.uid)
+        
+        if (!investor) {
+          router.push('/investidores/login')
+          return
+        }
+
+        // Verificar status do investidor
+        if (investor.status === 'pending_nda') {
+          router.push('/investidores/nda')
+          return
+        }
+
+        if (investor.status === 'pending_approval') {
+          router.push('/investidores/pending-approval')
+          return
+        }
+
+        if (investor.status === 'rejected') {
+          alert('Your account has been rejected. Please contact support.')
+          await auth.signOut()
+          router.push('/investidores/acesso')
+          return
+        }
+
+        if (investor.status === 'approved') {
+          setHasAccess(true)
+          setMounted(true)
+          setLoading(false)
+        }
+      } catch (err) {
+        console.error('Error checking investor status:', err)
+        router.push('/investidores/login')
+      }
+    })
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe()
   }, [router])
 
   // Fix viewport height for mobile
@@ -228,8 +281,12 @@ export default function InvestidoresPage() {
     }
   }, [])
 
-  if (!mounted) {
-    return null
+  if (!mounted || loading) {
+    return (
+      <div className="min-h-screen bg-[#044050] flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-white/20 border-t-white rounded-full animate-spin" />
+      </div>
+    )
   }
 
   const {
