@@ -234,7 +234,7 @@ export default function PendingApprovalPage() {
           {/* Footer */}
           <div className="px-12 py-6 border-t border-gray-100/50 bg-gray-50/30">
             <button
-              onClick={() => auth.signOut().then(() => router.push('/investidores/acesso'))}
+              onClick={() => auth.signOut().then(() => router.push('/investidores/login'))}
               className="w-full text-xs text-gray-400 hover:text-[#044050] font-light transition-all duration-300 tracking-wide"
             >
               Sign Out

@@ -202,13 +202,6 @@ export default function InvestidoresPage() {
 
   // Verificar acesso antes de mostrar conteúdo
   useEffect(() => {
-    // First check localStorage access code
-    const access = localStorage.getItem('greencheck_investor_access')
-    if (access !== 'true') {
-      router.push('/investidores/acesso')
-      return
-    }
-
     // Check if Firebase auth is initialized
     if (!auth) {
       console.error('Firebase auth not initialized yet')
@@ -245,7 +238,7 @@ export default function InvestidoresPage() {
         if (investor.status === 'rejected') {
           alert('Your account has been rejected. Please contact support.')
           await auth.signOut()
-          router.push('/investidores/acesso')
+          router.push('/investidores/login')
           return
         }
 

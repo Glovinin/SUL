@@ -121,7 +121,6 @@ export const Navbar = () => {
     if (e) {
       e.preventDefault()
     }
-    // Note: Investors audio plays only on /investidores/acesso page (once per session)
     router.push('/investidores')
   }
 

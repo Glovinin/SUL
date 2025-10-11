@@ -96,7 +96,7 @@ export default function Footer({
               <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Company</h4>
               <ul className="space-y-3">
                 <li><a href="/sobre" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">About</a></li>
-                <li><a href="/investidores/acesso" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Investors</a></li>
+                <li><a href="/investidores/login" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Investors</a></li>
                 <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Careers</a></li>
                 <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Press</a></li>
               </ul>

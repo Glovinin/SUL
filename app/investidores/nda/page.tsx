@@ -40,6 +40,7 @@ export default function NDAPage() {
   const [currentStep, setCurrentStep] = useState<Step>('read')
   const [scrolledToBottom, setScrolledToBottom] = useState(false)
   const [accepted, setAccepted] = useState(false)
+  const [isVerifyingPhone, setIsVerifyingPhone] = useState(false) // Flag to prevent redirects during phone verification
   
   // Signatory data
   const [signatoryData, setSignatoryData] = useState<SignatoryData>({
@@ -69,6 +70,12 @@ export default function NDAPage() {
     setMounted(true)
 
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      // Don't redirect during phone verification flow
+      if (isVerifyingPhone) {
+        console.log('[NDA] Skipping auth check during phone verification')
+        return
+      }
+
       if (!user) {
         router.push('/investidores/login')
         return
@@ -109,7 +116,7 @@ export default function NDAPage() {
     })
 
     return () => unsubscribe()
-  }, [router])
+  }, [router, isVerifyingPhone])
 
   // Setup reCAPTCHA
   useEffect(() => {
@@ -196,24 +203,35 @@ export default function NDAPage() {
     }
 
     setVerifying(true)
+    setIsVerifyingPhone(true) // Prevent redirects during verification
     setError('')
 
     try {
       if (!confirmation) throw new Error('No confirmation object')
       
+      console.log('[NDA] Confirming verification code...')
       await confirmation.confirm(verificationCode)
+      console.log('[NDA] Code confirmed successfully')
       
       const user = auth.currentUser
       if (user) {
+        console.log('[NDA] Updating investor phone in database...')
         await updateInvestorPhone(user.uid, phone)
       }
       
+      console.log('[NDA] Moving to signature step')
       setCurrentStep('sign')
       setVerifying(false)
+      
+      // Re-enable auth checks after a short delay
+      setTimeout(() => {
+        setIsVerifyingPhone(false)
+      }, 1000)
     } catch (err: any) {
-      console.error('Error verifying code:', err)
+      console.error('[NDA] Error verifying code:', err)
       setError('Invalid verification code')
       setVerifying(false)
+      setIsVerifyingPhone(false)
     }
   }
 

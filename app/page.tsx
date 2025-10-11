@@ -1103,7 +1103,7 @@ export default function Home() {
               >
                 <Button 
                   size="lg"
-                  onClick={() => router.push('/investidores/acesso')}
+                  onClick={() => router.push('/investidores/login')}
                   className={`group ${breakpoints.isMobile ? 'w-full max-w-sm' : 'min-w-[240px]'} ${
                     breakpoints.isXs 
                       ? 'h-12 text-sm' 

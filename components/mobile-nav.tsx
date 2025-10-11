@@ -101,7 +101,6 @@ export function MobileNav() {
 
   // Handle navigation to investors page
   const handleInvestorsNavigation = () => {
-    // Note: Investors audio plays only on /investidores/acesso page (once per session)
     setMenuOpen(false) // Close mobile menu
     router.push('/investidores')
   }

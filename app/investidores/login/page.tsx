@@ -60,12 +60,6 @@ export default function InvestidoresLoginPage() {
 
   useEffect(() => {
     setMounted(true)
-    
-    // Verificar se passou pela página de acesso
-    const hasAccess = localStorage.getItem('greencheck_investor_access')
-    if (hasAccess !== 'true') {
-      router.push('/investidores/acesso')
-    }
   }, [router])
 
   // ─────────────────────────────────────────────────────────────
