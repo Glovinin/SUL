@@ -21,7 +21,6 @@ interface SignatoryData {
   role: string
   nationality: string
   maritalStatus: string
-  profession: string
   address: string
   documentType: string
   documentNumber: string
@@ -49,7 +48,6 @@ export default function NDAPage() {
     role: '',
     nationality: '',
     maritalStatus: '',
-    profession: '',
     address: '',
     documentType: 'Passport',
     documentNumber: '',
@@ -150,7 +148,7 @@ export default function NDAPage() {
     // Validar todos os campos
     if (!signatoryData.fullName || !signatoryData.company || !signatoryData.role || 
         !signatoryData.nationality || !signatoryData.maritalStatus || 
-        !signatoryData.profession || !signatoryData.address || !signatoryData.documentNumber || 
+        !signatoryData.address || !signatoryData.documentNumber || 
         !signatoryData.taxId) {
       setError('Please fill all required fields')
       return
@@ -766,22 +764,6 @@ export default function NDAPage() {
                             <option value="Widowed">Widowed</option>
                             <option value="Civil Partnership">Civil Partnership</option>
                           </select>
-                        </div>
-                      </div>
-
-                      {/* Profession */}
-                      <div>
-                        <label className="block text-xs text-gray-500 mb-2 ml-1">Profession *</label>
-                        <div className="relative">
-                          <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" strokeWidth={1.5} />
-                          <input
-                            type="text"
-                            value={signatoryData.profession}
-                            onChange={(e) => setSignatoryData({...signatoryData, profession: e.target.value})}
-                            placeholder="CEO / Investor / Business Executive"
-                            className="w-full h-12 pl-12 pr-5 bg-gray-50/80 border-2 border-transparent rounded-[16px] focus:outline-none focus:border-[#044050] focus:bg-white transition-all duration-300 text-sm text-gray-900 placeholder:text-gray-400"
-                            required
-                          />
                         </div>
                       </div>
 

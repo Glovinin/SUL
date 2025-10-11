@@ -1,15 +1,34 @@
 {
-  "name": "GreenCheck - Automated ESG Certification",
+  "name": "GreenCheck - Automated ESG Certification with AI & Blockchain",
   "short_name": "GreenCheck",
-  "description": "Automated ESG certification system with AI and blockchain",
+  "description": "Get ESG certification in 21 days with 98.5% AI accuracy. Blockchain NFT certificates, scientific validation, and CSRD compliance. Save 40% vs traditional methods.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#1C2526",
-  "theme_color": "#34C759",
-  "orientation": "portrait-primary",
+  "background_color": "#f8fafc",
+  "theme_color": "#059669",
+  "orientation": "any",
   "scope": "/",
   "lang": "en",
+  "dir": "ltr",
   "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
     {
       "src": "/favicon.png",
       "sizes": "192x192",
@@ -18,11 +37,60 @@
     },
     {
       "src": "/favicon.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     }
   ],
-  "categories": ["business", "sustainability", "certification"],
-  "screenshots": []
+  "categories": [
+    "business",
+    "finance",
+    "productivity",
+    "sustainability",
+    "certification",
+    "compliance"
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Start Certification",
+      "short_name": "Certify",
+      "description": "Begin ESG certification process",
+      "url": "/validacao",
+      "icons": [
+        {
+          "src": "/favicon.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Carbon Marketplace",
+      "short_name": "Marketplace",
+      "description": "Browse carbon offset marketplace",
+      "url": "/marketplace",
+      "icons": [
+        {
+          "src": "/favicon.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "iarc_rating_id": "",
+  "features": [
+    "AI-powered ESG certification",
+    "Blockchain NFT certificates",
+    "Scientific validation",
+    "CSRD compliance",
+    "Carbon marketplace"
+  ]
 } 

@@ -1,0 +1,45 @@
+# GreenCheck - Automated ESG Certification Platform
+# Robots.txt - Optimized for maximum SEO crawling
+
+# Allow all bots to index everything
+User-agent: *
+Allow: /
+
+# Special rules for major search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+# Block sensitive admin areas (if any in future)
+# User-agent: *
+# Disallow: /admin/
+# Disallow: /api/private/
+
+# Allow indexing of all assets
+Allow: /images/
+Allow: /assets/
+Allow: /videos/
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.png$
+Allow: /*.webp$
+Allow: /*.svg$
+Allow: /*.pdf$
+
+# Sitemap location (critical for SEO)
+Sitemap: https://greencheck.replit.app/sitemap.xml
+
+# Host (preferred domain)
+Host: https://greencheck.replit.app
+

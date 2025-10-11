@@ -4,7 +4,6 @@ interface SignatoryData {
   fullName: string
   nationality: string
   maritalStatus: string
-  profession: string
   address: string
   documentType: string
   documentNumber: string
@@ -89,7 +88,7 @@ export async function generateNDAPDF(signatoryData: SignatoryData): Promise<Blob
   yPos += 5
 
   pdf.setFont('helvetica', 'normal')
-  const signatoryText = `${signatoryData.fullName}, ${signatoryData.nationality}, ${signatoryData.maritalStatus}, ${signatoryData.profession}, residing at ${signatoryData.address}, holder of ${signatoryData.documentType} ${signatoryData.documentNumber}, Tax ID ${signatoryData.taxId}, email ${signatoryData.email}, phone ${signatoryData.phone}, representing ${signatoryData.companyName} as ${signatoryData.companyRole}, hereinafter "Signatory".`
+  const signatoryText = `${signatoryData.fullName}, ${signatoryData.nationality}, ${signatoryData.maritalStatus}, residing at ${signatoryData.address}, holder of ${signatoryData.documentType} ${signatoryData.documentNumber}, Tax ID ${signatoryData.taxId}, email ${signatoryData.email}, phone ${signatoryData.phone}, representing ${signatoryData.companyName} as ${signatoryData.companyRole}, hereinafter "Signatory".`
   const signatorySplitText = pdf.splitTextToSize(signatoryText, contentWidth)
   pdf.text(signatorySplitText, margin, yPos)
   yPos += signatorySplitText.length * 5 + 8

@@ -100,7 +100,6 @@ export async function signNDA(
     fullName: string
     nationality: string
     maritalStatus: string
-    profession: string
     address: string
     documentType: string
     documentNumber: string

@@ -531,11 +531,6 @@ export default function AdminInvestorsPage() {
                       </div>
 
                       <div>
-                        <div className="text-xs text-white/40 mb-1">Profession</div>
-                        <div className="text-sm text-white">{selectedInvestor.ndaSignatoryData.profession || '-'}</div>
-                      </div>
-
-                      <div>
                         <div className="text-xs text-white/40 mb-1">Address</div>
                         <div className="text-sm text-white">{selectedInvestor.ndaSignatoryData.address || '-'}</div>
                       </div>
@@ -755,10 +750,6 @@ export default function AdminInvestorsPage() {
                           <div className="text-xs text-white/40 mb-1">Marital Status</div>
                           <div className="text-sm text-white">{selectedInvestor.ndaSignatoryData.maritalStatus || '-'}</div>
                         </div>
-                      </div>
-                      <div>
-                        <div className="text-xs text-white/40 mb-1">Profession</div>
-                        <div className="text-sm text-white">{selectedInvestor.ndaSignatoryData.profession || '-'}</div>
                       </div>
                       <div>
                         <div className="text-xs text-white/40 mb-1">Address</div>
