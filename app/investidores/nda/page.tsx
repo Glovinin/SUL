@@ -8,7 +8,8 @@ import { auth } from '../../../lib/firebase'
 import { 
   onAuthStateChanged,
   RecaptchaVerifier,
-  signInWithPhoneNumber,
+  PhoneAuthProvider,
+  linkWithCredential,
   ConfirmationResult
 } from 'firebase/auth'
 import { getInvestor, signNDA, getUserIP, updateInvestorPhone } from '../../../lib/firebase-helpers'
@@ -58,7 +59,7 @@ export default function NDAPage() {
   // Phone verification state
   const [phone, setPhone] = useState('')
   const [verificationCode, setVerificationCode] = useState('')
-  const [confirmation, setConfirmation] = useState<ConfirmationResult | null>(null)
+  const [verificationId, setVerificationId] = useState<string>('')
   const [sendingCode, setSendingCode] = useState(false)
   const [verifying, setVerifying] = useState(false)
   
@@ -176,13 +177,17 @@ export default function NDAPage() {
     try {
       const formattedPhone = phone.startsWith('+') ? phone : `+${phone}`
       const appVerifier = (window as any).recaptchaVerifier
-      const confirmationResult = await signInWithPhoneNumber(auth, formattedPhone, appVerifier)
       
-      setConfirmation(confirmationResult)
+      // Use PhoneAuthProvider to get verification ID
+      const phoneProvider = new PhoneAuthProvider(auth)
+      const verificationIdResult = await phoneProvider.verifyPhoneNumber(formattedPhone, appVerifier)
+      
+      console.log('[NDA] Verification code sent successfully')
+      setVerificationId(verificationIdResult)
       setCurrentStep('verify')
       setSendingCode(false)
     } catch (err: any) {
-      console.error('Error sending code:', err)
+      console.error('[NDA] Error sending code:', err)
       
       if (err.code === 'auth/invalid-phone-number') {
         setError('Invalid phone number format. Use international format: +351931234567')
@@ -207,17 +212,25 @@ export default function NDAPage() {
     setError('')
 
     try {
-      if (!confirmation) throw new Error('No confirmation object')
-      
-      console.log('[NDA] Confirming verification code...')
-      await confirmation.confirm(verificationCode)
-      console.log('[NDA] Code confirmed successfully')
+      if (!verificationId) throw new Error('No verification ID')
       
       const user = auth.currentUser
-      if (user) {
-        console.log('[NDA] Updating investor phone in database...')
-        await updateInvestorPhone(user.uid, phone)
-      }
+      if (!user) throw new Error('No authenticated user')
+      
+      console.log('[NDA] Confirming verification code...')
+      
+      // Create phone credential
+      const credential = PhoneAuthProvider.credential(verificationId, verificationCode)
+      
+      // Link phone credential to existing email user
+      console.log('[NDA] Linking phone to existing user...')
+      await linkWithCredential(user, credential)
+      
+      console.log('[NDA] Phone linked successfully')
+      
+      // Update phone in database
+      console.log('[NDA] Updating investor phone in database...')
+      await updateInvestorPhone(user.uid, phone)
       
       console.log('[NDA] Moving to signature step')
       setCurrentStep('sign')
@@ -229,7 +242,28 @@ export default function NDAPage() {
       }, 1000)
     } catch (err: any) {
       console.error('[NDA] Error verifying code:', err)
-      setError('Invalid verification code')
+      
+      // Handle specific errors
+      if (err.code === 'auth/invalid-verification-code') {
+        setError('Invalid verification code. Please try again.')
+      } else if (err.code === 'auth/credential-already-in-use') {
+        setError('This phone number is already linked to another account.')
+      } else if (err.code === 'auth/provider-already-linked') {
+        // Phone already linked, just update in database
+        console.log('[NDA] Phone already linked, updating database...')
+        const user = auth.currentUser
+        if (user) {
+          await updateInvestorPhone(user.uid, phone)
+          setCurrentStep('sign')
+          setTimeout(() => {
+            setIsVerifyingPhone(false)
+          }, 1000)
+          return
+        }
+      } else {
+        setError('Error verifying code. Please try again.')
+      }
+      
       setVerifying(false)
       setIsVerifyingPhone(false)
     }
