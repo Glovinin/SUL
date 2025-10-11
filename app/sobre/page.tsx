@@ -593,7 +593,7 @@ export default function SobrePage() {
               viewport={{ once: true }}
               className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-3xl'} mx-auto text-gray-600 font-light leading-relaxed mb-12`}
             >
-              GreenCheck is the technological platform of EcoVeritas, a computational system that revolutionizes ESG certification by combining Artificial Intelligence, Blockchain technology, and scientific validation. Our mission is to make sustainability accessible, transparent, and verifiable for everyone.
+              GreenCheck is the technological platform of ESG Veritas, a computational system that revolutionizes ESG certification by combining Artificial Intelligence, Blockchain technology, and scientific validation. Our mission is to make sustainability accessible, transparent, and verifiable for everyone.
             </motion.p>
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
