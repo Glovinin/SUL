@@ -532,12 +532,138 @@ export default function InvestidoresPage() {
           : 'pb-0'
       }`}>
       
-      {/* Market Opportunity */}
+      {/* Investment Ask - NEW SECTION */}
       <section className={`${sectionPadding} relative bg-white rounded-t-[48px]`}>
         {breakpoints.isMobile && (
-          <div className="absolute top-3 left-1/2 -translate-x-1/2 w-10 h-1 bg-slate-300 rounded-full z-10" />
+          <div className="absolute top-3 left-1/2 -translate-x-1/2 w-10 h-1 bg-gray-300 rounded-full z-10" />
         )}
         
+        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-20'}`}>
+            <motion.p 
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4"
+            >
+              Investment Opportunity
+            </motion.p>
+            <motion.h2 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+            >
+              <span className="font-extralight text-[#044050]">Series A Round</span>
+              <br />
+              <span className="font-normal text-[#5FA037]">€2.5M for 15% equity</span>
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-3xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+            >
+              Pre-money valuation: €14.2M • Post-money: €16.7M
+              <br />
+              <span className="text-[#5FA037] font-medium">Target ROI: 7.8x in 5 years (51% IRR)</span>
+            </motion.p>
+          </div>
+
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : breakpoints.isTablet ? 'grid-cols-2' : 'grid-cols-4'} ${breakpoints.isMobile ? 'gap-6' : 'gap-8'} mb-16`}>
+            {[
+              {
+                label: "Investment",
+                value: "€2.5M",
+                detail: "Series A Round"
+              },
+              {
+                label: "Equity",
+                value: "15%",
+                detail: "Ownership stake"
+              },
+              {
+                label: "Target ROI",
+                value: "7.8x",
+                detail: "in 5 years"
+              },
+              {
+                label: "IRR",
+                value: "51%",
+                detail: "Annual return"
+              }
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-[#044050]/5 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 text-center hover:border-[#5FA037] transition-all duration-300"
+              >
+                <p className="text-sm text-gray-500 font-medium uppercase tracking-wider mb-3">{item.label}</p>
+                <p className="text-4xl font-extralight text-[#044050] mb-2">{item.value}</p>
+                <p className="text-sm text-gray-600 font-light">{item.detail}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Exit Scenarios */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="max-w-4xl mx-auto"
+          >
+            <h3 className="text-2xl font-light text-[#044050] text-center mb-8">Exit Scenarios (2029-2030)</h3>
+            <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : 'grid-cols-3'} gap-6`}>
+              {[
+                {
+                  scenario: "Conservative",
+                  valuation: "€85M",
+                  multiple: "15x revenue",
+                  return: "5.1x ROI"
+                },
+                {
+                  scenario: "Base Case",
+                  valuation: "€130M",
+                  multiple: "20x revenue",
+                  return: "7.8x ROI"
+                },
+                {
+                  scenario: "Optimistic",
+                  valuation: "€195M",
+                  multiple: "30x revenue",
+                  return: "11.7x ROI"
+                }
+              ].map((exit, index) => (
+                <div
+                  key={index}
+                  className={`bg-white rounded-xl p-6 border-2 shadow-sm ${
+                    index === 1 ? 'border-[#5FA037] bg-[#5FA037]/5' : 'border-gray-200'
+                  }`}
+                >
+                  <p className={`text-sm font-medium uppercase tracking-wider mb-4 ${
+                    index === 1 ? 'text-[#5FA037]' : 'text-gray-500'
+                  }`}>{exit.scenario}</p>
+                  <p className="text-3xl font-light text-[#044050] mb-2">{exit.valuation}</p>
+                  <p className="text-sm text-gray-600 mb-1">{exit.multiple}</p>
+                  <p className={`text-base font-medium ${
+                    index === 1 ? 'text-[#5FA037]' : 'text-gray-700'
+                  }`}>{exit.return}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Market Opportunity */}
+      <section className={`${sectionPadding} relative bg-white`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
           <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
             <motion.p 
@@ -582,11 +708,11 @@ export default function InvestidoresPage() {
                 icon: DollarSign,
                 value: "€8.5B",
                 label: "Annual Market",
-                description: "European ESG certification opportunity"
+                description: "European ESG certification market size"
               },
               {
                 icon: TrendingUp,
-                value: "23%",
+                value: "18%",
                 label: "CAGR",
                 description: "Market growth rate through 2030"
               },
@@ -1174,8 +1300,206 @@ export default function InvestidoresPage() {
         </div>
       </section>
 
-      {/* Traction */}
+      {/* Financial Projections - NEW SECTION */}
       <section className={`${sectionPadding} relative bg-white`}>
+        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
+            <motion.p 
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4"
+            >
+              Financial Projections
+            </motion.p>
+            <motion.h2 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+            >
+              <span className="font-extralight text-[#044050]">Path to</span>
+              <br />
+              <span className="font-normal text-[#5FA037]">€65M revenue</span>
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+            >
+              Rapid growth trajectory with proven business model and strong unit economics
+            </motion.p>
+          </div>
+
+          {/* Revenue Evolution */}
+          <div className="max-w-6xl mx-auto mb-20">
+            <div className="overflow-x-auto">
+              <div className="min-w-[800px]">
+                <div className={`grid grid-cols-7 gap-4 mb-6`}>
+                  <div className="font-medium text-sm text-gray-500 uppercase tracking-wider">Year</div>
+                  {['2025', '2026', '2027', '2028', '2029', '2030'].map((year) => (
+                    <div key={year} className="font-medium text-sm text-gray-900">{year}</div>
+                  ))}
+                </div>
+
+                {/* Revenue Row */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  viewport={{ once: true }}
+                  className="grid grid-cols-7 gap-4 py-4 border-t border-gray-200"
+                >
+                  <div className="font-medium text-gray-700">Revenue</div>
+                  <div className="text-gray-900">€1.8M</div>
+                  <div className="text-gray-900">€5.4M</div>
+                  <div className="text-gray-900">€12.6M</div>
+                  <div className="text-gray-900">€24.5M</div>
+                  <div className="text-gray-900">€41.6M</div>
+                  <div className="text-[#5FA037] font-semibold">€65.0M</div>
+                </motion.div>
+
+                {/* EBITDA Row */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  viewport={{ once: true }}
+                  className="grid grid-cols-7 gap-4 py-4 border-t border-gray-200"
+                >
+                  <div className="font-medium text-gray-700">EBITDA</div>
+                  <div className="text-red-600">-€1.3M</div>
+                  <div className="text-red-600">-€1.3M</div>
+                  <div className="text-[#5FA037]">€0.9M</div>
+                  <div className="text-[#5FA037]">€4.6M</div>
+                  <div className="text-[#5FA037]">€10.7M</div>
+                  <div className="text-[#5FA037] font-semibold">€19.2M</div>
+                </motion.div>
+
+                {/* Margin Row */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  viewport={{ once: true }}
+                  className="grid grid-cols-7 gap-4 py-4 border-t border-b border-gray-200"
+                >
+                  <div className="font-medium text-gray-700">EBITDA %</div>
+                  <div className="text-red-600">-73%</div>
+                  <div className="text-red-600">-23%</div>
+                  <div className="text-gray-900">7%</div>
+                  <div className="text-gray-900">19%</div>
+                  <div className="text-gray-900">26%</div>
+                  <div className="text-[#5FA037] font-semibold">30%</div>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+
+          {/* Key Milestones */}
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : 'grid-cols-3'} gap-8 max-w-5xl mx-auto mb-20`}>
+            {[
+              {
+                year: "2026",
+                title: "Break-even",
+                description: "Operational break-even achieved",
+                metric: "Q2 2026"
+              },
+              {
+                year: "2027",
+                title: "Profitability",
+                description: "EBITDA positive with 7% margin",
+                metric: "€860K EBITDA"
+              },
+              {
+                year: "2030",
+                title: "Scale",
+                description: "Market leader with strong margins",
+                metric: "30% EBITDA margin"
+              }
+            ].map((milestone, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-slate-50 rounded-2xl p-8 border border-gray-200"
+              >
+                <div className="text-4xl font-extralight text-[#044050] mb-3">{milestone.year}</div>
+                <h3 className="text-xl font-semibold text-[#044050] mb-2">{milestone.title}</h3>
+                <p className="text-sm text-gray-600 font-light mb-4">{milestone.description}</p>
+                <p className="text-base font-medium text-[#5FA037]">{milestone.metric}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Growth Drivers */}
+          <div className="max-w-4xl mx-auto">
+            <h3 className="text-2xl font-light text-gray-900 text-center mb-12">Revenue Growth Drivers</h3>
+            <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : 'grid-cols-2'} gap-8`}>
+              {[
+                {
+                  title: "B2B Certification",
+                  growth: "200 → 4,500 clients",
+                  cagr: "89% CAGR",
+                  revenue: "€1.2M → €40.5M"
+                },
+                {
+                  title: "B2C Subscription",
+                  growth: "5K → 250K users",
+                  cagr: "114% CAGR",
+                  revenue: "€300K → €15M"
+                },
+                {
+                  title: "Enterprise API",
+                  growth: "10 → 160 clients",
+                  cagr: "72% CAGR",
+                  revenue: "€60K → €1.8M"
+                },
+                {
+                  title: "Marketplace",
+                  growth: "€3M → €81M GMV",
+                  cagr: "93% CAGR",
+                  revenue: "€240K → €6.5M"
+                }
+              ].map((driver, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="bg-white rounded-xl p-6 border border-gray-200"
+                >
+                  <h4 className="text-lg font-semibold text-[#044050] mb-4">{driver.title}</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Growth:</span>
+                      <span className="font-medium text-gray-900">{driver.growth}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">CAGR:</span>
+                      <span className="font-medium text-[#5FA037]">{driver.cagr}</span>
+                    </div>
+                    <div className="flex justify-between pt-2 border-t border-gray-100">
+                      <span className="text-gray-600">Revenue:</span>
+                      <span className="font-semibold text-gray-900">{driver.revenue}</span>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Traction */}
+      <section className={`${sectionPadding} relative bg-slate-50`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
           <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
             <motion.p 
@@ -1209,13 +1533,13 @@ export default function InvestidoresPage() {
             </motion.p>
           </div>
           
-          {/* Impact Metrics */}
+          {/* Impact Metrics - Targets by 2028 */}
           <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : 'grid-cols-4'} ${breakpoints.isMobile ? 'gap-8' : 'gap-12'} max-w-5xl mx-auto ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
             {[
-              { value: '50K+', label: 'tCO₂e Compensated', sublabel: 'Carbon offset achieved' },
-              { value: '5K', label: 'Reforestation Hectares', sublabel: 'Forest restoration' },
-              { value: '1.5K+', label: 'Jobs Created', sublabel: 'Social impact' },
-              { value: '€15M+', label: 'Generated Economy', sublabel: 'Economic value' }
+              { value: '50K+', label: 'tCO₂e Target', sublabel: 'Sequestered by 2028' },
+              { value: '5,000', label: 'Hectares', sublabel: 'Reforestation target' },
+              { value: '1,500+', label: 'Jobs', sublabel: 'Direct employment' },
+              { value: '€15M+', label: 'Regional Impact', sublabel: 'Economic movement' }
             ].map((stat, index) => (
               <motion.div
                 key={index}
@@ -1232,13 +1556,13 @@ export default function InvestidoresPage() {
             ))}
           </div>
 
-          {/* Technology Metrics */}
+          {/* Technology & Traction Metrics */}
           <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : 'grid-cols-4'} ${breakpoints.isMobile ? 'gap-6' : 'gap-8'} max-w-5xl mx-auto ${breakpoints.isMobile ? 'mb-16' : 'mb-24'} pt-12 border-t border-gray-200`}>
             {[
               { value: '98.5%', label: 'AI Accuracy', sublabel: 'ESG data extraction' },
-              { value: '1,000+', label: 'Beta Users', sublabel: 'Active user base' },
-              { value: '€0.01', label: 'Blockchain Cost', sublabel: 'Per transaction' },
-              { value: '100%', label: 'Patent Filed', sublabel: 'IP protection' }
+              { value: '50+', label: 'Pilot Companies', sublabel: 'Q2 2025 target' },
+              { value: '<€0.01', label: 'Blockchain', sublabel: 'Cost per transaction' },
+              { value: 'Filed', label: 'Patent', sublabel: 'IP protection secured' }
             ].map((stat, index) => (
               <motion.div
                 key={index}
@@ -1459,7 +1783,7 @@ export default function InvestidoresPage() {
       </section>
 
       {/* Use of Funds */}
-      <section className={`${sectionPadding} relative bg-slate-50`}>
+      <section className={`${sectionPadding} relative bg-white`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
           <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
             <motion.p 
@@ -1469,7 +1793,7 @@ export default function InvestidoresPage() {
               viewport={{ once: true }}
               className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4"
             >
-              Investment Use
+              Series A - €2.5M Allocation
             </motion.p>
             <motion.h2 
               initial={{ opacity: 0 }}
@@ -1478,19 +1802,66 @@ export default function InvestidoresPage() {
               viewport={{ once: true }}
               className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
-              <span className="font-extralight text-[#044050]">Capital</span>
+              <span className="font-extralight text-[#044050]">Strategic</span>
               <br />
-              <span className="font-normal text-[#5FA037]">allocation</span>
+              <span className="font-normal text-[#5FA037]">capital deployment</span>
             </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+            >
+              18-month runway focused on product excellence and market validation
+            </motion.p>
           </div>
           
-          <div className="max-w-4xl mx-auto">
-            <div className="space-y-6">
+          <div className="max-w-5xl mx-auto mb-16">
+            <div className="space-y-8">
               {[
-                { category: 'Product Development', percentage: 40, amount: 'AI/ML improvements, blockchain integration, marketplace features' },
-                { category: 'Sales & Marketing', percentage: 30, amount: 'B2B outreach, digital campaigns, trade shows, partnerships' },
-                { category: 'Team Expansion', percentage: 20, amount: 'Engineering, sales, customer success hires' },
-                { category: 'Operations', percentage: 10, amount: 'Infrastructure, legal, compliance, working capital' }
+                { 
+                  category: 'Technology Development', 
+                  percentage: 40, 
+                  amount: '€1,000,000',
+                  details: [
+                    '4 Senior Developers (€600K)',
+                    '2 Data Scientists (€200K)',
+                    'Cloud Infrastructure & Security (€100K)',
+                    'AI/ML Model Training (€100K)'
+                  ]
+                },
+                { 
+                  category: 'Marketing & Expansion', 
+                  percentage: 30, 
+                  amount: '€750,000',
+                  details: [
+                    'Digital Marketing Campaigns (€200K)',
+                    'Trade Shows & Events (€200K)',
+                    'Content Marketing & SEO (€100K)',
+                    'Geographic Expansion (€250K)'
+                  ]
+                },
+                { 
+                  category: 'Team & Operations', 
+                  percentage: 20, 
+                  amount: '€500,000',
+                  details: [
+                    'Head of Sales & Marketing (€155K)',
+                    '2 Account Managers (€120K)',
+                    '2 ESG Specialists (€110K)',
+                    'Office & Infrastructure (€115K)'
+                  ]
+                },
+                { 
+                  category: 'Working Capital', 
+                  percentage: 10, 
+                  amount: '€250,000',
+                  details: [
+                    'Emergency Reserve (€150K)',
+                    'Pilot Project Investment (€100K)'
+                  ]
+                }
               ].map((fund, index) => (
                 <motion.div
                   key={index}
@@ -1498,22 +1869,94 @@ export default function InvestidoresPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="group"
+                  className="group bg-slate-50 rounded-2xl p-8 border border-gray-200"
                 >
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-lg font-medium text-[#044050]">{fund.category}</h3>
-                    <span className="text-2xl font-light text-[#044050]">{fund.percentage}%</span>
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <h3 className="text-xl font-semibold text-[#044050] mb-1">{fund.category}</h3>
+                      <p className="text-2xl font-light text-[#5FA037]">{fund.amount}</p>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-4xl font-extralight text-[#044050]">{fund.percentage}%</span>
+                    </div>
                   </div>
-                  <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden mb-2">
+                  <div className="w-full h-3 bg-white rounded-full overflow-hidden mb-6 shadow-inner">
                     <motion.div 
-                      className="h-full bg-[#5FA037] rounded-full"
+                      className="h-full bg-gradient-to-r from-[#5FA037] to-[#4d8c2d] rounded-full"
                       initial={{ width: 0 }}
                       whileInView={{ width: `${fund.percentage}%` }}
-                      transition={{ duration: 1, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                      transition={{ duration: 1.2, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
                       viewport={{ once: true }}
                     />
                   </div>
-                  <p className="text-sm text-gray-600 font-light">{fund.amount}</p>
+                  <ul className="space-y-2">
+                    {fund.details.map((detail, idx) => (
+                      <li key={idx} className="flex items-start gap-3 text-sm text-gray-600">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-1.5" />
+                        <span className="font-light">{detail}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Key Deliverables */}
+          <div className="max-w-4xl mx-auto">
+            <h3 className="text-2xl font-light text-gray-900 text-center mb-10">18-Month Key Deliverables</h3>
+            <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : 'grid-cols-2'} gap-6`}>
+              {[
+                {
+                  milestone: "Q4 2025",
+                  achievements: [
+                    "50 pilot SMEs",
+                    "€100K MRR",
+                    "MVP production ready"
+                  ]
+                },
+                {
+                  milestone: "Q2 2026",
+                  achievements: [
+                    "200 B2B clients",
+                    "Operational break-even",
+                    "Spain market entry"
+                  ]
+                },
+                {
+                  milestone: "Q4 2026",
+                  achievements: [
+                    "500 B2B clients",
+                    "5K B2C users",
+                    "€5.4M ARR"
+                  ]
+                },
+                {
+                  milestone: "Q1 2027",
+                  achievements: [
+                    "3-country presence",
+                    "Series B ready",
+                    "EBITDA positive"
+                  ]
+                }
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="bg-slate-50 rounded-xl p-6 border border-gray-200"
+                >
+                  <h4 className="text-lg font-semibold text-[#044050] mb-4">{item.milestone}</h4>
+                  <ul className="space-y-2">
+                    {item.achievements.map((achievement, idx) => (
+                      <li key={idx} className="flex items-start gap-3">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-1.5" />
+                        <span className="text-sm text-gray-700 font-light">{achievement}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </motion.div>
               ))}
             </div>

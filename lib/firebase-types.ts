@@ -11,6 +11,25 @@ export type InvestorStatus =
   | 'approved'           // Aprovado pelo admin, acesso total
   | 'rejected'           // Rejeitado pelo admin
 
+// NDA Signatory Data - Complete information collected during NDA signing
+export interface NDASignatoryData {
+  fullName: string
+  nationality: string
+  maritalStatus: string
+  profession: string
+  address: string
+  documentType: string
+  documentNumber: string
+  taxId: string
+  phone: string
+  signatureDate: string
+  signatureImage: string
+  documentVersion: string
+  companyName: string
+  companyRole: string
+  email: string
+}
+
 // Investor document structure in Firestore
 export interface InvestorData {
   uid: string
@@ -27,6 +46,8 @@ export interface InvestorData {
   ndaSignedAt?: Timestamp
   ndaSignedIp?: string
   ndaVersion?: string
+  ndaPdfUrl?: string  // URL do PDF assinado no Firebase Storage
+  ndaSignatoryData?: NDASignatoryData  // Dados completos do signatário
   
   // Approval fields (optional, filled after admin action)
   approvedAt?: Timestamp
@@ -55,4 +76,5 @@ export interface NDASignature {
   userAgent: string
   ndaVersion: string
 }
+
 

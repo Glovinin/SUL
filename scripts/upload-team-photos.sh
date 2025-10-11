@@ -57,3 +57,5 @@ echo ""
 echo "💡 Dica: Use ferramentas online como TinyPNG para otimizar as fotos antes do upload"
 
 
+
+

@@ -229,8 +229,15 @@ export function MobileNav() {
     }
   }, [menuOpen])
 
-  // Esconder mobile nav na página de login
-  if (!mounted || isInitialLoading || pathname === '/login') return null
+  // Esconder mobile nav na página de login e área de investidores (login, NDA, pending-approval)
+  const isInvestorAuthPage = pathname === '/investidores/login' || 
+                             pathname === '/investidores/nda' || 
+                             pathname === '/investidores/pending-approval'
+  
+  // Esconder mobile nav na área de admin (login e dashboard)
+  const isAdminPage = pathname.startsWith('/admin')
+  
+  if (!mounted || isInitialLoading || pathname === '/login' || isInvestorAuthPage || isAdminPage) return null
 
   const isDark = true
 

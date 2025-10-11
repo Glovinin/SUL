@@ -43,10 +43,11 @@ export async function createInvestor(data: {
   company: string
   role: string
   email: string
-  phone: string
+  phone?: string
 }): Promise<void> {
   const investorData: InvestorData = {
     ...data,
+    phone: data.phone || '',
     status: 'pending_nda',
     createdAt: serverTimestamp() as Timestamp,
     lastLogin: serverTimestamp() as Timestamp
@@ -79,19 +80,77 @@ export async function updateLastLogin(uid: string): Promise<void> {
 }
 
 /**
+ * Update investor's phone number
+ */
+export async function updateInvestorPhone(uid: string, phone: string): Promise<void> {
+  const docRef = doc(getDb(), INVESTORS_COLLECTION, uid)
+  await updateDoc(docRef, {
+    phone
+  })
+}
+
+/**
  * Sign NDA - update investor status and NDA data
  */
 export async function signNDA(
   uid: string, 
   ipAddress: string, 
-  ndaVersion: string = 'v1.0'
+  ndaVersion: string = 'v1.0',
+  signatoryData?: {
+    fullName: string
+    nationality: string
+    maritalStatus: string
+    profession: string
+    address: string
+    documentType: string
+    documentNumber: string
+    taxId: string
+    phone: string
+    signatureDate: string
+    signatureImage: string
+    documentVersion: string
+    companyName: string
+    companyRole: string
+    email: string
+  }
 ): Promise<void> {
   const docRef = doc(getDb(), INVESTORS_COLLECTION, uid)
+  
+  let pdfUrl = ''
+  
+  // Se temos dados do signatário, gerar PDF
+  if (signatoryData) {
+    try {
+      // Importar dinamicamente para evitar problemas no build
+      const { generateNDAPDF } = await import('./generate-nda-pdf')
+      const pdfBlob = await generateNDAPDF(signatoryData)
+      
+      // Upload para Firebase Storage
+      const { getStorage, ref, uploadBytes, getDownloadURL } = await import('firebase/storage')
+      const storage = getStorage()
+      const pdfRef = ref(storage, `nda-pdfs/${uid}_${Date.now()}.pdf`)
+      
+      await uploadBytes(pdfRef, pdfBlob)
+      pdfUrl = await getDownloadURL(pdfRef)
+    } catch (error) {
+      console.error('Error generating/uploading PDF:', error)
+      // Continuar mesmo se o PDF falhar
+    }
+  }
+  
   await updateDoc(docRef, {
     status: 'pending_approval',
     ndaSignedAt: serverTimestamp(),
     ndaSignedIp: ipAddress,
-    ndaVersion
+    ndaVersion,
+    ...(pdfUrl && { ndaPdfUrl: pdfUrl }),
+    ...(signatoryData && { 
+      ndaSignatoryData: signatoryData,
+      name: signatoryData.fullName, // Atualizar nome do investidor
+      company: signatoryData.companyName, // Atualizar empresa
+      role: signatoryData.companyRole, // Atualizar cargo
+      phone: signatoryData.phone // Atualizar telefone
+    })
   })
 }
 

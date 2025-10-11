@@ -1,16 +1,17 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { ArrowRight, Lock, Phone, User, Building2, Mail, Briefcase, CheckCircle2, Loader2 } from 'lucide-react'
+import { ArrowRight, Lock, User, Building2, Mail, Briefcase, CheckCircle2, Loader2, Eye, EyeOff } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useRouter } from 'next/navigation'
 import { auth } from '../../../lib/firebase'
 import { 
-  RecaptchaVerifier, 
-  signInWithPhoneNumber, 
-  ConfirmationResult,
-  PhoneAuthProvider,
-  signInWithCredential
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  setPersistence,
+  browserLocalPersistence,
+  browserSessionPersistence,
+  sendEmailVerification
 } from 'firebase/auth'
 import { createInvestor, getInvestor, updateLastLogin } from '../../../lib/firebase-helpers'
 
@@ -43,22 +44,19 @@ export default function InvestidoresLoginPage() {
   const isMobile = useIsMobile()
 
   // Login state
-  const [loginPhone, setLoginPhone] = useState('')
-  const [loginCode, setLoginCode] = useState('')
-  const [loginStep, setLoginStep] = useState<'phone' | 'code'>('phone')
-  const [loginConfirmation, setLoginConfirmation] = useState<ConfirmationResult | null>(null)
+  const [loginEmail, setLoginEmail] = useState('')
+  const [loginPassword, setLoginPassword] = useState('')
+  const [showLoginPassword, setShowLoginPassword] = useState(false)
+  const [rememberMe, setRememberMe] = useState(true)
 
   // Signup state
   const [signupData, setSignupData] = useState({
-    name: '',
-    company: '',
-    role: '',
     email: '',
-    phone: ''
+    password: '',
+    confirmPassword: ''
   })
-  const [signupCode, setSignupCode] = useState('')
-  const [signupStep, setSignupStep] = useState<'form' | 'code'>('form')
-  const [signupConfirmation, setSignupConfirmation] = useState<ConfirmationResult | null>(null)
+  const [showSignupPassword, setShowSignupPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -70,70 +68,23 @@ export default function InvestidoresLoginPage() {
     }
   }, [router])
 
-  // Setup reCAPTCHA
-  useEffect(() => {
-    if (mounted && auth) {
-      try {
-        if (!(window as any).recaptchaVerifier) {
-          (window as any).recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-            size: 'invisible',
-            callback: () => {
-              console.log('reCAPTCHA solved')
-            }
-          })
-        }
-      } catch (error) {
-        console.error('Error setting up reCAPTCHA:', error)
-      }
-    }
-  }, [mounted])
-
   // ─────────────────────────────────────────────────────────────
-  // LOGIN FUNCTIONS
+  // LOGIN FUNCTION
   // ─────────────────────────────────────────────────────────────
 
-  const handleLoginSendCode = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
     setLoading(true)
 
     try {
-      // Formatar telefone para padrão internacional
-      const formattedPhone = loginPhone.startsWith('+') ? loginPhone : `+351${loginPhone}`
-      
-      const appVerifier = (window as any).recaptchaVerifier
-      const confirmation = await signInWithPhoneNumber(auth, formattedPhone, appVerifier)
-      
-      setLoginConfirmation(confirmation)
-      setLoginStep('code')
-      setLoading(false)
-    } catch (err: any) {
-      console.error('Error sending code:', err)
-      
-      // Mensagem específica para erro de configuração do Firebase
-      if (err.code === 'auth/invalid-app-credential') {
-        setError('⚠️ Firebase not configured. Admin: Add Replit domain to Firebase Console')
-      } else if (err.code === 'auth/captcha-check-failed') {
-        setError('reCAPTCHA failed. Please refresh and try again')
-      } else {
-        setError(err.message || 'Error sending verification code')
+      // Configurar persistence baseado em "Remember Me"
+      if (auth) {
+        await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence)
       }
       
-      setLoading(false)
-    }
-  }
-
-  const handleLoginVerifyCode = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
-
-    try {
-      if (!loginConfirmation) {
-        throw new Error('No confirmation object')
-      }
-
-      const result = await loginConfirmation.confirm(loginCode)
+      // Login com email e senha
+      const result = await signInWithEmailAndPassword(auth, loginEmail, loginPassword)
       const user = result.user
 
       // Verificar se usuário existe no Firestore
@@ -163,75 +114,67 @@ export default function InvestidoresLoginPage() {
         }
       }, 1500)
     } catch (err: any) {
-      console.error('Error verifying code:', err)
-      setError('Invalid verification code')
+      console.error('Error logging in:', err)
+      
+      if (err.code === 'auth/user-not-found') {
+        setError('No account found with this email')
+      } else if (err.code === 'auth/wrong-password') {
+        setError('Incorrect password')
+      } else if (err.code === 'auth/invalid-email') {
+        setError('Invalid email format')
+      } else if (err.code === 'auth/too-many-requests') {
+        setError('Too many failed attempts. Please try again later')
+      } else {
+        setError(err.message || 'Error logging in')
+      }
+      
       setLoading(false)
     }
   }
 
   // ─────────────────────────────────────────────────────────────
-  // SIGNUP FUNCTIONS
+  // SIGNUP FUNCTION
   // ─────────────────────────────────────────────────────────────
 
-  const handleSignupSendCode = async (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
 
     // Validar campos
-    if (!signupData.name || !signupData.company || !signupData.role || !signupData.email || !signupData.phone) {
+    if (!signupData.email || !signupData.password || !signupData.confirmPassword) {
       setError('Please fill all fields')
+      return
+    }
+
+    // Validar senha
+    if (signupData.password.length < 6) {
+      setError('Password must be at least 6 characters')
+      return
+    }
+
+    if (signupData.password !== signupData.confirmPassword) {
+      setError('Passwords do not match')
       return
     }
 
     setLoading(true)
 
     try {
-      // Formatar telefone
-      const formattedPhone = signupData.phone.startsWith('+') ? signupData.phone : `+351${signupData.phone}`
-      
-      const appVerifier = (window as any).recaptchaVerifier
-      const confirmation = await signInWithPhoneNumber(auth, formattedPhone, appVerifier)
-      
-      setSignupConfirmation(confirmation)
-      setSignupStep('code')
-      setLoading(false)
-    } catch (err: any) {
-      console.error('Error sending code:', err)
-      
-      // Mensagem específica para erro de configuração do Firebase
-      if (err.code === 'auth/invalid-app-credential') {
-        setError('⚠️ Firebase not configured. Admin: Add Replit domain to Firebase Console')
-      } else if (err.code === 'auth/captcha-check-failed') {
-        setError('reCAPTCHA failed. Please refresh and try again')
-      } else {
-        setError(err.message || 'Error sending verification code')
-      }
-      
-      setLoading(false)
-    }
-  }
-
-  const handleSignupVerifyCode = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
-
-    try {
-      if (!signupConfirmation) {
-        throw new Error('No confirmation object')
-      }
-
-      const result = await signupConfirmation.confirm(signupCode)
+      // Criar conta com email e senha
+      const result = await createUserWithEmailAndPassword(auth, signupData.email, signupData.password)
       const user = result.user
 
-      // Criar documento do investidor no Firestore
+      // Enviar email de verificação
+      await sendEmailVerification(user)
+
+      // Criar documento do investidor no Firestore (dados serão preenchidos no NDA)
       await createInvestor({
         uid: user.uid,
-        name: signupData.name,
-        company: signupData.company,
-        role: signupData.role,
+        name: '', // Será preenchido no NDA
+        company: '', // Será preenchido no NDA
+        role: '', // Será preenchido no NDA
         email: signupData.email,
-        phone: signupData.phone
+        phone: '' // Será preenchido no NDA
       })
 
       setSuccess(true)
@@ -239,8 +182,18 @@ export default function InvestidoresLoginPage() {
         router.push('/investidores/nda')
       }, 1500)
     } catch (err: any) {
-      console.error('Error verifying code:', err)
-      setError('Invalid verification code')
+      console.error('Error signing up:', err)
+      
+      if (err.code === 'auth/email-already-in-use') {
+        setError('An account with this email already exists')
+      } else if (err.code === 'auth/invalid-email') {
+        setError('Invalid email format')
+      } else if (err.code === 'auth/weak-password') {
+        setError('Password is too weak')
+      } else {
+        setError(err.message || 'Error creating account')
+      }
+      
       setLoading(false)
     }
   }
@@ -249,9 +202,6 @@ export default function InvestidoresLoginPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#044050] to-[#033842] flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
-      {/* reCAPTCHA container */}
-      <div id="recaptcha-container"></div>
-
       {/* Subtle accent lines */}
       <div className="absolute inset-0 opacity-[0.03]">
         <div className="absolute top-1/2 left-0 right-0 h-px bg-white" />
@@ -336,8 +286,6 @@ export default function InvestidoresLoginPage() {
                     onClick={() => {
                       setActiveTab('login')
                       setError('')
-                      setLoginStep('phone')
-                      setSignupStep('form')
                     }}
                     className={`flex-1 py-3 rounded-[12px] text-sm font-medium transition-all duration-300 ${
                       activeTab === 'login'
@@ -351,8 +299,6 @@ export default function InvestidoresLoginPage() {
                     onClick={() => {
                       setActiveTab('signup')
                       setError('')
-                      setLoginStep('phone')
-                      setSignupStep('form')
                     }}
                     className={`flex-1 py-3 rounded-[12px] text-sm font-medium transition-all duration-300 ${
                       activeTab === 'signup'
@@ -376,330 +322,222 @@ export default function InvestidoresLoginPage() {
                   // ══════════════════════════════════════════════
                   // LOGIN FORM
                   // ══════════════════════════════════════════════
-                  <AnimatePresence mode="wait">
-                    {loginStep === 'phone' ? (
-                      <motion.form
-                        key="login-phone"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 20 }}
-                        onSubmit={handleLoginSendCode}
-                        className="space-y-5"
-                      >
-                        <div>
-                          <label className="block text-xs text-gray-500 mb-2 ml-1">Phone Number</label>
-                          <div className="relative">
-                            <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" strokeWidth={1.5} />
-                            <input
-                              type="tel"
-                              value={loginPhone}
-                              onChange={(e) => setLoginPhone(e.target.value)}
-                        placeholder="+351 931 721 901"
-                        className="w-full h-14 pl-12 pr-5 bg-gray-50/80 border-2 border-transparent rounded-[16px] focus:outline-none focus:border-[#044050] focus:bg-white transition-all duration-300 text-sm text-gray-900 placeholder:text-gray-400"
-                              required
-                              disabled={loading}
-                            />
-                          </div>
-                        </div>
+                  <motion.form
+                    key="login-form"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 20 }}
+                    onSubmit={handleLogin}
+                    className="space-y-5"
+                  >
+                    <div>
+                      <label className="block text-xs text-gray-500 mb-2 ml-1">Email</label>
+                      <div className="relative">
+                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" strokeWidth={1.5} />
+                        <input
+                          type="email"
+                          value={loginEmail}
+                          onChange={(e) => setLoginEmail(e.target.value)}
+                          placeholder="joao@company.com"
+                          className="w-full h-14 pl-12 pr-5 bg-gray-50/80 border-2 border-transparent rounded-[16px] focus:outline-none focus:border-[#044050] focus:bg-white transition-all duration-300 text-sm text-gray-900 placeholder:text-gray-400"
+                          required
+                          disabled={loading}
+                        />
+                      </div>
+                    </div>
 
-                        {error && (
-                          <motion.p
-                            initial={{ opacity: 0, y: -5 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="text-xs text-red-500 font-light text-center"
-                          >
-                            {error}
-                          </motion.p>
-                        )}
-
-                        <button
-                          type="submit"
-                          disabled={loading || !loginPhone}
-                          className="group w-full h-[52px] rounded-full transition-all duration-500 bg-[#5FA037] text-white hover:bg-[#4d8c2d] font-normal tracking-tight shadow-md hover:shadow-lg hover:shadow-[#5FA037]/25 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
-                        >
-                          <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
-                          <span className="relative flex items-center justify-center gap-2.5">
-                            {loading ? (
-                              <>
-                                <Loader2 className="w-5 h-5 animate-spin" />
-                                <span>Sending Code...</span>
-                              </>
-                            ) : (
-                              <>
-                                <span>Send Code</span>
-                                <ArrowRight className="w-5 h-5" />
-                              </>
-                            )}
-                          </span>
-                        </button>
-                      </motion.form>
-                    ) : (
-                      <motion.form
-                        key="login-code"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 20 }}
-                        onSubmit={handleLoginVerifyCode}
-                        className="space-y-5"
-                      >
-                        <div>
-                          <label className="block text-xs text-gray-500 mb-2 ml-1">Verification Code</label>
-                          <input
-                            type="text"
-                            value={loginCode}
-                            onChange={(e) => setLoginCode(e.target.value)}
-                            placeholder="000000"
-                            className="w-full h-14 px-5 bg-gray-50/80 border-2 border-transparent rounded-[16px] focus:outline-none focus:border-[#044050] focus:bg-white transition-all duration-300 text-center text-2xl tracking-[0.3em] font-light text-gray-900 placeholder:text-gray-400"
-                            required
-                            disabled={loading}
-                            maxLength={6}
-                          />
-                          <p className="text-xs text-gray-500 text-center mt-2">
-                            Sent to {loginPhone}
-                          </p>
-                        </div>
-
-                        {error && (
-                          <motion.p
-                            initial={{ opacity: 0, y: -5 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="text-xs text-red-500 font-light text-center"
-                          >
-                            {error}
-                          </motion.p>
-                        )}
-
-                        <button
-                          type="submit"
-                          disabled={loading || loginCode.length !== 6}
-                          className="group w-full h-[52px] rounded-full transition-all duration-500 bg-[#5FA037] text-white hover:bg-[#4d8c2d] font-normal tracking-tight shadow-md hover:shadow-lg hover:shadow-[#5FA037]/25 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
-                        >
-                          <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
-                          <span className="relative flex items-center justify-center gap-2.5">
-                            {loading ? (
-                              <>
-                                <Loader2 className="w-5 h-5 animate-spin" />
-                                <span>Verifying...</span>
-                              </>
-                            ) : (
-                              <>
-                                <span>Verify & Login</span>
-                                <ArrowRight className="w-5 h-5" />
-                              </>
-                            )}
-                          </span>
-                        </button>
-
+                    <div>
+                      <label className="block text-xs text-gray-500 mb-2 ml-1">Password</label>
+                      <div className="relative">
+                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" strokeWidth={1.5} />
+                        <input
+                          type={showLoginPassword ? 'text' : 'password'}
+                          value={loginPassword}
+                          onChange={(e) => setLoginPassword(e.target.value)}
+                          placeholder="••••••••"
+                          className="w-full h-14 pl-12 pr-12 bg-gray-50/80 border-2 border-transparent rounded-[16px] focus:outline-none focus:border-[#044050] focus:bg-white transition-all duration-300 text-sm text-gray-900 placeholder:text-gray-400"
+                          required
+                          disabled={loading}
+                        />
                         <button
                           type="button"
-                          onClick={() => {
-                            setLoginStep('phone')
-                            setLoginCode('')
-                            setError('')
-                          }}
-                          className="w-full text-xs text-gray-500 hover:text-[#044050] transition-colors"
+                          onClick={() => setShowLoginPassword(!showLoginPassword)}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                         >
-                          ← Change phone number
+                          {showLoginPassword ? (
+                            <EyeOff className="w-5 h-5" strokeWidth={1.5} />
+                          ) : (
+                            <Eye className="w-5 h-5" strokeWidth={1.5} />
+                          )}
                         </button>
-                      </motion.form>
+                      </div>
+                    </div>
+
+                    {error && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-xs text-red-500 font-light text-center"
+                      >
+                        {error}
+                      </motion.p>
                     )}
-                  </AnimatePresence>
+
+                    {/* Remember Me Checkbox */}
+                    <label className="flex items-center gap-3 cursor-pointer group py-1">
+                      <div className="relative flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={rememberMe}
+                          onChange={(e) => setRememberMe(e.target.checked)}
+                          className="w-5 h-5 rounded border-2 border-gray-300 checked:bg-[#5FA037] checked:border-[#5FA037] focus:ring-2 focus:ring-[#5FA037]/20 transition-all duration-200 cursor-pointer"
+                        />
+                      </div>
+                      <span className="text-sm text-gray-700 group-hover:text-[#5FA037] transition-colors">
+                        Keep me logged in
+                      </span>
+                    </label>
+
+                    <button
+                      type="submit"
+                      disabled={loading || !loginEmail || !loginPassword}
+                      className="group w-full h-[52px] rounded-full transition-all duration-500 bg-[#5FA037] text-white hover:bg-[#4d8c2d] font-normal tracking-tight shadow-md hover:shadow-lg hover:shadow-[#5FA037]/25 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
+                    >
+                      <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                      <span className="relative flex items-center justify-center gap-2.5">
+                        {loading ? (
+                          <>
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                            <span>Logging in...</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>Login</span>
+                            <ArrowRight className="w-5 h-5" />
+                          </>
+                        )}
+                      </span>
+                    </button>
+                  </motion.form>
                 ) : (
                   // ══════════════════════════════════════════════
                   // SIGNUP FORM
                   // ══════════════════════════════════════════════
-                  <AnimatePresence mode="wait">
-                    {signupStep === 'form' ? (
-                      <motion.form
-                        key="signup-form"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 20 }}
-                        onSubmit={handleSignupSendCode}
-                        className="space-y-4"
-                      >
-                        <div>
-                          <label className="block text-xs text-gray-500 mb-2 ml-1">Full Name</label>
-                          <div className="relative">
-                            <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" strokeWidth={1.5} />
-                            <input
-                              type="text"
-                              value={signupData.name}
-                              onChange={(e) => setSignupData({...signupData, name: e.target.value})}
-                              placeholder="João Silva"
-                              className="w-full h-12 pl-12 pr-5 bg-gray-50/80 border-2 border-transparent rounded-[16px] focus:outline-none focus:border-[#044050] focus:bg-white transition-all duration-300 text-sm text-gray-900 placeholder:text-gray-400"
-                              required
-                              disabled={loading}
-                            />
-                          </div>
-                        </div>
-
-                        <div>
-                          <label className="block text-xs text-gray-500 mb-2 ml-1">Company</label>
-                          <div className="relative">
-                            <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" strokeWidth={1.5} />
-                            <input
-                              type="text"
-                              value={signupData.company}
-                              onChange={(e) => setSignupData({...signupData, company: e.target.value})}
-                              placeholder="Company Name"
-                              className="w-full h-12 pl-12 pr-5 bg-gray-50/80 border-2 border-transparent rounded-[16px] focus:outline-none focus:border-[#044050] focus:bg-white transition-all duration-300 text-sm text-gray-900 placeholder:text-gray-400"
-                              required
-                              disabled={loading}
-                            />
-                          </div>
-                        </div>
-
-                        <div>
-                          <label className="block text-xs text-gray-500 mb-2 ml-1">Role / Position</label>
-                          <div className="relative">
-                            <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" strokeWidth={1.5} />
-                            <input
-                              type="text"
-                              value={signupData.role}
-                              onChange={(e) => setSignupData({...signupData, role: e.target.value})}
-                              placeholder="CEO, CTO, Partner..."
-                              className="w-full h-12 pl-12 pr-5 bg-gray-50/80 border-2 border-transparent rounded-[16px] focus:outline-none focus:border-[#044050] focus:bg-white transition-all duration-300 text-sm text-gray-900 placeholder:text-gray-400"
-                              required
-                              disabled={loading}
-                            />
-                          </div>
-                        </div>
-
-                        <div>
-                          <label className="block text-xs text-gray-500 mb-2 ml-1">Corporate Email</label>
-                          <div className="relative">
-                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" strokeWidth={1.5} />
-                            <input
-                              type="email"
-                              value={signupData.email}
-                              onChange={(e) => setSignupData({...signupData, email: e.target.value})}
-                              placeholder="joao@company.com"
-                              className="w-full h-12 pl-12 pr-5 bg-gray-50/80 border-2 border-transparent rounded-[16px] focus:outline-none focus:border-[#044050] focus:bg-white transition-all duration-300 text-sm text-gray-900 placeholder:text-gray-400"
-                              required
-                              disabled={loading}
-                            />
-                          </div>
-                        </div>
-
-                        <div>
-                          <label className="block text-xs text-gray-500 mb-2 ml-1">Phone Number</label>
-                          <div className="relative">
-                            <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" strokeWidth={1.5} />
-                            <input
-                              type="tel"
-                              value={signupData.phone}
-                              onChange={(e) => setSignupData({...signupData, phone: e.target.value})}
-                              placeholder="+351 931 721 901"
-                              className="w-full h-12 pl-12 pr-5 bg-gray-50/80 border-2 border-transparent rounded-[16px] focus:outline-none focus:border-[#044050] focus:bg-white transition-all duration-300 text-sm text-gray-900 placeholder:text-gray-400"
-                              required
-                              disabled={loading}
-                            />
-                          </div>
-                        </div>
-
-                        {error && (
-                          <motion.p
-                            initial={{ opacity: 0, y: -5 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="text-xs text-red-500 font-light text-center"
-                          >
-                            {error}
-                          </motion.p>
-                        )}
-
-                        <button
-                          type="submit"
+                  <motion.form
+                    key="signup-form"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 20 }}
+                    onSubmit={handleSignup}
+                    className="space-y-4"
+                  >
+                    <div>
+                      <label className="block text-xs text-gray-500 mb-2 ml-1">Corporate Email</label>
+                      <div className="relative">
+                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" strokeWidth={1.5} />
+                        <input
+                          type="email"
+                          value={signupData.email}
+                          onChange={(e) => setSignupData({...signupData, email: e.target.value})}
+                          placeholder="joao@company.com"
+                          className="w-full h-12 pl-12 pr-5 bg-gray-50/80 border-2 border-transparent rounded-[16px] focus:outline-none focus:border-[#044050] focus:bg-white transition-all duration-300 text-sm text-gray-900 placeholder:text-gray-400"
+                          required
                           disabled={loading}
-                          className="group w-full h-[52px] rounded-full transition-all duration-500 bg-[#5FA037] text-white hover:bg-[#4d8c2d] font-normal tracking-tight shadow-md hover:shadow-lg hover:shadow-[#5FA037]/25 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden mt-6"
-                        >
-                          <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
-                          <span className="relative flex items-center justify-center gap-2.5">
-                            {loading ? (
-                              <>
-                                <Loader2 className="w-5 h-5 animate-spin" />
-                                <span>Sending Code...</span>
-                              </>
-                            ) : (
-                              <>
-                                <span>Create Account</span>
-                                <ArrowRight className="w-5 h-5" />
-                              </>
-                            )}
-                          </span>
-                        </button>
-                      </motion.form>
-                    ) : (
-                      <motion.form
-                        key="signup-code"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 20 }}
-                        onSubmit={handleSignupVerifyCode}
-                        className="space-y-5"
-                      >
-                        <div>
-                          <label className="block text-xs text-gray-500 mb-2 ml-1">Verification Code</label>
-                          <input
-                            type="text"
-                            value={signupCode}
-                            onChange={(e) => setSignupCode(e.target.value)}
-                            placeholder="000000"
-                            className="w-full h-14 px-5 bg-gray-50/80 border-2 border-transparent rounded-[16px] focus:outline-none focus:border-[#044050] focus:bg-white transition-all duration-300 text-center text-2xl tracking-[0.3em] font-light text-gray-900 placeholder:text-gray-400"
-                            required
-                            disabled={loading}
-                            maxLength={6}
-                          />
-                          <p className="text-xs text-gray-500 text-center mt-2">
-                            Sent to {signupData.phone}
-                          </p>
-                        </div>
+                        />
+                      </div>
+                    </div>
 
-                        {error && (
-                          <motion.p
-                            initial={{ opacity: 0, y: -5 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="text-xs text-red-500 font-light text-center"
-                          >
-                            {error}
-                          </motion.p>
-                        )}
-
-                        <button
-                          type="submit"
-                          disabled={loading || signupCode.length !== 6}
-                          className="group w-full h-[52px] rounded-full transition-all duration-500 bg-[#5FA037] text-white hover:bg-[#4d8c2d] font-normal tracking-tight shadow-md hover:shadow-lg hover:shadow-[#5FA037]/25 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
-                        >
-                          <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
-                          <span className="relative flex items-center justify-center gap-2.5">
-                            {loading ? (
-                              <>
-                                <Loader2 className="w-5 h-5 animate-spin" />
-                                <span>Creating Account...</span>
-                              </>
-                            ) : (
-                              <>
-                                <span>Verify & Continue</span>
-                                <ArrowRight className="w-5 h-5" />
-                              </>
-                            )}
-                          </span>
-                        </button>
-
+                    <div>
+                      <label className="block text-xs text-gray-500 mb-2 ml-1">Password</label>
+                      <div className="relative">
+                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" strokeWidth={1.5} />
+                        <input
+                          type={showSignupPassword ? 'text' : 'password'}
+                          value={signupData.password}
+                          onChange={(e) => setSignupData({...signupData, password: e.target.value})}
+                          placeholder="••••••••"
+                          className="w-full h-12 pl-12 pr-12 bg-gray-50/80 border-2 border-transparent rounded-[16px] focus:outline-none focus:border-[#044050] focus:bg-white transition-all duration-300 text-sm text-gray-900 placeholder:text-gray-400"
+                          required
+                          disabled={loading}
+                          minLength={6}
+                        />
                         <button
                           type="button"
-                          onClick={() => {
-                            setSignupStep('form')
-                            setSignupCode('')
-                            setError('')
-                          }}
-                          className="w-full text-xs text-gray-500 hover:text-[#044050] transition-colors"
+                          onClick={() => setShowSignupPassword(!showSignupPassword)}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                         >
-                          ← Change information
+                          {showSignupPassword ? (
+                            <EyeOff className="w-5 h-5" strokeWidth={1.5} />
+                          ) : (
+                            <Eye className="w-5 h-5" strokeWidth={1.5} />
+                          )}
                         </button>
-                      </motion.form>
+                      </div>
+                      <p className="text-[10px] text-gray-400 mt-1 ml-1">Minimum 6 characters</p>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs text-gray-500 mb-2 ml-1">Confirm Password</label>
+                      <div className="relative">
+                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" strokeWidth={1.5} />
+                        <input
+                          type={showConfirmPassword ? 'text' : 'password'}
+                          value={signupData.confirmPassword}
+                          onChange={(e) => setSignupData({...signupData, confirmPassword: e.target.value})}
+                          placeholder="••••••••"
+                          className="w-full h-12 pl-12 pr-12 bg-gray-50/80 border-2 border-transparent rounded-[16px] focus:outline-none focus:border-[#044050] focus:bg-white transition-all duration-300 text-sm text-gray-900 placeholder:text-gray-400"
+                          required
+                          disabled={loading}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                        >
+                          {showConfirmPassword ? (
+                            <EyeOff className="w-5 h-5" strokeWidth={1.5} />
+                          ) : (
+                            <Eye className="w-5 h-5" strokeWidth={1.5} />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+
+                    {error && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-xs text-red-500 font-light text-center"
+                      >
+                        {error}
+                      </motion.p>
                     )}
-                  </AnimatePresence>
+
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="group w-full h-[52px] rounded-full transition-all duration-500 bg-[#5FA037] text-white hover:bg-[#4d8c2d] font-normal tracking-tight shadow-md hover:shadow-lg hover:shadow-[#5FA037]/25 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden mt-6"
+                    >
+                      <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                      <span className="relative flex items-center justify-center gap-2.5">
+                        {loading ? (
+                          <>
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                            <span>Creating Account...</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>Create Account</span>
+                            <ArrowRight className="w-5 h-5" />
+                          </>
+                        )}
+                      </span>
+                    </button>
+
+                    <p className="text-xs text-gray-500 text-center mt-4">
+                      Complete your profile and sign NDA in the next step
+                    </p>
+                  </motion.form>
                 )}
               </motion.div>
 
