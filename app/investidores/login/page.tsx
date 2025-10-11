@@ -544,7 +544,7 @@ export default function InvestidoresLoginPage() {
               {/* Footer */}
               <div className="px-8 sm:px-12 py-5 sm:py-6 border-t border-gray-100/50">
                 <button
-                  onClick={() => router.push('/investidores/acesso')}
+                  onClick={() => router.push('/')}
                   className="w-full text-[11px] sm:text-xs text-gray-400 hover:text-[#044050] font-light transition-all duration-300 tracking-wide flex items-center justify-center gap-2 group"
                 >
                   <span className="transition-transform duration-300 group-hover:-translate-x-1">←</span>

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Cpu, Shield, CheckCircle2, Leaf, TrendingUp, Globe, Zap, Star, Award, BarChart3, Target, ArrowRight } from 'lucide-react'
+import { Cpu, Shield, CheckCircle2, Leaf, TrendingUp, Globe, Zap, Star, Award, BarChart3, Target, ArrowRight, FileText } from 'lucide-react'
 import { Navbar } from '@/components/navbar'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import SplineBackground from '@/components/spline-background'
@@ -230,10 +230,11 @@ const getSmartLayout = (breakpoints: ScreenBreakpoints) => {
 }
 
 const advantages = [
-  { label: "Cost Reduction", value: "40%", description: "€35 vs €45-60 traditional", icon: TrendingUp },
-  { label: "Speed", value: "4x", description: "3 weeks vs 6-12 months", icon: Zap },
-  { label: "AI Accuracy", value: "98.5%", description: "ESG data extraction", icon: BarChart3 },
-  { label: "Market Size", value: "€8.5B", description: "Annual opportunity", icon: Target }
+  { label: "Upload", value: "Step 1", description: "Upload your ESG documents", icon: FileText },
+  { label: "AI Extraction", value: "Step 2", description: "AI extracts carbon data", icon: Cpu },
+  { label: "Scientific Validation", value: "Step 3", description: "Plantarum validates results", icon: Star },
+  { label: "Blockchain", value: "Step 4", description: "Immutable certificate minted", icon: Shield },
+  { label: "NFT Certificate", value: "Step 5", description: "Receive verifiable NFT", icon: Award }
 ]
 
 // Team data is now imported from lib/team-data.ts
@@ -581,9 +582,9 @@ export default function SobrePage() {
               viewport={{ once: true }}
               className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
-              <span className="font-extralight text-[#044050]">Automated ESG</span>
+              <span className="font-extralight text-[#044050]">Democratizing</span>
               <br />
-              <span className="font-normal text-[#5FA037]">certification platform</span>
+              <span className="font-normal text-[#5FA037]">ESG Certification</span>
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0 }}
@@ -592,7 +593,7 @@ export default function SobrePage() {
               viewport={{ once: true }}
               className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-3xl'} mx-auto text-gray-600 font-light leading-relaxed mb-12`}
             >
-              GreenCheck democratizes access to ESG certification and carbon offsetting, offering verifiable impact through AI, blockchain, and scientific validation. We serve European SMEs, individuals, and large corporations with transparent, automated sustainability solutions.
+              GreenCheck is the technological platform of EcoVeritas, a computational system that revolutionizes ESG certification by combining Artificial Intelligence, Blockchain technology, and scientific validation. Our mission is to make sustainability accessible, transparent, and verifiable for everyone.
             </motion.p>
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -603,15 +604,15 @@ export default function SobrePage() {
             >
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-5 h-5 text-[#5FA037]" />
-                <span>First-mover advantage</span>
+                <span>98.5% AI Accuracy</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-5 h-5 text-[#5FA037]" />
-                <span>€8.5B market opportunity</span>
+                <span>40% Cost Reduction</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-5 h-5 text-[#5FA037]" />
-                <span>2.4M target SMEs</span>
+                <span>4x Faster Processing</span>
               </div>
             </motion.div>
           </div>
@@ -629,7 +630,7 @@ export default function SobrePage() {
               viewport={{ once: true }}
               className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4"
             >
-              What We Do
+              Our Mission
             </motion.p>
             <motion.h2 
               initial={{ opacity: 0 }}
@@ -638,9 +639,9 @@ export default function SobrePage() {
               viewport={{ once: true }}
               className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
-              <span className="font-extralight text-[#044050]">Sustainability</span>
+              <span className="font-extralight text-[#044050]">Solving the</span>
               <br />
-              <span className="font-normal text-[#5FA037]">without complexity</span>
+              <span className="font-normal text-[#5FA037]">ESG certification crisis</span>
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0 }}
@@ -649,31 +650,31 @@ export default function SobrePage() {
               viewport={{ once: true }}
               className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
             >
-              Integrated platform for ESG certification and carbon neutralization
+              Traditional ESG certifications cost €45-60 per tCO₂e and take 6-12 months. We reduce costs by 40% and deliver results in 3 weeks through automation, making sustainability accessible to everyone.
             </motion.p>
           </div>
 
           <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : breakpoints.isTablet ? 'grid-cols-2' : 'grid-cols-4'} ${breakpoints.isMobile ? 'gap-8' : 'gap-12'}`}>
             {[
               {
-                icon: CheckCircle2,
-                title: "Automated ESG Certification",
-                description: "Accurate carbon footprint calculation using AI with 98.5% accuracy"
+                icon: Cpu,
+                title: "AI Data Extraction",
+                description: "Our specialized algorithms automatically extract ESG data from your documents with 98.5% accuracy, eliminating manual work"
+              },
+              {
+                icon: Star,
+                title: "Scientific Validation",
+                description: "Partnership with Plantarum Botanical Garden ensures every certification is scientifically validated and internationally recognized"
               },
               {
                 icon: Shield,
-                title: "Traceability in Blockchain",
-                description: "Immutable certificates registered as NFTs on Polygon for full verification"
+                title: "Blockchain Certificate",
+                description: "Immutable NFT certificates on Polygon blockchain with complete metadata and QR code for instant public verification"
               },
               {
                 icon: Leaf,
-                title: "Verifiable Compensation",
-                description: "Scientifically validated reforestation projects guarantee a real impact"
-              },
-              {
-                icon: Globe,
-                title: "Simplified Experience",
-                description: "100% digital and intuitive process for companies and individuals"
+                title: "Real Impact",
+                description: "Integrated marketplace with verified reforestation projects in the Amazon, monitored by satellite and local partners"
               }
             ].map((item, index) => {
               const ItemIcon = item.icon
@@ -715,7 +716,7 @@ export default function SobrePage() {
               viewport={{ once: true }}
               className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4"
             >
-              Competitive Advantages
+              How It Works
             </motion.p>
             <motion.h2 
               initial={{ opacity: 0 }}
@@ -724,9 +725,9 @@ export default function SobrePage() {
               viewport={{ once: true }}
               className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
-              <span className="font-extralight text-[#044050]">Why</span>
+              <span className="font-extralight text-[#044050]">Simple</span>
               <br />
-              <span className="font-normal text-[#5FA037]">GreenCheck?</span>
+              <span className="font-normal text-[#5FA037]">5-step process</span>
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0 }}
@@ -735,12 +736,12 @@ export default function SobrePage() {
               viewport={{ once: true }}
               className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
             >
-              Patented technology with measurable advantages over traditional methods
+              From document upload to blockchain certificate in just 3 weeks
             </motion.p>
           </div>
 
-          {/* Advantages Grid */}
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : breakpoints.isTablet ? 'grid-cols-2' : 'grid-cols-4'} ${gap} ${breakpoints.isMobile ? 'mb-12' : 'mb-16'}`}>
+          {/* Process Steps Grid */}
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : breakpoints.isTablet ? 'grid-cols-2' : 'grid-cols-5'} ${breakpoints.isMobile ? 'gap-6' : 'gap-8'}`}>
             {advantages.map((advantage, index) => {
               const AdvantageIcon = advantage.icon
               return (
@@ -750,17 +751,22 @@ export default function SobrePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="text-center"
+                  className="text-center relative"
                 >
-                  <div className="mb-6 flex justify-center">
-                    <div className="w-12 h-12 rounded-full bg-[#044050] flex items-center justify-center transition-all duration-300 group-hover:bg-[#5FA037]">
+                  {/* Connection Line - Desktop Only */}
+                  {!breakpoints.isMobile && index < advantages.length - 1 && (
+                    <div className="hidden lg:block absolute top-6 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-[#5FA037] to-transparent opacity-30" />
+                  )}
+                  
+                  <div className="mb-4 flex justify-center relative z-10">
+                    <div className="w-12 h-12 rounded-full bg-[#044050] flex items-center justify-center transition-all duration-300 group-hover:bg-[#5FA037] shadow-lg">
                       <AdvantageIcon className="w-6 h-6 text-white" />
                     </div>
                   </div>
-                  <div className={`${breakpoints.isXs ? 'text-3xl' : breakpoints.isMobile ? 'text-4xl' : 'text-5xl'} font-extralight text-[#5FA037] mb-2`}>
+                  <div className={`${breakpoints.isXs ? 'text-xl' : 'text-2xl'} font-light text-[#5FA037] mb-2`}>
                     {advantage.value}
                   </div>
-                  <h3 className={`${breakpoints.isXs ? 'text-sm' : 'text-base'} font-medium text-gray-500 uppercase tracking-wider mb-1`}>
+                  <h3 className={`${breakpoints.isXs ? 'text-sm' : 'text-base'} font-medium text-[#044050] mb-2`}>
                     {advantage.label}
                   </h3>
                   <p className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} text-gray-600 font-light`}>
@@ -786,20 +792,15 @@ export default function SobrePage() {
               className={breakpoints.isMobile ? 'text-center' : ''}
             >
               <p className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-6">
-                Unique Technological Solution
+                Our Technology Stack
               </p>
               <h2 className={`${breakpoints.isMobile ? 'text-3xl' : 'text-4xl lg:text-5xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.15]`}>
-                <span className="font-light text-gray-700">The power of</span>
+                <span className="font-light text-gray-700">Three pillars of</span>
                 <br />
-                <span className="font-medium text-[#5FA037]">innovation</span>{' '}
-                <span className="font-light text-gray-700">at</span>
-                <br />
-                <span className="font-light text-gray-700">the service</span>
-                <br />
-                <span className="font-medium text-[#5FA037]">of the planet</span>
+                <span className="font-medium text-[#5FA037]">innovation</span>
               </h2>
               <p className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} text-gray-600 font-light leading-relaxed`}>
-                We are the only platform that integrates the best cutting-edge technology to ensure accuracy and reliability
+                AI, Blockchain, and Scientific Validation work together to create the most reliable ESG certification platform
               </p>
             </motion.div>
 
@@ -822,15 +823,19 @@ export default function SobrePage() {
                 <ul className="space-y-2 ml-16">
                   <li className="flex items-start gap-3 text-gray-600">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
-                    <span className="text-sm leading-relaxed">Automatic data extraction from documents</span>
+                    <span className="text-sm leading-relaxed">Hybrid OCR and NLP algorithms with 98.5% accuracy</span>
                   </li>
                   <li className="flex items-start gap-3 text-gray-600">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
-                    <span className="text-sm leading-relaxed">Accurate calculation of carbon emissions</span>
+                    <span className="text-sm leading-relaxed">Specialized in ESG document analysis</span>
                   </li>
                   <li className="flex items-start gap-3 text-gray-600">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
-                    <span className="text-sm leading-relaxed">Analysis of compliance with multiple standards (CSRD, ABNT, GRI)</span>
+                    <span className="text-sm leading-relaxed">Supports CSRD, ABNT PR 2030, GRI, and TCFD standards</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
+                    <span className="text-sm leading-relaxed">Processes documents in 15 seconds on average</span>
                   </li>
                 </ul>
               </div>
@@ -846,19 +851,19 @@ export default function SobrePage() {
                 <ul className="space-y-2 ml-16">
                   <li className="flex items-start gap-3 text-gray-600">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
-                    <span className="text-sm leading-relaxed">NFT certificates with full metadata</span>
+                    <span className="text-sm leading-relaxed">Immutable ERC-721 NFT certificates</span>
                   </li>
                   <li className="flex items-start gap-3 text-gray-600">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
-                    <span className="text-sm leading-relaxed">Cost per transaction: &lt; €0.01</span>
+                    <span className="text-sm leading-relaxed">Ultra-low cost: &lt; €0.01 per certificate</span>
                   </li>
                   <li className="flex items-start gap-3 text-gray-600">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
-                    <span className="text-sm leading-relaxed">Instant public verification via QR code</span>
+                    <span className="text-sm leading-relaxed">Public verification via QR code and blockchain explorer</span>
                   </li>
                   <li className="flex items-start gap-3 text-gray-600">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
-                    <span className="text-sm leading-relaxed">Immutable history of compensation</span>
+                    <span className="text-sm leading-relaxed">Decentralized storage on IPFS</span>
                   </li>
                 </ul>
               </div>
@@ -874,15 +879,19 @@ export default function SobrePage() {
                 <ul className="space-y-2 ml-16">
                   <li className="flex items-start gap-3 text-gray-600">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
-                    <span className="text-sm leading-relaxed">Exclusive partnership with Plantarum Botanical Garden</span>
+                    <span className="text-sm leading-relaxed">Partnership with Plantarum Botanical Garden (founded 1987)</span>
                   </li>
                   <li className="flex items-start gap-3 text-gray-600">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
-                    <span className="text-sm leading-relaxed">Internationally approved methodologies</span>
+                    <span className="text-sm leading-relaxed">Real-time validation through secure institutional APIs</span>
                   </li>
                   <li className="flex items-start gap-3 text-gray-600">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
-                    <span className="text-sm leading-relaxed">Continuous project monitoring</span>
+                    <span className="text-sm leading-relaxed">Proprietary methodologies for CO₂ sequestration calculation</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
+                    <span className="text-sm leading-relaxed">Satellite monitoring and georreferenced reports</span>
                   </li>
                 </ul>
               </div>
@@ -911,51 +920,51 @@ export default function SobrePage() {
                     <h2 className={`${breakpoints.isMobile ? 'text-3xl' : 'text-4xl lg:text-5xl'} font-light ${breakpoints.isMobile ? 'mb-2' : 'mb-4'} tracking-tight leading-[1.1]`}>
                       <span className="font-extralight text-[#044050]">Patented</span>
                       <br />
-                      <span className="font-normal text-[#5FA037]">technology</span>
+                      <span className="font-normal text-[#5FA037]">innovation</span>
                     </h2>
-                    <p className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} text-gray-600 font-light`}>Computational system for automated sustainable certification</p>
+                    <p className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} text-gray-600 font-light`}>Computational system for automated corporate sustainability certification</p>
                   </div>
                 </div>
                 <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : 'md:grid-cols-2'} ${gap}`}>
                   <div>
-                    <h3 className={`${breakpoints.isXs ? 'text-lg' : 'text-xl'} font-medium text-[#044050] ${breakpoints.isMobile ? 'mb-4' : 'mb-6'}`}>Technical Innovations</h3>
+                    <h3 className={`${breakpoints.isXs ? 'text-lg' : 'text-xl'} font-medium text-[#044050] ${breakpoints.isMobile ? 'mb-4' : 'mb-6'}`}>What Makes Us Unique</h3>
                     <ul className={`space-y-3 ${breakpoints.isXs ? 'text-sm' : 'text-base'} text-gray-600 font-light`}>
                       <li className="flex items-start gap-3">
                         <div className="w-1.5 h-1.5 rounded-full bg-[#5FA037] mt-2 flex-shrink-0"></div>
-                        <span>Specialized AI algorithms for ESG analysis</span>
+                        <span>First platform combining AI, Blockchain, and Scientific Validation for ESG</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <div className="w-1.5 h-1.5 rounded-full bg-[#5FA037] mt-2 flex-shrink-0"></div>
-                        <span>Automated scientific validation via APIs</span>
+                        <span>Hybrid validation of European (CSRD) and Brazilian (ABNT PR 2030) standards</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <div className="w-1.5 h-1.5 rounded-full bg-[#5FA037] mt-2 flex-shrink-0"></div>
-                        <span>Immutable blockchain certificates with scientific proofs</span>
+                        <span>Fraud-resistant certificates with complete traceability</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <div className="w-1.5 h-1.5 rounded-full bg-[#5FA037] mt-2 flex-shrink-0"></div>
-                        <span>Integrated marketplace with AI recommendations</span>
+                        <span>Integrated carbon offset marketplace</span>
                       </li>
                     </ul>
                   </div>
                   <div>
-                    <h3 className={`${breakpoints.isXs ? 'text-lg' : 'text-xl'} font-medium text-[#044050] ${breakpoints.isMobile ? 'mb-4' : 'mb-6'}`}>Target Market</h3>
+                    <h3 className={`${breakpoints.isXs ? 'text-lg' : 'text-xl'} font-medium text-[#044050] ${breakpoints.isMobile ? 'mb-4' : 'mb-6'}`}>Who We Serve</h3>
                     <ul className={`space-y-3 ${breakpoints.isXs ? 'text-sm' : 'text-base'} text-gray-600 font-light`}>
                       <li className="flex items-start gap-3">
                         <div className="w-1.5 h-1.5 rounded-full bg-[#5FA037] mt-2 flex-shrink-0"></div>
-                        <span>2.4 million European SMEs (CSRD compliance)</span>
+                        <span>European SMEs requiring CSRD compliance</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <div className="w-1.5 h-1.5 rounded-full bg-[#5FA037] mt-2 flex-shrink-0"></div>
-                        <span>450 million environmentally conscious consumers</span>
+                        <span>Environmentally conscious individuals worldwide</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <div className="w-1.5 h-1.5 rounded-full bg-[#5FA037] mt-2 flex-shrink-0"></div>
-                        <span>B2B and B2C market with scalable solutions</span>
+                        <span>Large corporations validating supplier chains</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <div className="w-1.5 h-1.5 rounded-full bg-[#5FA037] mt-2 flex-shrink-0"></div>
-                        <span>€8.5 billion annual opportunity</span>
+                        <span>Reforestation projects seeking credibility</span>
                       </li>
                     </ul>
                   </div>
@@ -1018,8 +1027,7 @@ export default function SobrePage() {
               viewport={{ once: true }}
               className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} text-white/90 ${breakpoints.isMobile ? 'mb-8' : 'mb-12'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto leading-relaxed font-light`}
             >
-              Join companies that <span className="font-medium text-[#5FA037]">save 40%</span> on costs 
-              and achieve results <span className="font-medium text-[#5FA037]">4x faster</span> with our patented technology.
+              Our mission is to democratize ESG certification, making sustainability <span className="font-medium text-[#5FA037]">accessible</span>, <span className="font-medium text-[#5FA037]">transparent</span>, and <span className="font-medium text-[#5FA037]">verifiable</span> for companies and individuals worldwide.
             </motion.p>
 
             {/* Stats Row */}
@@ -1035,16 +1043,16 @@ export default function SobrePage() {
                 <div className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} text-white/70 uppercase tracking-wider font-medium`}>AI Accuracy</div>
               </div>
               <div className="text-center">
-                <div className={`${breakpoints.isXs ? 'text-3xl' : breakpoints.isMobile ? 'text-4xl' : 'text-5xl'} font-extralight text-[#5FA037] mb-1`}>40%</div>
-                <div className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} text-white/70 uppercase tracking-wider font-medium`}>Savings</div>
+                <div className={`${breakpoints.isXs ? 'text-3xl' : breakpoints.isMobile ? 'text-4xl' : 'text-5xl'} font-extralight text-[#5FA037] mb-1`}>3 weeks</div>
+                <div className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} text-white/70 uppercase tracking-wider font-medium`}>Processing</div>
               </div>
               <div className="text-center">
-                <div className={`${breakpoints.isXs ? 'text-3xl' : breakpoints.isMobile ? 'text-4xl' : 'text-5xl'} font-extralight text-[#5FA037] mb-1`}>4x</div>
-                <div className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} text-white/70 uppercase tracking-wider font-medium`}>Faster</div>
+                <div className={`${breakpoints.isXs ? 'text-3xl' : breakpoints.isMobile ? 'text-4xl' : 'text-5xl'} font-extralight text-[#5FA037] mb-1`}>100%</div>
+                <div className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} text-white/70 uppercase tracking-wider font-medium`}>Transparent</div>
               </div>
               <div className="text-center">
-                <div className={`${breakpoints.isXs ? 'text-3xl' : breakpoints.isMobile ? 'text-4xl' : 'text-5xl'} font-extralight text-[#5FA037] mb-1`}>€8.5B</div>
-                <div className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} text-white/70 uppercase tracking-wider font-medium`}>Market</div>
+                <div className={`${breakpoints.isXs ? 'text-3xl' : breakpoints.isMobile ? 'text-4xl' : 'text-5xl'} font-extralight text-[#5FA037] mb-1`}>&lt;€0.01</div>
+                <div className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} text-white/70 uppercase tracking-wider font-medium`}>Per Certificate</div>
               </div>
             </motion.div>
 

@@ -807,6 +807,25 @@ export default function Home() {
               )
             })}
           </div>
+
+          {/* Learn More Button */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+            className={`flex justify-center ${breakpoints.isMobile ? 'mt-12' : 'mt-16'}`}
+          >
+            <Button
+              onClick={() => router.push('/sobre')}
+              className={`${breakpoints.isMobile ? 'w-full max-w-sm' : 'px-10'} h-12 bg-[#044050] text-white hover:bg-[#5FA037] rounded-full transition-all duration-300 font-normal tracking-wide group`}
+            >
+              <span className="flex items-center justify-center">
+                Learn More About GreenCheck
+                <ArrowRight className="ml-3 w-5 h-5 transition-all duration-300 group-hover:translate-x-1" />
+              </span>
+            </Button>
+          </motion.div>
         </div>
       </section>
 
