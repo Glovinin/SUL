@@ -11,7 +11,7 @@ import {
   signInWithPhoneNumber,
   ConfirmationResult
 } from 'firebase/auth'
-import { getInvestor, signNDA, getUserIP, updateInvestorPhone, createInvestor } from '../../../lib/firebase-helpers'
+import { getInvestor, signNDA, getUserIP, updateInvestorPhone } from '../../../lib/firebase-helpers'
 
 type Step = 'read' | 'fill' | 'phone' | 'verify' | 'sign' | 'success'
 
@@ -67,48 +67,28 @@ export default function NDAPage() {
 
   useEffect(() => {
     setMounted(true)
-    let hasRedirected = false
 
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      console.log('Auth state changed:', user ? user.uid : 'No user')
-      
       if (!user) {
-        console.log('No user authenticated, redirecting to login')
-        if (!hasRedirected) {
-          hasRedirected = true
-          router.push('/investidores/login')
-        }
+        router.push('/investidores/login')
         return
       }
 
       try {
         const investor = await getInvestor(user.uid)
-        console.log('Investor data:', investor?.status)
         
         if (!investor) {
-          console.log('No investor data found, redirecting to login')
-          if (!hasRedirected) {
-            hasRedirected = true
-            router.push('/investidores/login')
-          }
+          router.push('/investidores/login')
           return
         }
 
         if (investor.status === 'approved') {
-          console.log('Investor approved, redirecting to main page')
-          if (!hasRedirected) {
-            hasRedirected = true
-            router.push('/investidores')
-          }
+          router.push('/investidores')
           return
         }
 
         if (investor.status === 'pending_approval') {
-          console.log('Investor pending approval, redirecting to pending page')
-          if (!hasRedirected) {
-            hasRedirected = true
-            router.push('/investidores/pending-approval')
-          }
+          router.push('/investidores/pending-approval')
           return
         }
 
@@ -221,39 +201,11 @@ export default function NDAPage() {
     try {
       if (!confirmation) throw new Error('No confirmation object')
       
-      const result = await confirmation.confirm(verificationCode)
-      console.log('SMS verification successful:', result.user?.uid)
+      await confirmation.confirm(verificationCode)
       
       const user = auth.currentUser
       if (user) {
-        console.log('User authenticated after SMS:', user.uid)
-        
-        // Verificar se o investidor já existe no Firestore
-        let investor = await getInvestor(user.uid)
-        
-        if (!investor) {
-          // Se não existe, criar documento básico (dados serão preenchidos na próxima etapa)
-          console.log('Creating investor document for phone auth user')
-          await createInvestor({
-            uid: user.uid,
-            name: '', // Será preenchido na próxima etapa
-            company: '', // Será preenchido na próxima etapa
-            role: '', // Será preenchido na próxima etapa
-            email: user.email || '', // Pode estar vazio para Phone Auth
-            phone: phone
-          })
-          investor = await getInvestor(user.uid)
-        } else {
-          // Se já existe, apenas atualizar o telefone
-          await updateInvestorPhone(user.uid, phone)
-        }
-        
-        console.log('Investor data ready:', investor?.status)
-      } else {
-        console.error('No user found after SMS verification')
-        setError('Authentication failed. Please try again.')
-        setVerifying(false)
-        return
+        await updateInvestorPhone(user.uid, phone)
       }
       
       setCurrentStep('sign')
@@ -985,57 +937,6 @@ export default function NDAPage() {
                           </span>
                         </button>
                       </div>
-
-                      {/* DEV ONLY: Skip SMS Entirely */}
-                      {process.env.NODE_ENV === 'development' && (
-                        <div className="mt-6 pt-4 border-t border-gray-200">
-                          <button
-                            onClick={async () => {
-                              console.log('🚧 DEV: Skipping SMS entirely')
-                              setError('')
-                              
-                              // Simular envio e verificação SMS bem-sucedida
-                              try {
-                                const user = auth.currentUser
-                                if (user) {
-                                  // Verificar se o investidor já existe no Firestore
-                                  let investor = await getInvestor(user.uid)
-                                  
-                                  if (!investor) {
-                                    // Se não existe, criar documento básico
-                                    console.log('Creating investor document for dev user')
-                                    await createInvestor({
-                                      uid: user.uid,
-                                      name: '', // Será preenchido na próxima etapa
-                                      company: '', // Será preenchido na próxima etapa
-                                      role: '', // Será preenchido na próxima etapa
-                                      email: user.email || '', // Pode estar vazio para Phone Auth
-                                      phone: phone
-                                    })
-                                  } else {
-                                    // Se já existe, apenas atualizar o telefone
-                                    await updateInvestorPhone(user.uid, phone)
-                                  }
-                                }
-                                
-                                // Pular direto para assinatura
-                                setCurrentStep('sign')
-                              } catch (err) {
-                                console.error('Error in dev skip:', err)
-                                setError('Dev skip failed. Please try normal SMS flow.')
-                              }
-                            }}
-                            className="w-full h-12 rounded-full bg-orange-500 text-white hover:bg-orange-600 font-medium text-xs sm:text-sm transition-all px-4 flex items-center justify-center gap-2"
-                          >
-                            <span>⚡</span>
-                            <span className="hidden sm:inline">DEV: Skip SMS Entirely</span>
-                            <span className="sm:hidden">Skip SMS</span>
-                          </button>
-                          <p className="text-xs text-gray-400 text-center mt-2">
-                            Development mode only
-                          </p>
-                        </div>
-                      )}
                     </motion.div>
                   )}
 
@@ -1106,54 +1007,18 @@ export default function NDAPage() {
                         ← Change phone number
                       </button>
 
-                      {/* DEV ONLY: Skip SMS Verification */}
+                      {/* DEV ONLY: Skip to Signature */}
                       {process.env.NODE_ENV === 'development' && (
-                        <div className="mt-6 pt-4 border-t border-gray-200">
-                          <button
-                            onClick={async () => {
-                              console.log('🚧 DEV: Skipping SMS verification')
-                              setError('')
-                              
-                              // Simular verificação SMS bem-sucedida
-                              try {
-                                const user = auth.currentUser
-                                if (user) {
-                                  // Verificar se o investidor já existe no Firestore
-                                  let investor = await getInvestor(user.uid)
-                                  
-                                  if (!investor) {
-                                    // Se não existe, criar documento básico
-                                    console.log('Creating investor document for dev user')
-                                    await createInvestor({
-                                      uid: user.uid,
-                                      name: '', // Será preenchido na próxima etapa
-                                      company: '', // Será preenchido na próxima etapa
-                                      role: '', // Será preenchido na próxima etapa
-                                      email: user.email || '', // Pode estar vazio para Phone Auth
-                                      phone: phone
-                                    })
-                                  } else {
-                                    // Se já existe, apenas atualizar o telefone
-                                    await updateInvestorPhone(user.uid, phone)
-                                  }
-                                }
-                                
-                                setCurrentStep('sign')
-                              } catch (err) {
-                                console.error('Error in dev skip:', err)
-                                setError('Dev skip failed. Please try normal verification.')
-                              }
-                            }}
-                            className="w-full h-12 rounded-full bg-yellow-500 text-white hover:bg-yellow-600 font-medium text-xs sm:text-sm transition-all px-4 flex items-center justify-center gap-2"
-                          >
-                            <span>🚧</span>
-                            <span className="hidden sm:inline">DEV: Skip SMS Verification</span>
-                            <span className="sm:hidden">Skip SMS</span>
-                          </button>
-                          <p className="text-xs text-gray-400 text-center mt-2">
-                            Development mode only
-                          </p>
-                        </div>
+                        <button
+                          onClick={() => {
+                            setCurrentStep('sign')
+                            setError('')
+                          }}
+                          className="mt-4 w-full h-12 rounded-full bg-yellow-500 text-white hover:bg-yellow-600 font-medium text-xs sm:text-sm transition-all px-4"
+                        >
+                          <span className="hidden sm:inline">🚧 DEV: Skip to Signature</span>
+                          <span className="sm:hidden">🚧 Skip</span>
+                        </button>
                       )}
                     </motion.div>
                   )}
