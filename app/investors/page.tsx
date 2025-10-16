@@ -2582,10 +2582,10 @@ export default function InvestidoresPage() {
         </div>
       </section>
 
-      {/* SDGs Contribution */}
+      {/* SDGs Contribution - Enhanced Design */}
       <section className={`${sectionPadding} relative bg-slate-50`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-20'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -2617,56 +2617,72 @@ export default function InvestidoresPage() {
             </motion.p>
           </div>
 
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : 'grid-cols-4'} ${breakpoints.isMobile ? 'gap-8' : 'gap-12'} max-w-5xl mx-auto`}>
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : 'md:grid-cols-4'} ${breakpoints.isMobile ? 'gap-6' : 'gap-8'} max-w-6xl mx-auto`}>
             {[
               {
                 number: '13',
-                title: 'Climate Action',
+                name: 'Climate Action',
                 color: 'bg-[#3F7E44]',
-                icon: '🌍'
+                icon: Globe
               },
               {
                 number: '15',
-                title: 'Terrestrial Life',
+                name: 'Life on Land',
                 color: 'bg-[#56C02B]',
-                icon: '🌳'
+                icon: Leaf
               },
               {
                 number: '8',
-                title: 'Decent Work',
+                name: 'Decent Work',
                 color: 'bg-[#A21942]',
-                icon: '📈'
+                icon: TrendingUp
               },
               {
                 number: '17',
-                title: 'Partnerships',
+                name: 'Partnerships',
                 color: 'bg-[#19486A]',
-                icon: '🤝'
+                icon: Target
               }
-            ].map((sdg, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="group text-center"
-              >
-                <div className={`${sdg.color} rounded-2xl p-8 mb-4 aspect-square flex flex-col items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-xl`}>
-                  <div className="text-6xl mb-4">{sdg.icon}</div>
-                  <div className="text-white">
-                    <div className="text-5xl font-bold mb-2">{sdg.number}</div>
-                    <div className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} font-semibold uppercase tracking-wider`}>
-                      {sdg.title}
+            ].map((sdg, index) => {
+              const SdgIcon = sdg.icon
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="group"
+                >
+                  <div className={`${sdg.color} rounded-3xl ${breakpoints.isMobile ? 'p-6' : 'p-10'} text-white flex flex-col items-center justify-center aspect-square transition-all duration-300 hover:scale-105 hover:shadow-2xl relative overflow-hidden`}>
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    
+                    {/* Content */}
+                    <div className="relative z-10 flex flex-col items-center justify-center h-full">
+                      <SdgIcon className={`${breakpoints.isMobile ? 'w-12 h-12' : 'w-16 h-16'} mb-6 opacity-90 transition-transform duration-300 group-hover:scale-110`} />
+                      <span className={`${breakpoints.isMobile ? 'text-5xl' : 'text-7xl'} font-extralight mb-3 tracking-tight`}>{sdg.number}</span>
+                      <span className={`${breakpoints.isMobile ? 'text-[10px]' : 'text-xs'} font-medium tracking-[0.15em] uppercase text-center px-2 opacity-95`}>{sdg.name}</span>
                     </div>
                   </div>
-                </div>
-                <h3 className={`${breakpoints.isXs ? 'text-base' : 'text-lg'} font-medium text-gray-800`}>
-                  {sdg.title}
-                </h3>
-              </motion.div>
-            ))}
+                </motion.div>
+              )
+            })}
           </div>
+
+          {/* Additional Context */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            viewport={{ once: true }}
+            className={`text-center ${breakpoints.isMobile ? 'mt-12' : 'mt-16'}`}
+          >
+            <div className="inline-flex items-center gap-3 bg-white px-6 py-4 rounded-full shadow-sm">
+              <CheckCircle2 className="w-5 h-5 text-[#5FA037]" />
+              <span className="text-sm font-light text-gray-600">7 SDGs aligned with our core mission</span>
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -3137,4 +3153,5 @@ export default function InvestidoresPage() {
     </div>
   )
 }
+
 
