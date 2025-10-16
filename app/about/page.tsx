@@ -1757,7 +1757,7 @@ export default function SobrePage() {
         </div>
       </section>
 
-      {/* Innovation Lab */}
+      {/* Innovation Lab - Enhanced with Flags */}
       <section className={`${sectionPadding} relative bg-white`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
           <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-20'}`}>
@@ -1792,24 +1792,36 @@ export default function SobrePage() {
             </motion.p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : 'md:grid-cols-3'} ${breakpoints.isMobile ? 'gap-8' : 'gap-12'}`}>
             {[
               {
-                location: 'Porto, Portugal',
+                city: 'Porto',
+                country: 'Portugal',
+                countryCode: 'PT',
+                flag: '🇵🇹',
                 title: 'R&D Center',
                 focus: 'AI & Product Innovation',
+                color: 'bg-[#044050]',
                 areas: ['Machine Learning', 'NLP Development', 'Computer Vision', 'Algorithm Optimization']
               },
               {
-                location: 'Barcelona, Spain',
+                city: 'Barcelona',
+                country: 'Spain',
+                countryCode: 'ES',
+                flag: '🇪🇸',
                 title: 'AI Lab',
                 focus: 'Applied Research',
+                color: 'bg-[#5FA037]',
                 areas: ['University Partnerships', 'Academic Research', 'Data Science', 'Innovation Pipeline']
               },
               {
-                location: 'São Paulo, Brazil',
+                city: 'São Paulo',
+                country: 'Brazil',
+                countryCode: 'BR',
+                flag: '🇧🇷',
                 title: 'Operations Hub',
                 focus: 'Methodology Development',
+                color: 'bg-slate-700',
                 areas: ['ESG Frameworks', 'Carbon Calculation', 'Validation Protocols', 'Impact Measurement']
               }
             ].map((lab, index) => (
@@ -1819,27 +1831,67 @@ export default function SobrePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="group"
+                className="group relative"
               >
-                <div className="mb-6">
-                  <div className="w-14 h-14 rounded-full bg-slate-50 flex items-center justify-center mb-4 transition-all duration-300 group-hover:bg-[#5FA037]">
-                    <Target className="w-7 h-7 text-[#5FA037] transition-colors duration-300 group-hover:text-white" />
-                  </div>
-                  <p className="text-xs font-light text-gray-400 tracking-wide mb-2">{lab.location}</p>
-                  <h3 className="text-2xl font-light text-[#044050] mb-2 tracking-tight">{lab.title}</h3>
-                  <p className="text-sm font-medium text-gray-600 mb-6">{lab.focus}</p>
-                </div>
-                <div className="space-y-3">
-                  {lab.areas.map((area, i) => (
-                    <div key={i} className="flex items-center gap-3">
-                      <div className="w-1 h-1 rounded-full bg-[#5FA037]"></div>
-                      <p className="text-sm font-light text-gray-500">{area}</p>
+                {/* Card Container */}
+                <div className="bg-white border border-gray-100 rounded-3xl p-8 transition-all duration-300 hover:border-[#5FA037] hover:shadow-lg">
+                  {/* Header with Flag and Location */}
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="flex-1">
+                      {/* Flag Circle */}
+                      <div className={`w-16 h-16 ${lab.color} rounded-full flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110 shadow-md`}>
+                        <span className="text-3xl">{lab.flag}</span>
+                      </div>
+                      {/* Location */}
+                      <div className="mb-3">
+                        <p className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-1">{lab.city}</p>
+                        <p className="text-xs font-light text-gray-400 tracking-wide">{lab.country}</p>
+                      </div>
                     </div>
-                  ))}
+                    {/* Decorative dot indicator */}
+                    <div className="w-2 h-2 rounded-full bg-[#5FA037] animate-pulse"></div>
+                  </div>
+
+                  {/* Title and Focus */}
+                  <div className="mb-6 pb-6 border-b border-gray-100">
+                    <h3 className="text-2xl font-light text-[#044050] mb-2 tracking-tight">{lab.title}</h3>
+                    <p className="text-sm font-medium text-[#5FA037]">{lab.focus}</p>
+                  </div>
+
+                  {/* Areas List */}
+                  <div className="space-y-3">
+                    {lab.areas.map((area, i) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#5FA037] mt-1.5 flex-shrink-0"></div>
+                        <p className="text-sm font-light text-gray-600 leading-relaxed">{area}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </motion.div>
             ))}
           </div>
+
+          {/* Connection Visualization */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="mt-16 text-center"
+          >
+            <div className="inline-flex items-center gap-3 bg-slate-50 px-6 py-4 rounded-full">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-[#044050]"></div>
+                <span className="text-sm font-light text-gray-600">Connected Labs</span>
+              </div>
+              <div className="w-12 h-px bg-gradient-to-r from-[#044050] to-[#5FA037]"></div>
+              <div className="flex items-center gap-2">
+                <Globe className="w-4 h-4 text-[#5FA037]" />
+                <span className="text-sm font-light text-gray-600">Global Network</span>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
