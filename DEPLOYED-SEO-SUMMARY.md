@@ -322,3 +322,7 @@ Your SEO foundation is SOLID. Now you need to:
 **Developer:** Bruno (GreenCheck Team)  
 **Status:** ✅ DEPLOYED & READY
 
+
+
+
+

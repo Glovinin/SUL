@@ -59,3 +59,7 @@ echo "💡 Dica: Use ferramentas online como TinyPNG para otimizar as fotos ante
 
 
 
+
+
+
+

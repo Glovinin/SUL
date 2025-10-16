@@ -66,7 +66,7 @@ export const metadata: Metadata = {
     'carbon offset marketplace'
   ].join(', '),
   authors: [
-    { name: 'GreenCheck Team', url: 'https://greencheck.replit.app/sobre' }
+    { name: 'GreenCheck Team', url: 'https://greencheck.replit.app/about' }
   ],
   creator: 'GreenCheck',
   publisher: 'GreenCheck',
@@ -252,7 +252,7 @@ export default function RootLayout({
               author: {
                 '@type': 'Organization',
                 name: 'GreenCheck',
-                url: 'https://greencheck.replit.app/sobre'
+                url: 'https://greencheck.replit.app/about'
               },
               publisher: {
                 '@type': 'Organization',
@@ -277,7 +277,7 @@ export default function RootLayout({
                 '@type': 'UseAction',
                 target: {
                   '@type': 'EntryPoint',
-                  urlTemplate: 'https://greencheck.replit.app/validacao',
+                  urlTemplate: 'https://greencheck.replit.app/validation',
                   actionPlatform: [
                     'http://schema.org/DesktopWebPlatform',
                     'http://schema.org/MobileWebPlatform'

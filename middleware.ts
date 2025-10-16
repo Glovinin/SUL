@@ -15,8 +15,8 @@ export function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Protect /investidores route (main dashboard) - require approved status
-  if (pathname === '/investidores') {
+  // Protect /investors route (main dashboard) - require approved status
+  if (pathname === '/investors') {
     // Client-side will handle Firebase auth verification and status check
     return NextResponse.next()
   }
@@ -27,9 +27,10 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     '/admin/:path*',
-    '/investidores',
+    '/investors',
   ],
 }
+
 
 
 

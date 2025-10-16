@@ -313,3 +313,7 @@ Implementamos 4 schemas para Rich Snippets no Google:
 Criado por: Bruno (GreenCheck Team)
 Última atualização: 2025-10-11
 
+
+
+
+

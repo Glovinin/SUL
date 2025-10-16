@@ -51,3 +51,7 @@ echo "✨ Ou use: https://tinypng.com para otimização online"
 
 
 
+
+
+
+

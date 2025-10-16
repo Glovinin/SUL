@@ -18,13 +18,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: `${baseUrl}/sobre`,
+      url: `${baseUrl}/about`,
       lastModified: now,
       changeFrequency: 'weekly' as const,
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/validacao`,
+      url: `${baseUrl}/validation`,
       lastModified: now,
       changeFrequency: 'weekly' as const,
       priority: 0.95,
@@ -36,7 +36,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/investidores/nda`,
+      url: `${baseUrl}/investors/nda`,
       lastModified: now,
       changeFrequency: 'monthly' as const,
       priority: 0.6,

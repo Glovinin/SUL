@@ -78,7 +78,7 @@ export default function NDAPage() {
       }
 
       if (!user) {
-        router.push('/investidores/login')
+        router.push('/investors/login')
         return
       }
 
@@ -86,17 +86,17 @@ export default function NDAPage() {
         const investor = await getInvestor(user.uid)
         
         if (!investor) {
-          router.push('/investidores/login')
+          router.push('/investors/login')
           return
         }
 
         if (investor.status === 'approved') {
-          router.push('/investidores')
+          router.push('/investors')
           return
         }
 
         if (investor.status === 'pending_approval') {
-          router.push('/investidores/pending-approval')
+          router.push('/investors/pending-approval')
           return
         }
 
@@ -397,7 +397,7 @@ export default function NDAPage() {
       setCurrentStep('success')
       
       setTimeout(() => {
-        router.push('/investidores/pending-approval')
+        router.push('/investors/pending-approval')
       }, 2500)
     } catch (err) {
       console.error('Error signing NDA:', err)
@@ -409,7 +409,7 @@ export default function NDAPage() {
   const handleLogout = async () => {
     try {
       await auth.signOut()
-      router.push('/investidores/login')
+      router.push('/investors/login')
     } catch (err) {
       console.error('Error logging out:', err)
     }

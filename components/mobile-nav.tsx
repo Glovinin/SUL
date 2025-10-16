@@ -50,18 +50,18 @@ import Image from 'next/image'
 // Bottom navigation items
 const bottomNavItems = [
   { href: '/', label: 'Home', icon: House },
-  { href: '/validacao', label: 'Validation', icon: Shield },
+  { href: '/validation', label: 'Validation', icon: Shield },
   { href: '/marketplace', label: 'Marketplace', icon: Storefront },
-  { href: '/sobre', label: 'About', icon: Info },
+  { href: '/about', label: 'About', icon: Info },
 ]
 
 // All navigation items (for expanded menu)
 const allNavItems = [
   { href: '/', label: 'Home', icon: House },
-  { href: '/validacao', label: 'Validation', icon: Shield },
+  { href: '/validation', label: 'Validation', icon: Shield },
   { href: '/marketplace', label: 'Marketplace', icon: Storefront },
-  { href: '/sobre', label: 'About', icon: Info },
-  { href: '/investidores', label: 'Investors', icon: ChartLine },
+  { href: '/about', label: 'About', icon: Info },
+  { href: '/investors', label: 'Investors', icon: ChartLine },
   { href: '/login', label: 'Login', icon: UserCircle },
 ]
 
@@ -89,7 +89,7 @@ export function MobileNav() {
   const handleValidationNavigation = () => {
     playESGAudio()
     setMenuOpen(false) // Close mobile menu
-    router.push('/validacao')
+    router.push('/validation')
   }
 
   // Handle navigation to marketplace page with audio
@@ -102,7 +102,7 @@ export function MobileNav() {
   // Handle navigation to investors page
   const handleInvestorsNavigation = () => {
     setMenuOpen(false) // Close mobile menu
-    router.push('/investidores')
+    router.push('/investors')
   }
 
   // Handle Invest Now - Opens WhatsApp Web
@@ -114,7 +114,7 @@ export function MobileNav() {
   }
 
   // Check if we're on investors page
-  const isInvestorsPage = pathname.startsWith('/investidores')
+  const isInvestorsPage = pathname.startsWith('/investors')
 
   // Prevenir scroll quando o menu está aberto
   useEffect(() => {
@@ -229,9 +229,9 @@ export function MobileNav() {
   }, [menuOpen])
 
   // Esconder mobile nav na página de login e área de investidores (login, NDA, pending-approval)
-  const isInvestorAuthPage = pathname === '/investidores/login' || 
-                             pathname === '/investidores/nda' || 
-                             pathname === '/investidores/pending-approval'
+  const isInvestorAuthPage = pathname === '/investors/login' || 
+                             pathname === '/investors/nda' || 
+                             pathname === '/investors/pending-approval'
   
   // Esconder mobile nav na área de admin (login e dashboard)
   const isAdminPage = pathname.startsWith('/admin')
@@ -322,7 +322,7 @@ export function MobileNav() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {item.href === '/validacao' ? (
+                {item.href === '/validation' ? (
                   <button
                     onClick={handleValidationNavigation}
                     className={cn(
@@ -572,7 +572,7 @@ export function MobileNav() {
                         ease: "easeOut"
                       }}
                     >
-                      {item.href === '/validacao' ? (
+                      {item.href === '/validation' ? (
                         <button
                           onClick={handleValidationNavigation}
                           className={cn(
@@ -636,7 +636,7 @@ export function MobileNav() {
                             <div className="ml-auto h-2 w-2 rounded-full bg-[#5FA037]" />
                           )}
                         </button>
-                      ) : item.href === '/investidores' ? (
+                      ) : item.href === '/investors' ? (
                         <button
                           onClick={handleInvestorsNavigation}
                           className={cn(

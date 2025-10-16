@@ -15,6 +15,41 @@ const nextConfig = {
     };
     return config;
   },
+  async redirects() {
+    return [
+      // Redirect old Portuguese routes to new English routes
+      {
+        source: '/sobre',
+        destination: '/about',
+        permanent: true, // 301 redirect for SEO
+      },
+      {
+        source: '/validacao',
+        destination: '/validation',
+        permanent: true,
+      },
+      {
+        source: '/investidores',
+        destination: '/investors',
+        permanent: true,
+      },
+      {
+        source: '/investidores/login',
+        destination: '/investors/login',
+        permanent: true,
+      },
+      {
+        source: '/investidores/nda',
+        destination: '/investors/nda',
+        permanent: true,
+      },
+      {
+        source: '/investidores/pending-approval',
+        destination: '/investors/pending-approval',
+        permanent: true,
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig;

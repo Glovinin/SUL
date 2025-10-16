@@ -19,7 +19,7 @@ export default function PendingApprovalPage() {
 
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        router.push('/investidores/login')
+        router.push('/investors/login')
         return
       }
 
@@ -27,18 +27,18 @@ export default function PendingApprovalPage() {
         const investor = await getInvestor(user.uid)
         
         if (!investor) {
-          router.push('/investidores/login')
+          router.push('/investors/login')
           return
         }
 
         // Verificar status
         if (investor.status === 'approved') {
-          router.push('/investidores')
+          router.push('/investors')
           return
         }
 
         if (investor.status === 'pending_nda') {
-          router.push('/investidores/nda')
+          router.push('/investors/nda')
           return
         }
 
@@ -70,7 +70,7 @@ export default function PendingApprovalPage() {
         const investor = await getInvestor(user.uid)
         
         if (investor?.status === 'approved') {
-          router.push('/investidores')
+          router.push('/investors')
         }
       } catch (err) {
         console.error('Error checking status:', err)
@@ -234,7 +234,7 @@ export default function PendingApprovalPage() {
           {/* Footer */}
           <div className="px-12 py-6 border-t border-gray-100/50 bg-gray-50/30">
             <button
-              onClick={() => auth.signOut().then(() => router.push('/investidores/login'))}
+              onClick={() => auth.signOut().then(() => router.push('/investors/login'))}
               className="w-full text-xs text-gray-400 hover:text-[#044050] font-light transition-all duration-300 tracking-wide"
             >
               Sign Out

@@ -97,11 +97,11 @@ export default function InvestidoresLoginPage() {
       setSuccess(true)
       setTimeout(() => {
         if (investor.status === 'approved') {
-          router.push('/investidores')
+          router.push('/investors')
         } else if (investor.status === 'pending_approval') {
-          router.push('/investidores/pending-approval')
+          router.push('/investors/pending-approval')
         } else if (investor.status === 'pending_nda') {
-          router.push('/investidores/nda')
+          router.push('/investors/nda')
         } else {
           setError('Your account has been rejected. Please contact support.')
           setLoading(false)
@@ -173,7 +173,7 @@ export default function InvestidoresLoginPage() {
 
       setSuccess(true)
       setTimeout(() => {
-        router.push('/investidores/nda')
+        router.push('/investors/nda')
       }, 1500)
     } catch (err: any) {
       console.error('Error signing up:', err)

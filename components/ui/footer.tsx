@@ -1,4 +1,7 @@
+'use client'
+
 import React, { useState, useEffect } from 'react'
+import { Notification, useNotification } from './notification'
 
 interface ScreenBreakpoints {
   isXs: boolean
@@ -61,10 +64,19 @@ export default function Footer({
 }: FooterProps) {
   const breakpoints = useSmartBreakpoints()
   const [mounted, setMounted] = useState(false)
+  const { notification, showNotification, closeNotification } = useNotification()
 
   useEffect(() => {
     setMounted(true)
   }, [])
+
+  const handleFeatureClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
+    showNotification(
+      "Under Development",
+      "Our team is currently developing this feature. Stay tuned!"
+    )
+  }
 
   if (!mounted) {
     return null
@@ -74,8 +86,16 @@ export default function Footer({
   const containerPadding = breakpoints.isXs ? 'px-3' : breakpoints.isSm ? 'px-4' : breakpoints.isMd ? 'px-6' : 'px-4 sm:px-6 lg:px-8'
 
   return (
-    <footer className={`bg-[#044050] text-white ${className}`}>
-      <div className={`${maxWidth} mx-auto ${containerPadding}`}>
+    <>
+      <Notification 
+        show={notification.show}
+        onClose={closeNotification}
+        title={notification.title}
+        message={notification.message}
+      />
+      
+      <footer className={`bg-[#044050] text-white ${className}`}>
+        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
         {/* Links Grid */}
         <div className={`${breakpoints.isMobile ? 'py-12' : 'py-16'} border-b border-white/10`}>
           <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2 gap-x-8 gap-y-12' : breakpoints.isTablet ? 'grid-cols-3 gap-12' : 'grid-cols-5 gap-8'}`}>
@@ -84,10 +104,10 @@ export default function Footer({
             <div>
               <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Platform</h4>
               <ul className="space-y-3">
-                <li><a href="/validacao" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">ESG Validation</a></li>
-                <li><a href="/marketplace" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Marketplace</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">NFT Certificates</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">API</a></li>
+                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">ESG Validation</a></li>
+                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">Marketplace</a></li>
+                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">NFT Certificates</a></li>
+                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">API</a></li>
               </ul>
             </div>
 
@@ -95,10 +115,10 @@ export default function Footer({
             <div>
               <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Company</h4>
               <ul className="space-y-3">
-                <li><a href="/sobre" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">About</a></li>
-                <li><a href="/investidores/login" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Investors</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Careers</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Press</a></li>
+                <li><a href="/about" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">About</a></li>
+                <li><a href="/investors/login" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Investors</a></li>
+                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">Careers</a></li>
+                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">Press</a></li>
               </ul>
             </div>
 
@@ -106,10 +126,10 @@ export default function Footer({
             <div>
               <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Support</h4>
               <ul className="space-y-3">
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Help Center</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Documentation</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Contact</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Status</a></li>
+                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">Help Center</a></li>
+                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">Documentation</a></li>
+                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">Contact</a></li>
+                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">Status</a></li>
               </ul>
             </div>
 
@@ -117,10 +137,10 @@ export default function Footer({
             <div>
               <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Legal</h4>
               <ul className="space-y-3">
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Privacy</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Terms</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Cookies</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Licenses</a></li>
+                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">Privacy</a></li>
+                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">Terms</a></li>
+                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">Cookies</a></li>
+                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">Licenses</a></li>
               </ul>
             </div>
 
@@ -128,10 +148,44 @@ export default function Footer({
             <div>
               <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Connect</h4>
               <ul className="space-y-3">
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">LinkedIn</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Twitter</a></li>
-                <li><a href="#" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">GitHub</a></li>
+                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">LinkedIn</a></li>
+                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">Twitter</a></li>
+                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">GitHub</a></li>
               </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Contact Information */}
+        <div className={`${breakpoints.isMobile ? 'py-12' : 'py-16'} border-b border-white/10`}>
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1 gap-12' : 'md:grid-cols-2 gap-16'} max-w-4xl`}>
+            
+            {/* Portugal Office */}
+            <div>
+              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Portugal Office</h4>
+              <div className="space-y-2">
+                <p className="text-sm text-white/70 font-light">ESG Veritas Solutions Ltd.</p>
+                <p className="text-sm text-white/70 font-light">Rua do Salvador, 20, 1A</p>
+                <p className="text-sm text-white/70 font-light">1100-466 Lisboa, Portugal</p>
+              </div>
+              <div className="mt-6 space-y-2">
+                <p className="text-sm text-white/70 font-light">
+                  <a href="tel:+351931721901" className="hover:text-[#5FA037] transition-colors">+351 931 721 901</a>
+                </p>
+                <p className="text-sm text-white/70 font-light">
+                  <a href="mailto:info@esgveritas.eu" className="hover:text-[#5FA037] transition-colors">info@esgveritas.eu</a>
+                </p>
+              </div>
+            </div>
+
+            {/* Brazil Office */}
+            <div>
+              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Brazil Office</h4>
+              <div className="space-y-2">
+                <p className="text-sm text-white/70 font-light">Bureau Social – Instituto Brasileiro de Negócios Sociais</p>
+                <p className="text-sm text-white/70 font-light">Avenida Horácio Lafer, 160 – Conj. 22, Sala B</p>
+                <p className="text-sm text-white/70 font-light">Itaim Bibi – São Paulo/SP – CEP 04538-080</p>
+              </div>
             </div>
           </div>
         </div>
@@ -149,6 +203,7 @@ export default function Footer({
         </div>
       </div>
     </footer>
+    </>
   )
 }
 

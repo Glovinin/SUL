@@ -2,12 +2,14 @@
 
 import Link from "next/link"
 import { Button } from "./ui/button"
-import { Globe, User, ChevronDown, Upload, Languages } from "lucide-react"
+import { Globe, User, ChevronDown, Upload, Languages, FileText } from "lucide-react"
 import Image from "next/image"
 import { useEffect, useState, useRef } from "react"
 import { usePathname, useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { playESGAudio, playMarketplaceAudio } from '../lib/audio-manager'
+import { DocumentsSheet } from './ui/documents-sheet'
+import { Notification, useNotification } from './ui/notification'
 
 import {
   DropdownMenu,
@@ -20,14 +22,14 @@ import {
 // Main navigation items (always visible on desktop)
 const primaryNavItems = [
   { href: "/", label: "Home" },
-  { href: "/validacao", label: "Validation" },
+  { href: "/validation", label: "Validation" },
   { href: "/marketplace", label: "Marketplace" },
 ]
 
 // Secondary items (grouped in dropdown on smaller screens)
 const secondaryNavItems = [
-  { href: "/sobre", label: "About" },
-  { href: "/investidores", label: "Investors" },
+  { href: "/about", label: "About" },
+  { href: "/investors", label: "Investors" },
 ]
 
 export const Navbar = () => {
@@ -38,6 +40,7 @@ export const Navbar = () => {
   const pathname = usePathname()
   const [mounted, setMounted] = useState(false)
   const [logoTransitionActive, setLogoTransitionActive] = useState(false)
+  const { notification, showNotification, closeNotification } = useNotification()
 
   // Breakpoints responsivos
   const breakpoints = {
@@ -95,7 +98,7 @@ export const Navbar = () => {
   const handleIniciarUpload = () => {
     // Play ESG audio when navigating to validation page
     playESGAudio()
-    router.push('/validacao')
+    router.push('/validation')
   }
 
   // Handle navigation to validation page with audio
@@ -104,7 +107,7 @@ export const Navbar = () => {
       e.preventDefault()
     }
     playESGAudio()
-    router.push('/validacao')
+    router.push('/validation')
   }
 
   // Handle navigation to marketplace page with audio
@@ -121,7 +124,16 @@ export const Navbar = () => {
     if (e) {
       e.preventDefault()
     }
-    router.push('/investidores')
+    router.push('/investors')
+  }
+
+  // Handle feature under development notification
+  const handleFeatureClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    showNotification(
+      "Under Development",
+      "Our team is currently developing this feature. Stay tuned!"
+    )
   }
 
   // Evita flash de conteúdo não hidratado
@@ -162,18 +174,26 @@ export const Navbar = () => {
   }
 
   return (
-    <motion.nav 
-      className={`fixed w-full z-[100] flex items-center justify-center transition-all duration-700 ${
-        breakpoints.isDesktop && !isScrolled ? 'top-6' : 'top-0'
-      }`}
-      initial={{ opacity: 0, y: -100 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ 
-        duration: 0.8,
-        ease: [0.22, 1, 0.36, 1], // cubic-bezier suave e profissional
-        delay: 0.3 // Delay para aparecer depois do logo começar a transição
-      }}
-    >
+    <>
+      <Notification 
+        show={notification.show}
+        onClose={closeNotification}
+        title={notification.title}
+        message={notification.message}
+      />
+      
+      <motion.nav 
+        className={`fixed w-full z-[100] flex items-center justify-center transition-all duration-700 ${
+          breakpoints.isDesktop && !isScrolled ? 'top-6' : 'top-0'
+        }`}
+        initial={{ opacity: 0, y: -100 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ 
+          duration: 0.8,
+          ease: [0.22, 1, 0.36, 1], // cubic-bezier suave e profissional
+          delay: 0.3 // Delay para aparecer depois do logo começar a transição
+        }}
+      >
       <div 
         className={`
           mx-auto flex items-center justify-between border
@@ -249,7 +269,7 @@ export const Navbar = () => {
         <div className="hidden xl:flex items-center space-x-8">
           {primaryNavItems.map((item) => (
             <div key={item.href}>
-              {item.href === '/validacao' ? (
+              {item.href === '/validation' ? (
                 <button
                   onClick={handleValidationNavigation}
                   style={{
@@ -332,7 +352,7 @@ export const Navbar = () => {
           ))}
           {secondaryNavItems.map((item) => (
             <div key={item.href}>
-              {item.href === '/investidores' ? (
+              {item.href === '/investors' ? (
                 <button
                   onClick={handleInvestorsNavigation}
                   style={{
@@ -392,29 +412,56 @@ export const Navbar = () => {
 
         {/* Right Side - Responsivo */}
         <div className="flex items-center space-x-1 sm:space-x-2 lg:space-x-3 flex-shrink-0">
-          {/* Botão Iniciar Upload - Responsivo */}
+          {/* Botão Iniciar Upload / View Documents - Responsivo */}
           <div>
-            <Button 
-              variant="default"
-              className={`group rounded-full font-medium tracking-wide shadow-xl
-                ${breakpoints.isMobile 
-                  ? 'h-9 px-3 text-xs' 
-                  : 'h-10 px-6 text-sm'
+            {pathname === '/investors' ? (
+              <DocumentsSheet 
+                trigger={
+                  <Button 
+                    variant="default"
+                    className={`group rounded-full font-medium tracking-wide shadow-xl
+                      ${breakpoints.isMobile 
+                        ? 'h-9 px-3 text-xs' 
+                        : 'h-10 px-6 text-sm'
+                      }
+                      ${navStyles.buttonBg}`}
+                    style={{
+                      transition: 'all 0.7s cubic-bezier(0.4, 0, 0.2, 1)'
+                    }}
+                  >
+                    <span className="flex items-center">
+                      <span className="hidden sm:inline">View Documents</span>
+                      <span className="sm:hidden">Docs</span>
+                      <FileText className={`transition-all duration-300 group-hover:translate-x-0.5 ${
+                        breakpoints.isMobile ? 'ml-1 h-3.5 w-3.5' : 'ml-2 h-4 w-4'
+                      } ${navStyles.buttonIconColor}`} />
+                    </span>
+                  </Button>
                 }
-                ${navStyles.buttonBg}`}
-              style={{
-                transition: 'all 0.7s cubic-bezier(0.4, 0, 0.2, 1)'
-              }}
-              onClick={handleIniciarUpload}
-            >
-              <span className="flex items-center">
-                <span className="hidden sm:inline">Start Upload</span>
-                <span className="sm:hidden">Upload</span>
-                <Upload className={`transition-all duration-300 group-hover:translate-x-0.5 ${
-                  breakpoints.isMobile ? 'ml-1 h-3.5 w-3.5' : 'ml-2 h-4 w-4'
-                } ${navStyles.buttonIconColor}`} />
-              </span>
-            </Button>
+              />
+            ) : (
+              <Button 
+                variant="default"
+                className={`group rounded-full font-medium tracking-wide shadow-xl
+                  ${breakpoints.isMobile 
+                    ? 'h-9 px-3 text-xs' 
+                    : 'h-10 px-6 text-sm'
+                  }
+                  ${navStyles.buttonBg}`}
+                style={{
+                  transition: 'all 0.7s cubic-bezier(0.4, 0, 0.2, 1)'
+                }}
+                onClick={handleIniciarUpload}
+              >
+                <span className="flex items-center">
+                  <span className="hidden sm:inline">Start Upload</span>
+                  <span className="sm:hidden">Upload</span>
+                  <Upload className={`transition-all duration-300 group-hover:translate-x-0.5 ${
+                    breakpoints.isMobile ? 'ml-1 h-3.5 w-3.5' : 'ml-2 h-4 w-4'
+                  } ${navStyles.buttonIconColor}`} />
+                </span>
+              </Button>
+            )}
           </div>
           
           {/* Separador sutil - Oculto no mobile */}
@@ -422,7 +469,7 @@ export const Navbar = () => {
           
           {/* Seletor de Idioma - Menor no mobile */}
           <div>
-            <DropdownMenu>
+            <DropdownMenu modal={false}>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
@@ -439,18 +486,32 @@ export const Navbar = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 align="end"
+                sideOffset={8}
+                alignOffset={0}
                 className={`w-[140px] backdrop-blur-xl shadow-2xl rounded-2xl p-2 transition-colors duration-300 ${navStyles.dropdownBg}`}
               >
-                <DropdownMenuItem className={`rounded-lg px-3 py-2 text-sm font-light transition-colors ${navStyles.dropdownItem}`}>
+                <DropdownMenuItem 
+                  onClick={handleFeatureClick}
+                  className={`rounded-lg px-3 py-2 text-sm font-light transition-colors cursor-pointer ${navStyles.dropdownItem}`}
+                >
                   🇵🇹 Português
                 </DropdownMenuItem>
-                <DropdownMenuItem className={`rounded-lg px-3 py-2 text-sm font-light transition-colors ${navStyles.dropdownItem}`}>
+                <DropdownMenuItem 
+                  onClick={handleFeatureClick}
+                  className={`rounded-lg px-3 py-2 text-sm font-light transition-colors cursor-pointer ${navStyles.dropdownItem}`}
+                >
                   🇺🇸 English
                 </DropdownMenuItem>
-                <DropdownMenuItem className={`rounded-lg px-3 py-2 text-sm font-light transition-colors ${navStyles.dropdownItem}`}>
+                <DropdownMenuItem 
+                  onClick={handleFeatureClick}
+                  className={`rounded-lg px-3 py-2 text-sm font-light transition-colors cursor-pointer ${navStyles.dropdownItem}`}
+                >
                   🇪🇸 Español
                 </DropdownMenuItem>
-                <DropdownMenuItem className={`rounded-lg px-3 py-2 text-sm font-light transition-colors ${navStyles.dropdownItem}`}>
+                <DropdownMenuItem 
+                  onClick={handleFeatureClick}
+                  className={`rounded-lg px-3 py-2 text-sm font-light transition-colors cursor-pointer ${navStyles.dropdownItem}`}
+                >
                   🇫🇷 Français
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -459,20 +520,20 @@ export const Navbar = () => {
           
           {/* Botão de Login - Responsivo */}
           <div>
-            <Link href="/login">
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className={`transition-all duration-300 rounded-full ${
-                  breakpoints.isMobile ? 'h-9 w-9' : 'h-10 w-10'
-                } ${navStyles.iconHover}`}
-              >
-                <User className={breakpoints.isMobile ? 'h-3.5 w-3.5' : 'h-4 w-4'} />
-              </Button>
-            </Link>
+            <Button 
+              variant="ghost" 
+              size="icon"
+              onClick={handleFeatureClick}
+              className={`transition-all duration-300 rounded-full cursor-pointer ${
+                breakpoints.isMobile ? 'h-9 w-9' : 'h-10 w-10'
+              } ${navStyles.iconHover}`}
+            >
+              <User className={breakpoints.isMobile ? 'h-3.5 w-3.5' : 'h-4 w-4'} />
+            </Button>
           </div>
         </div>
       </div>
     </motion.nav>
+    </>
   )
 }

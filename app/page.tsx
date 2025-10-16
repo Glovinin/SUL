@@ -434,7 +434,7 @@ export default function Home() {
   }, [displayedText, isDeleting, currentIndex])
 
   const handleIniciarValidacao = () => {
-    router.push('/validacao')
+    router.push('/validation')
   }
 
   const handleVerMarketplace = () => {
@@ -442,7 +442,7 @@ export default function Home() {
   }
 
   const handleSaibaMais = () => {
-    router.push('/sobre')
+    router.push('/about')
   }
 
   // Evita flash de conteúdo não hidratado
@@ -817,7 +817,7 @@ export default function Home() {
             className={`flex justify-center ${breakpoints.isMobile ? 'mt-12' : 'mt-16'}`}
           >
             <Button
-              onClick={() => router.push('/sobre')}
+              onClick={() => router.push('/about')}
               className={`${breakpoints.isMobile ? 'w-full max-w-sm' : 'px-10'} h-12 bg-[#044050] text-white hover:bg-[#5FA037] rounded-full transition-all duration-300 font-normal tracking-wide group`}
             >
               <span className="flex items-center justify-center">
@@ -1048,6 +1048,144 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Social Impact & SDGs - Clean Minimal */}
+      <section className={`${sectionPadding} relative bg-slate-50`}>
+        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-20'}`}>
+            <motion.p 
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4"
+            >
+              Social Impact
+            </motion.p>
+            <motion.h2 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+            >
+              <span className="font-extralight text-[#044050]">Contributing to</span>
+              <br />
+              <span className="font-normal text-[#5FA037]">global goals</span>
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed mb-12`}
+            >
+              Aligned with 7 United Nations Sustainable Development Goals
+            </motion.p>
+          </div>
+
+          {/* Impact Metrics */}
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : 'grid-cols-4'} ${breakpoints.isMobile ? 'gap-6' : 'gap-8'} ${breakpoints.isMobile ? 'mb-12' : 'mb-16'}`}>
+            {[
+              { value: '2M+', label: 'tCO₂e Target', sublabel: 'by 2031', icon: Leaf },
+              { value: '8+', label: 'Countries', sublabel: 'Presence', icon: Globe },
+              { value: '95', label: 'Team Members', sublabel: 'Goal', icon: Users },
+              { value: '€1B+', label: 'Valuation', sublabel: 'Target', icon: TrendingUp }
+            ].map((metric, index) => {
+              const MetricIcon = metric.icon
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="text-center group"
+                >
+                  <div className="mb-4 flex justify-center">
+                    <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm transition-all duration-300 group-hover:bg-[#044050]">
+                      <MetricIcon className="w-6 h-6 text-[#5FA037] transition-colors duration-300 group-hover:text-white" />
+                    </div>
+                  </div>
+                  <div className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl'} font-extralight text-[#044050] mb-1 tracking-tight`}>{metric.value}</div>
+                  <p className="text-sm font-medium text-gray-600 mb-0.5">{metric.label}</p>
+                  <p className="text-xs font-light text-gray-400">{metric.sublabel}</p>
+                </motion.div>
+              )
+            })}
+          </div>
+
+          {/* SDGs Grid */}
+          <div className="text-center mb-12">
+            <motion.p
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="text-xs font-medium text-gray-400 uppercase tracking-[0.25em] mb-6"
+            >
+              Real Impact
+            </motion.p>
+            <motion.h3
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-light text-[#044050] mb-3 tracking-tight`}
+            >
+              <span className="font-light">Aligned with </span>
+              <span className="text-[#5FA037] font-light">UN SDGs</span>
+            </motion.h3>
+          </div>
+
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : 'md:grid-cols-4'} ${breakpoints.isMobile ? 'gap-4' : 'gap-6'} max-w-6xl mx-auto`}>
+            {[
+              { 
+                number: '13', 
+                name: 'Climate Action',
+                color: 'bg-[#044050]',
+                icon: Globe
+              },
+              { 
+                number: '15', 
+                name: 'Life on Land',
+                color: 'bg-[#5FA037]',
+                icon: Leaf
+              },
+              { 
+                number: '8', 
+                name: 'Decent Work',
+                color: 'bg-slate-700',
+                icon: TrendingUp
+              },
+              { 
+                number: '17', 
+                name: 'Partnerships',
+                color: 'bg-[#044050]',
+                icon: CheckCircle2
+              }
+            ].map((sdg, index) => {
+              const SdgIcon = sdg.icon
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="group"
+                >
+                  <div className={`${sdg.color} rounded-2xl ${breakpoints.isMobile ? 'p-6' : 'p-8'} text-white flex flex-col items-center justify-center aspect-square transition-all duration-300 hover:scale-105 hover:shadow-lg`}>
+                    <SdgIcon className={`${breakpoints.isMobile ? 'w-10 h-10' : 'w-12 h-12'} mb-4 opacity-90`} />
+                    <span className={`${breakpoints.isMobile ? 'text-5xl' : 'text-6xl'} font-extralight mb-2`}>{sdg.number}</span>
+                    <span className={`${breakpoints.isMobile ? 'text-[10px]' : 'text-xs'} font-light tracking-wider opacity-90 uppercase text-center px-2`}>{sdg.name}</span>
+                  </div>
+                </motion.div>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* Investor CTA - Clean Minimal */}
       <section className={`${sectionPadding} relative bg-gradient-to-br from-[#044050] to-[#033842]`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
@@ -1103,7 +1241,7 @@ export default function Home() {
               >
                 <Button 
                   size="lg"
-                  onClick={() => router.push('/investidores/login')}
+                  onClick={() => router.push('/investors/login')}
                   className={`group ${breakpoints.isMobile ? 'w-full max-w-sm' : 'min-w-[240px]'} ${
                     breakpoints.isXs 
                       ? 'h-12 text-sm' 

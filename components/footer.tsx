@@ -40,9 +40,9 @@ export function Footer() {
             <h4 className="font-semibold mb-6 text-white">Navigation</h4>
             <ul className="space-y-4">
               <li><a href="/" className="text-white/70 hover:text-[#34C759] transition-colors duration-300">Home</a></li>
-              <li><a href="/validacao" className="text-white/70 hover:text-[#34C759] transition-colors duration-300">Validation</a></li>
+              <li><a href="/validation" className="text-white/70 hover:text-[#34C759] transition-colors duration-300">Validation</a></li>
               <li><a href="/marketplace" className="text-white/70 hover:text-[#34C759] transition-colors duration-300">Marketplace</a></li>
-              <li><a href="/sobre" className="text-white/70 hover:text-[#34C759] transition-colors duration-300">About</a></li>
+              <li><a href="/about" className="text-white/70 hover:text-[#34C759] transition-colors duration-300">About</a></li>
               <li><a href="/login" className="text-white/70 hover:text-[#34C759] transition-colors duration-300">Login</a></li>
             </ul>
           </div>
