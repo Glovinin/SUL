@@ -34,7 +34,9 @@ import {
   Globe,
   ChartLine,
   FileText,
-  WhatsappLogo
+  WhatsappLogo,
+  Phone,
+  Envelope
 } from '@phosphor-icons/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from './ui/button'
@@ -111,6 +113,16 @@ export function MobileNav() {
     const message = encodeURIComponent('Hi Diego, I\'m interested in investing in GreenCheck. I\'d like to learn more about the investment opportunities.')
     const whatsappUrl = `https://wa.me/${phone}?text=${message}`
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
+  }
+
+  // Handle Phone Call
+  const handlePhoneCall = () => {
+    window.open('tel:+351931721901', '_self')
+  }
+
+  // Handle Email
+  const handleEmail = () => {
+    window.open('mailto:info@esgveritas.eu', '_self')
   }
 
   // Check if we're on investors page
@@ -250,10 +262,10 @@ export function MobileNav() {
 
   return (
     <>
-      {/* Barra de navegação inferior - Esconde para baixo da tela na hero section e quando carrinho abre */}
+      {/* Barra de navegação inferior - Sempre fixo na parte inferior como um app nativo */}
       <motion.nav 
         className={cn(
-          "fixed left-0 right-0 z-50 backdrop-blur-xl border-t rounded-t-[2rem] block xl:hidden",
+          "fixed left-0 right-0 z-50 backdrop-blur-xl border-t rounded-t-3xl block xl:hidden",
           // Altura segura para não sobrepor com controles do browser
           "pb-safe-area-inset-bottom",
           // Cor fixa sempre
@@ -262,51 +274,148 @@ export function MobileNav() {
         style={{
           position: 'fixed',
           bottom: '0',
-          transform: (isOutOfHero && !isCartOpen) ? 'translateY(0)' : 'translateY(100%)',
+          transform: isCartOpen ? 'translateY(100%)' : 'translateY(0)',
           transition: 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
           willChange: 'transform'
         }}
       >
-        <div className="flex items-center justify-around px-4 py-4 pb-safe">
-          {/* Show Invest Now button only on investors page */}
+        <div className="flex items-center justify-center px-2 py-3 pb-safe">
+          {/* Show Invest Now button and contact icons only on investors page */}
           {isInvestorsPage ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ 
-                duration: 0.3,
-                ease: "easeOut"
-              }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="flex-1 px-2"
-            >
-              <button
-                onClick={handleInvestNow}
-                className={cn(
-                  "group w-full flex items-center justify-center gap-3 py-4 px-6",
-                  "bg-[#5FA037] text-white font-medium rounded-full",
-                  "shadow-md hover:shadow-lg hover:shadow-[#5FA037]/25",
-                  "transition-all duration-500 ease-out",
-                  "hover:bg-[#4d8c2d]",
-                  "border-0 relative overflow-hidden"
-                )}
-              >
-                {/* Subtle shine effect on hover */}
-                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
-                
-                <WhatsappLogo 
-                  weight="fill" 
-                  className="h-5 w-5 transition-transform duration-300 group-hover:scale-105" 
-                />
-                <span className="text-sm font-medium tracking-tight relative">
-                  Invest Now
-                </span>
-              </button>
-            </motion.div>
+            <div className="flex items-center w-full px-3">
+              {/* Left Column - Invest Now Button (Centered) */}
+              <div className="flex-1 flex justify-center">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ 
+                    duration: 0.3,
+                    ease: "easeOut"
+                  }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="flex-none"
+                >
+                  <button
+                    onClick={handleInvestNow}
+                    className={cn(
+                      "group flex items-center justify-center gap-2 py-3 px-6",
+                      "bg-[#5FA037] text-white font-semibold rounded-full",
+                      "shadow-lg hover:shadow-xl hover:shadow-[#5FA037]/30",
+                      "transition-all duration-300 ease-out",
+                      "hover:bg-[#4d8c2d] hover:scale-105",
+                      "border-0 relative overflow-hidden",
+                      "min-w-[150px] max-w-[170px]"
+                    )}
+                  >
+                    {/* Subtle shine effect on hover */}
+                    <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
+                    
+                    <WhatsappLogo 
+                      weight="fill" 
+                      className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" 
+                    />
+                    <span className="text-xs font-semibold tracking-tight relative">
+                      Invest Now
+                    </span>
+                  </button>
+                </motion.div>
+              </div>
+
+              {/* Divider Line */}
+              <div className="w-px h-8 bg-gray-300/50 mx-2"></div>
+
+              {/* Right Column - Contact Icons */}
+              <div className="flex-1 flex items-center justify-center gap-3">
+                {/* Phone Icon */}
+                <motion.button
+                  onClick={handlePhoneCall}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ 
+                    duration: 0.3,
+                    delay: 0.1,
+                    ease: "easeOut"
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={cn(
+                    "flex flex-col items-center justify-center transition-all duration-300 ease-spring",
+                    "text-[#044050]/70 hover:text-[#5FA037] p-1"
+                  )}
+                >
+                  <div className="relative p-2 rounded-2xl transition-all duration-300 hover:bg-[#5FA037]/10">
+                    <Phone 
+                      weight="regular" 
+                      className="h-6 w-6 transition-all duration-300" 
+                    />
+                  </div>
+                  <span className="text-xs mt-1 font-medium transition-all duration-300">
+                    Call
+                  </span>
+                </motion.button>
+
+                {/* Email Icon */}
+                <motion.button
+                  onClick={handleEmail}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ 
+                    duration: 0.3,
+                    delay: 0.15,
+                    ease: "easeOut"
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={cn(
+                    "flex flex-col items-center justify-center transition-all duration-300 ease-spring",
+                    "text-[#044050]/70 hover:text-[#5FA037] p-1"
+                  )}
+                >
+                  <div className="relative p-2 rounded-2xl transition-all duration-300 hover:bg-[#5FA037]/10">
+                    <Envelope 
+                      weight="regular" 
+                      className="h-6 w-6 transition-all duration-300" 
+                    />
+                  </div>
+                  <span className="text-xs mt-1 font-medium transition-all duration-300">
+                    Email
+                  </span>
+                </motion.button>
+
+                {/* Menu Icon */}
+                <motion.button
+                  onClick={() => setMenuOpen(true)}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ 
+                    duration: 0.3,
+                    delay: 0.2,
+                    ease: "easeOut"
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={cn(
+                    "flex flex-col items-center justify-center transition-all duration-300 ease-spring",
+                    "text-[#044050]/70 hover:text-[#5FA037] p-1"
+                  )}
+                >
+                  <div className="relative p-2 rounded-2xl transition-all duration-300 hover:bg-[#5FA037]/10">
+                    <List 
+                      weight="bold" 
+                      className="h-6 w-6 transition-all duration-300" 
+                    />
+                  </div>
+                  <span className="text-xs mt-1 font-medium transition-all duration-300">
+                    Menu
+                  </span>
+                </motion.button>
+              </div>
+            </div>
           ) : (
             // Show regular navigation items on other pages
-            bottomNavItems.map((item, index) => {
+            <div className="flex items-center justify-around w-full px-3">
+              {bottomNavItems.map((item, index) => {
             const ItemIcon = item.icon
             const isActive = pathname === item.href
             return (
@@ -346,12 +455,12 @@ export function MobileNav() {
                       )}
                       <ItemIcon 
                         weight={isActive ? "fill" : "regular"} 
-                        className="h-6 w-6 transition-all duration-300 sm:h-7 sm:w-7" 
+                        className="h-6 w-6 transition-all duration-300" 
                       />
                     </div>
                     <span className={cn(
-                      "text-xs mt-1 font-medium transition-all duration-300 sm:text-sm",
-                      isActive && "font-bold"
+                      "text-xs mt-1 font-medium transition-all duration-300",
+                      isActive && "font-semibold"
                     )}>{item.label}</span>
                   </button>
                 ) : item.href === '/marketplace' ? (
@@ -378,12 +487,12 @@ export function MobileNav() {
                       )}
                       <ItemIcon 
                         weight={isActive ? "fill" : "regular"} 
-                        className="h-6 w-6 transition-all duration-300 sm:h-7 sm:w-7" 
+                        className="h-6 w-6 transition-all duration-300" 
                       />
                     </div>
                     <span className={cn(
-                      "text-xs mt-1 font-medium transition-all duration-300 sm:text-sm",
-                      isActive && "font-bold"
+                      "text-xs mt-1 font-medium transition-all duration-300",
+                      isActive && "font-semibold"
                     )}>{item.label}</span>
                   </button>
                 ) : (
@@ -410,48 +519,49 @@ export function MobileNav() {
                       )}
                       <ItemIcon 
                         weight={isActive ? "fill" : "regular"} 
-                        className="h-6 w-6 transition-all duration-300 sm:h-7 sm:w-7" 
+                        className="h-6 w-6 transition-all duration-300" 
                       />
                     </div>
                     <span className={cn(
-                      "text-xs mt-1 font-medium transition-all duration-300 sm:text-sm",
-                      isActive && "font-bold"
+                      "text-xs mt-1 font-medium transition-all duration-300",
+                      isActive && "font-semibold"
                     )}>{item.label}</span>
                   </Link>
                 )}
               </motion.div>
-            )
-          })
+              )
+            })}
+              
+              {/* Menu Button */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ 
+                  duration: 0.3,
+                  delay: bottomNavItems.length * 0.05,
+                  ease: "easeOut"
+                }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <button 
+                  onClick={() => setMenuOpen(true)}
+                  className={cn(
+                    "flex flex-col items-center justify-center flex-1 transition-all duration-300 ease-spring",
+                    "text-[#044050]/70 hover:text-[#5FA037]"
+                  )}
+                >
+                  <div className="relative p-2 rounded-2xl transition-all duration-300">
+                    <List 
+                      weight="bold" 
+                      className="h-6 w-6 transition-all duration-300" 
+                    />
+                  </div>
+                  <span className="text-xs mt-1 font-medium transition-all duration-300">Menu</span>
+                </button>
+              </motion.div>
+            </div>
           )}
-          
-          {/* Botão do menu - Adaptativo com animação */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ 
-              duration: 0.3,
-              delay: bottomNavItems.length * 0.05,
-              ease: "easeOut"
-            }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <button 
-              onClick={() => setMenuOpen(true)}
-              className={cn(
-                "flex flex-col items-center justify-center flex-1 transition-all duration-300 ease-spring",
-                "text-[#044050]/70 hover:text-[#5FA037]"
-              )}
-            >
-              <div className="relative p-2 rounded-2xl transition-all duration-300">
-                <List 
-                  weight="bold" 
-                  className="h-6 w-6 transition-all duration-300 sm:h-7 sm:w-7" 
-                />
-              </div>
-              <span className="text-xs mt-1 font-medium transition-all duration-300 sm:text-sm">Menu</span>
-            </button>
-          </motion.div>
         </div>
       </motion.nav>
 
