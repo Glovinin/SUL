@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { Button } from "./ui/button"
-import { Globe, User, ChevronDown, Upload, Languages, FileText } from "lucide-react"
+import { Globe, User, ChevronDown, Upload, Languages, FileText, LogOut } from "lucide-react"
 import Image from "next/image"
 import { useEffect, useState, useRef } from "react"
 import { usePathname, useRouter } from 'next/navigation'
@@ -10,6 +10,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { playESGAudio, playMarketplaceAudio } from '../lib/audio-manager'
 import { DocumentsSheet } from './ui/documents-sheet'
 import { Notification, useNotification } from './ui/notification'
+import { auth } from '../lib/firebase'
+import { onAuthStateChanged, signOut } from 'firebase/auth'
 
 import {
   DropdownMenu,
@@ -40,6 +42,7 @@ export const Navbar = () => {
   const pathname = usePathname()
   const [mounted, setMounted] = useState(false)
   const [logoTransitionActive, setLogoTransitionActive] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
   const { notification, showNotification, closeNotification } = useNotification()
 
   // Breakpoints responsivos
@@ -77,6 +80,17 @@ export const Navbar = () => {
       window.removeEventListener('resize', updateViewport)
       window.removeEventListener('logo-transition-start', handleLogoTransition)
     }
+  }, [])
+
+  // Monitor authentication state
+  useEffect(() => {
+    if (!auth) return
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsAuthenticated(!!user)
+    })
+
+    return () => unsubscribe()
   }, [])
 
   useEffect(() => {
@@ -134,6 +148,31 @@ export const Navbar = () => {
       "Under Development",
       "Our team is currently developing this feature. Stay tuned!"
     )
+  }
+
+  // Handle login navigation
+  const handleLoginClick = () => {
+    router.push('/investors/login')
+  }
+
+  // Handle logout
+  const handleLogout = async () => {
+    try {
+      if (auth) {
+        await signOut(auth)
+        router.push('/')
+        showNotification(
+          "Logged Out",
+          "You have been successfully logged out."
+        )
+      }
+    } catch (error) {
+      console.error('Error signing out:', error)
+      showNotification(
+        "Error",
+        "There was an error logging out. Please try again."
+      )
+    }
   }
 
   // Evita flash de conteúdo não hidratado
@@ -518,18 +557,33 @@ export const Navbar = () => {
             </DropdownMenu>
           </div>
           
-          {/* Botão de Login - Responsivo */}
+          {/* Botão de Login/Logout - Responsivo */}
           <div>
-            <Button 
-              variant="ghost" 
-              size="icon"
-              onClick={handleFeatureClick}
-              className={`transition-all duration-300 rounded-full cursor-pointer ${
-                breakpoints.isMobile ? 'h-9 w-9' : 'h-10 w-10'
-              } ${navStyles.iconHover}`}
-            >
-              <User className={breakpoints.isMobile ? 'h-3.5 w-3.5' : 'h-4 w-4'} />
-            </Button>
+            {pathname === '/investors' && isAuthenticated ? (
+              <Button 
+                variant="ghost" 
+                size="icon"
+                onClick={handleLogout}
+                className={`transition-all duration-300 rounded-full cursor-pointer ${
+                  breakpoints.isMobile ? 'h-9 w-9' : 'h-10 w-10'
+                } ${navStyles.iconHover}`}
+                title="Logout"
+              >
+                <LogOut className={breakpoints.isMobile ? 'h-3.5 w-3.5' : 'h-4 w-4'} />
+              </Button>
+            ) : (
+              <Button 
+                variant="ghost" 
+                size="icon"
+                onClick={handleLoginClick}
+                className={`transition-all duration-300 rounded-full cursor-pointer ${
+                  breakpoints.isMobile ? 'h-9 w-9' : 'h-10 w-10'
+                } ${navStyles.iconHover}`}
+                title="Login to Investor Portal"
+              >
+                <User className={breakpoints.isMobile ? 'h-3.5 w-3.5' : 'h-4 w-4'} />
+              </Button>
+            )}
           </div>
         </div>
       </div>

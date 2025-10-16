@@ -622,7 +622,7 @@ export default function SobrePage() {
       {/* Our Vision & Values */}
       <section className={`${sectionPadding} relative bg-slate-50`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-20' : 'mb-28'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-28'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -637,7 +637,7 @@ export default function SobrePage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Why we</span>
               <br />
@@ -645,7 +645,7 @@ export default function SobrePage() {
             </motion.h2>
           </div>
 
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1 gap-20' : 'md:grid-cols-3 gap-24'} max-w-5xl mx-auto`}>
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1 gap-12' : 'md:grid-cols-3 gap-24'} max-w-5xl mx-auto`}>
             {/* Mission */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -654,13 +654,13 @@ export default function SobrePage() {
               viewport={{ once: true }}
               className="text-center"
             >
-              <div className="mb-10 flex justify-center">
-                <div className="w-24 h-24 rounded-full bg-[#044050] flex items-center justify-center transition-all duration-500 hover:scale-105 shadow-sm">
-                  <Target className="w-12 h-12 text-white" />
+              <div className={`${breakpoints.isMobile ? 'mb-6' : 'mb-10'} flex justify-center`}>
+                <div className={`${breakpoints.isMobile ? 'w-16 h-16' : 'w-24 h-24'} rounded-full bg-[#044050] flex items-center justify-center transition-all duration-500 hover:scale-105 shadow-sm`}>
+                  <Target className={`${breakpoints.isMobile ? 'w-8 h-8' : 'w-12 h-12'} text-white`} />
                 </div>
               </div>
-              <h3 className="text-2xl font-normal text-[#044050] mb-6 tracking-tight">Mission</h3>
-              <p className="text-sm font-light text-gray-600 leading-relaxed">
+              <h3 className={`${breakpoints.isMobile ? 'text-xl' : 'text-2xl'} font-normal text-[#044050] ${breakpoints.isMobile ? 'mb-4' : 'mb-6'} tracking-tight`}>Mission</h3>
+              <p className={`${breakpoints.isMobile ? 'text-sm' : 'text-sm'} font-light text-gray-600 leading-relaxed`}>
                 Democratize ESG certification by making sustainability accessible, affordable, and scientifically validated for companies of all sizes
               </p>
             </motion.div>
@@ -673,13 +673,13 @@ export default function SobrePage() {
               viewport={{ once: true }}
               className="text-center"
             >
-              <div className="mb-10 flex justify-center">
-                <div className="w-24 h-24 rounded-full bg-[#5FA037] flex items-center justify-center transition-all duration-500 hover:scale-105 shadow-sm">
-                  <Eye className="w-12 h-12 text-white" />
+              <div className={`${breakpoints.isMobile ? 'mb-6' : 'mb-10'} flex justify-center`}>
+                <div className={`${breakpoints.isMobile ? 'w-16 h-16' : 'w-24 h-24'} rounded-full bg-[#5FA037] flex items-center justify-center transition-all duration-500 hover:scale-105 shadow-sm`}>
+                  <Eye className={`${breakpoints.isMobile ? 'w-8 h-8' : 'w-12 h-12'} text-white`} />
                 </div>
               </div>
-              <h3 className="text-2xl font-normal text-[#044050] mb-6 tracking-tight">Vision</h3>
-              <p className="text-sm font-light text-gray-600 leading-relaxed">
+              <h3 className={`${breakpoints.isMobile ? 'text-xl' : 'text-2xl'} font-normal text-[#044050] ${breakpoints.isMobile ? 'mb-4' : 'mb-6'} tracking-tight`}>Vision</h3>
+              <p className={`${breakpoints.isMobile ? 'text-sm' : 'text-sm'} font-light text-gray-600 leading-relaxed`}>
                 Become the global standard for automated, transparent, and verifiable ESG certification powered by AI and blockchain
               </p>
             </motion.div>
@@ -692,17 +692,17 @@ export default function SobrePage() {
               viewport={{ once: true }}
               className="text-center"
             >
-              <div className="mb-10 flex justify-center">
-                <div className="w-24 h-24 rounded-full bg-slate-700 flex items-center justify-center transition-all duration-500 hover:scale-105 shadow-sm">
-                  <Heart className="w-12 h-12 text-white" />
+              <div className={`${breakpoints.isMobile ? 'mb-6' : 'mb-10'} flex justify-center`}>
+                <div className={`${breakpoints.isMobile ? 'w-16 h-16' : 'w-24 h-24'} rounded-full bg-slate-700 flex items-center justify-center transition-all duration-500 hover:scale-105 shadow-sm`}>
+                  <Heart className={`${breakpoints.isMobile ? 'w-8 h-8' : 'w-12 h-12'} text-white`} />
                 </div>
               </div>
-              <h3 className="text-2xl font-normal text-[#044050] mb-6 tracking-tight">Values</h3>
-              <div className="space-y-4">
-                <p className="text-sm font-light text-gray-600">Transparency</p>
-                <p className="text-sm font-light text-gray-600">Innovation</p>
-                <p className="text-sm font-light text-gray-600">Real Impact</p>
-                <p className="text-sm font-light text-gray-600">Scientific Rigor</p>
+              <h3 className={`${breakpoints.isMobile ? 'text-xl' : 'text-2xl'} font-normal text-[#044050] ${breakpoints.isMobile ? 'mb-4' : 'mb-6'} tracking-tight`}>Values</h3>
+              <div className={`${breakpoints.isMobile ? 'space-y-2' : 'space-y-4'}`}>
+                <p className={`${breakpoints.isMobile ? 'text-sm' : 'text-sm'} font-light text-gray-600`}>Transparency</p>
+                <p className={`${breakpoints.isMobile ? 'text-sm' : 'text-sm'} font-light text-gray-600`}>Innovation</p>
+                <p className={`${breakpoints.isMobile ? 'text-sm' : 'text-sm'} font-light text-gray-600`}>Real Impact</p>
+                <p className={`${breakpoints.isMobile ? 'text-sm' : 'text-sm'} font-light text-gray-600`}>Scientific Rigor</p>
               </div>
             </motion.div>
           </div>
@@ -712,7 +712,7 @@ export default function SobrePage() {
       {/* What is ESG */}
       <section className={`${sectionPadding} relative bg-white`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-20' : 'mb-28'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-28'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -727,7 +727,7 @@ export default function SobrePage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">What is</span>
               <br />
@@ -744,7 +744,7 @@ export default function SobrePage() {
             </motion.p>
           </div>
 
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1 gap-20' : 'md:grid-cols-3 gap-24'} max-w-5xl mx-auto`}>
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1 gap-12' : 'md:grid-cols-3 gap-24'} max-w-5xl mx-auto`}>
             {[
               {
                 letter: 'E',
@@ -773,18 +773,18 @@ export default function SobrePage() {
                 viewport={{ once: true }}
                 className="text-center group"
               >
-                <div className="mb-10 flex justify-center">
+                <div className={`${breakpoints.isMobile ? 'mb-6' : 'mb-10'} flex justify-center`}>
                   <div 
-                    className="w-24 h-24 rounded-full flex items-center justify-center transition-all duration-500 hover:scale-105 shadow-sm"
+                    className={`${breakpoints.isMobile ? 'w-16 h-16' : 'w-24 h-24'} rounded-full flex items-center justify-center transition-all duration-500 hover:scale-105 shadow-sm`}
                     style={{ backgroundColor: pillar.color }}
                   >
-                    <span className="text-5xl font-light text-white">{pillar.letter}</span>
+                    <span className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl'} font-light text-white`}>{pillar.letter}</span>
                   </div>
                 </div>
-                <h3 className="text-2xl font-normal text-[#044050] tracking-tight mb-8">{pillar.title}</h3>
-                <ul className="space-y-4">
+                <h3 className={`${breakpoints.isMobile ? 'text-xl' : 'text-2xl'} font-normal text-[#044050] tracking-tight ${breakpoints.isMobile ? 'mb-4' : 'mb-8'}`}>{pillar.title}</h3>
+                <ul className={`${breakpoints.isMobile ? 'space-y-2' : 'space-y-4'}`}>
                   {pillar.items.map((item, i) => (
-                    <li key={i} className="text-sm font-light text-gray-600 leading-relaxed">
+                    <li key={i} className={`${breakpoints.isMobile ? 'text-sm' : 'text-sm'} font-light text-gray-600 leading-relaxed`}>
                       {item}
                     </li>
                   ))}
@@ -798,7 +798,7 @@ export default function SobrePage() {
       {/* Our Story */}
       <section className={`${sectionPadding} relative bg-white`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-20'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-20'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -813,7 +813,7 @@ export default function SobrePage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Built on decades of</span>
               <br />
@@ -821,7 +821,7 @@ export default function SobrePage() {
             </motion.h2>
           </div>
 
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1 gap-8' : 'md:grid-cols-2 gap-12'} ${breakpoints.isMobile ? 'mb-12' : 'mb-16'}`}>
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1 gap-8' : 'md:grid-cols-2 gap-12'} ${breakpoints.isMobile ? 'mb-8' : 'mb-16'}`}>
             {/* Bureau Social - Left Card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -830,23 +830,23 @@ export default function SobrePage() {
               viewport={{ once: true }}
               className="group"
             >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center flex-shrink-0 transition-transform duration-500 group-hover:scale-105 border border-gray-200/50">
+              <div className={`flex items-center gap-4 ${breakpoints.isMobile ? 'mb-4' : 'mb-6'}`}>
+                <div className={`${breakpoints.isMobile ? 'w-12 h-12' : 'w-16 h-16'} rounded-2xl bg-white flex items-center justify-center flex-shrink-0 transition-transform duration-500 group-hover:scale-105 border border-gray-200/50`}>
                   <img 
                     src="/images/Bureau Social Logo.svg" 
                     alt="Bureau Social Logo" 
-                    className="w-12 h-12"
+                    className={`${breakpoints.isMobile ? 'w-8 h-8' : 'w-12 h-12'}`}
                   />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-light text-[#044050] tracking-tight">Bureau Social</h3>
+                  <h3 className={`${breakpoints.isMobile ? 'text-xl' : 'text-2xl'} font-light text-[#044050] tracking-tight`}>Bureau Social</h3>
                   <p className="text-xs font-light text-gray-400 tracking-wide">Est. 2009 • Brazil</p>
                 </div>
               </div>
-              <p className="text-lg font-light text-gray-600 leading-relaxed mb-8">
+              <p className={`${breakpoints.isMobile ? 'text-base' : 'text-lg'} font-light text-gray-600 leading-relaxed ${breakpoints.isMobile ? 'mb-6' : 'mb-8'}`}>
                 Bureau Social is a Brazilian institution with over <span className="font-medium text-[#044050]">20 years of experience</span> in socio-environmental projects, certification, and sustainable development. Established in 2009 as Instituto Brasileiro de Negócios Sociais.
               </p>
-              <div className="space-y-4">
+              <div className={`${breakpoints.isMobile ? 'space-y-2' : 'space-y-4'}`}>
                 <div className="flex items-center gap-3">
                   <div className="w-1 h-1 rounded-full bg-[#5FA037]"></div>
                   <p className="text-sm font-light text-gray-500">250+ socio-environmental projects executed</p>
@@ -874,23 +874,23 @@ export default function SobrePage() {
               viewport={{ once: true }}
               className="group"
             >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center flex-shrink-0 transition-transform duration-500 group-hover:scale-105 border border-gray-200/50">
+              <div className={`flex items-center gap-4 ${breakpoints.isMobile ? 'mb-4' : 'mb-6'}`}>
+                <div className={`${breakpoints.isMobile ? 'w-12 h-12' : 'w-16 h-16'} rounded-2xl bg-white flex items-center justify-center flex-shrink-0 transition-transform duration-500 group-hover:scale-105 border border-gray-200/50`}>
                   <img 
                     src="/favicon.png" 
                     alt="GreenCheck Logo" 
-                    className="w-12 h-12"
+                    className={`${breakpoints.isMobile ? 'w-8 h-8' : 'w-12 h-12'}`}
                   />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-light text-[#044050] tracking-tight">ESG Veritas Portugal</h3>
+                  <h3 className={`${breakpoints.isMobile ? 'text-xl' : 'text-2xl'} font-light text-[#044050] tracking-tight`}>ESG Veritas Portugal</h3>
                   <p className="text-xs font-light text-gray-400 tracking-wide">Est. 2024 • Lisboa</p>
                 </div>
               </div>
-              <p className="text-lg font-light text-gray-600 leading-relaxed mb-8">
+              <p className={`${breakpoints.isMobile ? 'text-base' : 'text-lg'} font-light text-gray-600 leading-relaxed ${breakpoints.isMobile ? 'mb-6' : 'mb-8'}`}>
                 The operating entity based in Lisbon, bringing <span className="font-medium text-[#5FA037]">cutting-edge technology</span> to the European market. A strategic choice combining EU market access with Portuguese innovation incentives.
               </p>
-              <div className="space-y-4">
+              <div className={`${breakpoints.isMobile ? 'space-y-2' : 'space-y-4'}`}>
                 <div className="flex items-center gap-3">
                   <div className="w-1 h-1 rounded-full bg-[#5FA037]"></div>
                   <p className="text-sm font-light text-gray-500">Direct access to European single market</p>
@@ -932,7 +932,7 @@ export default function SobrePage() {
       {/* Track Record & Impact */}
       <section className={`${sectionPadding} relative bg-white`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-20'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-20'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -947,7 +947,7 @@ export default function SobrePage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Proven impact at</span>
               <br />
@@ -956,7 +956,7 @@ export default function SobrePage() {
           </div>
 
           {/* Stats Grid */}
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2 gap-8' : 'md:grid-cols-4 gap-12'} ${breakpoints.isMobile ? 'mb-16' : 'mb-20'}`}>
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2 gap-6' : 'md:grid-cols-4 gap-12'} ${breakpoints.isMobile ? 'mb-12' : 'mb-20'}`}>
             {[
               { value: '250+', label: 'Socio-environmental projects', icon: Target },
               { value: '815K', label: 'People impacted', icon: Globe },
@@ -973,15 +973,15 @@ export default function SobrePage() {
                   viewport={{ once: true }}
                   className="text-center group"
                 >
-                  <div className="mb-6 flex justify-center">
-                    <div className="w-14 h-14 rounded-full bg-slate-50 flex items-center justify-center transition-all duration-300 group-hover:bg-[#5FA037]">
-                      <StatIcon className="w-7 h-7 text-[#5FA037] transition-colors duration-300 group-hover:text-white" />
+                  <div className={`${breakpoints.isMobile ? 'mb-4' : 'mb-6'} flex justify-center`}>
+                    <div className={`${breakpoints.isMobile ? 'w-10 h-10' : 'w-14 h-14'} rounded-full bg-slate-50 flex items-center justify-center transition-all duration-300 group-hover:bg-[#5FA037]`}>
+                      <StatIcon className={`${breakpoints.isMobile ? 'w-5 h-5' : 'w-7 h-7'} text-[#5FA037] transition-colors duration-300 group-hover:text-white`} />
                     </div>
                   </div>
-                  <div className={`${breakpoints.isMobile ? 'text-5xl' : 'text-6xl'} font-extralight text-[#044050] mb-3 tracking-tight`}>
+                  <div className={`${breakpoints.isMobile ? 'text-3xl' : 'text-6xl'} font-extralight text-[#044050] ${breakpoints.isMobile ? 'mb-2' : 'mb-3'} tracking-tight`}>
                     {stat.value}
                   </div>
-                  <p className="text-sm font-light text-gray-500 leading-relaxed">
+                  <p className={`${breakpoints.isMobile ? 'text-xs' : 'text-sm'} font-light text-gray-500 leading-relaxed`}>
                     {stat.label}
                   </p>
                 </motion.div>
@@ -1016,7 +1016,7 @@ export default function SobrePage() {
       {/* Global Presence */}
       <section className={`${sectionPadding} relative bg-slate-50`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-20'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-20'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1031,7 +1031,7 @@ export default function SobrePage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Operating across</span>
               <br />
@@ -1042,13 +1042,13 @@ export default function SobrePage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+              className={`${breakpoints.isMobile ? 'text-base' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
             >
               Strategic presence in Europe and Latin America, expanding to 8+ countries by 2031
             </motion.p>
           </div>
 
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1 gap-8' : 'md:grid-cols-2 gap-12'} mb-16`}>
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1 gap-6' : 'md:grid-cols-2 gap-12'} ${breakpoints.isMobile ? 'mb-12' : 'mb-16'}`}>
             {/* Portugal Office */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -1057,16 +1057,16 @@ export default function SobrePage() {
               viewport={{ once: true }}
               className="bg-white rounded-3xl p-8"
             >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 rounded-full bg-[#044050] flex items-center justify-center">
-                  <Globe className="w-8 h-8 text-white" />
+              <div className={`flex items-center gap-4 ${breakpoints.isMobile ? 'mb-4' : 'mb-6'}`}>
+                <div className={`${breakpoints.isMobile ? 'w-12 h-12' : 'w-16 h-16'} rounded-full bg-[#044050] flex items-center justify-center`}>
+                  <Globe className={`${breakpoints.isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-white`} />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-light text-[#044050] tracking-tight">Portugal Office</h3>
+                  <h3 className={`${breakpoints.isMobile ? 'text-xl' : 'text-2xl'} font-light text-[#044050] tracking-tight`}>Portugal Office</h3>
                   <p className="text-xs font-light text-gray-400 tracking-wide">European Headquarters</p>
                 </div>
               </div>
-              <div className="space-y-4 mb-6">
+              <div className={`${breakpoints.isMobile ? 'space-y-2' : 'space-y-4'} ${breakpoints.isMobile ? 'mb-4' : 'mb-6'}`}>
                 <div className="flex items-start gap-3">
                   <div className="w-1 h-1 rounded-full bg-[#5FA037] mt-2"></div>
                   <div>
@@ -1100,16 +1100,16 @@ export default function SobrePage() {
               viewport={{ once: true }}
               className="bg-white rounded-3xl p-8"
             >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 rounded-full bg-[#5FA037] flex items-center justify-center">
-                  <Target className="w-8 h-8 text-white" />
+              <div className={`flex items-center gap-4 ${breakpoints.isMobile ? 'mb-4' : 'mb-6'}`}>
+                <div className={`${breakpoints.isMobile ? 'w-12 h-12' : 'w-16 h-16'} rounded-full bg-[#5FA037] flex items-center justify-center`}>
+                  <Target className={`${breakpoints.isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-white`} />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-light text-[#044050] tracking-tight">Brazil Office</h3>
+                  <h3 className={`${breakpoints.isMobile ? 'text-xl' : 'text-2xl'} font-light text-[#044050] tracking-tight`}>Brazil Office</h3>
                   <p className="text-xs font-light text-gray-400 tracking-wide">Operational Hub</p>
                 </div>
               </div>
-              <div className="space-y-4 mb-6">
+              <div className={`${breakpoints.isMobile ? 'space-y-2' : 'space-y-4'} ${breakpoints.isMobile ? 'mb-4' : 'mb-6'}`}>
                 <div className="flex items-start gap-3">
                   <div className="w-1 h-1 rounded-full bg-[#5FA037] mt-2"></div>
                   <div>
@@ -1174,7 +1174,7 @@ export default function SobrePage() {
       {/* What We Do */}
       <section className={`${sectionPadding} relative bg-white`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-24'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1189,7 +1189,7 @@ export default function SobrePage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Solving the</span>
               <br />
@@ -1200,13 +1200,13 @@ export default function SobrePage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+              className={`${breakpoints.isMobile ? 'text-base' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
             >
               Traditional ESG certifications cost €45-60 per tCO₂e and take 6-12 months. We reduce costs by 40% and deliver results in 3 weeks through automation, making sustainability accessible to everyone.
             </motion.p>
           </div>
 
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1 gap-12' : breakpoints.isTablet ? 'grid-cols-2 gap-12' : 'grid-cols-4 gap-8'}`}>
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1 gap-8' : breakpoints.isTablet ? 'grid-cols-2 gap-12' : 'grid-cols-4 gap-8'}`}>
             {[
               {
                 icon: Cpu,
@@ -1239,15 +1239,15 @@ export default function SobrePage() {
                   viewport={{ once: true }}
                   className="group"
                 >
-                  <div className="mb-6 flex justify-center">
-                    <div className="w-16 h-16 rounded-full bg-[#044050] flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:bg-[#5FA037] shadow-sm">
-                      <ItemIcon className="w-8 h-8 text-white" />
+                  <div className={`${breakpoints.isMobile ? 'mb-4' : 'mb-6'} flex justify-center`}>
+                    <div className={`${breakpoints.isMobile ? 'w-12 h-12' : 'w-16 h-16'} rounded-full bg-[#044050] flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:bg-[#5FA037] shadow-sm`}>
+                      <ItemIcon className={`${breakpoints.isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-white`} />
                     </div>
                   </div>
-                  <h3 className="text-xl font-light text-[#044050] mb-3 tracking-tight text-center">
+                  <h3 className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} font-light text-[#044050] ${breakpoints.isMobile ? 'mb-2' : 'mb-3'} tracking-tight text-center`}>
                     {item.title}
                   </h3>
-                  <p className="text-base text-gray-600 font-light leading-relaxed text-center">
+                  <p className={`${breakpoints.isMobile ? 'text-sm' : 'text-base'} text-gray-600 font-light leading-relaxed text-center`}>
                     {item.description}
                   </p>
                 </motion.div>
@@ -1260,7 +1260,7 @@ export default function SobrePage() {
       {/* Competitive Advantages */}
       <section className={`${sectionPadding} relative bg-white`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-24'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1275,7 +1275,7 @@ export default function SobrePage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Simple</span>
               <br />
@@ -1286,7 +1286,7 @@ export default function SobrePage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+              className={`${breakpoints.isMobile ? 'text-base' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
             >
               From document upload to blockchain certificate in just 3 weeks
             </motion.p>
@@ -1310,18 +1310,18 @@ export default function SobrePage() {
                     <div className="hidden lg:block absolute top-6 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-[#5FA037] to-transparent opacity-30" />
                   )}
                   
-                  <div className="mb-4 flex justify-center relative z-10">
-                    <div className="w-12 h-12 rounded-full bg-[#044050] flex items-center justify-center transition-all duration-300 group-hover:bg-[#5FA037] shadow-lg">
-                      <AdvantageIcon className="w-6 h-6 text-white" />
+                  <div className={`${breakpoints.isMobile ? 'mb-3' : 'mb-4'} flex justify-center relative z-10`}>
+                    <div className={`${breakpoints.isMobile ? 'w-10 h-10' : 'w-12 h-12'} rounded-full bg-[#044050] flex items-center justify-center transition-all duration-300 group-hover:bg-[#5FA037] shadow-lg`}>
+                      <AdvantageIcon className={`${breakpoints.isMobile ? 'w-5 h-5' : 'w-6 h-6'} text-white`} />
                     </div>
                   </div>
-                  <div className={`${breakpoints.isXs ? 'text-xl' : 'text-2xl'} font-light text-[#5FA037] mb-2`}>
+                  <div className={`${breakpoints.isMobile ? 'text-lg' : breakpoints.isXs ? 'text-xl' : 'text-2xl'} font-light text-[#5FA037] ${breakpoints.isMobile ? 'mb-1' : 'mb-2'}`}>
                     {advantage.value}
                   </div>
-                  <h3 className={`${breakpoints.isXs ? 'text-sm' : 'text-base'} font-medium text-[#044050] mb-2`}>
+                  <h3 className={`${breakpoints.isMobile ? 'text-sm' : breakpoints.isXs ? 'text-sm' : 'text-base'} font-medium text-[#044050] ${breakpoints.isMobile ? 'mb-1' : 'mb-2'}`}>
                     {advantage.label}
                   </h3>
-                  <p className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} text-gray-600 font-light`}>
+                  <p className={`${breakpoints.isMobile ? 'text-xs' : breakpoints.isXs ? 'text-xs' : 'text-sm'} text-gray-600 font-light`}>
                     {advantage.description}
                   </p>
                 </motion.div>
@@ -1334,7 +1334,7 @@ export default function SobrePage() {
       {/* Strategic Partnerships */}
       <section className={`${sectionPadding} relative bg-white`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-20'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-20'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1349,7 +1349,7 @@ export default function SobrePage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Backed by</span>
               <br />
@@ -1360,13 +1360,13 @@ export default function SobrePage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+              className={`${breakpoints.isMobile ? 'text-base' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
             >
               Our exclusive partnerships ensure every certification is scientifically validated and every offset project delivers real, measurable impact
             </motion.p>
           </div>
 
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1 gap-8' : 'md:grid-cols-2 gap-12'} mb-16`}>
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1 gap-6' : 'md:grid-cols-2 gap-12'} ${breakpoints.isMobile ? 'mb-12' : 'mb-16'}`}>
             {/* Plantarum Botanical Garden */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -1375,19 +1375,19 @@ export default function SobrePage() {
               viewport={{ once: true }}
               className="group"
             >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 rounded-full bg-[#5FA037] flex items-center justify-center flex-shrink-0 transition-transform duration-500 group-hover:scale-105">
-                  <Leaf className="w-8 h-8 text-white" />
+              <div className={`flex items-center gap-4 ${breakpoints.isMobile ? 'mb-4' : 'mb-6'}`}>
+                <div className={`${breakpoints.isMobile ? 'w-12 h-12' : 'w-16 h-16'} rounded-full bg-[#5FA037] flex items-center justify-center flex-shrink-0 transition-transform duration-500 group-hover:scale-105`}>
+                  <Leaf className={`${breakpoints.isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-white`} />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-light text-[#044050] tracking-tight">Plantarum</h3>
+                  <h3 className={`${breakpoints.isMobile ? 'text-xl' : 'text-2xl'} font-light text-[#044050] tracking-tight`}>Plantarum</h3>
                   <p className="text-xs font-light text-gray-400 tracking-wide">Botanical Garden • Founded 1987</p>
                 </div>
               </div>
-              <p className="text-lg font-light text-gray-600 leading-relaxed mb-8">
+              <p className={`${breakpoints.isMobile ? 'text-base' : 'text-lg'} font-light text-gray-600 leading-relaxed ${breakpoints.isMobile ? 'mb-6' : 'mb-8'}`}>
                 Scientific validation partner for ecological restoration and biodiversity conservation. Provides rigorous validation of carbon sequestration calculations and ecosystem services.
               </p>
-              <div className="space-y-4">
+              <div className={`${breakpoints.isMobile ? 'space-y-2' : 'space-y-4'}`}>
                 <div className="flex items-center gap-3">
                   <div className="w-1 h-1 rounded-full bg-[#5FA037]"></div>
                   <p className="text-sm font-light text-gray-500">Real-time validation through secure institutional APIs</p>
@@ -1415,19 +1415,19 @@ export default function SobrePage() {
               viewport={{ once: true }}
               className="group"
             >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 rounded-full bg-[#044050] flex items-center justify-center flex-shrink-0 transition-transform duration-500 group-hover:scale-105">
-                  <Target className="w-8 h-8 text-white" />
+              <div className={`flex items-center gap-4 ${breakpoints.isMobile ? 'mb-4' : 'mb-6'}`}>
+                <div className={`${breakpoints.isMobile ? 'w-12 h-12' : 'w-16 h-16'} rounded-full bg-[#044050] flex items-center justify-center flex-shrink-0 transition-transform duration-500 group-hover:scale-105`}>
+                  <Target className={`${breakpoints.isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-white`} />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-light text-[#044050] tracking-tight">EcoArts Amazônia</h3>
+                  <h3 className={`${breakpoints.isMobile ? 'text-xl' : 'text-2xl'} font-light text-[#044050] tracking-tight`}>EcoArts Amazônia</h3>
                   <p className="text-xs font-light text-gray-400 tracking-wide">Carbon Offset Projects • Amazon Basin</p>
                 </div>
               </div>
-              <p className="text-lg font-light text-gray-600 leading-relaxed mb-8">
+              <p className={`${breakpoints.isMobile ? 'text-base' : 'text-lg'} font-light text-gray-600 leading-relaxed ${breakpoints.isMobile ? 'mb-6' : 'mb-8'}`}>
                 Operational partner for carbon offset implementation. Specializes in territorial implementation, community engagement, and sociocultural co-benefits in Amazon reforestation projects.
               </p>
-              <div className="space-y-4">
+              <div className={`${breakpoints.isMobile ? 'space-y-2' : 'space-y-4'}`}>
                 <div className="flex items-center gap-3">
                   <div className="w-1 h-1 rounded-full bg-[#5FA037]"></div>
                   <p className="text-sm font-light text-gray-500">Direct implementation of reforestation projects</p>
@@ -1682,7 +1682,7 @@ export default function SobrePage() {
       {/* Recognition & Certifications */}
       <section className={`${sectionPadding} relative bg-slate-50`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-20'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-20'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1697,7 +1697,7 @@ export default function SobrePage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Certified</span>
               <br />
@@ -1705,7 +1705,7 @@ export default function SobrePage() {
             </motion.h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2 gap-6' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'}`}>
             {[
               {
                 icon: Award,
@@ -1742,14 +1742,14 @@ export default function SobrePage() {
                   viewport={{ once: true }}
                   className="text-center"
                 >
-                  <div className="mb-6 flex justify-center">
-                    <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-sm">
-                      <CertIcon className="w-8 h-8 text-[#5FA037]" />
+                  <div className={`${breakpoints.isMobile ? 'mb-4' : 'mb-6'} flex justify-center`}>
+                    <div className={`${breakpoints.isMobile ? 'w-12 h-12' : 'w-16 h-16'} rounded-full bg-white flex items-center justify-center shadow-sm`}>
+                      <CertIcon className={`${breakpoints.isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-[#5FA037]`} />
                     </div>
                   </div>
-                  <h3 className="text-xl font-light text-[#044050] mb-1 tracking-tight">{cert.title}</h3>
-                  <p className="text-xs font-light text-gray-400 mb-3 tracking-wide">{cert.subtitle}</p>
-                  <p className="text-sm font-light text-gray-600 leading-relaxed">{cert.description}</p>
+                  <h3 className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} font-light text-[#044050] ${breakpoints.isMobile ? 'mb-1' : 'mb-1'} tracking-tight`}>{cert.title}</h3>
+                  <p className={`${breakpoints.isMobile ? 'text-xs' : 'text-xs'} font-light text-gray-400 ${breakpoints.isMobile ? 'mb-2' : 'mb-3'} tracking-wide`}>{cert.subtitle}</p>
+                  <p className={`${breakpoints.isMobile ? 'text-xs' : 'text-sm'} font-light text-gray-600 leading-relaxed`}>{cert.description}</p>
                 </motion.div>
               )
             })}
@@ -1760,7 +1760,7 @@ export default function SobrePage() {
       {/* Innovation Lab - Enhanced with Flags */}
       <section className={`${sectionPadding} relative bg-white`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-20'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-20'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1775,7 +1775,7 @@ export default function SobrePage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Pioneering</span>
               <br />
@@ -1786,13 +1786,13 @@ export default function SobrePage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+              className={`${breakpoints.isMobile ? 'text-base' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
             >
               Dedicated research centers driving innovation in AI, blockchain, and sustainability science
             </motion.p>
           </div>
 
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : 'md:grid-cols-3'} ${breakpoints.isMobile ? 'gap-8' : 'gap-12'}`}>
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : 'md:grid-cols-3'} ${breakpoints.isMobile ? 'gap-6' : 'gap-12'}`}>
             {[
               {
                 city: 'Porto',
@@ -1838,32 +1838,32 @@ export default function SobrePage() {
                   {/* Header with Flag and Location */}
                   <div className="flex items-start justify-between mb-6">
                     <div className="flex-1">
-                      {/* Flag Circle */}
-                      <div className={`w-16 h-16 ${lab.color} rounded-full flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110 shadow-md`}>
-                        <span className="text-3xl">{lab.flag}</span>
-                      </div>
-                      {/* Location */}
-                      <div className="mb-3">
-                        <p className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-1">{lab.city}</p>
-                        <p className="text-xs font-light text-gray-400 tracking-wide">{lab.country}</p>
-                      </div>
+                  {/* Flag Circle */}
+                  <div className={`${breakpoints.isMobile ? 'w-12 h-12' : 'w-16 h-16'} ${lab.color} rounded-full flex items-center justify-center ${breakpoints.isMobile ? 'mb-3' : 'mb-4'} transition-all duration-300 group-hover:scale-110 shadow-md`}>
+                    <span className={`${breakpoints.isMobile ? 'text-2xl' : 'text-3xl'}`}>{lab.flag}</span>
+                  </div>
+                  {/* Location */}
+                  <div className={`${breakpoints.isMobile ? 'mb-2' : 'mb-3'}`}>
+                    <p className={`${breakpoints.isMobile ? 'text-xs' : 'text-sm'} font-medium text-gray-400 uppercase tracking-wider ${breakpoints.isMobile ? 'mb-1' : 'mb-1'}`}>{lab.city}</p>
+                    <p className={`${breakpoints.isMobile ? 'text-xs' : 'text-xs'} font-light text-gray-400 tracking-wide`}>{lab.country}</p>
+                  </div>
                     </div>
                     {/* Decorative dot indicator */}
                     <div className="w-2 h-2 rounded-full bg-[#5FA037] animate-pulse"></div>
                   </div>
 
                   {/* Title and Focus */}
-                  <div className="mb-6 pb-6 border-b border-gray-100">
-                    <h3 className="text-2xl font-light text-[#044050] mb-2 tracking-tight">{lab.title}</h3>
-                    <p className="text-sm font-medium text-[#5FA037]">{lab.focus}</p>
+                  <div className={`${breakpoints.isMobile ? 'mb-4 pb-4' : 'mb-6 pb-6'} border-b border-gray-100`}>
+                    <h3 className={`${breakpoints.isMobile ? 'text-xl' : 'text-2xl'} font-light text-[#044050] ${breakpoints.isMobile ? 'mb-1' : 'mb-2'} tracking-tight`}>{lab.title}</h3>
+                    <p className={`${breakpoints.isMobile ? 'text-xs' : 'text-sm'} font-medium text-[#5FA037]`}>{lab.focus}</p>
                   </div>
 
                   {/* Areas List */}
-                  <div className="space-y-3">
+                  <div className={`${breakpoints.isMobile ? 'space-y-2' : 'space-y-3'}`}>
                     {lab.areas.map((area, i) => (
                       <div key={i} className="flex items-start gap-3">
                         <div className="w-1.5 h-1.5 rounded-full bg-[#5FA037] mt-1.5 flex-shrink-0"></div>
-                        <p className="text-sm font-light text-gray-600 leading-relaxed">{area}</p>
+                        <p className={`${breakpoints.isMobile ? 'text-xs' : 'text-sm'} font-light text-gray-600 leading-relaxed`}>{area}</p>
                       </div>
                     ))}
                   </div>
@@ -1898,7 +1898,7 @@ export default function SobrePage() {
       {/* Social Impact & SDGs */}
       <section className={`${sectionPadding} relative bg-slate-50`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-20'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-20'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1913,7 +1913,7 @@ export default function SobrePage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Contributing to</span>
               <br />
@@ -1924,14 +1924,14 @@ export default function SobrePage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed mb-12`}
+              className={`${breakpoints.isMobile ? 'text-base' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed ${breakpoints.isMobile ? 'mb-8' : 'mb-12'}`}
             >
               Aligned with 7 United Nations Sustainable Development Goals
             </motion.p>
           </div>
 
           {/* Impact Metrics */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2 gap-6' : 'grid-cols-2 md:grid-cols-4 gap-8'} ${breakpoints.isMobile ? 'mb-12' : 'mb-16'}`}>
             {[
               { value: '2M+', label: 'tCO₂e Target by 2031', icon: Leaf },
               { value: '8+', label: 'Countries Presence', icon: Globe },
@@ -1948,13 +1948,13 @@ export default function SobrePage() {
                   viewport={{ once: true }}
                   className="text-center group"
                 >
-                  <div className="mb-4 flex justify-center">
-                    <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm">
-                      <MetricIcon className="w-6 h-6 text-[#5FA037]" />
+                  <div className={`${breakpoints.isMobile ? 'mb-3' : 'mb-4'} flex justify-center`}>
+                    <div className={`${breakpoints.isMobile ? 'w-10 h-10' : 'w-12 h-12'} rounded-full bg-white flex items-center justify-center shadow-sm`}>
+                      <MetricIcon className={`${breakpoints.isMobile ? 'w-5 h-5' : 'w-6 h-6'} text-[#5FA037]`} />
                     </div>
                   </div>
-                  <div className="text-4xl md:text-5xl font-extralight text-[#044050] mb-2 tracking-tight">{metric.value}</div>
-                  <p className="text-xs font-light text-gray-500">{metric.label}</p>
+                  <div className={`${breakpoints.isMobile ? 'text-2xl' : 'text-4xl md:text-5xl'} font-extralight text-[#044050] ${breakpoints.isMobile ? 'mb-1' : 'mb-2'} tracking-tight`}>{metric.value}</div>
+                  <p className={`${breakpoints.isMobile ? 'text-xs' : 'text-xs'} font-light text-gray-500`}>{metric.label}</p>
                 </motion.div>
               )
             })}
@@ -1992,7 +1992,7 @@ export default function SobrePage() {
             </motion.p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4'} gap-6`}>
             {[
               { 
                 number: '13', 
@@ -2033,12 +2033,12 @@ export default function SobrePage() {
                   viewport={{ once: true }}
                   className="group"
                 >
-                  <div className={`${sdg.color} rounded-3xl p-10 text-white flex flex-col items-center justify-center aspect-square transition-all duration-300 hover:scale-105 hover:shadow-xl`}>
-                    <SdgIcon className="w-16 h-16 mb-6 opacity-90" />
-                    <span className="text-7xl font-extralight mb-4">{sdg.number}</span>
-                    <span className="text-xs font-light tracking-wider opacity-90 uppercase">{sdg.subtitle}</span>
+                  <div className={`${sdg.color} rounded-3xl ${breakpoints.isMobile ? 'p-6' : 'p-10'} text-white flex flex-col items-center justify-center aspect-square transition-all duration-300 hover:scale-105 hover:shadow-xl`}>
+                    <SdgIcon className={`${breakpoints.isMobile ? 'w-12 h-12 mb-4' : 'w-16 h-16 mb-6'} opacity-90`} />
+                    <span className={`${breakpoints.isMobile ? 'text-5xl' : 'text-7xl'} font-extralight ${breakpoints.isMobile ? 'mb-2' : 'mb-4'}`}>{sdg.number}</span>
+                    <span className={`${breakpoints.isMobile ? 'text-xs' : 'text-xs'} font-light tracking-wider opacity-90 uppercase`}>{sdg.subtitle}</span>
                   </div>
-                  <p className="text-center text-sm font-light text-gray-600 mt-4">{sdg.name}</p>
+                  <p className={`text-center ${breakpoints.isMobile ? 'text-xs' : 'text-sm'} font-light text-gray-600 ${breakpoints.isMobile ? 'mt-2' : 'mt-4'}`}>{sdg.name}</p>
                 </motion.div>
               )
             })}
@@ -2057,7 +2057,7 @@ export default function SobrePage() {
       {/* Transparency & Commitment */}
       <section className={`${sectionPadding} relative bg-white`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-20'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-20'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -2072,7 +2072,7 @@ export default function SobrePage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Built on</span>
               <br />
@@ -2083,7 +2083,7 @@ export default function SobrePage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed mb-12`}
+              className={`${breakpoints.isMobile ? 'text-base' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed ${breakpoints.isMobile ? 'mb-8' : 'mb-12'}`}
             >
               Our commitment to transparency isn't just a value — it's embedded in every layer of our technology and governance
             </motion.p>
@@ -2095,11 +2095,11 @@ export default function SobrePage() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="bg-[#044050] rounded-3xl p-10 mb-12 text-white text-center"
+            className={`bg-[#044050] rounded-3xl ${breakpoints.isMobile ? 'p-6 mb-8' : 'p-10 mb-12'} text-white text-center`}
           >
-            <Shield className="w-16 h-16 mx-auto mb-6 text-[#5FA037]" />
-            <h3 className="text-2xl font-light mb-4 tracking-tight">Anti-Greenwashing Pledge</h3>
-            <p className="text-base font-light opacity-90 leading-relaxed max-w-3xl mx-auto">
+            <Shield className={`${breakpoints.isMobile ? 'w-12 h-12' : 'w-16 h-16'} mx-auto ${breakpoints.isMobile ? 'mb-4' : 'mb-6'} text-[#5FA037]`} />
+            <h3 className={`${breakpoints.isMobile ? 'text-xl' : 'text-2xl'} font-light ${breakpoints.isMobile ? 'mb-3' : 'mb-4'} tracking-tight`}>Anti-Greenwashing Pledge</h3>
+            <p className={`${breakpoints.isMobile ? 'text-sm' : 'text-base'} font-light opacity-90 leading-relaxed max-w-3xl mx-auto`}>
               We pledge to combat greenwashing through scientific validation, blockchain transparency, and independent audits. 
               Every certificate we issue is backed by verifiable data and third-party scientific institutions.
             </p>
@@ -2143,18 +2143,18 @@ export default function SobrePage() {
                   viewport={{ once: true }}
                   className="group"
                 >
-                  <div className="mb-6 flex justify-center">
-                    <div className="w-14 h-14 rounded-full bg-slate-50 flex items-center justify-center shadow-sm transition-all duration-300 group-hover:bg-[#5FA037]">
-                      <ItemIcon className="w-7 h-7 text-[#5FA037] transition-colors duration-300 group-hover:text-white" />
+                  <div className={`${breakpoints.isMobile ? 'mb-4' : 'mb-6'} flex justify-center`}>
+                    <div className={`${breakpoints.isMobile ? 'w-12 h-12' : 'w-14 h-14'} rounded-full bg-slate-50 flex items-center justify-center shadow-sm transition-all duration-300 group-hover:bg-[#5FA037]`}>
+                      <ItemIcon className={`${breakpoints.isMobile ? 'w-6 h-6' : 'w-7 h-7'} text-[#5FA037] transition-colors duration-300 group-hover:text-white`} />
                     </div>
                   </div>
-                  <h3 className="text-xl font-light text-[#044050] mb-2 tracking-tight text-center">{item.title}</h3>
-                  <p className="text-sm font-light text-gray-500 mb-4 text-center">{item.description}</p>
-                  <div className="space-y-2">
+                  <h3 className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} font-light text-[#044050] ${breakpoints.isMobile ? 'mb-1' : 'mb-2'} tracking-tight text-center`}>{item.title}</h3>
+                  <p className={`${breakpoints.isMobile ? 'text-xs' : 'text-sm'} font-light text-gray-500 ${breakpoints.isMobile ? 'mb-3' : 'mb-4'} text-center`}>{item.description}</p>
+                  <div className={`${breakpoints.isMobile ? 'space-y-1' : 'space-y-2'}`}>
                     {item.items.map((subitem, i) => (
                       <div key={i} className="flex items-center gap-2 justify-center">
                         <div className="w-1 h-1 rounded-full bg-[#5FA037]"></div>
-                        <p className="text-xs font-light text-gray-500">{subitem}</p>
+                        <p className={`${breakpoints.isMobile ? 'text-xs' : 'text-xs'} font-light text-gray-500`}>{subitem}</p>
                       </div>
                     ))}
                   </div>
