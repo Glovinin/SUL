@@ -18,40 +18,6 @@ export function Notification({ show, onClose, title = "Under Development", messa
     
     if (show) {
       console.log('🔔 Notificação aparecendo, navbar encontrado:', !!navbar)
-      // Play notification sound - usando som da internet mais confiável
-      const playNotificationSound = async () => {
-        try {
-          // Som de notificação suave e moderno
-          const audio = new Audio('https://www.soundjay.com/misc/sounds/bell-ringing-05.wav')
-          audio.volume = 0.4
-          audio.crossOrigin = 'anonymous'
-          await audio.play()
-        } catch (error) {
-          // Fallback: som sintético usando Web Audio API
-          try {
-            const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
-            const oscillator = audioContext.createOscillator()
-            const gainNode = audioContext.createGain()
-            
-            oscillator.connect(gainNode)
-            gainNode.connect(audioContext.destination)
-            
-            // Som tipo "ding" suave
-            oscillator.frequency.setValueAtTime(800, audioContext.currentTime)
-            oscillator.frequency.setValueAtTime(600, audioContext.currentTime + 0.1)
-            
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime)
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3)
-            
-            oscillator.start(audioContext.currentTime)
-            oscillator.stop(audioContext.currentTime + 0.3)
-          } catch (fallbackError) {
-            console.log('🔇 Notification sound not available')
-          }
-        }
-      }
-      
-      playNotificationSound()
 
       // Animar navbar para cima quando notificação aparecer
       if (navbar) {
