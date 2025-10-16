@@ -533,7 +533,7 @@ export default function InvestidoresPage() {
         )}
         
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-20'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-20'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -548,36 +548,31 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
-              <span className="font-extralight text-[#044050]">Series A Round</span>
+              <span className="font-extralight text-[#044050]">Series Seed Round</span>
               <br />
-              <span className="font-normal text-[#5FA037]">€2.5M Investment</span>
+              <span className="font-normal text-[#5FA037]">€1M Investment</span>
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-3xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+              className={`${breakpoints.isMobile ? 'text-base' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-3xl'} mx-auto text-gray-600 font-light leading-relaxed`}
             >
-              Post-money valuation: €19M
+              Initial funding to launch MVP and validate market
               <br />
               <span className="text-[#5FA037] font-medium">Target ROI: 7-8x in 5 years (50%+ IRR)</span>
             </motion.p>
           </div>
 
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : breakpoints.isTablet ? 'grid-cols-2' : 'grid-cols-4'} ${breakpoints.isMobile ? 'gap-6' : 'gap-8'} mb-16`}>
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : breakpoints.isTablet ? 'grid-cols-2' : 'grid-cols-3'} ${breakpoints.isMobile ? 'gap-6' : 'gap-8'} mb-16`}>
             {[
               {
                 label: "Investment",
-                value: "€2.5M",
-                detail: "Series A Round"
-              },
-              {
-                label: "Valuation",
-                value: "€19M",
-                detail: "Post-money (2025)"
+                value: "€1M",
+                detail: "Series Seed Round"
               },
               {
                 label: "Target ROI",
@@ -596,11 +591,11 @@ export default function InvestidoresPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="group bg-slate-50/50 backdrop-blur-sm rounded-3xl p-8 border border-gray-200/50 text-center hover:border-[#044050]/20 transition-all duration-500 hover:shadow-lg"
+                className={`group bg-slate-50/50 backdrop-blur-sm rounded-3xl ${breakpoints.isMobile ? 'p-6' : 'p-8'} border border-gray-200/50 text-center hover:border-[#044050]/20 transition-all duration-500 hover:shadow-lg`}
               >
-                <p className="text-xs text-gray-500 font-medium uppercase tracking-[0.15em] mb-4">{item.label}</p>
-                <p className="text-5xl font-extralight text-[#044050] mb-2 tracking-tight">{item.value}</p>
-                <p className="text-sm text-gray-600 font-light">{item.detail}</p>
+                <p className={`${breakpoints.isMobile ? 'text-xs' : 'text-xs'} text-gray-500 font-medium uppercase tracking-[0.15em] ${breakpoints.isMobile ? 'mb-3' : 'mb-4'}`}>{item.label}</p>
+                <p className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl'} font-extralight text-[#044050] ${breakpoints.isMobile ? 'mb-1' : 'mb-2'} tracking-tight`}>{item.value}</p>
+                <p className={`${breakpoints.isMobile ? 'text-xs' : 'text-sm'} text-gray-600 font-light`}>{item.detail}</p>
               </motion.div>
             ))}
           </div>
@@ -665,7 +660,7 @@ export default function InvestidoresPage() {
       {/* The Problem - NEW SECTION */}
       <section className={`${sectionPadding} relative bg-white`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-24'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -680,7 +675,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Barriers to</span>
               <br />
@@ -691,7 +686,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-3xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+              className={`${breakpoints.isMobile ? 'text-base' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-3xl'} mx-auto text-gray-600 font-light leading-relaxed`}
             >
               Critical challenges preventing SMEs from achieving sustainable compliance
             </motion.p>
@@ -735,26 +730,26 @@ export default function InvestidoresPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="group relative bg-slate-50/50 backdrop-blur-sm rounded-3xl p-8 border border-gray-200/50 hover:border-[#044050]/20 transition-all duration-500 hover:shadow-lg"
+                className={`group relative bg-slate-50/50 backdrop-blur-sm rounded-3xl ${breakpoints.isMobile ? 'p-6' : 'p-8'} border border-gray-200/50 hover:border-[#044050]/20 transition-all duration-500 hover:shadow-lg`}
               >
                 {/* Title */}
-                <h3 className="text-xl font-medium text-[#044050] mb-6 tracking-tight">{problem.title}</h3>
+                <h3 className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} font-medium text-[#044050] ${breakpoints.isMobile ? 'mb-4' : 'mb-6'} tracking-tight`}>{problem.title}</h3>
                 
                 {/* Large Stat */}
-                <div className="mb-6">
+                <div className={`${breakpoints.isMobile ? 'mb-4' : 'mb-6'}`}>
                   <div className="flex items-baseline gap-2 mb-1">
-                    <span className="text-5xl font-extralight text-[#5FA037] tracking-tight">{problem.stat}</span>
+                    <span className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl'} font-extralight text-[#5FA037] tracking-tight`}>{problem.stat}</span>
                   </div>
-                  <p className="text-sm text-gray-500 font-light tracking-wide">{problem.unit}</p>
+                  <p className={`${breakpoints.isMobile ? 'text-xs' : 'text-sm'} text-gray-500 font-light tracking-wide`}>{problem.unit}</p>
                 </div>
 
                 {/* Description */}
-                <p className="text-base text-gray-700 font-light leading-relaxed mb-4">
+                <p className={`${breakpoints.isMobile ? 'text-sm' : 'text-base'} text-gray-700 font-light leading-relaxed ${breakpoints.isMobile ? 'mb-3' : 'mb-4'}`}>
                   {problem.description}
                 </p>
                 
                 {/* Impact - subtle */}
-                <p className="text-sm text-gray-500 font-light italic leading-relaxed">
+                <p className={`${breakpoints.isMobile ? 'text-xs' : 'text-sm'} text-gray-500 font-light italic leading-relaxed`}>
                   {problem.impact}
                 </p>
               </motion.div>
@@ -804,7 +799,7 @@ export default function InvestidoresPage() {
       {/* Market Opportunity */}
       <section className={`${sectionPadding} relative bg-white`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-24'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -819,7 +814,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Massive market,</span>{' '}
               <span className="font-normal text-[#5FA037]">perfect timing</span>
@@ -829,7 +824,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+              className={`${breakpoints.isMobile ? 'text-base' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
             >
               CSRD mandate creates unprecedented demand for automated ESG certification
             </motion.p>
@@ -870,18 +865,18 @@ export default function InvestidoresPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="group text-center bg-slate-50/50 backdrop-blur-sm rounded-3xl p-8 border border-gray-200/50 hover:border-[#044050]/20 transition-all duration-500 hover:shadow-lg"
-                >
-                  <div className="mb-6 flex justify-center">
-                    <div className="w-12 h-12 rounded-2xl bg-[#044050] flex items-center justify-center transition-all duration-500 group-hover:bg-[#5FA037]">
-                      <ItemIcon className="w-6 h-6 text-white" />
+                className={`group text-center bg-slate-50/50 backdrop-blur-sm rounded-3xl ${breakpoints.isMobile ? 'p-6' : 'p-8'} border border-gray-200/50 hover:border-[#044050]/20 transition-all duration-500 hover:shadow-lg`}
+              >
+                  <div className={`${breakpoints.isMobile ? 'mb-4' : 'mb-6'} flex justify-center`}>
+                    <div className={`${breakpoints.isMobile ? 'w-10 h-10' : 'w-12 h-12'} rounded-2xl bg-[#044050] flex items-center justify-center transition-all duration-500 group-hover:bg-[#5FA037]`}>
+                      <ItemIcon className={`${breakpoints.isMobile ? 'w-5 h-5' : 'w-6 h-6'} text-white`} />
                     </div>
                   </div>
-                  <div className="text-5xl font-extralight text-[#044050] mb-3 tracking-tight">{item.value}</div>
-                  <h3 className="text-base font-medium text-[#044050] mb-3 tracking-tight">
+                  <div className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl'} font-extralight text-[#044050] ${breakpoints.isMobile ? 'mb-2' : 'mb-3'} tracking-tight`}>{item.value}</div>
+                  <h3 className={`${breakpoints.isMobile ? 'text-sm' : 'text-base'} font-medium text-[#044050] ${breakpoints.isMobile ? 'mb-2' : 'mb-3'} tracking-tight`}>
                     {item.label}
                   </h3>
-                  <p className="text-sm text-gray-600 font-light leading-relaxed">
+                  <p className={`${breakpoints.isMobile ? 'text-xs' : 'text-sm'} text-gray-600 font-light leading-relaxed`}>
                     {item.description}
                   </p>
                 </motion.div>
@@ -894,7 +889,7 @@ export default function InvestidoresPage() {
       {/* What We Do */}
       <section className={`${sectionPadding} relative bg-slate-50`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-24'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -909,7 +904,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Sustainability</span>
               <br />
@@ -920,7 +915,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+              className={`${breakpoints.isMobile ? 'text-base' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
             >
               Integrated platform for ESG certification and carbon neutralization
             </motion.p>
@@ -957,17 +952,17 @@ export default function InvestidoresPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="group text-center bg-white/50 backdrop-blur-sm rounded-3xl p-8 border border-gray-200/50 hover:border-[#044050]/20 transition-all duration-500 hover:shadow-lg"
-                >
-                  <div className="mb-6 flex justify-center">
-                    <div className="w-12 h-12 rounded-2xl bg-[#044050] flex items-center justify-center transition-all duration-500 group-hover:bg-[#5FA037]">
-                      <ItemIcon className="w-6 h-6 text-white" />
+                className={`group text-center bg-white/50 backdrop-blur-sm rounded-3xl ${breakpoints.isMobile ? 'p-6' : 'p-8'} border border-gray-200/50 hover:border-[#044050]/20 transition-all duration-500 hover:shadow-lg`}
+              >
+                  <div className={`${breakpoints.isMobile ? 'mb-4' : 'mb-6'} flex justify-center`}>
+                    <div className={`${breakpoints.isMobile ? 'w-10 h-10' : 'w-12 h-12'} rounded-2xl bg-[#044050] flex items-center justify-center transition-all duration-500 group-hover:bg-[#5FA037]`}>
+                      <ItemIcon className={`${breakpoints.isMobile ? 'w-5 h-5' : 'w-6 h-6'} text-white`} />
                     </div>
                   </div>
-                  <h3 className="text-base font-medium text-[#044050] mb-3 tracking-tight">
+                  <h3 className={`${breakpoints.isMobile ? 'text-sm' : 'text-base'} font-medium text-[#044050] ${breakpoints.isMobile ? 'mb-2' : 'mb-3'} tracking-tight`}>
                     {item.title}
                   </h3>
-                  <p className="text-sm text-gray-600 font-light leading-relaxed">
+                  <p className={`${breakpoints.isMobile ? 'text-xs' : 'text-sm'} text-gray-600 font-light leading-relaxed`}>
                     {item.description}
                   </p>
                 </motion.div>
@@ -980,7 +975,7 @@ export default function InvestidoresPage() {
       {/* Target Market */}
       <section className={`${sectionPadding} relative bg-white`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-24'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -995,7 +990,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Our audience,</span>{' '}
               <span className="font-normal text-[#5FA037]">our impact</span>
@@ -1005,7 +1000,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+              className={`${breakpoints.isMobile ? 'text-base' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
             >
               We serve those who want to lead the transition to a greener, more transparent economy
             </motion.p>
@@ -1041,16 +1036,16 @@ export default function InvestidoresPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="group bg-white/50 backdrop-blur-sm rounded-3xl p-8 border border-gray-200/50 text-center hover:border-[#044050]/20 transition-all duration-500 hover:shadow-lg"
+                className={`group bg-white/50 backdrop-blur-sm rounded-3xl ${breakpoints.isMobile ? 'p-6' : 'p-8'} border border-gray-200/50 text-center hover:border-[#044050]/20 transition-all duration-500 hover:shadow-lg`}
               >
-                <h3 className="text-xl font-medium text-[#044050] mb-8 tracking-tight">{item.title}</h3>
+                <h3 className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} font-medium text-[#044050] ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight`}>{item.title}</h3>
                 
-                <div className="mb-6">
-                  <p className="text-5xl font-extralight text-[#044050] mb-1 tracking-tight">{item.number}</p>
-                  <p className="text-sm text-gray-500 font-light">{item.subtitle}</p>
+                <div className={`${breakpoints.isMobile ? 'mb-4' : 'mb-6'}`}>
+                  <p className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl'} font-extralight text-[#044050] mb-1 tracking-tight`}>{item.number}</p>
+                  <p className={`${breakpoints.isMobile ? 'text-xs' : 'text-sm'} text-gray-500 font-light`}>{item.subtitle}</p>
                 </div>
                 
-                <p className="text-sm text-gray-600 font-light leading-relaxed">{item.description}</p>
+                <p className={`${breakpoints.isMobile ? 'text-xs' : 'text-sm'} text-gray-600 font-light leading-relaxed`}>{item.description}</p>
               </motion.div>
             ))}
           </div>
@@ -1178,7 +1173,7 @@ export default function InvestidoresPage() {
       {/* Technical Deep-Dive - NEW SECTION */}
       <section className={`${sectionPadding} relative bg-white`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-24'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1193,7 +1188,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Enterprise-grade</span>
               <br />
@@ -1204,7 +1199,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-3xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+              className={`${breakpoints.isMobile ? 'text-base' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-3xl'} mx-auto text-gray-600 font-light leading-relaxed`}
             >
               Scalable, secure, and future-proof infrastructure built for global deployment
             </motion.p>
@@ -1451,7 +1446,7 @@ export default function InvestidoresPage() {
       {/* Competitive Advantages */}
       <section className={`${sectionPadding} relative bg-slate-50`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-24'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1466,7 +1461,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Competitive</span>
               <br />
@@ -1477,7 +1472,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+              className={`${breakpoints.isMobile ? 'text-base' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
             >
               Our solution revolutionizes the market with unique and measurable benefits
             </motion.p>
@@ -1634,7 +1629,7 @@ export default function InvestidoresPage() {
       {/* Go-to-Market Strategy - NEW SECTION */}
       <section className={`${sectionPadding} relative bg-white`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-24'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1649,7 +1644,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Phased market</span>
               <br />
@@ -1828,7 +1823,7 @@ export default function InvestidoresPage() {
       {/* Revenue Streams */}
       <section className={`${sectionPadding} relative bg-slate-50`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-24'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1843,7 +1838,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Multiple</span>
               <br />
@@ -1908,7 +1903,7 @@ export default function InvestidoresPage() {
       {/* Financial Projections - NEW SECTION */}
       <section className={`${sectionPadding} relative bg-white`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-24'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1923,7 +1918,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Path to</span>
               <br />
@@ -1934,7 +1929,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+              className={`${breakpoints.isMobile ? 'text-base' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
             >
               Rapid growth trajectory with proven business model and strong unit economics
             </motion.p>
@@ -2106,7 +2101,7 @@ export default function InvestidoresPage() {
       {/* Risk Analysis & Mitigation - NEW SECTION */}
       <section className={`${sectionPadding} relative bg-slate-50`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-24'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -2121,7 +2116,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Proactive</span>
               <br />
@@ -2132,7 +2127,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+              className={`${breakpoints.isMobile ? 'text-base' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
             >
               Comprehensive risk management with clear contingency plans
             </motion.p>
@@ -2240,7 +2235,7 @@ export default function InvestidoresPage() {
       {/* Traction */}
       <section className={`${sectionPadding} relative bg-white`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-24'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -2255,7 +2250,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Transforming</span>
               <br />
@@ -2266,7 +2261,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+              className={`${breakpoints.isMobile ? 'text-base' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
             >
               Concrete results with measurable impact
             </motion.p>
@@ -2436,7 +2431,7 @@ export default function InvestidoresPage() {
       {/* Organizational Structure - NEW SECTION */}
       <section className={`${sectionPadding} relative bg-white`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-24'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -2451,7 +2446,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Global approach,</span>
               <br />
@@ -2600,7 +2595,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Contribution to</span>
               <br />
@@ -2611,7 +2606,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+              className={`${breakpoints.isMobile ? 'text-base' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
             >
               Aligned with the UN Sustainable Development Goals
             </motion.p>
@@ -2689,7 +2684,7 @@ export default function InvestidoresPage() {
       {/* Use of Funds */}
       <section className={`${sectionPadding} relative bg-white`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-24'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -2697,14 +2692,14 @@ export default function InvestidoresPage() {
               viewport={{ once: true }}
               className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4"
             >
-              Series A - €2.5M Allocation
+              Series Seed - €1M Allocation
             </motion.p>
             <motion.h2 
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Strategic</span>
               <br />
@@ -2715,7 +2710,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+              className={`${breakpoints.isMobile ? 'text-base' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
             >
               Initial investment focused on MVP development and market validation
             </motion.p>
@@ -2725,47 +2720,47 @@ export default function InvestidoresPage() {
             <div className="space-y-8">
               {[
                 { 
-                  category: 'Technology Development', 
-                  percentage: 45, 
-                  amount: '€1,125,000',
+                  category: 'Product Development', 
+                  percentage: 40, 
+                  amount: '€400,000',
                   details: [
-                    'Core Team (CTO, Developers, Data Scientist)',
-                    'GreenCheck MVP Platform Development',
-                    'AI Engine & Blockchain Integration',
+                    'AI enhancement and algorithm optimization',
+                    'Blockchain scaling and smart contracts',
+                    'Mobile app development (iOS/Android)',
                     'Cloud Infrastructure (AWS Microservices)'
                   ]
                 },
                 { 
-                  category: 'Marketing & Sales', 
-                  percentage: 30, 
-                  amount: '€750,000',
-                  details: [
-                    'Digital Marketing (45% of budget)',
-                    'Events & Conferences (25%)',
-                    'Partnerships & Channels (20%)',
-                    'Branding & PR (10%)'
-                  ]
-                },
-                { 
-                  category: 'Team & Operations', 
-                  percentage: 15, 
-                  amount: '€375,000',
-                  details: [
-                    'Core Team of 8 people',
-                    'CEO, COO, CTO, Developers',
-                    'ESG Specialist, UX/UI Designer',
-                    'Office & Operating Expenses'
-                  ]
-                },
-                { 
-                  category: 'Working Capital', 
-                  percentage: 10, 
+                  category: 'Scientific Partnerships', 
+                  percentage: 25, 
                   amount: '€250,000',
                   details: [
-                    'Emergency Reserve & Buffer',
-                    'Partnership Development',
-                    'Scientific Validation Setup',
-                    'Legal & Compliance'
+                    'Validation infrastructure setup',
+                    'Carbon offset project partnerships',
+                    'Botanical Garden API integration',
+                    'Scientific methodology development'
+                  ]
+                },
+                { 
+                  category: 'Marketing & Sales', 
+                  percentage: 25, 
+                  amount: '€250,000',
+                  details: [
+                    'Customer acquisition campaigns',
+                    'Team expansion (sales & marketing)',
+                    'Digital marketing and content',
+                    'Brand positioning and awareness'
+                  ]
+                },
+                { 
+                  category: 'Operations', 
+                  percentage: 10, 
+                  amount: '€100,000',
+                  details: [
+                    'Legal and compliance setup',
+                    'Working capital reserve',
+                    'Administrative expenses',
+                    'Regulatory filings'
                   ]
                 }
               ].map((fund, index) => (
@@ -2818,7 +2813,7 @@ export default function InvestidoresPage() {
                   achievements: [
                     "50 pilot companies in Portugal",
                     "MVP validated & launched",
-                    "Series A closed (~€2.5M)"
+                    "Series Seed closed (€1M)"
                   ]
                 },
                 {
@@ -2873,7 +2868,7 @@ export default function InvestidoresPage() {
       {/* Exit Strategy - NEW SECTION */}
       <section className={`${sectionPadding} relative bg-slate-50`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-24'}`}>
             <motion.p 
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -2888,7 +2883,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
               <span className="font-extralight text-[#044050]">Multiple</span>
               <br />
@@ -2899,7 +2894,7 @@ export default function InvestidoresPage() {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+              className={`${breakpoints.isMobile ? 'text-base' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
             >
               Strategic options to maximize returns within 5-7 year horizon
             </motion.p>
@@ -2996,7 +2991,7 @@ export default function InvestidoresPage() {
             </div>
             <div className="mt-8 pt-8 border-t border-white/20 text-center">
               <p className="text-base text-white/90 font-light">
-                Series A investors positioned for exceptional returns while generating positive environmental impact
+                Series Seed investors positioned for exceptional returns while generating positive environmental impact
               </p>
             </div>
           </motion.div>
