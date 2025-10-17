@@ -12,39 +12,7 @@ interface NotificationProps {
 }
 
 export function Notification({ show, onClose, title = "Under Development", message = "Our team is currently developing this feature. Stay tuned!" }: NotificationProps) {
-  useEffect(() => {
-    // Buscar navbar com mais especificidade
-    const navbar = document.querySelector('nav') || document.querySelector('[role="navigation"]')
-    
-    if (show) {
-      console.log('🔔 Notificação aparecendo, navbar encontrado:', !!navbar)
-
-      // Animar navbar para cima quando notificação aparecer
-      if (navbar) {
-        console.log('⬆️ Movendo navbar para cima')
-        navbar.style.transition = 'transform 0.3s ease-in-out'
-        navbar.style.transform = 'translateY(-100%)'
-        navbar.style.pointerEvents = 'none' // Desabilita cliques durante animação
-      } else {
-        console.warn('❌ Navbar não encontrado!')
-      }
-
-      // Não precisa mais de timeout aqui, a barra de progresso controla o fechamento
-      return () => {}
-    } else {
-      // Retornar navbar para posição normal quando notificação sumir
-      // Delay para sincronizar com animação de saída
-      const navbarTimer = setTimeout(() => {
-        if (navbar) {
-          console.log('⬇️ Retornando navbar para posição original')
-          navbar.style.transform = 'translateY(0)'
-          navbar.style.pointerEvents = 'auto' // Reabilita cliques
-        }
-      }, 300)
-      
-      return () => clearTimeout(navbarTimer)
-    }
-  }, [show, onClose])
+  // Removida a lógica que movia o navbar para evitar bugs
 
   return (
     <AnimatePresence>
@@ -59,7 +27,7 @@ export function Notification({ show, onClose, title = "Under Development", messa
             damping: 35,
             mass: 0.8
           }}
-          className="fixed top-4 right-4 left-4 sm:left-auto z-[10000] sm:max-w-sm"
+          className="fixed top-4 right-4 left-4 sm:left-auto z-[99999] sm:max-w-sm"
         >
           <div className="bg-white/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-gray-200/50 overflow-hidden">
             {/* Header com blur effect */}

@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { Notification, useNotification } from './notification'
 
 interface ScreenBreakpoints {
   isXs: boolean
@@ -64,7 +63,6 @@ export default function Footer({
 }: FooterProps) {
   const breakpoints = useSmartBreakpoints()
   const [mounted, setMounted] = useState(false)
-  const { notification, showNotification, closeNotification } = useNotification()
 
   useEffect(() => {
     setMounted(true)
@@ -72,10 +70,13 @@ export default function Footer({
 
   const handleFeatureClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault()
-    showNotification(
-      "Under Development",
-      "Our team is currently developing this feature. Stay tuned!"
-    )
+    // Disparar evento customizado para a notificação da homepage
+    window.dispatchEvent(new CustomEvent('show-notification', {
+      detail: {
+        title: "Under Development",
+        message: "Our team is currently developing this feature. Stay tuned!"
+      }
+    }))
   }
 
   if (!mounted) {
@@ -86,15 +87,7 @@ export default function Footer({
   const containerPadding = breakpoints.isXs ? 'px-3' : breakpoints.isSm ? 'px-4' : breakpoints.isMd ? 'px-6' : 'px-4 sm:px-6 lg:px-8'
 
   return (
-    <>
-      <Notification 
-        show={notification.show}
-        onClose={closeNotification}
-        title={notification.title}
-        message={notification.message}
-      />
-      
-      <footer className={`bg-[#044050] text-white ${className}`}>
+    <footer className={`bg-[#044050] text-white ${className}`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
         {/* Links Grid */}
         <div className={`${breakpoints.isMobile ? 'py-12' : 'py-16'} border-b border-white/10`}>
@@ -203,7 +196,6 @@ export default function Footer({
         </div>
       </div>
     </footer>
-    </>
   )
 }
 

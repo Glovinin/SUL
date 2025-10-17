@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from 'react'
 import { Button } from '../components/ui/button'
-import { ArrowRight, ChevronDown, ArrowUpRight, Shield, Globe, Cpu, TrendingUp, Leaf, CheckCircle2, Upload, BarChart3, Users, Zap, Star, X } from 'lucide-react'
+import { ArrowRight, ChevronDown, ArrowUpRight, Shield, Globe, Cpu, TrendingUp, Leaf, CheckCircle2, Upload, BarChart3, Users, Zap, Star, X, FileText } from 'lucide-react'
 import { Navbar } from '../components/navbar'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import SplineBackground from '../components/spline-background'
 import { useRouter } from 'next/navigation'
 import Footer from '@/components/ui/footer'
 import Image from 'next/image'
+import { Notification, useNotification } from '@/components/ui/notification'
 
 // Interface para breakpoints inteligentes
 interface ScreenBreakpoints {
@@ -356,6 +357,7 @@ export default function Home() {
   const [isDeleting, setIsDeleting] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [sheetOpen, setSheetOpen] = useState(false)
+  const { notification, showNotification, closeNotification } = useNotification()
   const [processSteps] = useState([
     { id: 1, title: "Document Upload", description: "Submit your ESG report in PDF" },
     { id: 2, title: "AI Processing", description: "OCR and NLP analysis with 98.5% accuracy" },
@@ -400,6 +402,19 @@ export default function Home() {
     setMounted(true)
   }, [])
 
+  // Listener para notificações do footer
+  useEffect(() => {
+    const handleFooterNotification = (event: CustomEvent) => {
+      showNotification(event.detail.title, event.detail.message)
+    }
+
+    window.addEventListener('show-notification', handleFooterNotification as EventListener)
+    
+    return () => {
+      window.removeEventListener('show-notification', handleFooterNotification as EventListener)
+    }
+  }, [showNotification])
+
   // Simulação de dados para demo
   useEffect(() => {
     // Simular carregamento
@@ -434,11 +449,24 @@ export default function Home() {
   }, [displayedText, isDeleting, currentIndex])
 
   const handleIniciarValidacao = () => {
-    router.push('/validation')
+    showNotification(
+      "System Under Development",
+      "Our ESG validation system is currently in development. We'll notify you when it's ready!"
+    )
   }
 
   const handleVerMarketplace = () => {
-    router.push('/marketplace')
+    showNotification(
+      "Marketplace Coming Soon",
+      "Our carbon offset marketplace is currently in development. Stay tuned for updates!"
+    )
+  }
+
+  const handleScheduleDemo = () => {
+    showNotification(
+      "Demo Coming Soon",
+      "Our demo system is currently in development. We'll notify you when it's ready!"
+    )
   }
 
   const handleSaibaMais = () => {
@@ -483,6 +511,14 @@ export default function Home() {
   return (
     <div className="relative">
       <Navbar />
+      
+      {/* Notification Component */}
+      <Notification 
+        show={notification.show}
+        onClose={closeNotification}
+        title={notification.title}
+        message={notification.message}
+      />
       
       {/* Hero Section - Fixed Background (All devices) - Design limpo igual outras páginas */}
       <section 
@@ -1222,6 +1258,136 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Transparency & Commitment */}
+      <section className={`${sectionPadding} relative bg-white`}>
+        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-20'}`}>
+            <motion.p 
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4"
+            >
+              Transparency & Governance
+            </motion.p>
+            <motion.h2 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+            >
+              <span className="font-extralight text-[#044050]">Built on</span>
+              <br />
+              <span className="font-normal text-[#5FA037]">trust & accountability</span>
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-base' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed ${breakpoints.isMobile ? 'mb-8' : 'mb-12'}`}
+            >
+              Our commitment to transparency isn't just a value — it's embedded in every layer of our technology and governance
+            </motion.p>
+          </div>
+
+          {/* Anti-Greenwashing Pledge */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className={`bg-[#044050] rounded-3xl ${breakpoints.isMobile ? 'p-6 mb-8' : 'p-10 mb-12'} text-white text-center`}
+          >
+            <Shield className={`${breakpoints.isMobile ? 'w-12 h-12' : 'w-16 h-16'} mx-auto ${breakpoints.isMobile ? 'mb-4' : 'mb-6'} text-[#5FA037]`} />
+            <h3 className={`${breakpoints.isMobile ? 'text-xl' : 'text-2xl'} font-light ${breakpoints.isMobile ? 'mb-3' : 'mb-4'} tracking-tight`}>Anti-Greenwashing Pledge</h3>
+            <p className={`${breakpoints.isMobile ? 'text-sm' : 'text-base'} font-light opacity-90 leading-relaxed max-w-3xl mx-auto`}>
+              We pledge to combat greenwashing through scientific validation, blockchain transparency, and independent audits. 
+              Every certificate we issue is backed by verifiable data and third-party scientific institutions.
+            </p>
+          </motion.div>
+
+          {/* Governance Grid */}
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1 gap-8' : 'md:grid-cols-2 lg:grid-cols-4 gap-8'}`}>
+            {[
+              {
+                icon: CheckCircle2,
+                title: 'Independent Audits',
+                description: 'Annual audits by recognized third-party institutions',
+                items: ['Financial transparency', 'Impact verification', 'Technical validation']
+              },
+              {
+                icon: BarChart3,
+                title: 'Public Dashboard',
+                description: 'Real-time metrics accessible to all stakeholders',
+                items: ['CO₂ offset tracking', 'Certificate issuance', 'Impact metrics']
+              },
+              {
+                icon: Shield,
+                title: 'Impact Advisory Board',
+                description: 'Independent experts ensuring technical excellence',
+                items: ['Scientific rigor', 'Methodology review', 'Anti-greenwashing']
+              },
+              {
+                icon: FileText,
+                title: 'Annual Reports',
+                description: 'Comprehensive socio-environmental impact reports',
+                items: ['ESG performance', 'Financial results', 'Sustainability goals']
+              }
+            ].map((item, index) => {
+              const ItemIcon = item.icon
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="group"
+                >
+                  <div className={`${breakpoints.isMobile ? 'mb-4' : 'mb-6'} flex justify-center`}>
+                    <div className={`${breakpoints.isMobile ? 'w-12 h-12' : 'w-14 h-14'} rounded-full bg-slate-50 flex items-center justify-center shadow-sm transition-all duration-300 group-hover:bg-[#5FA037]`}>
+                      <ItemIcon className={`${breakpoints.isMobile ? 'w-6 h-6' : 'w-7 h-7'} text-[#5FA037] transition-colors duration-300 group-hover:text-white`} />
+                    </div>
+                  </div>
+                  <h3 className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} font-light text-[#044050] ${breakpoints.isMobile ? 'mb-1' : 'mb-2'} tracking-tight text-center`}>{item.title}</h3>
+                  <p className={`${breakpoints.isMobile ? 'text-xs' : 'text-sm'} font-light text-gray-500 ${breakpoints.isMobile ? 'mb-3' : 'mb-4'} text-center`}>{item.description}</p>
+                  <div className={`${breakpoints.isMobile ? 'space-y-1' : 'space-y-2'}`}>
+                    {item.items.map((subitem, i) => (
+                      <div key={i} className="flex items-center gap-2 justify-center">
+                        <div className="w-1 h-1 rounded-full bg-[#5FA037]"></div>
+                        <p className={`${breakpoints.isMobile ? 'text-xs' : 'text-xs'} font-light text-gray-500`}>{subitem}</p>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )
+            })}
+          </div>
+
+          {/* Blockchain Transparency Note */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            viewport={{ once: true }}
+            className="mt-12 bg-slate-50 rounded-2xl p-8 text-center"
+          >
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Cpu className="w-6 h-6 text-[#5FA037]" />
+              <h4 className="text-lg font-light text-[#044050]">Immutable Blockchain Records</h4>
+            </div>
+            <p className="text-sm font-light text-gray-600 leading-relaxed max-w-2xl mx-auto">
+              Every certificate is registered on Polygon blockchain as an NFT with embedded scientific metadata, 
+              ensuring permanent, tamper-proof verification accessible to anyone via public blockchain explorers
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+
       {/* Investor CTA - Clean Minimal */}
       <section className={`${sectionPadding} relative bg-gradient-to-br from-[#044050] to-[#033842]`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
@@ -1306,6 +1472,134 @@ export default function Home() {
               </motion.p>
             </motion.div>
           </div>
+        </div>
+      </section>
+
+      {/* CTA Section - Clean Minimal */}
+      <section className={`${sectionPadding} relative bg-[#044050] text-white`}>
+        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="inline-block mb-6"
+            >
+              <div className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} font-medium tracking-[0.2em] uppercase text-white/80 bg-white/10 border border-white/20 px-6 py-3 rounded-full backdrop-blur-xl`}>
+                Start Today
+              </div>
+            </motion.div>
+
+            {/* Title */}
+            <motion.h3 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+            >
+              <span className="font-extralight text-white">Ready to</span>
+              <br />
+              <span className="font-normal text-white">transform ESG?</span>
+            </motion.h3>
+
+            {/* Description */}
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} text-white/90 ${breakpoints.isMobile ? 'mb-8' : 'mb-12'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto leading-relaxed font-light`}
+            >
+              Our mission is to democratize ESG certification, making sustainability <span className="font-medium text-[#5FA037]">accessible</span>, <span className="font-medium text-[#5FA037]">transparent</span>, and <span className="font-medium text-[#5FA037]">verifiable</span> for companies and individuals worldwide.
+            </motion.p>
+
+            {/* Stats Row */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+              className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : 'grid-cols-4'} ${breakpoints.isMobile ? 'gap-4 mb-8' : 'gap-8 mb-12'} max-w-4xl mx-auto`}
+            >
+              <div className="text-center">
+                <div className={`${breakpoints.isXs ? 'text-3xl' : breakpoints.isMobile ? 'text-4xl' : 'text-5xl'} font-extralight text-[#5FA037] mb-1`}>98.5%</div>
+                <div className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} text-white/70 uppercase tracking-wider font-medium`}>AI Accuracy</div>
+              </div>
+              <div className="text-center">
+                <div className={`${breakpoints.isXs ? 'text-3xl' : breakpoints.isMobile ? 'text-4xl' : 'text-5xl'} font-extralight text-[#5FA037] mb-1`}>3 weeks</div>
+                <div className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} text-white/70 uppercase tracking-wider font-medium`}>Processing</div>
+              </div>
+              <div className="text-center">
+                <div className={`${breakpoints.isXs ? 'text-3xl' : breakpoints.isMobile ? 'text-4xl' : 'text-5xl'} font-extralight text-[#5FA037] mb-1`}>100%</div>
+                <div className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} text-white/70 uppercase tracking-wider font-medium`}>Transparent</div>
+              </div>
+              <div className="text-center">
+                <div className={`${breakpoints.isXs ? 'text-3xl' : breakpoints.isMobile ? 'text-4xl' : 'text-5xl'} font-extralight text-[#5FA037] mb-1`}>&lt;€0.01</div>
+                <div className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} text-white/70 uppercase tracking-wider font-medium`}>Per Certificate</div>
+              </div>
+            </motion.div>
+
+            {/* Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              viewport={{ once: true }}
+              className={`flex ${breakpoints.isMobile ? 'flex-col' : 'flex-row'} ${breakpoints.isMobile ? 'gap-4' : 'gap-6'} justify-center items-center`}
+            >
+              <Button 
+                onClick={handleIniciarValidacao}
+                className={`${breakpoints.isMobile ? 'w-full max-w-sm' : 'px-10'} ${buttonHeight} bg-[#5FA037] text-white hover:bg-[#4d8c2d] rounded-full transition-all duration-300 font-normal tracking-wide group`}
+              >
+                <span className="flex items-center justify-center">
+                  Start Free Validation
+                  <ArrowRight className="ml-3 w-5 h-5 transition-all duration-300 group-hover:translate-x-1" />
+                </span>
+              </Button>
+              
+              <Button 
+                onClick={handleScheduleDemo}
+                variant="ghost"
+                className={`${breakpoints.isMobile ? 'w-full max-w-sm' : 'px-10'} ${buttonHeight} text-white hover:bg-white/10 border border-white/30 hover:border-white/50 rounded-full transition-all duration-300 font-normal tracking-wide backdrop-blur-xl`}
+              >
+                <span className="flex items-center justify-center">
+                  Schedule Demo
+                  <div className="ml-3 w-2 h-2 rounded-full bg-[#5FA037] transition-all duration-300 group-hover:bg-white"></div>
+                </span>
+              </Button>
+            </motion.div>
+
+            {/* Trust Indicators */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'mt-8' : 'mt-12'} flex ${breakpoints.isMobile ? 'flex-col gap-4' : 'flex-row gap-8'} items-center justify-center text-white/70`}
+            >
+              <div className="flex items-center space-x-2">
+                <CheckCircle2 className="w-4 h-4 text-[#5FA037]" />
+                <span className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} font-light`}>No commitment</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <CheckCircle2 className="w-4 h-4 text-[#5FA037]" />
+                <span className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} font-light`}>5 minute setup</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <CheckCircle2 className="w-4 h-4 text-[#5FA037]" />
+                <span className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} font-light`}>Specialized support</span>
+              </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 

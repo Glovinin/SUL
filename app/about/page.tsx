@@ -13,6 +13,7 @@ import TeamSection from '@/components/ui/team'
 import { teamMembers } from '@/lib/team-data'
 import Footer from '@/components/ui/footer'
 import Image from 'next/image'
+import { Notification, useNotification } from '@/components/ui/notification'
 
 // Interface para breakpoints inteligentes
 interface ScreenBreakpoints {
@@ -245,6 +246,7 @@ export default function SobrePage() {
   const [mounted, setMounted] = useState(false)
   const [email, setEmail] = useState('')
   const [emailStatus, setEmailStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const { notification, showNotification, closeNotification } = useNotification()
   
   // Hook de breakpoints inteligentes 
   const breakpoints = useSmartBreakpoints()
@@ -301,8 +303,31 @@ export default function SobrePage() {
     setMounted(true)
   }, [])
 
+  // Listener para notificações do footer
+  useEffect(() => {
+    const handleFooterNotification = (event: CustomEvent) => {
+      showNotification(event.detail.title, event.detail.message)
+    }
+
+    window.addEventListener('show-notification', handleFooterNotification as EventListener)
+    
+    return () => {
+      window.removeEventListener('show-notification', handleFooterNotification as EventListener)
+    }
+  }, [showNotification])
+
   const handleIniciarValidacao = () => {
-    router.push('/validation')
+    showNotification(
+      "System Under Development",
+      "Our ESG validation system is currently in development. We'll notify you when it's ready!"
+    )
+  }
+
+  const handleScheduleDemo = () => {
+    showNotification(
+      "Demo Coming Soon",
+      "Our demo system is currently in development. We'll notify you when it's ready!"
+    )
   }
 
   // Evita flash de conteúdo não hidratado
@@ -335,6 +360,14 @@ export default function SobrePage() {
   return (
     <div className="relative">
       <Navbar />
+      
+      {/* Notification Component */}
+      <Notification 
+        show={notification.show}
+        onClose={closeNotification}
+        title={notification.title}
+        message={notification.message}
+      />
       
       {/* Hero Section - Design moderno da homepage */}
       <section 
@@ -2307,6 +2340,7 @@ export default function SobrePage() {
               </Button>
               
               <Button 
+                onClick={handleScheduleDemo}
                 variant="ghost"
                 className={`${breakpoints.isMobile ? 'w-full max-w-sm' : 'px-10'} ${buttonHeight} text-white hover:bg-white/10 border border-white/30 hover:border-white/50 rounded-full transition-all duration-300 font-normal tracking-wide backdrop-blur-xl`}
               >
