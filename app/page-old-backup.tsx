@@ -6,6 +6,7 @@ import { ArrowRight, ChevronDown, ArrowUpRight, Shield, Globe, Cpu, TrendingUp, 
 import { Navbar } from '../components/navbar'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import SplineBackground from '../components/spline-background'
+import LearnMoreButton from '../components/learn-more-button'
 import { useRouter } from 'next/navigation'
 import Footer from '@/components/ui/footer'
 import Image from 'next/image'
@@ -733,6 +734,20 @@ export default function Home() {
                     </span>
                   </Button>
                 </motion.div>
+              </motion.div>
+              
+              {/* Botão Learn More - Posicionado no final da hero */}
+              <motion.div 
+                className={`${breakpoints.isMobile ? 'mt-8' : 'mt-12'} flex justify-center`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ 
+                  delay: 2.6, 
+                  duration: 0.8,
+                  ease: [0.22, 1, 0.36, 1]
+                }}
+              >
+                <LearnMoreButton />
               </motion.div>
             </div>
           </div>
