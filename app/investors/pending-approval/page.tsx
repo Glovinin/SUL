@@ -221,10 +221,10 @@ export default function PendingApprovalPage() {
                     Contact
                   </p>
                   <a 
-                    href="mailto:invest@greencheck.io" 
+                    href="mailto:diego.rocha@bureausocial.org.br" 
                     className="text-sm text-[#044050] font-light hover:text-[#5FA037] transition-colors"
                   >
-                    invest@greencheck.io
+                    diego.rocha@bureausocial.org.br
                   </a>
                 </div>
               </div>

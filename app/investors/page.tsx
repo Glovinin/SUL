@@ -14,6 +14,7 @@ import { auth } from '../../lib/firebase'
 import { onAuthStateChanged } from 'firebase/auth'
 import { getInvestor } from '../../lib/firebase-helpers'
 import { DocumentsSheet } from '../../components/ui/documents-sheet'
+import Image from 'next/image'
 
 // Interface para breakpoints inteligentes
 interface ScreenBreakpoints {
@@ -2597,9 +2598,9 @@ export default function InvestidoresPage() {
               viewport={{ once: true }}
               className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
             >
-              <span className="font-extralight text-[#044050]">Contribution to</span>
+              <span className="font-extralight text-[#044050]">Aligned with </span>
               <br />
-              <span className="font-normal text-[#5FA037]">SDGs</span>
+              <span className="font-normal text-[#5FA037]">UN SDGs</span>
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0 }}
@@ -2608,76 +2609,93 @@ export default function InvestidoresPage() {
               viewport={{ once: true }}
               className={`${breakpoints.isMobile ? 'text-base' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
             >
-              Aligned with the UN Sustainable Development Goals
+              6 United Nations Sustainable Development Goals
             </motion.p>
           </div>
 
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : 'md:grid-cols-4'} ${breakpoints.isMobile ? 'gap-6' : 'gap-8'} max-w-6xl mx-auto`}>
+          {/* Grid de SDGs - Design igual à homepage */}
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-3'} ${breakpoints.isMobile ? 'gap-4' : 'gap-8'} max-w-6xl mx-auto`}>
             {[
-              {
-                number: '13',
+              { 
+                number: '13', 
                 name: 'Climate Action',
-                color: 'bg-[#3F7E44]',
-                icon: Globe
+                image: '/assets/SDG LOGO/E_SDG_PRINT-13.jpg',
+                color: '#4E7A47'
               },
-              {
-                number: '15',
+              { 
+                number: '15', 
                 name: 'Life on Land',
-                color: 'bg-[#56C02B]',
-                icon: Leaf
+                image: '/assets/SDG LOGO/E_SDG_PRINT-15.jpg',
+                color: '#3DAE4A'
               },
-              {
-                number: '8',
-                name: 'Decent Work',
-                color: 'bg-[#A21942]',
-                icon: TrendingUp
+              { 
+                number: '8', 
+                name: 'Decent Work & Economic Growth',
+                image: '/assets/SDG LOGO/E_SDG_PRINT-08.jpg',
+                color: '#972E47'
               },
-              {
-                number: '17',
-                name: 'Partnerships',
-                color: 'bg-[#19486A]',
-                icon: Target
+              { 
+                number: '9', 
+                name: 'Industry, Innovation & Infrastructure',
+                image: '/assets/SDG LOGO/E_SDG_PRINT-09.jpg',
+                color: '#F16E25'
+              },
+              { 
+                number: '12', 
+                name: 'Responsible Consumption & Production',
+                image: '/assets/SDG LOGO/E_SDG_PRINT-12.jpg',
+                color: '#CD8C2E'
+              },
+              { 
+                number: '17', 
+                name: 'Partnerships for the Goals',
+                image: '/assets/SDG LOGO/E_SDG_PRINT-17.jpg',
+                color: '#28426E'
               }
-            ].map((sdg, index) => {
-              const SdgIcon = sdg.icon
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="group"
-                >
-                  <div className={`${sdg.color} rounded-3xl ${breakpoints.isMobile ? 'p-6' : 'p-10'} text-white flex flex-col items-center justify-center aspect-square transition-all duration-300 hover:scale-105 hover:shadow-2xl relative overflow-hidden`}>
-                    {/* Background Pattern */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    
-                    {/* Content */}
-                    <div className="relative z-10 flex flex-col items-center justify-center h-full">
-                      <SdgIcon className={`${breakpoints.isMobile ? 'w-12 h-12' : 'w-16 h-16'} mb-6 opacity-90 transition-transform duration-300 group-hover:scale-110`} />
-                      <span className={`${breakpoints.isMobile ? 'text-5xl' : 'text-7xl'} font-extralight mb-3 tracking-tight`}>{sdg.number}</span>
-                      <span className={`${breakpoints.isMobile ? 'text-[10px]' : 'text-xs'} font-medium tracking-[0.15em] uppercase text-center px-2 opacity-95`}>{sdg.name}</span>
+            ].map((sdg, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.7, delay: index * 0.15, ease: [0.22, 1, 0.36, 1] }}
+                viewport={{ once: true }}
+                className="group"
+              >
+                <div className={`bg-white/80 backdrop-blur-sm rounded-2xl ${breakpoints.isMobile ? 'p-3' : 'p-6'} flex flex-col items-center transition-all duration-300 hover:shadow-lg border border-gray-50/50 ${breakpoints.isMobile ? 'h-[280px]' : 'h-[360px]'} relative overflow-hidden group`}>
+                  
+                  {/* JPG do SDG - Tamanho fixo para evitar layout shift */}
+                  <div className={`${breakpoints.isMobile ? 'w-32 h-32' : 'w-40 h-40'} mb-4 flex-shrink-0 relative`}>
+                    <div className="w-full h-full flex items-center justify-center rounded-xl overflow-hidden shadow-md group-hover:shadow-lg transition-shadow duration-300">
+                      <Image
+                        src={sdg.image}
+                        alt={`SDG ${sdg.number} - ${sdg.name}`}
+                        width={breakpoints.isMobile ? 128 : 160}
+                        height={breakpoints.isMobile ? 128 : 160}
+                        className="w-full h-full object-contain rounded-xl group-hover:scale-105 transition-transform duration-300"
+                      />
                     </div>
                   </div>
-                </motion.div>
-              )
-            })}
+                  
+                  {/* Conteúdo minimalista - Tipografia otimizada */}
+                  <div className="text-center flex flex-col items-center justify-center relative w-full px-2">
+                    {/* Número do SDG - Tamanho otimizado para mobile */}
+                    <span className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl'} font-thin text-[#044050] mb-1 tracking-[-0.03em] leading-none`}>
+                      {sdg.number}
+                    </span>
+                    
+                    {/* Nome do SDG - Compacto para mobile */}
+                    <span className={`${breakpoints.isMobile ? 'text-[10px]' : 'text-xs'} font-light text-gray-600 uppercase tracking-[0.08em] text-center leading-[1.1] w-full`}>
+                      {sdg.name}
+                    </span>
+                  </div>
+                  
+                  {/* Hover indicator simples */}
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-[#5FA037] opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
+                </div>
+              </motion.div>
+            ))}
           </div>
 
-          {/* Additional Context */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            viewport={{ once: true }}
-            className={`text-center ${breakpoints.isMobile ? 'mt-12' : 'mt-16'}`}
-          >
-            <div className="inline-flex items-center gap-3 bg-white px-6 py-4 rounded-full shadow-sm">
-              <CheckCircle2 className="w-5 h-5 text-[#5FA037]" />
-              <span className="text-sm font-light text-gray-600">7 SDGs aligned with our core mission</span>
-            </div>
-          </motion.div>
         </div>
       </section>
 

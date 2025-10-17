@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation'
 import TeamSection from '@/components/ui/team'
 import { teamMembers } from '@/lib/team-data'
 import Footer from '@/components/ui/footer'
+import Image from 'next/image'
 
 // Interface para breakpoints inteligentes
 interface ScreenBreakpoints {
@@ -1960,7 +1961,7 @@ export default function SobrePage() {
             })}
           </div>
 
-          {/* SDGs Grid - Large Cards */}
+          {/* SDGs Section - Mesmo design da homepage */}
           <div className="text-center mb-16">
             <motion.p
               initial={{ opacity: 0, y: -10 }}
@@ -1978,8 +1979,8 @@ export default function SobrePage() {
               viewport={{ once: true }}
               className="text-3xl md:text-4xl font-light text-[#044050] mb-3 tracking-tight"
             >
-              <span className="font-light">Contribution to </span>
-              <span className="text-[#5FA037] font-light">SDGs</span>
+              <span className="font-light">Aligned with </span>
+              <span className="text-[#5FA037] font-light">UN SDGs</span>
             </motion.h3>
             <motion.p
               initial={{ opacity: 0 }}
@@ -1988,60 +1989,91 @@ export default function SobrePage() {
               viewport={{ once: true }}
               className="text-base text-gray-600 font-light"
             >
-              Aligned with the UN Sustainable Development Goals
+              6 United Nations Sustainable Development Goals
             </motion.p>
           </div>
 
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4'} gap-6`}>
+          {/* Grid de SDGs - Design igual à homepage */}
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-3'} ${breakpoints.isMobile ? 'gap-4' : 'gap-8'} max-w-6xl mx-auto`}>
             {[
               { 
                 number: '13', 
                 name: 'Climate Action',
-                subtitle: 'Climate Action',
-                color: 'bg-[#044050]',
-                icon: Globe
+                image: '/assets/SDG LOGO/E_SDG_PRINT-13.jpg',
+                color: '#4E7A47'
               },
               { 
                 number: '15', 
                 name: 'Life on Land',
-                subtitle: 'Life on Land',
-                color: 'bg-[#5FA037]',
-                icon: Leaf
+                image: '/assets/SDG LOGO/E_SDG_PRINT-15.jpg',
+                color: '#3DAE4A'
               },
               { 
                 number: '8', 
-                name: 'Decent Work',
-                subtitle: 'Decent Work',
-                color: 'bg-slate-700',
-                icon: TrendingUp
+                name: 'Decent Work & Economic Growth',
+                image: '/assets/SDG LOGO/E_SDG_PRINT-08.jpg',
+                color: '#972E47'
+              },
+              { 
+                number: '9', 
+                name: 'Industry, Innovation & Infrastructure',
+                image: '/assets/SDG LOGO/E_SDG_PRINT-09.jpg',
+                color: '#F16E25'
+              },
+              { 
+                number: '12', 
+                name: 'Responsible Consumption & Production',
+                image: '/assets/SDG LOGO/E_SDG_PRINT-12.jpg',
+                color: '#CD8C2E'
               },
               { 
                 number: '17', 
-                name: 'Partnerships',
-                subtitle: 'Partnerships',
-                color: 'bg-[#044050]',
-                icon: Target
+                name: 'Partnerships for the Goals',
+                image: '/assets/SDG LOGO/E_SDG_PRINT-17.jpg',
+                color: '#28426E'
               }
-            ].map((sdg, index) => {
-              const SdgIcon = sdg.icon
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="group"
-                >
-                  <div className={`${sdg.color} rounded-3xl ${breakpoints.isMobile ? 'p-6' : 'p-10'} text-white flex flex-col items-center justify-center aspect-square transition-all duration-300 hover:scale-105 hover:shadow-xl`}>
-                    <SdgIcon className={`${breakpoints.isMobile ? 'w-12 h-12 mb-4' : 'w-16 h-16 mb-6'} opacity-90`} />
-                    <span className={`${breakpoints.isMobile ? 'text-5xl' : 'text-7xl'} font-extralight ${breakpoints.isMobile ? 'mb-2' : 'mb-4'}`}>{sdg.number}</span>
-                    <span className={`${breakpoints.isMobile ? 'text-xs' : 'text-xs'} font-light tracking-wider opacity-90 uppercase`}>{sdg.subtitle}</span>
+            ].map((sdg, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.7, delay: index * 0.15, ease: [0.22, 1, 0.36, 1] }}
+                viewport={{ once: true }}
+                className="group"
+              >
+                <div className={`bg-white/80 backdrop-blur-sm rounded-2xl ${breakpoints.isMobile ? 'p-3' : 'p-6'} flex flex-col items-center transition-all duration-300 hover:shadow-lg border border-gray-50/50 ${breakpoints.isMobile ? 'h-[280px]' : 'h-[360px]'} relative overflow-hidden group`}>
+                  
+                  {/* JPG do SDG - Tamanho fixo para evitar layout shift */}
+                  <div className={`${breakpoints.isMobile ? 'w-32 h-32' : 'w-40 h-40'} mb-4 flex-shrink-0 relative`}>
+                    <div className="w-full h-full flex items-center justify-center rounded-xl overflow-hidden shadow-md group-hover:shadow-lg transition-shadow duration-300">
+                      <Image
+                        src={sdg.image}
+                        alt={`SDG ${sdg.number} - ${sdg.name}`}
+                        width={breakpoints.isMobile ? 128 : 160}
+                        height={breakpoints.isMobile ? 128 : 160}
+                        className="w-full h-full object-contain rounded-xl group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
                   </div>
-                  <p className={`text-center ${breakpoints.isMobile ? 'text-xs' : 'text-sm'} font-light text-gray-600 ${breakpoints.isMobile ? 'mt-2' : 'mt-4'}`}>{sdg.name}</p>
-                </motion.div>
-              )
-            })}
+                  
+                  {/* Conteúdo minimalista - Tipografia otimizada */}
+                  <div className="text-center flex flex-col items-center justify-center relative w-full px-2">
+                    {/* Número do SDG - Tamanho otimizado para mobile */}
+                    <span className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl'} font-thin text-[#044050] mb-1 tracking-[-0.03em] leading-none`}>
+                      {sdg.number}
+                    </span>
+                    
+                    {/* Nome do SDG - Compacto para mobile */}
+                    <span className={`${breakpoints.isMobile ? 'text-[10px]' : 'text-xs'} font-light text-gray-600 uppercase tracking-[0.08em] text-center leading-[1.1] w-full`}>
+                      {sdg.name}
+                    </span>
+                  </div>
+                  
+                  {/* Hover indicator simples */}
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-[#5FA037] opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
