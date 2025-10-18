@@ -7,8 +7,6 @@ import { Navbar } from '../../components/navbar'
 import { motion } from 'framer-motion'
 import SplineBackground from '../../components/spline-background'
 import { useRouter } from 'next/navigation'
-import TeamSection from '../../components/ui/team'
-import { teamMembers } from '../../lib/team-data'
 import Footer from '../../components/ui/footer'
 import { auth } from '../../lib/firebase'
 import { onAuthStateChanged } from 'firebase/auth'
@@ -1154,7 +1152,7 @@ export default function InvestidoresPage() {
                 <ul className="space-y-3 ml-[60px]">
                   <li className="flex items-start gap-3 text-gray-600">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
-                    <span className="text-sm leading-relaxed">Exclusive partnership with Plantarum Botanical Garden</span>
+                    <span className="text-sm leading-relaxed">Exclusive partnership with Jardim Botânico Plantarum</span>
                   </li>
                   <li className="flex items-start gap-3 text-gray-600">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
@@ -1507,7 +1505,7 @@ export default function InvestidoresPage() {
               },
               {
                 title: "Scientific Validation",
-                number: "Plantarum",
+                number: "Jardim Botânico Plantarum",
                 description: "Botanical Garden partnership",
                 color: "text-[#5FA037]"
               },
@@ -1614,7 +1612,7 @@ export default function InvestidoresPage() {
                   </li>
                   <li className="flex items-start gap-3 text-gray-600">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
-                    <span className="text-sm leading-relaxed">Scientific validation (Plantarum)</span>
+                    <span className="text-sm leading-relaxed">Scientific validation (Jardim Botânico Plantarum)</span>
                   </li>
                   <li className="flex items-start gap-3 text-gray-600">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
@@ -2334,7 +2332,7 @@ export default function InvestidoresPage() {
                   items: [
                     'GreenCheck MVP Launch - Minimum viable product in production',
                     'Patent filed - IP protection secured',
-                    'Plantarum Botanical Garden Partnership - Scientific validation'
+                    'Jardim Botânico Plantarum Partnership - Scientific validation'
                   ] 
                 },
                 { 
@@ -2486,7 +2484,7 @@ export default function InvestidoresPage() {
                 <h4 className="text-sm font-semibold text-[#044050] uppercase tracking-wider mb-3">Key Credentials</h4>
                 <div className="flex items-start gap-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
-                  <span className="text-sm text-gray-600">250+ socio-environmental projects</span>
+                  <span className="text-sm text-gray-600">295+ socio-environmental projects</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
@@ -2554,7 +2552,7 @@ export default function InvestidoresPage() {
             <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : 'grid-cols-2'} gap-8`}>
               {[
                 {
-                  name: "Plantarum Botanical Garden",
+                  name: "Jardim Botânico Plantarum",
                   role: "Scientific Validation",
                   description: "Ecological restoration, reforestation protocols, ecosystem services quantification"
                 },
@@ -3042,14 +3040,6 @@ export default function InvestidoresPage() {
         </div>
       </section>
 
-      {/* Team Section - Modern Design */}
-      <TeamSection 
-        members={teamMembers}
-        title="Expert"
-        titleHighlight="leadership"
-        subtitle="Our multidisciplinary team combines technical expertise and scientific knowledge with strategy, legal insight, finance, sustainability, and operations to revolutionize ESG certification through innovative AI, blockchain, and data-driven solutions, transforming ESG commitments into verifiable, transparent, and impactful outcomes."
-        className="bg-white"
-      />
 
       {/* Contact CTA */}
       <section id="contact" className={`${sectionPadding} relative bg-gradient-to-br from-[#044050] to-[#033842]`}>
@@ -3079,7 +3069,7 @@ export default function InvestidoresPage() {
               <div className={`flex ${breakpoints.isMobile ? 'flex-col' : 'flex-row'} items-center justify-center gap-4`}>
                 <Button 
                   size="lg"
-                  onClick={() => window.location.href = 'mailto:diego.rocha@bureausocial.org.br'}
+                  onClick={() => window.location.href = 'mailto:Diogo@greencheck.pt'}
                   className={`group ${breakpoints.isMobile ? 'w-full max-w-sm' : 'min-w-[220px]'} h-[52px] text-base rounded-full transition-all duration-500 bg-[#5FA037] text-white hover:bg-[#4d8c2d] font-normal tracking-tight shadow-lg hover:shadow-xl`}
                 >
                   <span className="relative flex items-center justify-center gap-2.5">
@@ -3116,8 +3106,8 @@ export default function InvestidoresPage() {
                       <p className="text-white/60 text-xs">Director, Bureau Social (Brazil)</p>
                     </div>
                     <div className="space-y-1">
-                      <a href="mailto:diego.rocha@bureausocial.org.br" className="text-white/80 hover:text-white transition-colors text-sm block">
-                        diego.rocha@bureausocial.org.br
+                      <a href="mailto:Diogo@greencheck.pt" className="text-white/80 hover:text-white transition-colors text-sm block">
+                        Diogo@greencheck.pt
                       </a>
                       <a href="tel:+351931721901" className="text-white/80 hover:text-white transition-colors text-sm block">
                         +351 931 721 901
@@ -3150,6 +3140,14 @@ export default function InvestidoresPage() {
                     <p>Bureau Social – Instituto Brasileiro de Negócios Sociais</p>
                     <p>Avenida Horácio Lafer, 160 – Conj. 22, Sala B</p>
                     <p>Itaim Bibi – São Paulo/SP – CEP 04538-080</p>
+                    <div className="mt-2 space-y-1">
+                      <a href="mailto:faleconosco@bureausocial.org.br" className="text-white/80 hover:text-white transition-colors block">
+                        faleconosco@bureausocial.org.br
+                      </a>
+                      <a href="tel:+5511911381183" className="text-white/80 hover:text-white transition-colors block">
+                        +55 11 91138-1183
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>

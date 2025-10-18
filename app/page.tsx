@@ -332,23 +332,6 @@ const impactStats = [
   }
 ]
 
-const certificationPartners = [
-  {
-    name: "Plantarum Botanical Garden",
-    role: "Scientific Validation",
-    description: "Partnership for environmental data validation via institutional APIs from Rio de Janeiro"
-  },
-  {
-    name: "Polygon Network",
-    role: "Blockchain Certificate",
-    description: "Immutable NFTs with embedded scientific metadata"
-  },
-  {
-    name: "Sentinel-2 Satellite",
-    role: "Orbital Monitoring",
-    description: "Carbon offset verification via satellite data"
-  }
-]
 
 export default function Home() {
   const router = useRouter()
@@ -948,6 +931,196 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Scientific Validation - Detailed Partnership */}
+      <section className={`${sectionPadding} relative bg-white`}>
+        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
+            <motion.p 
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4"
+            >
+              Scientific Partnership
+            </motion.p>
+            <motion.h2 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+            >
+              <span className="font-extralight text-[#044050]">Exclusive partnership with</span>
+              <br />
+              <span className="font-normal text-[#5FA037]">Jardim Botânico Plantarum</span>
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+            >
+              Latin America's largest botanical garden ensures scientific credibility and anti-greenwashing validation
+            </motion.p>
+          </div>
+
+          {/* Partnership Details Grid */}
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1 gap-8' : 'md:grid-cols-2 gap-12'} ${breakpoints.isMobile ? 'mb-16' : 'mb-20'}`}>
+            {/* Left Column - About Plantarum */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="space-y-8"
+            >
+              <div className="bg-slate-50 rounded-2xl p-8">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-14 h-14 rounded-full bg-[#044050] flex items-center justify-center">
+                    <Leaf className="w-7 h-7 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-medium text-[#044050]">About Jardim Botânico Plantarum</h3>
+                    <p className="text-sm text-gray-500">Founded 2007 • Nova Odessa, SP</p>
+                  </div>
+                </div>
+                <div className="space-y-4 text-gray-600 font-light">
+                  <p>• <strong className="text-[#044050]">6,000+ species</strong> in 90,000 m² of thematic gardens</p>
+                  <p>• <strong className="text-[#044050]">Largest botanical garden</strong> in Latin America by species count</p>
+                  <p>• <strong className="text-[#044050]">CONAMA recognized</strong> by Brazilian environmental authorities</p>
+                  <p>• <strong className="text-[#044050]">Scientific expeditions</strong> and herbarium with witness material</p>
+                </div>
+              </div>
+
+              <div className="bg-[#044050] rounded-2xl p-8 text-white">
+                <h3 className="text-xl font-medium mb-4">Exclusive Partnership</h3>
+                <p className="text-white/90 font-light leading-relaxed mb-4">
+                  Strategic collaboration through Bureau Social (ESG Veritas Brazilian partner) 
+                  ensures scientific validation of carbon offset projects since GreenCheck® launch (2026).
+                </p>
+                <div className="space-y-2 text-sm text-white/80">
+                  <p>• <strong>Exclusive scientific guardian</strong> for reforestation projects</p>
+                  <p>• <strong>Biodiversity conservation</strong> in Amazon and other biomes</p>
+                  <p>• <strong>Aligned with UN SDGs</strong> 13 (Climate Action) & 15 (Life on Land)</p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Right Column - Validation Process */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
+              <h3 className={`${breakpoints.isMobile ? 'text-2xl' : 'text-3xl'} font-light text-[#044050] mb-8`}>
+                Scientific Validation Process
+              </h3>
+              
+              {/* Process Steps */}
+              <div className="space-y-6">
+                {[
+                  {
+                    step: "1",
+                    title: "Data Collection & AI Processing",
+                    description: "Users submit ESG data via app. AI processes with 98.5% accuracy using Jardim Botânico Plantarum's scientific benchmarks for Brazilian biome carbon sequestration.",
+                    icon: Cpu
+                  },
+                  {
+                    step: "2", 
+                    title: "Scientific Analysis",
+                    description: "Jardim Botânico Plantarum's botanists and ecologists analyze samples, authenticate species using herbarium, and verify carbon sequestration calculations.",
+                    icon: CheckCircle2
+                  },
+                  {
+                    step: "3",
+                    title: "Field Verification",
+                    description: "Independent verification through satellite monitoring and field visits ensures real impact (e.g., 10,000 ha of protected forest by 2029).",
+                    icon: Globe
+                  },
+                  {
+                    step: "4",
+                    title: "Blockchain Certification",
+                    description: "Validated data generates immutable NFT certificates on Polygon with embedded scientific reports and biodiversity metrics.",
+                    icon: Shield
+                  }
+                ].map((item, index) => {
+                  const ItemIcon = item.icon
+                  return (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: 20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                      className="flex gap-4 group"
+                    >
+                      <div className="flex-shrink-0">
+                        <div className="w-12 h-12 rounded-full bg-[#5FA037] flex items-center justify-center text-white font-medium text-sm group-hover:scale-110 transition-transform duration-300">
+                          {item.step}
+                        </div>
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <ItemIcon className="w-5 h-5 text-[#044050]" />
+                          <h4 className="text-lg font-medium text-[#044050]">{item.title}</h4>
+                        </div>
+                        <p className="text-gray-600 font-light leading-relaxed">{item.description}</p>
+                      </div>
+                    </motion.div>
+                  )
+                })}
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Impact Metrics */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="bg-gradient-to-r from-[#044050] to-[#033842] rounded-3xl p-8 text-white"
+          >
+            <div className="text-center mb-8">
+              <h3 className={`${breakpoints.isMobile ? 'text-2xl' : 'text-3xl'} font-light mb-4`}>
+                Measurable Impact Goals
+              </h3>
+              <p className="text-white/80 font-light">
+                Scientific validation ensures every certificate represents real environmental impact
+              </p>
+            </div>
+            
+            <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : 'grid-cols-4'} gap-8`}>
+              {[
+                { value: "1M+", label: "tCO₂e Certified", sublabel: "annually by 2029" },
+                { value: "10,000", label: "Hectares Protected", sublabel: "forest conservation" },
+                { value: "100%", label: "Auditable", sublabel: "scientific transparency" },
+                { value: "75%", label: "Faster Processing", sublabel: "vs traditional methods" }
+              ].map((metric, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="text-center"
+                >
+                  <div className={`${breakpoints.isMobile ? 'text-3xl' : 'text-4xl'} font-extralight text-[#E5FFBA] mb-1`}>
+                    {metric.value}
+                  </div>
+                  <div className="text-sm font-medium text-white/90 mb-1">{metric.label}</div>
+                  <div className="text-xs text-white/70 font-light">{metric.sublabel}</div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Preços - Clean Minimal */}
       <section className={`${sectionPadding} relative bg-white`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
@@ -1043,47 +1216,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Partners - Clean Minimal */}
-      <section className={`${sectionPadding} relative bg-white`}>
-        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
-            <p className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4">
-              Partners
-            </p>
-            <h2 className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}>
-              <span className="font-extralight text-[#044050]">Scientific</span>
-              <br />
-              <span className="font-normal text-[#5FA037]">validation</span>
-            </h2>
-            <p className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light`}>
-              Working with leading institutions for certification credibility
-            </p>
-          </div>
-          
-          {/* Partners List - Minimal */}
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : 'md:grid-cols-3'} ${breakpoints.isMobile ? 'gap-12' : 'gap-16'} max-w-5xl mx-auto`}>
-            {certificationPartners.map((partner, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="text-center group"
-              >
-                <div className="w-16 h-16 rounded-full bg-[#044050] flex items-center justify-center mx-auto mb-6 transition-all duration-300 group-hover:bg-[#5FA037]">
-                  {index === 0 && <Leaf className="w-8 h-8 text-white" />}
-                  {index === 1 && <Shield className="w-8 h-8 text-white" />}
-                  {index === 2 && <Globe className="w-8 h-8 text-white" />}
-                </div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">{partner.role}</p>
-                <h3 className="text-xl font-medium text-[#044050] mb-3">{partner.name}</h3>
-                <p className="text-sm text-gray-600 font-light leading-relaxed">{partner.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Social Impact & SDGs - Clean Minimal */}
       <section className={`${sectionPadding} relative bg-slate-50`}>

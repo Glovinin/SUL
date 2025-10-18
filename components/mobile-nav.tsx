@@ -653,7 +653,7 @@ export function MobileNav() {
                   priority
                 />
                 <span className="text-[#044050] font-light text-xl tracking-wide">
-                  <span className="font-extralight">Green</span><span className="font-medium">Check</span>
+                  <span className="font-extralight">Green</span><span className="font-medium">Check®</span>
                 </span>
               </div>
               <button

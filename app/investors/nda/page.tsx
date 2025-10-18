@@ -600,7 +600,7 @@ export default function NDAPage() {
 
                           <h3 className="text-lg font-semibold text-[#044050] mt-6 mb-3">2) PURPOSE AND DEFINITIONS</h3>
                           
-                          <p className="mb-3"><strong>2.1. Purpose.</strong> To ensure the secrecy and protection of Confidential Information exchanged within the GreenCheck™ Project, covering technical, scientific, commercial, and strategic contributions.</p>
+                          <p className="mb-3"><strong>2.1. Purpose.</strong> To ensure the secrecy and protection of Confidential Information exchanged within the GreenCheck® Project, covering technical, scientific, commercial, and strategic contributions.</p>
                           
                           <p className="mb-3"><strong>2.2. Confidential Information.</strong> Any information (oral, written, digital, visual, etc.) of a technical, scientific, commercial, strategic, financial, legal, operational nature, customer lists, source code, algorithms, documentation, drawings, reports, know-how, prototypes, business plans, partnerships, prices, third-party data under Company's confidentiality, and the like.</p>
                           

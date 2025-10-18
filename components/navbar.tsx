@@ -298,7 +298,7 @@ export const Navbar = () => {
                 Green
               </span>
               <span className="font-medium inline-block">
-                Check™
+                Check®
               </span>
             </span>
           </Link>

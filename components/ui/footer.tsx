@@ -179,6 +179,14 @@ export default function Footer({
                 <p className="text-sm text-white/70 font-light">Avenida Horácio Lafer, 160 – Conj. 22, Sala B</p>
                 <p className="text-sm text-white/70 font-light">Itaim Bibi – São Paulo/SP – CEP 04538-080</p>
               </div>
+              <div className="mt-6 space-y-2">
+                <p className="text-sm text-white/70 font-light">
+                  <a href="tel:+5511911381183" className="hover:text-[#5FA037] transition-colors">+55 11 91138-1183</a>
+                </p>
+                <p className="text-sm text-white/70 font-light">
+                  <a href="mailto:faleconosco@bureausocial.org.br" className="hover:text-[#5FA037] transition-colors">faleconosco@bureausocial.org.br</a>
+                </p>
+              </div>
             </div>
           </div>
         </div>

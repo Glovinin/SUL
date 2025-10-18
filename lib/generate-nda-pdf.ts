@@ -109,7 +109,7 @@ export async function generateNDAPDF(signatoryData: SignatoryData): Promise<Blob
   pdf.setFont('helvetica', 'normal')
   
   const provisions = [
-    '• Purpose: Protection of Confidential Information within the GreenCheck™ Project',
+    '• Purpose: Protection of Confidential Information within the GreenCheck® Project',
     '• Confidentiality: Non-disclosure obligation with limited exceptions',
     '• IP Assignment: All IP created belongs exclusively to Company',
     '• Non-Competition: 2-year restriction in EU and Brazil',
@@ -186,7 +186,7 @@ export async function generateNDAPDF(signatoryData: SignatoryData): Promise<Blob
     pdf.setFont('helvetica', 'normal')
     pdf.setTextColor(150, 150, 150)
     pdf.text(
-      `Page ${i} of ${totalPages} - NDA GreenCheck™ - ${new Date().toLocaleDateString()}`,
+      `Page ${i} of ${totalPages} - NDA GreenCheck® - ${new Date().toLocaleDateString()}`,
       pageWidth / 2,
       pdf.internal.pageSize.getHeight() - 10,
       { align: 'center' }

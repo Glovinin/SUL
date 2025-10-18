@@ -230,172 +230,172 @@ const getSmartLayout = (breakpoints: ScreenBreakpoints) => {
 }
 
 const carbonCredits = [
-  // Florestal
+  // Forestry
   {
     id: 1,
-    title: "Reflorestamento Amazônia",
-    location: "Brasil",
-    type: "Florestal",
+    title: "Amazon Reforestation",
+    location: "Brazil",
+    type: "Forestry",
     price: 12,
     available: 1500,
     sold: 75,
-    verification: "Monitoramento via Satélite",
+    verification: "Satellite Monitoring",
     rating: 4.9,
     image: "https://images.unsplash.com/photo-1511497584788-876760111969?w=800&q=80",
-    description: "Projeto de recuperação de áreas degradadas na Amazônia"
+    description: "Project for the recovery of degraded areas in the Amazon"
   },
   {
     id: 2,
-    title: "Mata Atlântica",
-    location: "São Paulo, Brasil",
-    type: "Florestal",
+    title: "Atlantic Forest",
+    location: "São Paulo, Brazil",
+    type: "Forestry",
     price: 15,
     available: 800,
     sold: 60,
-    verification: "Monitoramento via Satélite",
+    verification: "Satellite Monitoring",
     rating: 4.8,
     image: "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?w=800&q=80",
-    description: "Preservação e restauração da Mata Atlântica brasileira"
+    description: "Preservation and restoration of the Brazilian Atlantic Forest"
   },
   {
     id: 3,
-    title: "Cerrado Brasileiro",
-    location: "Goiás, Brasil",
-    type: "Florestal",
+    title: "Brazilian Cerrado",
+    location: "Goiás, Brazil",
+    type: "Forestry",
     price: 10,
     available: 1200,
     sold: 45,
-    verification: "Monitoramento via Satélite",
+    verification: "Satellite Monitoring",
     rating: 4.7,
     image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&q=80",
-    description: "Conservação do segundo maior bioma da América do Sul"
+    description: "Conservation of the second largest biome in South America"
   },
   {
     id: 4,
-    title: "Mangue Costeiro",
-    location: "Bahia, Brasil",
-    type: "Florestal",
+    title: "Coastal Mangrove",
+    location: "Bahia, Brazil",
+    type: "Forestry",
     price: 18,
     available: 500,
     sold: 85,
-    verification: "Monitoramento via Satélite",
+    verification: "Satellite Monitoring",
     rating: 5.0,
     image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80",
-    description: "Restauração de manguezais e proteção costeira"
+    description: "Restoration of mangroves and coastal protection"
   },
-  // Renovável
+  // Renewable
   {
     id: 5,
-    title: "Energia Solar",
+    title: "Solar Energy",
     location: "Portugal",
-    type: "Renovável",
+    type: "Renewable",
     price: 14,
     available: 900,
     sold: 70,
-    verification: "Monitoramento via Satélite",
+    verification: "Satellite Monitoring",
     rating: 4.9,
     image: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-    description: "Parque solar fotovoltaico de grande escala"
+    description: "Large-scale photovoltaic solar park"
   },
   {
     id: 6,
-    title: "Energia Eólica",
-    location: "Ceará, Brasil",
-    type: "Renovável",
+    title: "Wind Energy",
+    location: "Ceará, Brazil",
+    type: "Renewable",
     price: 16,
     available: 700,
     sold: 55,
-    verification: "Monitoramento via Satélite",
+    verification: "Satellite Monitoring",
     rating: 4.8,
     image: "https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?w=800&q=80",
-    description: "Fazenda eólica offshore com energia limpa"
+    description: "Offshore wind farm with clean energy"
   },
   {
     id: 7,
-    title: "Hidrelétrica PCH",
-    location: "Minas Gerais, Brasil",
-    type: "Renovável",
+    title: "Small Hydroelectric",
+    location: "Minas Gerais, Brazil",
+    type: "Renewable",
     price: 13,
     available: 600,
     sold: 40,
-    verification: "Monitoramento via Satélite",
+    verification: "Satellite Monitoring",
     rating: 4.6,
     image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&q=80",
-    description: "Pequena Central Hidrelétrica sustentável"
+    description: "Sustainable small hydroelectric power plant"
   },
   {
     id: 8,
-    title: "Biomassa",
-    location: "Paraná, Brasil",
-    type: "Renovável",
+    title: "Biomass",
+    location: "Paraná, Brazil",
+    type: "Renewable",
     price: 11,
     available: 1000,
     sold: 30,
-    verification: "Monitoramento via Satélite",
+    verification: "Satellite Monitoring",
     rating: 4.5,
     image: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=800&q=80",
-    description: "Geração de energia a partir de resíduos agrícolas"
+    description: "Energy generation from agricultural waste"
   },
-  // Tecnologia
+  // Technology
   {
     id: 9,
-    title: "Captura Direta de CO₂",
-    location: "Suíça",
-    type: "Tecnologia",
+    title: "Direct CO₂ Capture",
+    location: "Switzerland",
+    type: "Technology",
     price: 25,
     available: 300,
     sold: 90,
-    verification: "Monitoramento via Satélite",
+    verification: "Satellite Monitoring",
     rating: 5.0,
     image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80",
-    description: "Tecnologia DAC para remoção atmosférica de carbono"
+    description: "DAC technology for atmospheric carbon removal"
   },
   {
     id: 10,
     title: "Biochar",
-    location: "Estados Unidos",
-    type: "Tecnologia",
+    location: "United States",
+    type: "Technology",
     price: 22,
     available: 400,
     sold: 65,
-    verification: "Monitoramento via Satélite",
+    verification: "Satellite Monitoring",
     rating: 4.9,
     image: "https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=800&q=80",
-    description: "Sequestro de carbono através de carvão vegetal"
+    description: "Carbon sequestration through biochar"
   },
   {
     id: 11,
-    title: "Mineração de Carbono",
-    location: "Islândia",
-    type: "Tecnologia",
+    title: "Carbon Mining",
+    location: "Iceland",
+    type: "Technology",
     price: 28,
     available: 250,
     sold: 80,
-    verification: "Monitoramento via Satélite",
+    verification: "Satellite Monitoring",
     rating: 4.8,
     image: "https://images.unsplash.com/photo-1465778893808-9b3d1b443be4?w=800&q=80",
-    description: "Mineralização de CO₂ em rochas basálticas"
+    description: "CO₂ mineralization in basalt rocks"
   },
   {
     id: 12,
-    title: "Algas Oceânicas",
-    location: "Austrália",
-    type: "Tecnologia",
+    title: "Ocean Algae",
+    location: "Australia",
+    type: "Technology",
     price: 20,
     available: 500,
     sold: 50,
-    verification: "Monitoramento via Satélite",
+    verification: "Satellite Monitoring",
     rating: 4.7,
     image: "https://images.unsplash.com/photo-1583212292454-1fe6229603b7?w=800&q=80",
-    description: "Cultivo de algas para captura de carbono marinho"
+    description: "Algae cultivation for marine carbon capture"
   }
 ]
 
 const categories = [
   { id: 'todos', label: 'All' },
-  { id: 'Florestal', label: 'Forestry' },
-  { id: 'Renovável', label: 'Renewable' },
-  { id: 'Tecnologia', label: 'Technology' }
+  { id: 'Forestry', label: 'Forestry' },
+  { id: 'Renewable', label: 'Renewable' },
+  { id: 'Technology', label: 'Technology' }
 ]
 
 const stats = [
@@ -800,79 +800,13 @@ export default function MarketplacePage() {
           : 'pb-0'
       }`}>
       
-      {/* Stats Section - Clean Minimal */}
-      <section className={`${sectionPadding} relative bg-white rounded-t-[48px]`}>
+      {/* Marketplace - Projetos Visíveis */}
+      <section className={`${sectionPadding} relative bg-gray-50 rounded-t-[48px]`}>
         {/* Linha de Slide iOS - Mobile apenas */}
         {breakpoints.isMobile && (
           <div className="absolute top-3 left-1/2 -translate-x-1/2 w-10 h-1 bg-gray-300 rounded-full z-10" />
         )}
         
-        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
-            <motion.p 
-              initial={{ opacity: 0, y: -10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4"
-            >
-              Impact in Numbers
-            </motion.p>
-            <motion.h2 
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
-            >
-              <span className="font-extralight text-[#044050]">Active</span>
-              <br />
-              <span className="font-normal text-[#5FA037]">marketplace</span>
-            </motion.h2>
-            <motion.p 
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
-            >
-              Connecting companies to verified carbon projects with measurable impact
-            </motion.p>
-          </div>
-
-          {/* Statistics Grid */}
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : breakpoints.isTablet ? 'grid-cols-2' : 'grid-cols-4'} ${gap} ${breakpoints.isMobile ? 'mb-12' : 'mb-16'}`}>
-            {stats.map((stat, index) => {
-              const StatIcon = stat.icon
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="text-center"
-                >
-                  <div className="mb-6 flex justify-center">
-                    <div className="w-12 h-12 rounded-full bg-[#044050] flex items-center justify-center transition-all duration-300 group-hover:bg-[#5FA037]">
-                      <StatIcon className="w-6 h-6 text-white" />
-                    </div>
-                  </div>
-                  <div className={`${breakpoints.isXs ? 'text-3xl' : breakpoints.isMobile ? 'text-4xl' : 'text-5xl'} font-extralight text-[#5FA037] mb-2`}>
-                    {stat.value}
-                  </div>
-                  <h3 className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} font-medium text-gray-500 uppercase tracking-wider`}>
-                    {stat.label}
-                  </h3>
-                </motion.div>
-              )
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Marketplace - Projetos Visíveis */}
-      <section className={`${sectionPadding} relative bg-gray-50`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
           {/* Pegada de Carbono Card */}
           <motion.div
@@ -1188,6 +1122,72 @@ export default function MarketplacePage() {
               </div>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Stats Section - Clean Minimal */}
+      <section className={`${sectionPadding} relative bg-white`}>
+        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
+          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
+            <motion.p 
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4"
+            >
+              Impact in Numbers
+            </motion.p>
+            <motion.h2 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+            >
+              <span className="font-extralight text-[#044050]">Active</span>
+              <br />
+              <span className="font-normal text-[#5FA037]">marketplace</span>
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
+            >
+              Connecting companies to verified carbon projects with measurable impact
+            </motion.p>
+          </div>
+
+          {/* Statistics Grid */}
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : breakpoints.isTablet ? 'grid-cols-2' : 'grid-cols-4'} ${gap} ${breakpoints.isMobile ? 'mb-12' : 'mb-16'}`}>
+            {stats.map((stat, index) => {
+              const StatIcon = stat.icon
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="text-center"
+                >
+                  <div className="mb-6 flex justify-center">
+                    <div className="w-12 h-12 rounded-full bg-[#044050] flex items-center justify-center transition-all duration-300 group-hover:bg-[#5FA037]">
+                      <StatIcon className="w-6 h-6 text-white" />
+                    </div>
+                  </div>
+                  <div className={`${breakpoints.isXs ? 'text-3xl' : breakpoints.isMobile ? 'text-4xl' : 'text-5xl'} font-extralight text-[#5FA037] mb-2`}>
+                    {stat.value}
+                  </div>
+                  <h3 className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} font-medium text-gray-500 uppercase tracking-wider`}>
+                    {stat.label}
+                  </h3>
+                </motion.div>
+              )
+            })}
+          </div>
         </div>
       </section>
 

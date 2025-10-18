@@ -249,7 +249,7 @@ export default function LoginPage() {
               priority
             />
             <span className="font-light text-[#044050] tracking-wide text-lg">
-              <span className="font-extralight">Green</span><span className="font-medium">Check</span>
+              <span className="font-extralight">Green</span><span className="font-medium">Check®</span>
             </span>
           </Link>
         )}

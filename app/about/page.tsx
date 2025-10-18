@@ -234,7 +234,7 @@ const getSmartLayout = (breakpoints: ScreenBreakpoints) => {
 const advantages = [
   { label: "Upload", value: "Step 1", description: "Upload your ESG documents", icon: FileText },
   { label: "AI Extraction", value: "Step 2", description: "AI extracts carbon data", icon: Cpu },
-  { label: "Scientific Validation", value: "Step 3", description: "Plantarum validates results", icon: Star },
+  { label: "Scientific Validation", value: "Step 3", description: "Jardim Botânico Plantarum validates results", icon: Star },
   { label: "Blockchain", value: "Step 4", description: "Immutable certificate minted", icon: Shield },
   { label: "NFT Certificate", value: "Step 5", description: "Receive verifiable NFT", icon: Award }
 ]
@@ -695,7 +695,7 @@ export default function SobrePage() {
               </div>
               <h3 className={`${breakpoints.isMobile ? 'text-xl' : 'text-2xl'} font-normal text-[#044050] ${breakpoints.isMobile ? 'mb-4' : 'mb-6'} tracking-tight`}>Mission</h3>
               <p className={`${breakpoints.isMobile ? 'text-sm' : 'text-sm'} font-light text-gray-600 leading-relaxed`}>
-                Democratize ESG certification by making sustainability accessible, affordable, and scientifically validated for companies of all sizes
+                Democratize ESG certification by making sustainability accessible, affordable, and scientifically validated for companies of all sizes and individuals.
               </p>
             </motion.div>
 
@@ -883,7 +883,7 @@ export default function SobrePage() {
               <div className={`${breakpoints.isMobile ? 'space-y-2' : 'space-y-4'}`}>
                 <div className="flex items-center gap-3">
                   <div className="w-1 h-1 rounded-full bg-[#5FA037]"></div>
-                  <p className="text-sm font-light text-gray-500">250+ socio-environmental projects executed</p>
+                  <p className="text-sm font-light text-gray-500">295+ socio-environmental projects executed</p>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="w-1 h-1 rounded-full bg-[#5FA037]"></div>
@@ -992,9 +992,9 @@ export default function SobrePage() {
           {/* Stats Grid */}
           <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2 gap-6' : 'md:grid-cols-4 gap-12'} ${breakpoints.isMobile ? 'mb-12' : 'mb-20'}`}>
             {[
-              { value: '250+', label: 'Socio-environmental projects', icon: Target },
-              { value: '815K', label: 'People impacted', icon: Globe },
-              { value: '350+', label: 'Organizations served', icon: Award },
+              { value: '295+', label: 'Socio-environmental projects', icon: Target },
+              { value: '1.7M+', label: 'People impacted', icon: Globe },
+              { value: '523+', label: 'Organizations served', icon: Award },
               { value: '20', label: 'Years of experience', icon: TrendingUp }
             ].map((stat, index) => {
               const StatIcon = stat.icon
@@ -1617,7 +1617,7 @@ export default function SobrePage() {
                 <ul className="space-y-2 ml-16">
                   <li className="flex items-start gap-3 text-gray-600">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
-                    <span className="text-sm leading-relaxed">Partnership with Plantarum Botanical Garden (founded 1987)</span>
+                    <span className="text-sm leading-relaxed">Partnership with Jardim Botânico Plantarum (founded 1987)</span>
                   </li>
                   <li className="flex items-start gap-3 text-gray-600">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#5FA037] flex-shrink-0 mt-2" />
