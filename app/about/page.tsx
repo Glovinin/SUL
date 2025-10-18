@@ -1414,7 +1414,7 @@ export default function SobrePage() {
                   <Leaf className={`${breakpoints.isMobile ? 'w-6 h-6' : 'w-8 h-8'} text-white`} />
                 </div>
                 <div>
-                  <h3 className={`${breakpoints.isMobile ? 'text-xl' : 'text-2xl'} font-light text-[#044050] tracking-tight`}>Plantarum</h3>
+                  <h3 className={`${breakpoints.isMobile ? 'text-xl' : 'text-2xl'} font-light text-[#044050] tracking-tight`}>Jardim Botânico Plantarum</h3>
                   <p className="text-xs font-light text-gray-400 tracking-wide">Botanical Garden • Founded 1987</p>
                 </div>
               </div>
