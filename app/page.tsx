@@ -171,6 +171,29 @@ export default function Home() {
   const [propertyType, setPropertyType] = useState('')
   const [location, setLocation] = useState('')
   const [priceRange, setPriceRange] = useState('')
+  const videoRef = React.useRef<HTMLVideoElement>(null)
+  
+  // Ensure video plays on mount and handles autoplay restrictions
+  React.useEffect(() => {
+    const video = videoRef.current
+    if (video) {
+      video.muted = true
+      const playPromise = video.play()
+      
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            console.log('Video playing successfully')
+          })
+          .catch((error) => {
+            console.log('Autoplay prevented, retrying...', error)
+            setTimeout(() => {
+              video.play().catch(e => console.log('Retry failed:', e))
+            }, 1000)
+          })
+      }
+    }
+  }, [])
   
   // Handle property search
   const handlePropertySearch = () => {
@@ -193,6 +216,7 @@ export default function Home() {
         {/* Background Video with Elegant Overlay */}
         <div className="absolute inset-0 overflow-hidden">
           <video
+            ref={videoRef}
             autoPlay
             loop
             muted
