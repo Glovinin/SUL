@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { Notification, useNotification } from './notification'
 
 interface ScreenBreakpoints {
   isXs: boolean
@@ -63,6 +64,7 @@ export default function Footer({
 }: FooterProps) {
   const breakpoints = useSmartBreakpoints()
   const [mounted, setMounted] = useState(false)
+  const { notification, showNotification, closeNotification } = useNotification()
 
   useEffect(() => {
     setMounted(true)
@@ -70,13 +72,18 @@ export default function Footer({
 
   const handleFeatureClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault()
-    // Disparar evento customizado para a notificação da homepage
-    window.dispatchEvent(new CustomEvent('show-notification', {
-      detail: {
-        title: "Under Development",
-        message: "Our team is currently developing this feature. Stay tuned!"
-      }
-    }))
+    showNotification(
+      "Under Development",
+      "Our team is currently developing this feature. Stay tuned!"
+    )
+  }
+
+  const handlePageClick = (e: React.MouseEvent<HTMLAnchorElement>, pageName: string) => {
+    e.preventDefault()
+    showNotification(
+      "Page Under Development",
+      `Our team is currently developing the ${pageName} page. Stay tuned for updates!`
+    )
   }
 
   if (!mounted) {
@@ -87,20 +94,27 @@ export default function Footer({
   const containerPadding = breakpoints.isXs ? 'px-3' : breakpoints.isSm ? 'px-4' : breakpoints.isMd ? 'px-6' : 'px-4 sm:px-6 lg:px-8'
 
   return (
-    <footer className={`bg-[#044050] text-white ${className}`}>
+    <>
+      <Notification 
+        show={notification.show}
+        onClose={closeNotification}
+        title={notification.title}
+        message={notification.message}
+      />
+      <footer className={`bg-[#2C5F7C] text-white ${className}`}>
         <div className={`${maxWidth} mx-auto ${containerPadding}`}>
         {/* Links Grid */}
         <div className={`${breakpoints.isMobile ? 'py-12' : 'py-16'} border-b border-white/10`}>
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2 gap-x-8 gap-y-12' : breakpoints.isTablet ? 'grid-cols-3 gap-12' : 'grid-cols-5 gap-8'}`}>
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2 gap-x-8 gap-y-12' : breakpoints.isTablet ? 'grid-cols-3 gap-12' : 'grid-cols-4 gap-8'}`}>
             
-            {/* Platform */}
+            {/* Services */}
             <div>
-              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Platform</h4>
+              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Services</h4>
               <ul className="space-y-3">
-                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">ESG Validation</a></li>
-                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">Marketplace</a></li>
-                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">NFT Certificates</a></li>
-                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">API</a></li>
+                <li><a href="/services" onClick={(e) => handlePageClick(e, "Services")} className="text-sm text-white/70 hover:text-[#F5F0E8] transition-colors font-light cursor-pointer">Investment Strategy</a></li>
+                <li><a href="/services" onClick={(e) => handlePageClick(e, "Services")} className="text-sm text-white/70 hover:text-[#F5F0E8] transition-colors font-light cursor-pointer">Property Sourcing</a></li>
+                <li><a href="/services" onClick={(e) => handlePageClick(e, "Services")} className="text-sm text-white/70 hover:text-[#F5F0E8] transition-colors font-light cursor-pointer">Project Oversight</a></li>
+                <li><a href="/services" onClick={(e) => handlePageClick(e, "Services")} className="text-sm text-white/70 hover:text-[#F5F0E8] transition-colors font-light cursor-pointer">Management</a></li>
               </ul>
             </div>
 
@@ -108,21 +122,10 @@ export default function Footer({
             <div>
               <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Company</h4>
               <ul className="space-y-3">
-                <li><a href="/about" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">About</a></li>
-                <li><a href="/investors/login" className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light">Investors</a></li>
-                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">Careers</a></li>
-                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">Press</a></li>
-              </ul>
-            </div>
-
-            {/* Support */}
-            <div>
-              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Support</h4>
-              <ul className="space-y-3">
-                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">Help Center</a></li>
-                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">Documentation</a></li>
-                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">Contact</a></li>
-                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">Status</a></li>
+                <li><a href="/about" onClick={(e) => handlePageClick(e, "About")} className="text-sm text-white/70 hover:text-[#F5F0E8] transition-colors font-light cursor-pointer">About</a></li>
+                <li><a href="/why-portugal" onClick={(e) => handlePageClick(e, "Why Portugal")} className="text-sm text-white/70 hover:text-[#F5F0E8] transition-colors font-light cursor-pointer">Why Portugal</a></li>
+                <li><a href="/projects" onClick={(e) => handlePageClick(e, "Projects")} className="text-sm text-white/70 hover:text-[#F5F0E8] transition-colors font-light cursor-pointer">Projects</a></li>
+                <li><a href="/contact" onClick={(e) => handlePageClick(e, "Contact")} className="text-sm text-white/70 hover:text-[#F5F0E8] transition-colors font-light cursor-pointer">Contact</a></li>
               </ul>
             </div>
 
@@ -130,10 +133,9 @@ export default function Footer({
             <div>
               <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Legal</h4>
               <ul className="space-y-3">
-                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">Privacy</a></li>
-                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">Terms</a></li>
-                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">Cookies</a></li>
-                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">Licenses</a></li>
+                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#F5F0E8] transition-colors font-light cursor-pointer">Privacy</a></li>
+                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#F5F0E8] transition-colors font-light cursor-pointer">Terms</a></li>
+                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#F5F0E8] transition-colors font-light cursor-pointer">Cookies</a></li>
               </ul>
             </div>
 
@@ -141,9 +143,8 @@ export default function Footer({
             <div>
               <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Connect</h4>
               <ul className="space-y-3">
-                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">LinkedIn</a></li>
-                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">Twitter</a></li>
-                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#5FA037] transition-colors font-light cursor-pointer">GitHub</a></li>
+                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#F5F0E8] transition-colors font-light cursor-pointer">LinkedIn</a></li>
+                <li><a href="#" onClick={handleFeatureClick} className="text-sm text-white/70 hover:text-[#F5F0E8] transition-colors font-light cursor-pointer">WhatsApp</a></li>
               </ul>
             </div>
           </div>
@@ -151,41 +152,38 @@ export default function Footer({
 
         {/* Contact Information */}
         <div className={`${breakpoints.isMobile ? 'py-12' : 'py-16'} border-b border-white/10`}>
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1 gap-12' : 'md:grid-cols-2 gap-16'} max-w-4xl`}>
+          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1 gap-12' : 'md:grid-cols-3 gap-16'}`}>
             
-            {/* Portugal Office */}
+            {/* Lisbon Office */}
             <div>
-              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Portugal Office</h4>
+              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Lisbon</h4>
               <div className="space-y-2">
-                <p className="text-sm text-white/70 font-light">ESG Veritas Solutions Ltd.</p>
-                <p className="text-sm text-white/70 font-light">Rua do Salvador, 20, 1A</p>
-                <p className="text-sm text-white/70 font-light">1100-466 Lisboa, Portugal</p>
+                <p className="text-sm text-white/70 font-light">SUL ESTATE</p>
+                <p className="text-sm text-white/70 font-light">Boutique Real Estate Consultancy</p>
+                <p className="text-sm text-white/70 font-light">Lisbon, Portugal</p>
               </div>
               <div className="mt-6 space-y-2">
                 <p className="text-sm text-white/70 font-light">
-                  <a href="tel:+351931721901" className="hover:text-[#5FA037] transition-colors">+351 931 721 901</a>
-                </p>
-                <p className="text-sm text-white/70 font-light">
-                  <a href="mailto:info@esgveritas.eu" className="hover:text-[#5FA037] transition-colors">info@esgveritas.eu</a>
+                  <a href="mailto:hello@sulbyvs.com" className="hover:text-[#F5F0E8] transition-colors">hello@sulbyvs.com</a>
                 </p>
               </div>
             </div>
 
-            {/* Brazil Office */}
+            {/* Azeitão */}
             <div>
-              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Brazil Office</h4>
+              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Azeitão</h4>
               <div className="space-y-2">
-                <p className="text-sm text-white/70 font-light">Bureau Social – Instituto Brasileiro de Negócios Sociais</p>
-                <p className="text-sm text-white/70 font-light">Avenida Horácio Lafer, 160 – Conj. 22, Sala B</p>
-                <p className="text-sm text-white/70 font-light">Itaim Bibi – São Paulo/SP – CEP 04538-080</p>
+                <p className="text-sm text-white/70 font-light">Project Management Office</p>
+                <p className="text-sm text-white/70 font-light">Azeitão, Portugal</p>
               </div>
-              <div className="mt-6 space-y-2">
-                <p className="text-sm text-white/70 font-light">
-                  <a href="tel:+5511911381183" className="hover:text-[#5FA037] transition-colors">+55 11 91138-1183</a>
-                </p>
-                <p className="text-sm text-white/70 font-light">
-                  <a href="mailto:faleconosco@bureausocial.org.br" className="hover:text-[#5FA037] transition-colors">faleconosco@bureausocial.org.br</a>
-                </p>
+            </div>
+
+            {/* Algarve */}
+            <div>
+              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-4">Algarve</h4>
+              <div className="space-y-2">
+                <p className="text-sm text-white/70 font-light">Southern Properties</p>
+                <p className="text-sm text-white/70 font-light">Lagos, Portugal</p>
               </div>
             </div>
           </div>
@@ -194,16 +192,17 @@ export default function Footer({
         {/* Bottom Bar */}
         <div className={`${breakpoints.isMobile ? 'py-8' : 'py-10'} flex ${breakpoints.isMobile ? 'flex-col gap-4 text-center' : 'flex-row justify-between items-center'}`}>
           <p className="text-sm text-white/60 font-light">
-            © 2025 GreenCheck. All rights reserved.
+            © 2025 SUL ESTATE. All rights reserved.
           </p>
           {showSpecialMessage && (
             <p className="text-sm text-white/60 font-light">
-              {specialMessage}
+              {specialMessage || "Where strategy meets aesthetics"}
             </p>
           )}
         </div>
       </div>
     </footer>
+    </>
   )
 }
 

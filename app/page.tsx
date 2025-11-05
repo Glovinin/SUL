@@ -1,1744 +1,1425 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import React, { useState } from 'react'
+import { motion, AnimatePresence, useInView } from 'framer-motion'
 import { Button } from '../components/ui/button'
-import { ArrowRight, ChevronDown, ArrowUpRight, Shield, Globe, Cpu, TrendingUp, Leaf, CheckCircle2, Upload, BarChart3, Users, Zap, Star, X, FileText } from 'lucide-react'
-import { Navbar } from '../components/navbar'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import SplineBackground from '../components/spline-background'
+import { NumberTicker } from '../components/ui/number-ticker'
+import { GridPattern } from '../components/ui/grid-pattern'
+import { NavBar } from '../components/navbar'
+import { Footer } from '../components/Footer'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import Footer from '@/components/ui/footer'
-import Image from 'next/image'
-import { Notification, useNotification } from '@/components/ui/notification'
+import { 
+  ArrowRight,
+  Buildings,
+  MagnifyingGlass,
+  Eye,
+  Wallet,
+  GearSix,
+  Bed,
+  Bathtub,
+  ArrowsOut,
+  User,
+  Bank,
+  Sparkle,
+  PaintBrush,
+  HardHat,
+  Scales,
+  Palette,
+  Briefcase,
+  CaretDown
+} from '@phosphor-icons/react'
 
-// Interface para breakpoints inteligentes
-interface ScreenBreakpoints {
-  isXs: boolean      // < 380px - muito pequeno (mobile portrait pequeno)
-  isSm: boolean      // 380px - 640px - pequeno (mobile portrait)
-  isMd: boolean      // 640px - 768px - médio (mobile landscape)
-  isTablet: boolean  // 768px - 1024px - tablet (iPad Mini/Pro)
-  isLg: boolean      // 1024px - 1280px - desktop pequeno
-  isXl: boolean      // > 1280px - desktop grande
-  
-  // Altura
-  isShortHeight: boolean    // < 600px
-  isMediumHeight: boolean   // 600px - 800px
-  isTallHeight: boolean     // > 800px
-  
-  // Combinações úteis
-  isMobile: boolean         // < 768px
-  isDesktop: boolean        // >= 1024px
-  
-  width: number
-  height: number
-}
-
-// Hook de breakpoints inteligentes
-const useSmartBreakpoints = (): ScreenBreakpoints => {
-  const [viewport, setViewport] = useState({ width: 0, height: 0 })
-
-  useEffect(() => {
-    const updateViewport = () => {
-      setViewport({
-        width: window.innerWidth,
-        height: window.innerHeight
-      })
-    }
-
-    // Set initial viewport
-    updateViewport()
-
-    // Listen for resize events
-    window.addEventListener('resize', updateViewport)
-    window.addEventListener('orientationchange', updateViewport)
-
-    return () => {
-      window.removeEventListener('resize', updateViewport)
-      window.removeEventListener('orientationchange', updateViewport)
-    }
-  }, [])
-
-  const breakpoints = {
-    isXs: viewport.width < 380,
-    isSm: viewport.width >= 380 && viewport.width < 640,
-    isMd: viewport.width >= 640 && viewport.width < 768,
-    isTablet: viewport.width >= 768 && viewport.width < 1024,
-    isLg: viewport.width >= 1024 && viewport.width < 1280,
-    isXl: viewport.width >= 1280,
-    
-    isShortHeight: viewport.height < 600,
-    isMediumHeight: viewport.height >= 600 && viewport.height < 800,
-    isTallHeight: viewport.height >= 800,
-    
-    isMobile: viewport.width < 768,
-    isDesktop: viewport.width >= 1024,
-    
-    width: viewport.width,
-    height: viewport.height
-  }
-
-  return breakpoints
-}
-
-// Função para obter layout inteligente baseado nos breakpoints
-const getSmartLayout = (breakpoints: ScreenBreakpoints) => {
-  const { isXs, isSm, isMd, isTablet, isLg, isXl, isShortHeight, isMediumHeight, isTallHeight, isMobile, isDesktop } = breakpoints
-
-  // Layout para telas muito pequenas (< 380px)
-  if (isXs) {
-    return {
-      // Hero Section
-      containerClass: 'min-h-screen-fixed flex flex-col justify-start items-center',
-      heroContentClass: 'px-3 py-2',
-      heroSpacing: 'pt-16 pb-6',
-      titleSize: 'text-3xl',
-      subtitleSize: 'text-base',
-      buttonSize: 'h-11 text-sm w-full max-w-[280px]',
-      spacingY: 'space-y-3',
-      
-      // Seções Gerais
-      sectionPadding: 'py-12',
-      containerPadding: 'px-3',
-      maxWidth: 'max-w-sm',
-      sectionTitleSize: 'text-2xl',
-      sectionSubtitleSize: 'text-sm',
-      sectionTextSize: 'text-sm',
-      badgeSize: 'text-xs px-3 py-1.5',
-      gridCols: 'grid-cols-1',
-      gap: 'gap-4',
-      imageHeight: 'h-48',
-      cardPadding: 'p-4',
-      iconSize: 'w-5 h-5',
-      buttonHeight: 'h-9'
-    }
-  }
-
-  // Layout para mobile pequeno (380px - 640px)
-  if (isSm) {
-    return {
-      // Hero Section
-      containerClass: 'min-h-screen-fixed flex flex-col justify-start items-center',
-      heroContentClass: 'px-4 py-4',
-      heroSpacing: 'pt-20 pb-6',
-      titleSize: 'text-4xl',
-      subtitleSize: 'text-lg',
-      buttonSize: 'h-12 text-base w-full max-w-[320px]',
-      spacingY: 'space-y-4',
-      
-      // Seções Gerais
-      sectionPadding: 'py-16',
-      containerPadding: 'px-4',
-      maxWidth: 'max-w-md',
-      sectionTitleSize: 'text-2xl',
-      sectionSubtitleSize: 'text-sm',
-      sectionTextSize: 'text-base',
-      badgeSize: 'text-sm px-4 py-2',
-      gridCols: 'grid-cols-1',
-      gap: 'gap-5',
-      imageHeight: 'h-56',
-      cardPadding: 'p-5',
-      iconSize: 'w-6 h-6',
-      buttonHeight: 'h-10'
-    }
-  }
-
-  // Layout para mobile landscape (640px - 768px)
-  if (isMd) {
-    return {
-      // Hero Section
-      containerClass: 'min-h-screen-fixed flex flex-col justify-start items-center',
-      heroContentClass: 'px-6 py-4',
-      heroSpacing: 'pt-20 pb-8',
-      titleSize: 'text-5xl',
-      subtitleSize: 'text-2xl',
-      buttonSize: 'h-12 text-base w-full max-w-[340px]',
-      spacingY: 'space-y-6',
-      
-      // Seções Gerais
-      sectionPadding: 'py-20',
-      containerPadding: 'px-6',
-      maxWidth: 'max-w-2xl',
-      sectionTitleSize: 'text-3xl',
-      sectionSubtitleSize: 'text-base',
-      sectionTextSize: 'text-base',
-      badgeSize: 'text-sm px-4 py-2',
-      gridCols: 'grid-cols-1 md:grid-cols-2',
-      gap: 'gap-6',
-      imageHeight: 'h-64',
-      cardPadding: 'p-6',
-      iconSize: 'w-6 h-6',
-      buttonHeight: 'h-11'
-    }
-  }
-
-  // Layout para tablets (768px - 1024px)
-  if (isTablet) {
-    return {
-      // Hero Section
-      containerClass: 'min-h-screen-fixed flex flex-col justify-center items-center',
-      heroContentClass: 'px-8 py-10',
-      heroSpacing: isShortHeight ? 'pt-12 pb-8' : 'pt-16 pb-12',
-      titleSize: 'text-5xl md:text-6xl',
-      subtitleSize: 'text-2xl',
-      buttonSize: 'h-12 text-lg min-w-[210px]',
-      spacingY: 'space-y-7',
-      
-      // Seções Gerais
-      sectionPadding: 'py-24',
-      containerPadding: 'px-8',
-      maxWidth: 'max-w-5xl',
-      sectionTitleSize: 'text-3xl md:text-4xl',
-      sectionSubtitleSize: 'text-base',
-      sectionTextSize: 'text-lg',
-      badgeSize: 'text-sm px-4 py-2',
-      gridCols: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
-      gap: 'gap-8',
-      imageHeight: 'h-72',
-      cardPadding: 'p-7',
-      iconSize: 'w-7 h-7',
-      buttonHeight: 'h-12'
-    }
-  }
-
-  // Layout para desktop pequeno (1024px - 1280px)
-  if (isLg) {
-    return {
-      // Hero Section
-      containerClass: 'min-h-screen-fixed flex flex-col justify-center items-center',
-      heroContentClass: 'px-8 py-12',
-      heroSpacing: 'pt-16 md:pt-0',
-      titleSize: 'text-6xl md:text-7xl',
-      subtitleSize: 'text-2xl md:text-3xl',
-      buttonSize: 'h-12 sm:h-14 text-base sm:text-lg min-w-[200px] sm:min-w-[220px]',
-      spacingY: 'space-y-6 md:space-y-8',
-      
-      // Seções Gerais
-      sectionPadding: 'py-24',
-      containerPadding: 'px-8',
-      maxWidth: 'max-w-6xl',
-      sectionTitleSize: 'text-4xl',
-      sectionSubtitleSize: 'text-base',
-      sectionTextSize: 'text-lg',
-      badgeSize: 'text-sm px-4 py-2',
-      gridCols: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4',
-      gap: 'gap-8',
-      imageHeight: 'h-80',
-      cardPadding: 'p-8',
-      iconSize: 'w-6 h-6',
-      buttonHeight: 'h-12'
-    }
-  }
-
-  // Layout para desktop grande (> 1280px)
-  return {
-    // Hero Section
-    containerClass: 'min-h-screen-fixed flex flex-col justify-center items-center',
-    heroContentClass: 'px-4 sm:px-6 lg:px-8 py-12',
-    heroSpacing: 'pt-16 md:pt-0',
-    titleSize: 'text-4xl sm:text-5xl md:text-8xl',
-    subtitleSize: 'text-xl sm:text-2xl md:text-3xl',
-    buttonSize: 'h-12 sm:h-14 text-base sm:text-lg min-w-[200px] sm:min-w-[220px]',
-    spacingY: 'space-y-6 md:space-y-8',
-    
-    // Seções Gerais
-    sectionPadding: 'py-24',
-    containerPadding: 'px-4 sm:px-6 lg:px-8',
-    maxWidth: 'max-w-7xl',
-    sectionTitleSize: 'text-4xl',
-    sectionSubtitleSize: 'text-lg',
-    sectionTextSize: 'text-lg',
-    badgeSize: 'text-sm px-4 py-2',
-    gridCols: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4',
-    gap: 'gap-8',
-    imageHeight: 'h-full',
-    cardPadding: 'p-8',
-    iconSize: 'w-6 h-6',
-    buttonHeight: 'h-12'
-  }
-}
-
-// Interface para o item de galeria
-interface GalleryItem {
-  id: string
-  title: string
-  description: string
-  image: string
-  category: string
-  featured: boolean
-  displayOrder?: number
-  createdAt: number
-  isHomeAboutImage?: boolean
-  homePosition?: number
-}
-
-// Homepage slogans for GreenCheck - Focused on B2B benefits
-const slogans = [
-  "ESG Certification in 21 days, not 6 months",
-  "98.5% accuracy with AI + Scientific Validation",
-  "Save 40% vs traditional methods - €35/tCO₂e",
-  "Immutable NFT certificates on Polygon Blockchain",
-  "Guaranteed CSRD compliance for your SME"
-]
-
-// Main GreenCheck features
-const features = [
+// Services data
+const services = [
   {
-    title: "Advanced Artificial Intelligence",
-    description: "Specialized OCR and NLP with 98.5% accuracy in ESG data extraction",
-    icon: <Cpu className="w-6 h-6" />
+    icon: Buildings,
+    title: 'Strategy & Advisory',
+    description: 'Strategic guidance for property acquisition and investment decisions.'
   },
   {
-    title: "Automated Scientific Validation",
-    description: "Integrated APIs with recognized scientific institutions for real-time validation",
-    icon: <Shield className="w-6 h-6" />
+    icon: MagnifyingGlass,
+    title: 'Property Search',
+    description: 'Curated selection of premium properties tailored to your vision.'
   },
   {
-    title: "Blockchain Certification",
-    description: "Immutable NFTs on Polygon network with embedded scientific metadata",
-    icon: <CheckCircle2 className="w-6 h-6" />
+    icon: Eye,
+    title: 'Project Supervision',
+    description: 'Oversight and management of development projects from concept to completion.'
   },
   {
-    title: "Carbon Marketplace",
-    description: "AI-powered offset recommendations with satellite monitoring",
-    icon: <Leaf className="w-6 h-6" />
+    icon: Wallet,
+    title: 'Financing',
+    description: 'Expert assistance in securing optimal financing solutions.'
+  },
+  {
+    icon: GearSix,
+    title: 'Property Management',
+    description: 'Comprehensive management services for your real estate portfolio.'
   }
 ]
 
-// GreenCheck statistics and impact
-const impactStats = [
+// Featured projects with detailed info
+const featuredProjects = [
   {
-    value: "2.4M",
-    label: "European SMEs",
-    description: "Companies requiring CSRD certification by 2025",
-    icon: <Users className="w-8 h-8" />
+    id: 1,
+    title: 'Belém Heritage Apartment',
+    location: 'Lisbon',
+    price: '€1,250,000',
+    beds: 4,
+    baths: 3,
+    sqft: '2,650',
+    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=1000&fit=crop&q=80',
+    tag: 'Featured'
   },
   {
-    value: "€8.5B",
-    label: "Annual Market",
-    description: "Opportunity in European ESG certification market",
-    icon: <TrendingUp className="w-8 h-8" />
+    id: 2,
+    title: 'Ericeira Seaside Villa',
+    location: 'Ericeira',
+    price: '€2,800,000',
+    beds: 5,
+    baths: 4,
+    sqft: '3,200',
+    image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&h=1000&fit=crop&q=80',
+    tag: 'New'
   },
   {
-    value: "98.5%",
-    label: "AI Accuracy",
-    description: "Accuracy rate in ESG data extraction",
-    icon: <Cpu className="w-8 h-8" />
+    id: 3,
+    title: 'Comporta Beach Estate',
+    location: 'Comporta',
+    price: '€4,500,000',
+    beds: 6,
+    baths: 5,
+    sqft: '4,800',
+    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=1000&fit=crop&q=80',
+    tag: 'Luxury'
   },
   {
-    value: "4x",
-    label: "Faster",
-    description: "Compared to traditional certification methods",
-    icon: <Zap className="w-8 h-8" />
+    id: 4,
+    title: 'Algarve Cliffside Residence',
+    location: 'Algarve',
+    price: '€3,200,000',
+    beds: 5,
+    baths: 4,
+    sqft: '3,650',
+    image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=1000&fit=crop&q=80',
+    tag: 'Premium'
+  },
+  {
+    id: 5,
+    title: 'Lisbon Penthouse',
+    location: 'Lisbon',
+    price: '€1,800,000',
+    beds: 3,
+    baths: 3,
+    sqft: '2,200',
+    image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&h=1000&fit=crop&q=80',
+    tag: 'Featured'
+  },
+  {
+    id: 6,
+    title: 'Douro Valley Retreat',
+    location: 'Douro',
+    price: '€1,950,000',
+    beds: 4,
+    baths: 3,
+    sqft: '2,850',
+    image: 'https://images.unsplash.com/photo-1600585154084-4e5fe7c39198?w=800&h=1000&fit=crop&q=80',
+    tag: 'New'
   }
 ]
 
+// Blog posts
+const blogPosts = [
+  {
+    id: 1,
+    title: 'High-end properties',
+    subtitle: 'Luxury homebuyers and sellers are navigating changing market conditions',
+    image: '/images/blog-1.jpg',
+    readTime: '7 min read',
+    author: {
+      name: 'Vincent Santos',
+      role: 'Real Estate Expert'
+    }
+  },
+  {
+    id: 2,
+    title: 'Investment trends 2024',
+    subtitle: 'Key insights for property investment in Portugal\'s prime markets',
+    image: '/images/blog-2.jpg',
+    readTime: '5 min read',
+    author: {
+      name: 'Ana Silva',
+      role: 'Market Analyst'
+    }
+  },
+  {
+    id: 3,
+    title: 'Coastal living guide',
+    subtitle: 'Discovering the perfect beachfront property in Portugal',
+    image: '/images/blog-3.jpg',
+    readTime: '6 min read',
+    author: {
+      name: 'João Costa',
+      role: 'Property Consultant'
+    }
+  }
+]
 
 export default function Home() {
   const router = useRouter()
-  const [displayedText, setDisplayedText] = useState('')
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [isDeleting, setIsDeleting] = useState(false)
-  const [mounted, setMounted] = useState(false)
-  const [sheetOpen, setSheetOpen] = useState(false)
-  const { notification, showNotification, closeNotification } = useNotification()
-  const [processSteps] = useState([
-    { id: 1, title: "Document Upload", description: "Submit your ESG report in PDF" },
-    { id: 2, title: "AI Processing", description: "OCR and NLP analysis with 98.5% accuracy" },
-    { id: 3, title: "Scientific Validation", description: "Automatic verification via institutional APIs" },
-    { id: 4, title: "Blockchain Certification", description: "Immutable NFT on Polygon network" }
-  ])
+  const [propertyType, setPropertyType] = useState('')
+  const [location, setLocation] = useState('')
+  const [priceRange, setPriceRange] = useState('')
   
-  const { scrollY } = useScroll()
-  
-  // Hook de breakpoints inteligentes 
-  const breakpoints = useSmartBreakpoints()
-
-  // Fix viewport height for mobile to prevent browser UI from hiding
-  useEffect(() => {
-    const setViewportHeight = () => {
-      // Get the viewport height and multiply by 1% to get a value for a vh unit
-      const vh = window.innerHeight * 0.01;
-      // Set the value in the --vh custom property to the root of the document
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
-    };
-
-    // Set initial viewport height
-    setViewportHeight();
-
-    // Listen for resize events (orientation change, etc.)
-    const handleResize = () => {
-      setViewportHeight();
-    };
-
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('orientationchange', handleResize);
-
-    // Clean up event listeners
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('orientationchange', handleResize);
-    };
-  }, []);
-
-  // After mounting, we can safely show the UI that depends on the theme
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  // Listener para notificações do footer
-  useEffect(() => {
-    const handleFooterNotification = (event: CustomEvent) => {
-      showNotification(event.detail.title, event.detail.message)
-    }
-
-    window.addEventListener('show-notification', handleFooterNotification as EventListener)
+  // Handle property search
+  const handlePropertySearch = () => {
+    const params = new URLSearchParams()
+    if (propertyType) params.append('type', propertyType)
+    if (location) params.append('location', location)
+    if (priceRange) params.append('price', priceRange)
     
-    return () => {
-      window.removeEventListener('show-notification', handleFooterNotification as EventListener)
-    }
-  }, [showNotification])
-
-  // Simulação de dados para demo
-  useEffect(() => {
-    // Simular carregamento
-  }, [mounted])
-
-  // Typewriter effect - solução funcional da internet
-  useEffect(() => {
-    const currentText = slogans[currentIndex]
-    
-    const timeout = setTimeout(() => {
-      if (!isDeleting) {
-        // Digitando
-        setDisplayedText(currentText.substring(0, displayedText.length + 1))
-        
-        // Se terminou de digitar
-        if (displayedText === currentText) {
-          setTimeout(() => setIsDeleting(true), 2000) // Pausa 2s
-        }
-      } else {
-        // Apagando
-        setDisplayedText(currentText.substring(0, displayedText.length - 1))
-        
-        // Se terminou de apagar
-        if (displayedText === '') {
-          setIsDeleting(false)
-          setCurrentIndex((prev) => (prev + 1) % slogans.length)
-        }
-      }
-    }, isDeleting ? 30 : 50) // Apagar é mais rápido que digitar
-    
-    return () => clearTimeout(timeout)
-  }, [displayedText, isDeleting, currentIndex])
-
-  const handleIniciarValidacao = () => {
-    showNotification(
-      "System Under Development",
-      "Our ESG validation system is currently in development. We'll notify you when it's ready!"
-    )
+    const queryString = params.toString()
+    router.push(`/properties${queryString ? `?${queryString}` : ''}`)
   }
-
-  const handleVerMarketplace = () => {
-    showNotification(
-      "Marketplace Coming Soon",
-      "Our carbon offset marketplace is currently in development. Stay tuned for updates!"
-    )
-  }
-
-  const handleScheduleDemo = () => {
-    showNotification(
-      "Demo Coming Soon",
-      "Our demo system is currently in development. We'll notify you when it's ready!"
-    )
-  }
-
-  const handleSaibaMais = () => {
-    router.push('/about')
-  }
-
-  // Evita flash de conteúdo não hidratado
-  if (!mounted) {
-    return null
-  }
-
-  // Tema claro moderno para GreenCheck
-  const isDark = false
-  
-  // Obter layout inteligente baseado nos breakpoints
-  const {
-    // Hero Section
-    containerClass,
-    heroContentClass,
-    heroSpacing,
-    titleSize,
-    subtitleSize,
-    buttonSize,
-    spacingY,
-    
-    // Seções Gerais
-    sectionPadding,
-    containerPadding,
-    maxWidth,
-    sectionTitleSize,
-    sectionSubtitleSize,
-    sectionTextSize,
-    badgeSize,
-    gridCols,
-    gap,
-    imageHeight,
-    cardPadding,
-    iconSize,
-    buttonHeight
-  } = getSmartLayout(breakpoints)
 
   return (
-    <div className="relative">
-      <Navbar />
-      
-      {/* Notification Component */}
-      <Notification 
-        show={notification.show}
-        onClose={closeNotification}
-        title={notification.title}
-        message={notification.message}
-      />
-      
-      {/* Hero Section - Fixed Background (All devices) - Design limpo igual outras páginas */}
-      <section 
-        className={`fixed inset-0 ${containerClass} ${heroSpacing} h-screen`}
-        style={{ paddingBottom: '120px' }}
-      >
-        {/* Cor de fundo padrão */}
-        <div className="absolute inset-0 bg-[#044050]" />
-        
+    <div className="min-h-screen bg-white">
+      {/* Navigation */}
+      <NavBar isHomePage={true} />
+
+      {/* Hero Section - Ultra-Premium Design */}
+      <section className="relative min-h-screen flex items-center justify-center bg-black">
+        {/* Background Video with Elegant Overlay */}
         <div className="absolute inset-0 overflow-hidden">
-          {/* Iframe Spline - Crystal Ball */}
-          <SplineBackground />
-          
-          {/* Overlay para melhor legibilidade do conteúdo */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50 backdrop-blur-[0.5px]" style={{ zIndex: 2 }} />
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            poster="/images/hero-poster.jpg"
+            className="absolute inset-0 w-full h-full object-cover scale-110 transition-transform duration-20000 ease-out hover:scale-105"
+          >
+            <source src="/videos/video.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          {/* Vignette effect - Premium depth */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,transparent_40%,rgba(0,0,0,0.4)_100%)]" />
+          {/* Modern gradient overlays */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/50" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
         </div>
         
-        <div className={`relative ${containerClass}`} style={{ zIndex: 10 }}>
-          <div 
-            className={`w-full max-w-6xl mx-auto text-center ${heroContentClass}`}
-          >
-            <div className={spacingY}>
-              {/* Badge minimalista */}
-              <motion.div 
-                className={`inline-block ${breakpoints.isTablet ? 'mt-6' : breakpoints.isDesktop ? 'mt-8' : 'mt-4'}`}
-                initial={{ opacity: 0, y: 20 }}
+        {/* Hero Content - Apple-Inspired Typography */}
+        <div className="relative z-10 w-full max-w-[1300px] mx-auto px-6 md:px-12 pt-32 pb-20">
+          <div className="text-center mb-16">
+            {/* Badge - Premium Shimmer Design */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="mb-10"
+            >
+              <span className="group relative inline-flex items-center px-5 py-2 bg-white/10 backdrop-blur-md rounded-full text-[12px] font-medium text-white/90 border border-white/20 hover:border-white/30 transition-all duration-300 overflow-hidden">
+                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1500"></span>
+                <span className="relative">Boutique Real Estate Advisory</span>
+              </span>
+            </motion.div>
+
+            {/* Main Heading - Premium Text Reveal */}
+            <motion.h1
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1.2, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[52px] md:text-[80px] lg:text-[104px] font-semibold tracking-[-0.04em] text-white leading-[1.05] mb-6 drop-shadow-[0_2px_20px_rgba(255,255,255,0.15)]"
+            >
+              <motion.span
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ 
-                  duration: 0.6, 
-                  delay: 0.2,
-                  ease: [0.22, 1, 0.36, 1]
-                }}
+                transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                className="inline-block"
               >
-                <motion.div 
-                  className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} font-light tracking-[0.3em] uppercase text-[#E5FFBA]/90 drop-shadow-md ${
-                    breakpoints.isMobile 
-                      ? 'px-4 py-2' 
-                      : 'px-6 py-2.5 bg-[#E5FFBA]/10 border border-[#E5FFBA]/30 rounded-full backdrop-blur-md'
-                  }`}
-                  whileHover={{ scale: 1.02, backgroundColor: 'rgba(229, 255, 186, 0.08)' }}
-                  transition={{ duration: 0.3 }}
-                >
-                  Automated ESG Certification
-                </motion.div>
-              </motion.div>
+                Live beautifully.
+              </motion.span>
+              <br />
+              <motion.span
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="inline-block"
+              >
+                Invest wisely.
+              </motion.span>
+            </motion.h1>
+
+            {/* Subtitle - Premium Typography */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[19px] md:text-[22px] font-normal text-white/85 mb-10 leading-[1.6] max-w-[760px] mx-auto"
+            >
+              We assist international clients in finding and shaping their ideal home or investment in Portugal, from strategic sourcing to complete project management.
+            </motion.p>
+
+            {/* Modern Filter/Quick Search - Integrated with Action */}
+            <motion.div
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.7, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="max-w-[1000] mx-auto mb-10 transform-gpu"
+            >
+              <div className="bg-white/10 backdrop-blur-2xl rounded-[28px] p-4 border border-white/20 shadow-2xl transform-gpu isolate">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
+                  {/* Property Type Filter */}
+                  <div className="relative group">
+                    <div className="absolute inset-0 bg-white/5 rounded-[20px] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <select 
+                      value={propertyType}
+                      onChange={(e) => setPropertyType(e.target.value)}
+                      style={{
+                        backgroundImage: 'none',
+                        borderRadius: '20px',
+                      }}
+                      className="relative w-full h-[52px] bg-white/[0.08] backdrop-blur-xl hover:bg-white/[0.12] text-white border border-white/20 hover:border-white/30 !rounded-[20px] px-5 text-[15px] font-medium appearance-none cursor-pointer transition-all duration-300 focus:outline-none focus:border-white/40 focus:bg-white/[0.15] focus:shadow-lg focus:shadow-white/5 transform-gpu">
+                      <option value="">Property Type</option>
+                      <option value="Villa">Villas</option>
+                      <option value="Apartment">Apartments</option>
+                      <option value="Penthouse">Penthouses</option>
+                      <option value="Estate">Estates</option>
+                    </select>
+                    <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none transition-transform duration-300 group-hover:translate-y-[-10px]">
+                      <CaretDown className="w-4 h-4 text-white/80 drop-shadow-sm" weight="bold" />
+                    </div>
+                  </div>
+
+                  {/* Location Filter */}
+                  <div className="relative group">
+                    <div className="absolute inset-0 bg-white/5 rounded-[20px] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <select 
+                      value={location}
+                      onChange={(e) => setLocation(e.target.value)}
+                      style={{
+                        backgroundImage: 'none',
+                        borderRadius: '20px',
+                      }}
+                      className="relative w-full h-[52px] bg-white/[0.08] backdrop-blur-xl hover:bg-white/[0.12] text-white border border-white/20 hover:border-white/30 !rounded-[20px] px-5 text-[15px] font-medium appearance-none cursor-pointer transition-all duration-300 focus:outline-none focus:border-white/40 focus:bg-white/[0.15] focus:shadow-lg focus:shadow-white/5 transform-gpu">
+                      <option value="">Location</option>
+                      <option value="Lisbon">Lisbon</option>
+                      <option value="Comporta">Comporta</option>
+                      <option value="Algarve">Algarve</option>
+                      <option value="Ericeira">Ericeira</option>
+                      <option value="Douro">Douro</option>
+                    </select>
+                    <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none transition-transform duration-300 group-hover:translate-y-[-10px]">
+                      <CaretDown className="w-4 h-4 text-white/80 drop-shadow-sm" weight="bold" />
+                    </div>
+                  </div>
+
+                  {/* Price Range Filter */}
+                  <div className="relative group">
+                    <div className="absolute inset-0 bg-white/5 rounded-[20px] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <select 
+                      value={priceRange}
+                      onChange={(e) => setPriceRange(e.target.value)}
+                      style={{
+                        backgroundImage: 'none',
+                        borderRadius: '20px',
+                      }}
+                      className="relative w-full h-[52px] bg-white/[0.08] backdrop-blur-xl hover:bg-white/[0.12] text-white border border-white/20 hover:border-white/30 !rounded-[20px] px-5 text-[15px] font-medium appearance-none cursor-pointer transition-all duration-300 focus:outline-none focus:border-white/40 focus:bg-white/[0.15] focus:shadow-lg focus:shadow-white/5 transform-gpu">
+                      <option value="">Price Range</option>
+                      <option value="500k-1m">€500K - €1M</option>
+                      <option value="1m-2m">€1M - €2M</option>
+                      <option value="2m-5m">€2M - €5M</option>
+                      <option value="5m+">€5M+</option>
+                    </select>
+                    <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none transition-transform duration-300 group-hover:translate-y-[-10px]">
+                      <CaretDown className="w-4 h-4 text-white/80 drop-shadow-sm" weight="bold" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Action Buttons Row */}
+                <div className="grid grid-cols-2 gap-3">
+                  {/* Buy Button */}
+                  <Button 
+                    onClick={handlePropertySearch}
+                    className="group h-[52px] bg-white text-black hover:bg-white/95 border-0 rounded-[20px] text-[15px] font-semibold transition-all duration-200 shadow-sm hover:shadow-md hover:scale-[1.01] flex items-center justify-center gap-2"
+                  >
+                    <Buildings className="w-[18px] h-[18px]" weight="bold" />
+                    Buy Property
+                  </Button>
+
+                  {/* Invest Button */}
+                  <Button 
+                    onClick={handlePropertySearch}
+                    className="group h-[52px] bg-black text-white hover:bg-black/90 border-0 rounded-[20px] text-[15px] font-semibold transition-all duration-200 shadow-sm hover:shadow-md hover:scale-[1.01] flex items-center justify-center gap-2"
+                  >
+                    <Wallet className="w-[18px] h-[18px]" weight="bold" />
+                    Invest Now
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Insight Cards - Premium Glassmorphism with Glow - Apple Style */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 lg:gap-8 max-w-[1120px] lg:max-w-[1280px] mx-auto relative z-[5]">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
+              className="group relative bg-white/10 backdrop-blur-xl rounded-[24px] p-6 md:p-7 lg:p-8 border border-white/20 hover:bg-white/[0.12] hover:border-white/30 hover:shadow-[0_0_40px_rgba(255,255,255,0.1)] transition-all duration-500 cursor-default z-[1] hover:z-[20]"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[24px]"></div>
+              <div className="flex flex-col relative z-10">
+                <div className="text-[38px] md:text-[44px] lg:text-[48px] font-semibold text-white mb-2 tracking-tight">
+                  <NumberTicker value={15} startValue={0} className="text-white" />+
+                </div>
+                <div className="text-[14px] md:text-[15px] font-medium text-white/95 mb-2">Years of Experience</div>
+                <div className="text-[13px] md:text-[14px] font-normal text-white/65 leading-relaxed">
+                  Trusted expertise in Portugal's premium real estate market
+                </div>
+              </div>
+              <div className="absolute top-6 right-6 w-2.5 h-2.5 rounded-full bg-white/20 opacity-0 group-hover:opacity-100 group-hover:shadow-[0_0_15px_rgba(255,255,255,0.5)] transition-all duration-500"></div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}
+              className="group relative bg-white/10 backdrop-blur-xl rounded-[24px] p-6 md:p-7 lg:p-8 border border-white/20 hover:bg-white/[0.12] hover:border-white/30 hover:shadow-[0_0_40px_rgba(255,255,255,0.1)] transition-all duration-500 cursor-default z-[1] hover:z-[20]"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[24px]"></div>
+              <div className="flex flex-col relative z-10">
+                <div className="text-[38px] md:text-[44px] lg:text-[48px] font-semibold text-white mb-2 tracking-tight">
+                  €<NumberTicker value={500} startValue={0} className="text-white" />M+
+                </div>
+                <div className="text-[14px] md:text-[15px] font-medium text-white/95 mb-2">Portfolio Value</div>
+                <div className="text-[13px] md:text-[14px] font-normal text-white/65 leading-relaxed">
+                  Successfully managed properties across Portugal's finest locations
+                </div>
+              </div>
+              <div className="absolute top-6 right-6 w-2.5 h-2.5 rounded-full bg-white/20 opacity-0 group-hover:opacity-100 group-hover:shadow-[0_0_15px_rgba(255,255,255,0.5)] transition-all duration-500"></div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 1.1, ease: [0.22, 1, 0.36, 1] }}
+              className="group relative bg-white/10 backdrop-blur-xl rounded-[24px] p-6 md:p-7 lg:p-8 border border-white/20 hover:bg-white/[0.12] hover:border-white/30 hover:shadow-[0_0_40px_rgba(255,255,255,0.1)] transition-all duration-500 cursor-default z-[1] hover:z-[20]"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[24px]"></div>
+              <div className="flex flex-col relative z-10">
+                <div className="text-[38px] md:text-[44px] lg:text-[48px] font-semibold text-white mb-2 tracking-tight">
+                  <NumberTicker value={98} startValue={0} className="text-white" />%
+                </div>
+                <div className="text-[14px] md:text-[15px] font-medium text-white/95 mb-2">Client Satisfaction</div>
+                <div className="text-[13px] md:text-[14px] font-normal text-white/65 leading-relaxed">
+                  Exceptional service that exceeds expectations every time
+                </div>
+              </div>
+              <div className="absolute top-6 right-6 w-2.5 h-2.5 rounded-full bg-white/20 opacity-0 group-hover:opacity-100 group-hover:shadow-[0_0_15px_rgba(255,255,255,0.5)] transition-all duration-500"></div>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Scroll Indicator - Premium */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 1.5 }}
+          className="absolute bottom-14 left-1/2 -translate-x-1/2 z-[10] hidden md:block"
+        >
+          <motion.div
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: [0.22, 1, 0.36, 1] }}
+            className="w-7 h-11 rounded-full border-2 border-white/30 flex items-start justify-center p-2.5 backdrop-blur-sm bg-white/5 shadow-lg"
+          >
+            <motion.div
+              animate={{ y: [0, 14, 0], opacity: [1, 0.3, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: [0.22, 1, 0.36, 1] }}
+              className="w-1.5 h-2.5 bg-white/70 rounded-full shadow-[0_0_10px_rgba(255,255,255,0.5)]"
+            />
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* Divider - Smooth Transition */}
+      <div className="border-t border-black/[0.03] bg-white"></div>
+
+      {/* Why Portugal Section - Premium Apple Style */}
+      <section id="why-portugal" className="relative py-32 md:py-40 bg-white overflow-visible">
+        {/* Static Grid Background */}
+        <GridPattern
+          width={40}
+          height={40}
+          className="fill-black/[0.03] stroke-black/[0.03]"
+        />
+        
+        <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible">
+          {/* Header Section - Ultra Clean */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center mb-20"
+          >
+            {/* Badge Premium */}
+            <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
+              <span className="text-[12px] font-medium text-black/60">Why Portugal</span>
+            </div>
+
+            {/* Main Title - Apple Style */}
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[40px] md:text-[56px] font-semibold text-black mb-8 tracking-[-0.02em] leading-[1.1] max-w-[900px] mx-auto"
+            >
+              A rare equilibrium between lifestyle, stability and opportunity
+            </motion.h2>
+
+            {/* Subtitle - Elegant */}
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[17px] md:text-[21px] font-normal text-black/60 max-w-[760px] mx-auto leading-[1.6]"
+            >
+              Portugal offers a unique blend of quality living, architectural heritage, and strategic investment potential
+            </motion.p>
+          </motion.div>
+
+          {/* Key Benefits Grid */}
+          <div className="relative z-10 grid md:grid-cols-3 gap-6 md:gap-8 lg:gap-10 mb-16 overflow-visible px-0 py-4 md:p-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="group relative bg-white rounded-3xl p-8 text-center cursor-pointer shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 border border-black/[0.06] hover:border-black/[0.1] hover:-translate-y-1"
+            >
+              <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-black/5 group-hover:bg-black/10 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
+                <Bank className="w-8 h-8 text-black/70 group-hover:text-black transition-colors duration-300" weight="duotone" />
+              </div>
+              <h3 className="text-[20px] font-semibold text-black mb-3 tracking-tight group-hover:text-black/80 transition-colors duration-300">
+                Stability & Safety
+              </h3>
+              <p className="text-[15px] font-normal text-black/60 leading-[1.6]">
+                Political and economic stability combined with one of the world's safest environments
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="group relative bg-white rounded-3xl p-8 text-center cursor-pointer shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 border border-black/[0.06] hover:border-black/[0.1] hover:-translate-y-1"
+            >
+              <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-black/5 group-hover:bg-black/10 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
+                <Sparkle className="w-8 h-8 text-black/70 group-hover:text-black transition-colors duration-300" weight="duotone" />
+              </div>
+              <h3 className="text-[20px] font-semibold text-black mb-3 tracking-tight group-hover:text-black/80 transition-colors duration-300">
+                Quality of Life
+              </h3>
+              <p className="text-[15px] font-normal text-black/60 leading-[1.6]">
+                Exceptional climate, rich culture, and a lifestyle that balances tradition with modernity
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="group relative bg-white rounded-3xl p-8 text-center cursor-pointer shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 border border-black/[0.06] hover:border-black/[0.1] hover:-translate-y-1"
+            >
+              <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-black/5 group-hover:bg-black/10 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
+                <PaintBrush className="w-8 h-8 text-black/70 group-hover:text-black transition-colors duration-300" weight="duotone" />
+              </div>
+              <h3 className="text-[20px] font-semibold text-black mb-3 tracking-tight group-hover:text-black/80 transition-colors duration-300">
+                Architecture & Design
+              </h3>
+              <p className="text-[15px] font-normal text-black/60 leading-[1.6]">
+                From historic heritage to contemporary design, Portugal offers timeless aesthetic value
+              </p>
+            </motion.div>
+          </div>
+
+          {/* Visual Keywords */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-wrap items-center justify-center gap-3 mt-12"
+          >
+            {['Stability', 'Safety', 'Architecture', 'Lifestyle', 'Quality of Life', 'Design', 'Culture'].map((keyword, index) => (
+              <span 
+                key={index}
+                className="px-5 py-2.5 bg-black/5 hover:bg-black/8 rounded-full text-[13px] font-medium text-black/70 transition-all duration-200"
+              >
+                {keyword}
+              </span>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Divider */}
+      <div className="border-t border-black/[0.03]"></div>
+
+      {/* Featured Projects Section - Modern Apple Grid */}
+      <section id="projects" className="py-32 md:py-40 bg-white overflow-visible">
+        <div className="max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible pb-8">
+          {/* Header Section */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col lg:flex-row items-start lg:items-end justify-between mb-16 gap-8"
+          >
+            <div className="max-w-[700px]">
+              {/* Badge */}
+              <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
+                <span className="text-[12px] font-medium text-black/60">Properties</span>
+              </div>
               
-              {/* Título principal elegante */}
-              <motion.div 
-                className={`${breakpoints.isMobile ? 'mt-12' : 'mt-16'}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4, duration: 0.8 }}
+              {/* Main Title */}
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                className="text-[40px] md:text-[52px] font-semibold text-black mb-6 tracking-[-0.02em] leading-[1.1]"
               >
-                <motion.h1 
-                  className={`${titleSize} font-extralight tracking-[-0.03em] leading-[0.95] text-white drop-shadow-lg`}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ 
-                    duration: 0.8, 
-                    delay: 0.5,
-                    ease: [0.22, 1, 0.36, 1]
-                  }}
+                Find homes that perfectly match your lifestyle
+              </motion.h2>
+              
+              {/* Subtitle */}
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                className="text-[17px] md:text-[19px] font-normal text-black/60 leading-[1.6]"
+              >
+                Curated collection of premium properties across Portugal's most desirable locations
+              </motion.p>
+            </div>
+            <Link href="/properties">
+              <Button 
+                className="bg-black text-white hover:bg-black/90 border-0 px-6 py-3 rounded-full text-[14px] font-medium transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2"
+              >
+                View all
+                <ArrowRight className="w-4 h-4" weight="bold" />
+              </Button>
+            </Link>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10 px-0 py-4 md:p-8 lg:p-12 overflow-visible">
+            {featuredProjects.map((project, index) => (
+              <Link key={project.id} href={`/properties/${project.id === 1 ? 'belem-heritage-apartment' : project.id === 2 ? 'ericeira-seaside-villa' : project.id === 3 ? 'comporta-beach-estate' : project.id === 4 ? 'algarve-cliffside-residence' : project.id === 5 ? 'lisbon-penthouse' : 'douro-valley-retreat'}`}>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
+                  className="group cursor-pointer z-[1] hover:z-[10] hover:-translate-y-1 transition-all duration-300"
                 >
-                  <motion.span 
-                    className="inline-block font-extralight"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.7, duration: 0.6 }}
-                  >
-                    Green
-                  </motion.span>
-                  <motion.span 
-                    className="inline-block font-light"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.9, duration: 0.6 }}
-                  >
-                    Check
-                  </motion.span>
-                </motion.h1>
-                
-                {/* Linha decorativa minimalista */}
-                <motion.div 
-                  className={`${breakpoints.isMobile ? 'mt-6' : 'mt-8'} flex items-center justify-center gap-4`}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1.1, duration: 0.6 }}
-                >
-                  <motion.div 
-                    className="h-px bg-gradient-to-r from-transparent via-[#E5FFBA]/40 to-transparent"
-                    initial={{ width: 0 }}
-                    animate={{ width: breakpoints.isMobile ? '60%' : '280px' }}
-                    transition={{ delay: 1.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                {/* Property Image Container - Premium Apple Style */}
+                <div className="relative aspect-[4/5] md:aspect-[16/11] lg:aspect-[4/5] overflow-hidden mb-7 rounded-[24px] shadow-sm group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 ease-out bg-gray-100">
+                  {/* Image com zoom suave */}
+                  <img 
+                    src={project.image} 
+                    alt={project.title}
+                    className="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-800 ease-out group-hover:scale-[1.08]"
+                    style={{ objectFit: 'cover' }}
                   />
-                </motion.div>
+                  
+                  {/* Tag Badge - Ultra Premium */}
+                  <div className="absolute top-6 left-6 z-20">
+                    <div className="bg-white/95 backdrop-blur-2xl px-4 py-2 rounded-full shadow-[0_2px_12px_rgba(0,0,0,0.08)]">
+                      <span className="text-[10px] font-semibold text-black tracking-[0.08em] uppercase">{project.tag}</span>
+                    </div>
+                  </div>
+                  
+                  {/* Overlay Premium - Aparece no hover */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10"></div>
+                  
+                  {/* Shine Effect - Apple Style */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10">
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent"></div>
+                  </div>
+                </div>
+                
+                {/* Property Details - Ultra Clean Typography */}
+                <div className="px-1">
+                  {/* Location - Subtle */}
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-1 h-1 rounded-full bg-black/20"></div>
+                    <p className="text-[11px] font-medium text-black/40 tracking-[0.1em] uppercase">
+                      {project.location}
+                    </p>
+                  </div>
+                  
+                  {/* Title - Bold & Clean */}
+                  <h3 className="text-[20px] md:text-[22px] font-semibold text-black mb-4 tracking-[-0.02em] leading-[1.2] group-hover:text-black/60 transition-colors duration-500">
+                    {project.title}
+                  </h3>
+                  
+                  {/* Price - Hero Element */}
+                  <div className="mb-6">
+                    <p className="text-[32px] md:text-[36px] font-semibold text-black tracking-[-0.02em] leading-none">
+                      {project.price}
+                    </p>
+                  </div>
+                  
+                  {/* Property Stats - Refined */}
+                  <div className="flex items-center gap-6 pt-5 border-t border-black/[0.06]">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-9 h-9 rounded-full bg-black/[0.03] flex items-center justify-center group-hover:bg-black/[0.05] transition-colors duration-300">
+                        <Bed className="w-[17px] h-[17px] text-black/50" weight="duotone" />
+                      </div>
+                      <span className="text-[14px] font-medium text-black/70">{project.beds}</span>
+                    </div>
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-9 h-9 rounded-full bg-black/[0.03] flex items-center justify-center group-hover:bg-black/[0.05] transition-colors duration-300">
+                        <Bathtub className="w-[17px] h-[17px] text-black/50" weight="duotone" />
+                      </div>
+                      <span className="text-[14px] font-medium text-black/70">{project.baths}</span>
+                    </div>
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-9 h-9 rounded-full bg-black/[0.03] flex items-center justify-center group-hover:bg-black/[0.05] transition-colors duration-300">
+                        <ArrowsOut className="w-[17px] h-[17px] text-black/50" weight="duotone" />
+                      </div>
+                      <span className="text-[14px] font-medium text-black/70">{project.sqft}</span>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Divider */}
+      <div className="border-t border-black/[0.03]"></div>
+
+      {/* About SUL Section - Modern Apple Style */}
+      <section id="about" className="relative py-32 md:py-40 bg-white overflow-visible">
+        {/* Static Grid Background */}
+        <GridPattern
+          width={40}
+          height={40}
+          className="fill-black/[0.03] stroke-black/[0.03]"
+        />
+        
+        <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible">
+          <div className="grid md:grid-cols-2 gap-12 md:gap-16 lg:gap-24 items-center overflow-visible px-0 py-4 md:p-8">
+            {/* Founder Image */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.96 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="group relative aspect-[4/5] w-full max-w-[500px] mx-auto bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl flex items-center justify-center overflow-hidden shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-black/[0.04] hover:border-black/[0.08]"
+            >
+              <span className="text-[14px] font-medium text-black/20 group-hover:text-black/30 transition-colors duration-300">Vincent Santos</span>
+            </motion.div>
+
+            {/* About Content */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="max-w-[560px]"
+            >
+              {/* Badge */}
+              <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
+                <span className="text-[12px] font-medium text-black/60">About Us</span>
+              </div>
+              
+              {/* Main Title */}
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                className="text-[40px] md:text-[52px] font-semibold text-black mb-8 tracking-[-0.02em] leading-[1.1]"
+              >
+                About SUL
+              </motion.h2>
+              
+              {/* Content Paragraphs */}
+              <div className="space-y-6 text-black/70 leading-[1.7]">
+                <motion.p 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                  className="text-[17px] md:text-[19px] font-normal"
+                >
+                  SUL represents a refined approach to real estate advisory, combining strategic insight with an unwavering commitment to excellence.
+                </motion.p>
                 
                 <motion.p 
-                  className={`${breakpoints.isXs ? 'text-sm' : breakpoints.isMobile ? 'text-base' : 'text-lg'} font-light tracking-[0.2em] text-[#E5FFBA]/80 uppercase mt-6 drop-shadow-md`}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1.4, duration: 0.6 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  className="text-[17px] md:text-[19px] font-normal"
                 >
-                  AI + Blockchain + Science
+                  We understand that each property search is unique, and we curate personalized selections that align with your vision and long-term objectives.
                 </motion.p>
-              </motion.div>
-              
-              {/* Descrição elegante */}
-              <motion.div 
-                className={`${breakpoints.isMobile ? 'mt-10' : 'mt-12'} ${breakpoints.isMobile ? 'max-w-[90%]' : 'max-w-3xl'} mx-auto px-4`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ 
-                  delay: 1.6, 
-                  duration: 0.8,
-                  ease: [0.22, 1, 0.36, 1]
-                }}
-              >
-                <motion.div 
-                  className={`${breakpoints.isXs ? 'text-sm' : breakpoints.isMobile ? 'text-base' : 'text-xl'} font-light leading-relaxed text-white/95 drop-shadow-md ${breakpoints.isMobile ? 'min-h-[3.5em]' : 'min-h-[2.5em]'} flex items-center justify-center text-center`}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1.8, duration: 0.8 }}
-                >
-                  <span className="inline-flex items-baseline">
-                    <span>{displayedText}</span>
-                    <span 
-                      className={`inline-block bg-white/90 ml-0.5 ${breakpoints.isMobile ? 'w-[2px] h-[1em]' : 'w-0.5 h-[1.2em]'}`}
-                      style={{
-                        animation: 'blink 0.8s cubic-bezier(0.4, 0, 0.6, 1) infinite'
-                      }}
-                    />
-                  </span>
-                </motion.div>
-              </motion.div>
-              
-              {/* Botões elegantes e minimalistas - Apple Style */}
-              <motion.div 
-                className={`${breakpoints.isMobile ? 'mt-10' : 'mt-14'} flex ${breakpoints.isMobile ? 'flex-col' : 'flex-row'} items-center justify-center ${breakpoints.isMobile ? 'gap-3' : 'gap-4'} ${breakpoints.isMobile ? 'px-6' : ''}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ 
-                  delay: 2.0, 
-                  duration: 0.8,
-                  ease: [0.22, 1, 0.36, 1]
-                }}
-              >
-                {/* Botão Primário - Upload */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ 
-                    delay: 2.2, 
-                    duration: 0.6,
-                    ease: [0.22, 1, 0.36, 1]
-                  }}
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.99 }}
-                  className={breakpoints.isMobile ? 'w-full' : ''}
-                >
-                  <Button 
-                    size="lg" 
-                    onClick={handleIniciarValidacao}
-                    className={`group ${breakpoints.isMobile ? 'w-full' : 'min-w-[200px] px-8'} ${
-                      breakpoints.isXs 
-                        ? 'h-11 text-sm' 
-                        : breakpoints.isMobile 
-                        ? 'h-12 text-base' 
-                        : 'h-[52px] text-base'
-                    } rounded-full transition-all duration-500 bg-[#5FA037] text-white hover:bg-[#4d8c2d] font-normal tracking-tight shadow-md hover:shadow-lg hover:shadow-[#5FA037]/25 border-0 relative overflow-hidden`}
-                  >
-                    {/* Subtle shine effect on hover */}
-                    <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
-                    
-                    <span className="relative flex items-center justify-center gap-2.5">
-                      <span className="font-medium">Start Upload</span>
-                      <Upload className={`${breakpoints.isXs ? 'h-4 w-4' : 'h-[18px] w-[18px]'} transition-transform duration-300 group-hover:translate-x-0.5 group-hover:scale-105`} />
-                    </span>
-                  </Button>
-                </motion.div>
                 
-                {/* Botão Secundário - Marketplace */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ 
-                    delay: 2.4, 
-                    duration: 0.6,
-                    ease: [0.22, 1, 0.36, 1]
-                  }}
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.99 }}
-                  className={breakpoints.isMobile ? 'w-full' : ''}
-                >
-                  <Button 
-                    size="lg" 
-                    variant="ghost"
-                    onClick={handleVerMarketplace}
-                    className={`group ${breakpoints.isMobile ? 'w-full' : 'min-w-[200px] px-8'} ${
-                      breakpoints.isXs 
-                        ? 'h-11 text-sm' 
-                        : breakpoints.isMobile 
-                        ? 'h-12 text-base' 
-                        : 'h-[52px] text-base'
-                    } rounded-full transition-all duration-500 text-white hover:bg-white/[0.08] border border-white/20 hover:border-white/40 font-normal tracking-tight backdrop-blur-md bg-white/[0.03] relative overflow-hidden`}
-                  >
-                    {/* Glass morphism effect */}
-                    <span className="absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    
-                    <span className="relative flex items-center justify-center gap-2.5">
-                      <span className="font-medium">View Marketplace</span>
-                      <ArrowRight className={`${breakpoints.isXs ? 'h-4 w-4' : 'h-[18px] w-[18px]'} transition-transform duration-300 group-hover:translate-x-1`} />
-                    </span>
-                  </Button>
-                </motion.div>
-              </motion.div>
-              
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* Content Container - Scrolls over fixed hero (All devices) */}
-      <main className={`relative z-10 ${
-        breakpoints.isXs 
-          ? 'mt-[calc(100vh-200px)]' 
-          : breakpoints.isSm
-          ? 'mt-[calc(100vh-250px)]'
-          : breakpoints.isMobile 
-          ? 'mt-[calc(100vh-280px)]' 
-          : 'mt-[100vh]'
-      } ${
-        breakpoints.isMobile 
-          ? 'pb-[120px]' 
-          : 'pb-0'
-      }`}>
-      
-      {/* O Que Fazemos - Clean Minimal */}
-      <section className={`${sectionPadding} relative bg-white rounded-t-[48px]`}>
-        {/* Linha de Slide iOS - Mobile apenas */}
-        {breakpoints.isMobile && (
-          <div className="absolute top-3 left-1/2 -translate-x-1/2 w-10 h-1 bg-slate-300 rounded-full z-10" />
-        )}
-        
-        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
-            <motion.p 
-              initial={{ opacity: 0, y: -10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-                viewport={{ once: true }}
-              className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4"
-              >
-              What We Do
-            </motion.p>
-              <motion.h2 
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-                viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
-              >
-              <span className="font-extralight text-[#044050]">Sustainability</span>
-              <br />
-              <span className="font-normal text-[#5FA037]">without complexity</span>
-              </motion.h2>
-              <motion.p 
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-                viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
-              >
-              Integrated platform for ESG certification and carbon neutralization
-              </motion.p>
-          </div>
-
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : breakpoints.isTablet ? 'grid-cols-2' : 'grid-cols-4'} ${breakpoints.isMobile ? 'gap-8' : 'gap-12'}`}>
-            {[
-              {
-                icon: CheckCircle2,
-                title: "Automated Certification",
-                description: "98.5% accuracy with AI"
-              },
-              {
-                icon: Shield,
-                title: "Immutable Blockchain",
-                description: "NFTs on Polygon network"
-              },
-              {
-                icon: Leaf,
-                title: "Scientific Validation",
-                description: "Recognized partners"
-              },
-              {
-                icon: Globe,
-                title: "100% Digital",
-                description: "Simple and intuitive"
-              }
-            ].map((item, index) => {
-              const ItemIcon = item.icon
-              return (
-              <motion.div
-                  key={index}
+                <motion.p 
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                  className="group text-center"
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  className="text-[17px] md:text-[19px] font-normal"
                 >
-                  <div className="mb-6 flex justify-center">
-                    <div className="w-14 h-14 rounded-full bg-[#044050] flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:bg-[#5FA037]">
-                      <ItemIcon className="w-7 h-7 text-white" />
-                    </div>
-                  </div>
-                  <h3 className={`${breakpoints.isXs ? 'text-base' : 'text-lg'} font-medium text-[#044050] mb-2`}>
-                    {item.title}
-                  </h3>
-                  <p className={`${breakpoints.isXs ? 'text-sm' : 'text-base'} text-gray-600 font-light`}>
-                    {item.description}
-                  </p>
-              </motion.div>
-              )
-            })}
+                  With deep local knowledge and international perspective, we guide discerning clients through every stage of their real estate journey.
+                </motion.p>
+              </div>
+            </motion.div>
           </div>
-
-          {/* Learn More Button */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            viewport={{ once: true }}
-            className={`flex justify-center ${breakpoints.isMobile ? 'mt-12' : 'mt-16'}`}
-          >
-            <Button
-              onClick={() => router.push('/about')}
-              className={`${breakpoints.isMobile ? 'w-full max-w-sm' : 'px-10'} h-12 bg-[#044050] text-white hover:bg-[#5FA037] rounded-full transition-all duration-300 font-normal tracking-wide group`}
-            >
-              <span className="flex items-center justify-center">
-                Learn More About GreenCheck
-                <ArrowRight className="ml-3 w-5 h-5 transition-all duration-300 group-hover:translate-x-1" />
-              </span>
-            </Button>
-          </motion.div>
         </div>
       </section>
 
-      {/* Technology - Clean Minimal */}
-      <section className={`${sectionPadding} relative bg-slate-50`}>
-        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1 gap-16' : 'md:grid-cols-2 gap-20'} items-center`}>
-            {/* Coluna Esquerda - Texto */}
+      {/* Divider */}
+      <div className="border-t border-black/[0.03]"></div>
+
+      {/* Approach Section - Storytelling with Elegant Animations */}
+      <section id="approach" className="py-32 md:py-40 bg-gray-50 overflow-visible">
+        <div className="max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible">
+          <div className="grid md:grid-cols-2 gap-12 md:gap-16 lg:gap-24 items-center overflow-visible px-0 py-4 md:p-8">
+            {/* Approach Content */}
             <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className={breakpoints.isMobile ? 'text-center' : ''}
-            >
-              <p className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-6">
-                Technology
-              </p>
-              <h2 className={`${breakpoints.isMobile ? 'text-3xl' : 'text-4xl lg:text-5xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.15]`}>
-                <span className="font-extralight text-[#044050]">The power of</span>
-                <br />
-                <span className="font-medium text-[#5FA037]">innovation</span>
-              </h2>
-              <p className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} text-gray-600 font-light leading-relaxed`}>
-                Cutting-edge technology for accurate and reliable ESG certification
-              </p>
-            </motion.div>
-
-            {/* Coluna Direita - Stack Tecnológico */}
-                <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-                  viewport={{ once: true }}
-              className="space-y-8"
-            >
-              {/* AI */}
-              <div className="border-b border-gray-200 pb-8">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-[#044050] flex items-center justify-center">
-                    <Cpu className="w-6 h-6 text-white" />
-                    </div>
-                  <h3 className="text-xl font-medium text-[#044050]">Artificial Intelligence</h3>
-                  </div>
-                <ul className="space-y-2 text-gray-600 font-light ml-16">
-                  <li>• Automatic data extraction</li>
-                  <li>• Carbon emission calculation</li>
-                  <li>• Multi-standard compliance</li>
-                </ul>
-              </div>
-
-              {/* Blockchain */}
-              <div className="border-b border-gray-200 pb-8">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-[#044050] flex items-center justify-center">
-                    <Shield className="w-6 h-6 text-white" />
-                  </div>
-                  <h3 className="text-xl font-medium text-[#044050]">Blockchain</h3>
-                </div>
-                <ul className="space-y-2 text-gray-600 font-light ml-16">
-                  <li>• NFT certificates on Polygon</li>
-                  <li>• Cost &lt; €0.01 per transaction</li>
-                  <li>• Instant QR verification</li>
-                </ul>
-              </div>
-
-              {/* Scientific */}
-              <div className="pb-2">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-[#044050] flex items-center justify-center">
-                    <CheckCircle2 className="w-6 h-6 text-white" />
-                  </div>
-                  <h3 className="text-xl font-medium text-[#044050]">Scientific Validation</h3>
-                </div>
-                <ul className="space-y-2 text-gray-600 font-light ml-16">
-                  <li>• Botanical garden partnership</li>
-                  <li>• International methodologies</li>
-                  <li>• Continuous monitoring</li>
-                </ul>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Scientific Validation - Detailed Partnership */}
-      <section className={`${sectionPadding} relative bg-white`}>
-        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
-            <motion.p 
-              initial={{ opacity: 0, y: -10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4"
-            >
-              Scientific Partnership
-            </motion.p>
-            <motion.h2 
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
-            >
-              <span className="font-extralight text-[#044050]">Exclusive partnership with</span>
-              <br />
-              <span className="font-normal text-[#5FA037]">Jardim Botânico Plantarum</span>
-            </motion.h2>
-            <motion.p 
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed`}
-            >
-              Latin America's largest botanical garden ensures scientific credibility and anti-greenwashing validation
-            </motion.p>
-          </div>
-
-          {/* Partnership Details Grid */}
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1 gap-8' : 'md:grid-cols-2 gap-12'} ${breakpoints.isMobile ? 'mb-16' : 'mb-20'}`}>
-            {/* Left Column - About Plantarum */}
-            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="space-y-8"
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="max-w-[560px]"
             >
-              <div className="bg-slate-50 rounded-2xl p-8">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-14 h-14 rounded-full bg-[#044050] flex items-center justify-center">
-                    <Leaf className="w-7 h-7 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-medium text-[#044050]">About Jardim Botânico Plantarum</h3>
-                    <p className="text-sm text-gray-500">Founded 2007 • Nova Odessa, SP</p>
-                  </div>
-                </div>
-                <div className="space-y-4 text-gray-600 font-light">
-                  <p>• <strong className="text-[#044050]">6,000+ species</strong> in 90,000 m² of thematic gardens</p>
-                  <p>• <strong className="text-[#044050]">Largest botanical garden</strong> in Latin America by species count</p>
-                  <p>• <strong className="text-[#044050]">CONAMA recognized</strong> by Brazilian environmental authorities</p>
-                  <p>• <strong className="text-[#044050]">Scientific expeditions</strong> and herbarium with witness material</p>
-                </div>
+              {/* Badge */}
+              <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
+                <span className="text-[12px] font-medium text-black/60">Our Approach</span>
               </div>
-
-              <div className="bg-[#044050] rounded-2xl p-8 text-white">
-                <h3 className="text-xl font-medium mb-4">Exclusive Partnership</h3>
-                <p className="text-white/90 font-light leading-relaxed mb-4">
-                  Strategic collaboration through Bureau Social (ESG Veritas Brazilian partner) 
-                  ensures scientific validation of carbon offset projects since GreenCheck® launch (2026).
-                </p>
-                <div className="space-y-2 text-sm text-white/80">
-                  <p>• <strong>Exclusive scientific guardian</strong> for reforestation projects</p>
-                  <p>• <strong>Biodiversity conservation</strong> in Amazon and other biomes</p>
-                  <p>• <strong>Aligned with UN SDGs</strong> 13 (Climate Action) & 15 (Life on Land)</p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Right Column - Validation Process */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="space-y-6"
-            >
-              <h3 className={`${breakpoints.isMobile ? 'text-2xl' : 'text-3xl'} font-light text-[#044050] mb-8`}>
-                Scientific Validation Process
-              </h3>
               
-              {/* Process Steps */}
-              <div className="space-y-6">
+              {/* Main Title */}
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                className="text-[40px] md:text-[52px] font-semibold text-black mb-8 tracking-[-0.02em] leading-[1.1]"
+              >
+                Strategic and human
+              </motion.h2>
+              
+              {/* Quote with subtle animation */}
+              <motion.div 
+                initial={{ opacity: 0, x: -10 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                className="relative pl-6 border-l-2 border-black/20 mb-12"
+              >
+                <p className="text-[19px] md:text-[21px] font-normal text-black/80 italic leading-[1.6]">
+                  "We believe in strategy, discretion and beauty that endures."
+                </p>
+              </motion.div>
+
+              {/* Method Points - Progressive Storytelling */}
+              <div className="space-y-8 relative">
+                {/* Connecting Line */}
+                <motion.div
+                  initial={{ height: 0 }}
+                  whileInView={{ height: "100%" }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 2, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute left-[3px] top-0 w-[2px] bg-gradient-to-b from-black/20 via-black/10 to-transparent"
+                />
+
                 {[
                   {
-                    step: "1",
-                    title: "Data Collection & AI Processing",
-                    description: "Users submit ESG data via app. AI processes with 98.5% accuracy using Jardim Botânico Plantarum's scientific benchmarks for Brazilian biome carbon sequestration.",
-                    icon: Cpu
+                    title: "Personalized Strategy",
+                    description: "Every client receives a tailored approach aligned with their unique vision and goals",
+                    delay: 0.4
                   },
                   {
-                    step: "2", 
-                    title: "Scientific Analysis",
-                    description: "Jardim Botânico Plantarum's botanists and ecologists analyze samples, authenticate species using herbarium, and verify carbon sequestration calculations.",
-                    icon: CheckCircle2
+                    title: "Trusted Partners",
+                    description: "We collaborate with a curated network of architects, lawyers, and designers",
+                    delay: 0.5
                   },
                   {
-                    step: "3",
-                    title: "Field Verification",
-                    description: "Independent verification through satellite monitoring and field visits ensures real impact (e.g., 10,000 ha of protected forest by 2029).",
-                    icon: Globe
+                    title: "Full Transparency",
+                    description: "Clear communication and honest guidance throughout the entire process",
+                    delay: 0.6
                   },
                   {
-                    step: "4",
-                    title: "Blockchain Certification",
-                    description: "Validated data generates immutable NFT certificates on Polygon with embedded scientific reports and biodiversity metrics.",
-                    icon: Shield
+                    title: "Continuous Optimization",
+                    description: "Long-term value creation through ongoing management and refinement",
+                    delay: 0.7
                   }
-                ].map((item, index) => {
-                  const ItemIcon = item.icon
-                  return (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: 20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      viewport={{ once: true }}
-                      className="flex gap-4 group"
-                    >
-                      <div className="flex-shrink-0">
-                        <div className="w-12 h-12 rounded-full bg-[#5FA037] flex items-center justify-center text-white font-medium text-sm group-hover:scale-110 transition-transform duration-300">
-                          {item.step}
-                        </div>
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <ItemIcon className="w-5 h-5 text-[#044050]" />
-                          <h4 className="text-lg font-medium text-[#044050]">{item.title}</h4>
-                        </div>
-                        <p className="text-gray-600 font-light leading-relaxed">{item.description}</p>
-                      </div>
-                    </motion.div>
-                  )
-                })}
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Impact Metrics */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="bg-gradient-to-r from-[#044050] to-[#033842] rounded-3xl p-8 text-white"
-          >
-            <div className="text-center mb-8">
-              <h3 className={`${breakpoints.isMobile ? 'text-2xl' : 'text-3xl'} font-light mb-4`}>
-                Measurable Impact Goals
-              </h3>
-              <p className="text-white/80 font-light">
-                Scientific validation ensures every certificate represents real environmental impact
-              </p>
-            </div>
-            
-            <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : 'grid-cols-4'} gap-8`}>
-              {[
-                { value: "1M+", label: "tCO₂e Certified", sublabel: "annually by 2029" },
-                { value: "10,000", label: "Hectares Protected", sublabel: "forest conservation" },
-                { value: "100%", label: "Auditable", sublabel: "scientific transparency" },
-                { value: "75%", label: "Faster Processing", sublabel: "vs traditional methods" }
-              ].map((metric, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="text-center"
-                >
-                  <div className={`${breakpoints.isMobile ? 'text-3xl' : 'text-4xl'} font-extralight text-[#E5FFBA] mb-1`}>
-                    {metric.value}
-                  </div>
-                  <div className="text-sm font-medium text-white/90 mb-1">{metric.label}</div>
-                  <div className="text-xs text-white/70 font-light">{metric.sublabel}</div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Preços - Clean Minimal */}
-      <section className={`${sectionPadding} relative bg-white`}>
-        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
-            <p className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4">
-              Pricing
-            </p>
-            <h2 className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}>
-              <span className="font-extralight text-[#044050]">Simple pricing</span>
-              <br />
-              <span className="font-normal text-[#5FA037]">for everyone</span>
-            </h2>
-            <p className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light`}>
-              From individuals to large enterprises
-            </p>
-          </div>
-          
-          {/* Plans Grid - Minimal */}
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1' : breakpoints.isTablet ? 'grid-cols-2' : 'grid-cols-4'} ${breakpoints.isMobile ? 'gap-6' : 'gap-8'}`}>
-            {[
-              { label: 'SMEs', title: 'ESG Certificate', price: '€35', unit: 'per tCO₂e', desc: 'For small businesses' },
-              { label: 'People', title: 'Subscription', price: '€9.99', unit: 'per month', desc: 'For individuals' },
-              { label: 'Corporate', title: 'Enterprise', price: '€2,500', unit: 'per month', desc: 'Custom solutions' },
-              { label: 'All', title: 'Marketplace', price: '8%', unit: 'commission', desc: 'Carbon credits' }
-            ].map((plan, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="group"
-              >
-                <div className="border border-gray-200 rounded-3xl p-8 hover:border-[#5FA037] transition-colors duration-300">
-                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-8">{plan.label}</p>
-                  <h3 className="text-2xl font-medium text-[#044050] mb-2">{plan.title}</h3>
-                  <p className="text-sm text-gray-500 font-light mb-8">{plan.desc}</p>
-                  <div className="mb-8">
-                    <div className="text-4xl font-light text-black mb-1">{plan.price}</div>
-                    <div className="text-sm text-gray-500 font-light">{plan.unit}</div>
-                </div>
-                  <Button 
-                    onClick={index === 3 ? handleVerMarketplace : handleIniciarValidacao}
-                    className="w-full h-11 bg-[#5FA037] hover:bg-[#4d8c2d] text-white rounded-full transition-all duration-300 font-normal"
-                  >
-                    {index === 2 ? 'Contact' : index === 3 ? 'Explore' : 'Start'}
-                  </Button>
-              </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Why Choose - Clean Minimal */}
-      <section className={`${sectionPadding} relative bg-slate-50`}>
-        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-24'}`}>
-            <p className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4">
-              Why Choose Us
-            </p>
-            <h2 className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}>
-              <span className="font-extralight text-[#044050]">Better, faster</span>
-              <br />
-              <span className="font-normal text-[#5FA037]">more affordable</span>
-            </h2>
-            <p className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light`}>
-              Measurable advantages over traditional solutions
-            </p>
-          </div>
-          
-          {/* Simple Stats Grid */}
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : 'grid-cols-4'} ${breakpoints.isMobile ? 'gap-8' : 'gap-12'} max-w-5xl mx-auto`}>
-            {[
-              { value: '40%', label: 'Cheaper' },
-              { value: '4×', label: 'Faster' },
-              { value: '98.5%', label: 'Accuracy' },
-              { value: '100%', label: 'Transparent' }
-            ].map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="text-center"
-              >
-                <div className="text-5xl lg:text-6xl font-extralight text-[#5FA037] mb-2">{stat.value}</div>
-                <div className="text-sm text-gray-500 font-light uppercase tracking-wider">{stat.label}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-
-      {/* Social Impact & SDGs - Clean Minimal */}
-      <section className={`${sectionPadding} relative bg-slate-50`}>
-        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-16' : 'mb-20'}`}>
-            <motion.p 
-              initial={{ opacity: 0, y: -10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4"
-            >
-              Social Impact
-            </motion.p>
-            <motion.h2 
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
-            >
-              <span className="font-extralight text-[#044050]">Contributing to</span>
-              <br />
-              <span className="font-normal text-[#5FA037]">global goals</span>
-            </motion.h2>
-            <motion.p 
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed mb-12`}
-            >
-              Aligned with 6 United Nations Sustainable Development Goals
-            </motion.p>
-          </div>
-
-          {/* Impact Metrics */}
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : 'grid-cols-4'} ${breakpoints.isMobile ? 'gap-6' : 'gap-8'} ${breakpoints.isMobile ? 'mb-12' : 'mb-16'}`}>
-            {[
-              { value: '2M+', label: 'tCO₂e Target', sublabel: 'by 2031', icon: Leaf },
-              { value: '8+', label: 'Countries', sublabel: 'Presence', icon: Globe },
-              { value: '95', label: 'Team Members', sublabel: 'Goal', icon: Users },
-              { value: '€1B+', label: 'Valuation', sublabel: 'Target', icon: TrendingUp }
-            ].map((metric, index) => {
-              const MetricIcon = metric.icon
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="text-center group"
-                >
-                  <div className="mb-4 flex justify-center">
-                    <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm transition-all duration-300 group-hover:bg-[#044050]">
-                      <MetricIcon className="w-6 h-6 text-[#5FA037] transition-colors duration-300 group-hover:text-white" />
-                    </div>
-                  </div>
-                  <div className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl'} font-extralight text-[#044050] mb-1 tracking-tight`}>{metric.value}</div>
-                  <p className="text-sm font-medium text-gray-600 mb-0.5">{metric.label}</p>
-                  <p className="text-xs font-light text-gray-400">{metric.sublabel}</p>
-                </motion.div>
-              )
-            })}
-          </div>
-
-          {/* SDGs Grid */}
-          <div className="text-center mb-12">
-            <motion.p
-              initial={{ opacity: 0, y: -10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="text-xs font-medium text-gray-400 uppercase tracking-[0.25em] mb-6"
-            >
-              Real Impact
-            </motion.p>
-            <motion.h3
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-light text-[#044050] mb-3 tracking-tight`}
-            >
-              <span className="font-light">Aligned with </span>
-              <span className="text-[#5FA037] font-light">UN SDGs</span>
-            </motion.h3>
-          </div>
-
-          {/* Grid de SDGs - Design Criativo e Impactante */}
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-3'} ${breakpoints.isMobile ? 'gap-4' : 'gap-8'} max-w-6xl mx-auto`}>
-            {[
-              { 
-                number: '13', 
-                name: 'Climate Action',
-                image: '/assets/SDG LOGO/E_SDG_PRINT-13.jpg',
-                color: '#4E7A47'
-              },
-              { 
-                number: '15', 
-                name: 'Life on Land',
-                image: '/assets/SDG LOGO/E_SDG_PRINT-15.jpg',
-                color: '#3DAE4A'
-              },
-              { 
-                number: '8', 
-                name: 'Decent Work & Economic Growth',
-                image: '/assets/SDG LOGO/E_SDG_PRINT-08.jpg',
-                color: '#972E47'
-              },
-              { 
-                number: '9', 
-                name: 'Industry, Innovation & Infrastructure',
-                image: '/assets/SDG LOGO/E_SDG_PRINT-09.jpg',
-                color: '#F16E25'
-              },
-              { 
-                number: '12', 
-                name: 'Responsible Consumption & Production',
-                image: '/assets/SDG LOGO/E_SDG_PRINT-12.jpg',
-                color: '#CD8C2E'
-              },
-              { 
-                number: '17', 
-                name: 'Partnerships for the Goals',
-                image: '/assets/SDG LOGO/E_SDG_PRINT-17.jpg',
-                color: '#28426E'
-              }
-            ].map((sdg, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.7, delay: index * 0.15, ease: [0.22, 1, 0.36, 1] }}
-                viewport={{ once: true }}
-                className="group"
-              >
-                <div className={`bg-white/80 backdrop-blur-sm rounded-2xl ${breakpoints.isMobile ? 'p-3' : 'p-6'} flex flex-col items-center transition-all duration-300 hover:shadow-lg border border-gray-50/50 ${breakpoints.isMobile ? 'h-[280px]' : 'h-[360px]'} relative overflow-hidden group`}>
-                  
-                  {/* JPG do SDG - Tamanho fixo para evitar layout shift */}
-                  <div className={`${breakpoints.isMobile ? 'w-32 h-32' : 'w-40 h-40'} mb-4 flex-shrink-0 relative`}>
-                    <div className="w-full h-full flex items-center justify-center rounded-xl overflow-hidden shadow-md group-hover:shadow-lg transition-shadow duration-300">
-                      <Image
-                        src={sdg.image}
-                        alt={`SDG ${sdg.number} - ${sdg.name}`}
-                        width={breakpoints.isMobile ? 128 : 160}
-                        height={breakpoints.isMobile ? 128 : 160}
-                        className="w-full h-full object-contain rounded-xl group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                  </div>
-                  
-                  {/* Conteúdo minimalista - Tipografia otimizada */}
-                  <div className="text-center flex flex-col items-center justify-center relative w-full px-2">
-                    {/* Número do SDG - Tamanho otimizado para mobile */}
-                    <span className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl'} font-thin text-[#044050] mb-1 tracking-[-0.03em] leading-none`}>
-                      {sdg.number}
-                    </span>
-                    
-                    {/* Nome do SDG - Compacto para mobile */}
-                    <span className={`${breakpoints.isMobile ? 'text-[10px]' : 'text-xs'} font-light text-gray-600 uppercase tracking-[0.08em] text-center leading-[1.1] w-full`}>
-                      {sdg.name}
-                    </span>
-                  </div>
-                  
-                  {/* Hover indicator simples */}
-                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-[#5FA037] opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Transparency & Commitment */}
-      <section className={`${sectionPadding} relative bg-white`}>
-        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className={`text-center ${breakpoints.isMobile ? 'mb-12' : 'mb-20'}`}>
-            <motion.p 
-              initial={{ opacity: 0, y: -10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="text-sm font-medium text-gray-500 uppercase tracking-[0.2em] mb-4"
-            >
-              Transparency & Governance
-            </motion.p>
-            <motion.h2 
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-3xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
-            >
-              <span className="font-extralight text-[#044050]">Built on</span>
-              <br />
-              <span className="font-normal text-[#5FA037]">trust & accountability</span>
-            </motion.h2>
-            <motion.p 
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-base' : 'text-xl'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto text-gray-600 font-light leading-relaxed ${breakpoints.isMobile ? 'mb-8' : 'mb-12'}`}
-            >
-              Our commitment to transparency isn't just a value — it's embedded in every layer of our technology and governance
-            </motion.p>
-          </div>
-
-          {/* Anti-Greenwashing Pledge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className={`bg-[#044050] rounded-3xl ${breakpoints.isMobile ? 'p-6 mb-8' : 'p-10 mb-12'} text-white text-center`}
-          >
-            <Shield className={`${breakpoints.isMobile ? 'w-12 h-12' : 'w-16 h-16'} mx-auto ${breakpoints.isMobile ? 'mb-4' : 'mb-6'} text-[#5FA037]`} />
-            <h3 className={`${breakpoints.isMobile ? 'text-xl' : 'text-2xl'} font-light ${breakpoints.isMobile ? 'mb-3' : 'mb-4'} tracking-tight`}>Anti-Greenwashing Pledge</h3>
-            <p className={`${breakpoints.isMobile ? 'text-sm' : 'text-base'} font-light opacity-90 leading-relaxed max-w-3xl mx-auto`}>
-              We pledge to combat greenwashing through scientific validation, blockchain transparency, and independent audits. 
-              Every certificate we issue is backed by verifiable data and third-party scientific institutions.
-            </p>
-          </motion.div>
-
-          {/* Governance Grid */}
-          <div className={`grid ${breakpoints.isMobile ? 'grid-cols-1 gap-8' : 'md:grid-cols-2 lg:grid-cols-4 gap-8'}`}>
-            {[
-              {
-                icon: CheckCircle2,
-                title: 'Independent Audits',
-                description: 'Annual audits by recognized third-party institutions',
-                items: ['Financial transparency', 'Impact verification', 'Technical validation']
-              },
-              {
-                icon: BarChart3,
-                title: 'Public Dashboard',
-                description: 'Real-time metrics accessible to all stakeholders',
-                items: ['CO₂ offset tracking', 'Certificate issuance', 'Impact metrics']
-              },
-              {
-                icon: Shield,
-                title: 'Impact Advisory Board',
-                description: 'Independent experts ensuring technical excellence',
-                items: ['Scientific rigor', 'Methodology review', 'Anti-greenwashing']
-              },
-              {
-                icon: FileText,
-                title: 'Annual Reports',
-                description: 'Comprehensive socio-environmental impact reports',
-                items: ['ESG performance', 'Financial results', 'Sustainability goals']
-              }
-            ].map((item, index) => {
-              const ItemIcon = item.icon
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="group"
-                >
-                  <div className={`${breakpoints.isMobile ? 'mb-4' : 'mb-6'} flex justify-center`}>
-                    <div className={`${breakpoints.isMobile ? 'w-12 h-12' : 'w-14 h-14'} rounded-full bg-slate-50 flex items-center justify-center shadow-sm transition-all duration-300 group-hover:bg-[#5FA037]`}>
-                      <ItemIcon className={`${breakpoints.isMobile ? 'w-6 h-6' : 'w-7 h-7'} text-[#5FA037] transition-colors duration-300 group-hover:text-white`} />
-                    </div>
-                  </div>
-                  <h3 className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} font-light text-[#044050] ${breakpoints.isMobile ? 'mb-1' : 'mb-2'} tracking-tight text-center`}>{item.title}</h3>
-                  <p className={`${breakpoints.isMobile ? 'text-xs' : 'text-sm'} font-light text-gray-500 ${breakpoints.isMobile ? 'mb-3' : 'mb-4'} text-center`}>{item.description}</p>
-                  <div className={`${breakpoints.isMobile ? 'space-y-1' : 'space-y-2'}`}>
-                    {item.items.map((subitem, i) => (
-                      <div key={i} className="flex items-center gap-2 justify-center">
-                        <div className="w-1 h-1 rounded-full bg-[#5FA037]"></div>
-                        <p className={`${breakpoints.isMobile ? 'text-xs' : 'text-xs'} font-light text-gray-500`}>{subitem}</p>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              )
-            })}
-          </div>
-
-          {/* Blockchain Transparency Note */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            viewport={{ once: true }}
-            className="mt-12 bg-slate-50 rounded-2xl p-8 text-center"
-          >
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <Cpu className="w-6 h-6 text-[#5FA037]" />
-              <h4 className="text-lg font-light text-[#044050]">Immutable Blockchain Records</h4>
-            </div>
-            <p className="text-sm font-light text-gray-600 leading-relaxed max-w-2xl mx-auto">
-              Every certificate is registered on Polygon blockchain as an NFT with embedded scientific metadata, 
-              ensuring permanent, tamper-proof verification accessible to anyone via public blockchain explorers
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-
-      {/* Investor CTA - Clean Minimal */}
-      <section className={`${sectionPadding} relative bg-gradient-to-br from-[#044050] to-[#033842]`}>
-        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <div className="text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              <p className="text-sm font-medium text-white/70 uppercase tracking-[0.2em] mb-6">
-                For Investors
-              </p>
-              <h2 className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-8' : 'mb-12'} tracking-tight leading-[1.1] text-white`}>
-                <span className="font-extralight">Join the future</span>
-                <br />
-                <span className="font-normal">of ESG certification</span>
-              </h2>
-              
-              <div className="flex flex-col items-center gap-6 max-w-2xl mx-auto mb-12">
-                <p className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} text-white/80 font-light leading-relaxed`}>
-                  €8.5B market opportunity · 2.4M target companies · First-mover advantage
-                </p>
-              </div>
-
-              {/* Stats Grid */}
-              <div className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : 'grid-cols-4'} ${breakpoints.isMobile ? 'gap-8' : 'gap-12'} max-w-4xl mx-auto mb-12`}>
-                {[
-                  { value: '€8.5B', label: 'Market Size' },
-                  { value: '2.4M', label: 'Target SMEs' },
-                  { value: '23%', label: 'CAGR' },
-                  { value: '4×', label: 'ROI Potential' }
-                ].map((stat, index) => (
+                ].map((point, index) => (
                   <motion.div
                     key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.2 + index * 0.1 }}
-                    viewport={{ once: true }}
-                    className="text-center"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8, delay: point.delay, ease: [0.22, 1, 0.36, 1] }}
+                    className="flex items-start gap-4 relative"
                   >
-                    <div className="text-3xl lg:text-4xl font-extralight text-[#E5FFBA] mb-2">{stat.value}</div>
-                    <div className="text-xs text-white/60 font-light uppercase tracking-wider">{stat.label}</div>
+                    {/* Animated Dot */}
+                    <motion.div 
+                      initial={{ scale: 0 }}
+                      whileInView={{ scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: point.delay + 0.1, ease: [0.22, 1, 0.36, 1] }}
+                      className="relative mt-2 flex-shrink-0"
+                    >
+                      <div className="w-2 h-2 rounded-full bg-black/80"></div>
+                      <motion.div
+                        initial={{ scale: 1, opacity: 0.5 }}
+                        animate={{ scale: 1.5, opacity: 0 }}
+                        transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
+                        className="absolute inset-0 w-2 h-2 rounded-full bg-black/40"
+                      />
+                    </motion.div>
+                    
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.6, delay: point.delay + 0.2, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      <h3 className="text-[17px] font-semibold text-black mb-2">
+                        {point.title}
+                      </h3>
+                      <p className="text-[15px] font-normal text-black/60 leading-[1.6]">
+                        {point.description}
+                      </p>
+                    </motion.div>
                   </motion.div>
                 ))}
               </div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                viewport={{ once: true }}
-              >
-                <Button 
-                  size="lg"
-                  onClick={() => router.push('/investors/login')}
-                  className={`group ${breakpoints.isMobile ? 'w-full max-w-sm' : 'min-w-[240px]'} ${
-                    breakpoints.isXs 
-                      ? 'h-12 text-sm' 
-                      : breakpoints.isMobile 
-                      ? 'h-12 text-base' 
-                      : 'h-[56px] text-lg'
-                  } rounded-full transition-all duration-500 bg-[#5FA037] text-white hover:bg-[#4d8c2d] font-normal tracking-tight shadow-lg hover:shadow-xl hover:shadow-[#5FA037]/25 border-0 relative overflow-hidden`}
-                >
-                  <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
-                  
-                  <span className="relative flex items-center justify-center gap-2.5">
-                    <span className="font-medium">View Investment Opportunity</span>
-                    <TrendingUp className={`${breakpoints.isXs ? 'h-4 w-4' : 'h-5 w-5'} transition-transform duration-300 group-hover:translate-x-0.5 group-hover:scale-105`} />
-                  </span>
-                </Button>
-              </motion.div>
-
-              <motion.p 
-                className="mt-8 text-sm text-white/50 font-light"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.8 }}
-                viewport={{ once: true }}
-              >
-                Seeking strategic investors for Series A · Confidential deck available
-              </motion.p>
             </motion.div>
+
+            {/* Visual Element - Real Photos with Stagger */}
+            <div className="relative aspect-[4/5] w-full max-w-[500px] mx-auto md:ml-auto md:mr-0">
+              {/* Top Image - Portuguese Architecture */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                className="group absolute top-0 right-0 w-[75%] h-[45%] rounded-3xl shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] overflow-hidden transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-black/[0.04] hover:border-black/[0.08]"
+              >
+                <img 
+                  src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=1000&fit=crop&q=80" 
+                  alt="Portuguese architecture and real estate"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-800 ease-out group-hover:scale-[1.08]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                
+                {/* Subtle shimmer effect */}
+                <motion.div
+                  initial={{ x: "-100%" }}
+                  whileInView={{ x: "200%" }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 2, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute inset-0 w-1/2 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12"
+                />
+              </motion.div>
+              
+              {/* Bottom Image - Luxury Property */}
+              <motion.div 
+                initial={{ opacity: 0, y: -20, scale: 0.9 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="group absolute bottom-0 left-0 w-[75%] h-[45%] rounded-3xl shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] overflow-hidden transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-black/[0.04] hover:border-black/[0.08]"
+              >
+                <img 
+                  src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=1000&fit=crop&q=80" 
+                  alt="Luxury real estate interior"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-800 ease-out group-hover:scale-[1.08]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                
+                {/* Subtle shimmer effect */}
+                <motion.div
+                  initial={{ x: "-100%" }}
+                  whileInView={{ x: "200%" }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 2, delay: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute inset-0 w-1/2 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12"
+                />
+              </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section - Clean Minimal */}
-      <section className={`${sectionPadding} relative bg-[#044050] text-white`}>
-        <div className={`${maxWidth} mx-auto ${containerPadding}`}>
-          <motion.div
+      {/* Divider */}
+      <div className="border-t border-black/[0.03]"></div>
+
+      {/* Services Section - Ultra Premium Apple/Tesla Style - Mobile First */}
+      <section id="services" className="relative py-20 md:py-32 lg:py-40 pb-32 md:pb-40 lg:pb-48 bg-gradient-to-b from-white via-gray-50/30 to-white overflow-visible">
+        {/* Static Grid Background */}
+        <GridPattern
+          width={40}
+          height={40}
+          className="fill-black/[0.02] stroke-black/[0.02]"
+        />
+        
+        {/* Subtle Background Pattern */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(0,0,0,0.015)_0%,transparent_50%)] pointer-events-none"></div>
+        
+        <div className="relative max-w-[1300px] mx-auto px-4 md:px-6 lg:px-12 overflow-visible pb-8 md:pb-16 lg:pb-20">
+          {/* Header Section - Ultra Clean - Mobile First */}
+          <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center"
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center mb-16 md:mb-20 lg:mb-24"
           >
-            {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="inline-block mb-6"
-            >
-              <div className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} font-medium tracking-[0.2em] uppercase text-white/80 bg-white/10 border border-white/20 px-6 py-3 rounded-full backdrop-blur-xl`}>
-                Start Today
-              </div>
-            </motion.div>
+            {/* Badge Premium */}
+            <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
+              <span className="text-[12px] font-medium text-black/60">Services</span>
+            </div>
 
-            {/* Title */}
-            <motion.h3 
+            {/* Main Title - Apple Style - Mobile First */}
+            <motion.h2 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-4xl' : 'text-5xl lg:text-6xl'} font-light ${breakpoints.isMobile ? 'mb-6' : 'mb-8'} tracking-tight leading-[1.1]`}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[36px] sm:text-[44px] md:text-[56px] lg:text-[64px] font-semibold text-black mb-5 md:mb-6 lg:mb-8 tracking-[-0.03em] leading-[1.08] px-2"
             >
-              <span className="font-extralight text-white">Ready to</span>
-              <br />
-              <span className="font-normal text-white">transform ESG?</span>
-            </motion.h3>
+              Comprehensive<br className="hidden md:block" /> Solutions
+            </motion.h2>
 
-            {/* Description */}
+            {/* Subtitle - Elegant - Mobile First */}
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
               viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'text-lg' : 'text-xl'} text-white/90 ${breakpoints.isMobile ? 'mb-8' : 'mb-12'} ${breakpoints.isMobile ? 'max-w-lg' : 'max-w-2xl'} mx-auto leading-relaxed font-light`}
+              transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[16px] sm:text-[17px] md:text-[19px] lg:text-[21px] font-light text-black/75 max-w-[680px] mx-auto leading-[1.65] tracking-[-0.01em] px-4"
             >
-              Our mission is to democratize ESG certification, making sustainability <span className="font-medium text-[#5FA037]">accessible</span>, <span className="font-medium text-[#5FA037]">transparent</span>, and <span className="font-medium text-[#5FA037]">verifiable</span> for companies and individuals worldwide.
+              Tailored real estate services designed to meet your unique needs
             </motion.p>
+          </motion.div>
 
-            {/* Stats Row */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              viewport={{ once: true }}
-              className={`grid ${breakpoints.isMobile ? 'grid-cols-2' : 'grid-cols-4'} ${breakpoints.isMobile ? 'gap-4 mb-8' : 'gap-8 mb-12'} max-w-4xl mx-auto`}
-            >
-              <div className="text-center">
-                <div className={`${breakpoints.isXs ? 'text-3xl' : breakpoints.isMobile ? 'text-4xl' : 'text-5xl'} font-extralight text-[#5FA037] mb-1`}>98.5%</div>
-                <div className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} text-white/70 uppercase tracking-wider font-medium`}>AI Accuracy</div>
-              </div>
-              <div className="text-center">
-                <div className={`${breakpoints.isXs ? 'text-3xl' : breakpoints.isMobile ? 'text-4xl' : 'text-5xl'} font-extralight text-[#5FA037] mb-1`}>3 weeks</div>
-                <div className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} text-white/70 uppercase tracking-wider font-medium`}>Processing</div>
-              </div>
-              <div className="text-center">
-                <div className={`${breakpoints.isXs ? 'text-3xl' : breakpoints.isMobile ? 'text-4xl' : 'text-5xl'} font-extralight text-[#5FA037] mb-1`}>100%</div>
-                <div className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} text-white/70 uppercase tracking-wider font-medium`}>Transparent</div>
-              </div>
-              <div className="text-center">
-                <div className={`${breakpoints.isXs ? 'text-3xl' : breakpoints.isMobile ? 'text-4xl' : 'text-5xl'} font-extralight text-[#5FA037] mb-1`}>&lt;€0.01</div>
-                <div className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} text-white/70 uppercase tracking-wider font-medium`}>Per Certificate</div>
-              </div>
-            </motion.div>
+          {/* Services Grid - Premium Layout - Mobile First */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 lg:gap-8 px-0 py-4 md:p-8 lg:p-12 overflow-visible">
+            {services.slice(0, 3).map((service, index) => {
+              const Icon = service.icon
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  className="group relative bg-white rounded-[24px] md:rounded-[28px] p-7 sm:p-8 md:p-10 lg:p-12 cursor-default shadow-[0_2px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_40px_rgba(0,0,0,0.12)] border border-black/[0.04] hover:border-black/[0.08] transition-all duration-700 ease-out z-[1] hover:z-[10]"
+                >
+                  {/* Number Badge - Top Right - Hidden on Mobile */}
+                  <div className="hidden md:flex absolute top-6 lg:top-7 right-6 lg:right-7 w-7 h-7 lg:w-8 lg:h-8 rounded-full bg-black/[0.03] items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <span className="text-[10px] lg:text-[11px] font-semibold text-black/40">0{index + 1}</span>
+                  </div>
 
-            {/* Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              viewport={{ once: true }}
-              className={`flex ${breakpoints.isMobile ? 'flex-col' : 'flex-row'} ${breakpoints.isMobile ? 'gap-4' : 'gap-6'} justify-center items-center`}
-            >
+                  {/* Gradient Shine Effect - Apple Style */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
+                    <div className="absolute inset-0 bg-gradient-to-br from-black/[0.01] via-transparent to-transparent"></div>
+                  </div>
+
+                  {/* Icon Container - Premium - Mobile First */}
+                  <div className="relative mb-6 md:mb-7 lg:mb-8">
+                    <div className="relative inline-flex items-center justify-center">
+                      {/* Icon Background with Gradient */}
+                      <div className="absolute inset-0 w-[60px] md:w-[68px] lg:w-[72px] h-[60px] md:h-[68px] lg:h-[72px] rounded-[18px] md:rounded-[20px] bg-gradient-to-br from-black/[0.04] to-black/[0.08] group-hover:from-black/[0.08] group-hover:to-black/[0.12] transition-all duration-500"></div>
+                      {/* Icon */}
+                      <div className="relative w-[60px] md:w-[68px] lg:w-[72px] h-[60px] md:h-[68px] lg:h-[72px] rounded-[18px] md:rounded-[20px] flex items-center justify-center">
+                        <Icon className="w-7 md:w-[30px] lg:w-8 h-7 md:h-[30px] lg:h-8 text-black/80 group-hover:text-black transition-colors duration-500" weight="duotone" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Content - Mobile First */}
+                  <div className="relative">
+                    {/* Title - Bold & Clean */}
+                    <h3 className="text-[20px] sm:text-[21px] md:text-[23px] lg:text-[24px] font-semibold text-black mb-3 md:mb-4 tracking-[-0.02em] leading-[1.25] group-hover:text-black/70 transition-colors duration-500">
+                      {service.title}
+                    </h3>
+
+                    {/* Description - Light & Elegant - Always Visible */}
+                    <p className="text-[14px] sm:text-[15px] md:text-[15px] lg:text-[16px] font-normal text-black/60 leading-[1.65] md:leading-[1.7] tracking-[-0.01em]">
+                      {service.description}
+                    </p>
+                  </div>
+
+                  {/* Bottom Accent Line - Hidden on Mobile */}
+                  <div className="hidden md:block absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-black/[0.08] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                </motion.div>
+              )
+            })}
+          </div>
+
+          {/* Second Row - 2 Columns Centered - Premium - Mobile First */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 lg:gap-8 max-w-[920px] mx-auto overflow-visible px-0 py-4 md:p-8 lg:p-12">
+            {services.slice(3, 5).map((service, index) => {
+              const Icon = service.icon
+              return (
+                <motion.div
+                  key={index + 3}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7, delay: (index + 3) * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  className="group relative bg-white rounded-[24px] md:rounded-[28px] p-7 sm:p-8 md:p-10 lg:p-12 cursor-default shadow-[0_2px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_40px_rgba(0,0,0,0.12)] border border-black/[0.04] hover:border-black/[0.08] transition-all duration-700 ease-out z-[1] hover:z-[10]"
+                >
+                  {/* Number Badge - Top Right - Hidden on Mobile */}
+                  <div className="hidden md:flex absolute top-6 lg:top-7 right-6 lg:right-7 w-7 h-7 lg:w-8 lg:h-8 rounded-full bg-black/[0.03] items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <span className="text-[10px] lg:text-[11px] font-semibold text-black/40">0{index + 4}</span>
+                  </div>
+
+                  {/* Gradient Shine Effect - Apple Style */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
+                    <div className="absolute inset-0 bg-gradient-to-br from-black/[0.01] via-transparent to-transparent"></div>
+                  </div>
+
+                  {/* Icon Container - Premium - Mobile First */}
+                  <div className="relative mb-6 md:mb-7 lg:mb-8">
+                    <div className="relative inline-flex items-center justify-center">
+                      {/* Icon Background with Gradient */}
+                      <div className="absolute inset-0 w-[60px] md:w-[68px] lg:w-[72px] h-[60px] md:h-[68px] lg:h-[72px] rounded-[18px] md:rounded-[20px] bg-gradient-to-br from-black/[0.04] to-black/[0.08] group-hover:from-black/[0.08] group-hover:to-black/[0.12] transition-all duration-500"></div>
+                      {/* Icon */}
+                      <div className="relative w-[60px] md:w-[68px] lg:w-[72px] h-[60px] md:h-[68px] lg:h-[72px] rounded-[18px] md:rounded-[20px] flex items-center justify-center">
+                        <Icon className="w-7 md:w-[30px] lg:w-8 h-7 md:h-[30px] lg:h-8 text-black/80 group-hover:text-black transition-colors duration-500" weight="duotone" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Content - Mobile First */}
+                  <div className="relative">
+                    {/* Title - Bold & Clean */}
+                    <h3 className="text-[20px] sm:text-[21px] md:text-[23px] lg:text-[24px] font-semibold text-black mb-3 md:mb-4 tracking-[-0.02em] leading-[1.25] group-hover:text-black/70 transition-colors duration-500">
+                      {service.title}
+                    </h3>
+
+                    {/* Description - Light & Elegant - Always Visible */}
+                    <p className="text-[14px] sm:text-[15px] md:text-[15px] lg:text-[16px] font-normal text-black/60 leading-[1.65] md:leading-[1.7] tracking-[-0.01em]">
+                      {service.description}
+                    </p>
+                  </div>
+
+                  {/* Bottom Accent Line - Hidden on Mobile */}
+                  <div className="hidden md:block absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-black/[0.08] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                </motion.div>
+              )
+            })}
+          </div>
+
+          {/* View All Services Button */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center mt-12 md:mt-16"
+          >
+            <Link href="/services">
               <Button 
-                onClick={handleIniciarValidacao}
-                className={`${breakpoints.isMobile ? 'w-full max-w-sm' : 'px-10'} ${buttonHeight} bg-[#5FA037] text-white hover:bg-[#4d8c2d] rounded-full transition-all duration-300 font-normal tracking-wide group`}
+                className="bg-black text-white hover:bg-black/90 border-0 px-8 py-3 rounded-full text-[15px] font-semibold transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2 mx-auto"
               >
-                <span className="flex items-center justify-center">
-                  Start Free Validation
-                  <ArrowRight className="ml-3 w-5 h-5 transition-all duration-300 group-hover:translate-x-1" />
-                </span>
+                View All Services
+                <ArrowRight className="w-4 h-4" weight="bold" />
               </Button>
-              
-              <Button 
-                onClick={handleScheduleDemo}
-                variant="ghost"
-                className={`${breakpoints.isMobile ? 'w-full max-w-sm' : 'px-10'} ${buttonHeight} text-white hover:bg-white/10 border border-white/30 hover:border-white/50 rounded-full transition-all duration-300 font-normal tracking-wide backdrop-blur-xl`}
-              >
-                <span className="flex items-center justify-center">
-                  Schedule Demo
-                  <div className="ml-3 w-2 h-2 rounded-full bg-[#5FA037] transition-all duration-300 group-hover:bg-white"></div>
-                </span>
-              </Button>
-            </motion.div>
-
-            {/* Trust Indicators */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              viewport={{ once: true }}
-              className={`${breakpoints.isMobile ? 'mt-8' : 'mt-12'} flex ${breakpoints.isMobile ? 'flex-col gap-4' : 'flex-row gap-8'} items-center justify-center text-white/70`}
-            >
-              <div className="flex items-center space-x-2">
-                <CheckCircle2 className="w-4 h-4 text-[#5FA037]" />
-                <span className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} font-light`}>No commitment</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <CheckCircle2 className="w-4 h-4 text-[#5FA037]" />
-                <span className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} font-light`}>5 minute setup</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <CheckCircle2 className="w-4 h-4 text-[#5FA037]" />
-                <span className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} font-light`}>Specialized support</span>
-              </div>
-            </motion.div>
+            </Link>
           </motion.div>
         </div>
       </section>
 
-   {/* Footer - Clean Minimal */}
-   <Footer />
-    </main>
+      {/* Divider */}
+      <div className="border-t border-black/[0.03]"></div>
+
+      {/* Blog Section - Modern Insights */}
+      <section id="blog" className="py-32 md:py-40 bg-gray-50 overflow-visible">
+        <div className="max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible pb-8">
+          {/* Header Section */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col lg:flex-row items-start lg:items-end justify-between mb-16 gap-8"
+          >
+            <div className="max-w-[700px]">
+              {/* Badge */}
+              <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
+                <span className="text-[12px] font-medium text-black/60">Blog</span>
+              </div>
+              
+              {/* Main Title */}
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                className="text-[40px] md:text-[52px] font-semibold text-black mb-6 tracking-[-0.02em] leading-[1.1]"
+              >
+                Latest real estate insights
+              </motion.h2>
+            </div>
+            <Link href="/blog">
+              <Button 
+                className="bg-black text-white hover:bg-black/90 border-0 px-6 py-3 rounded-full text-[14px] font-medium transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2"
+              >
+                View all
+                <ArrowRight className="w-4 h-4" weight="bold" />
+              </Button>
+            </Link>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8 px-0 py-4 md:p-8 lg:p-12 overflow-visible">
+            {blogPosts.map((post, index) => (
+              <motion.div
+                key={post.id}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                className="bg-white rounded-3xl group cursor-pointer shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 z-[1] hover:z-[10]"
+              >
+                {/* Blog Image */}
+                <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
+                  {/* Read Time Badge */}
+                  <div className="absolute top-4 right-4 z-10 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full">
+                    <span className="text-[11px] font-medium text-black">{post.readTime}</span>
+                  </div>
+                  
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-500 bg-black/5"></div>
+                </div>
+                
+                {/* Blog Content */}
+                <div className="p-6 md:p-8">
+                  <h3 className="text-[19px] font-semibold text-black mb-3 leading-tight">
+                    {post.title}
+                  </h3>
+                  <p className="text-[15px] font-normal text-black/60 mb-6 leading-relaxed">
+                    {post.subtitle}
+                  </p>
+                  
+                  {/* Author Info */}
+                  <div className="flex items-center gap-3 pt-4 border-t border-black/5">
+                    <div className="w-10 h-10 rounded-full bg-black/5 flex items-center justify-center">
+                      <User className="w-5 h-5 text-black/40" weight="duotone" />
+                    </div>
+                    <div>
+                      <div className="text-[13px] font-medium text-black">{post.author.name}</div>
+                      <div className="text-[12px] font-normal text-black/50">{post.author.role}</div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Divider */}
+      <div className="border-t border-black/[0.03]"></div>
+
+      {/* Partners & Network Section - Premium Apple Style */}
+      <section id="partners" className="relative py-32 md:py-40 bg-white overflow-visible">
+        {/* Static Grid Background */}
+        <GridPattern
+          width={40}
+          height={40}
+          className="fill-black/[0.03] stroke-black/[0.03]"
+        />
+        
+        <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible">
+          {/* Header Section */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center mb-20"
+          >
+            {/* Badge */}
+            <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
+              <span className="text-[12px] font-medium text-black/60">Network</span>
+            </div>
+            
+            {/* Main Title */}
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[40px] md:text-[56px] font-semibold text-black mb-8 tracking-[-0.02em] leading-[1.1] max-w-[900px] mx-auto"
+            >
+              A trusted ecosystem of excellence
+            </motion.h2>
+            
+            {/* Subtitle */}
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[17px] md:text-[21px] font-normal text-black/60 max-w-[760px] mx-auto leading-[1.6]"
+            >
+              We act as a bridge between foreign investors and the Portuguese reality, collaborating with carefully selected professionals
+            </motion.p>
+          </motion.div>
+
+          {/* Partners Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mb-16 overflow-visible px-0 py-4 md:p-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="group bg-white border border-black/[0.06] hover:border-black/[0.12] rounded-3xl p-8 text-center transition-all duration-300 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer hover:-translate-y-1 z-[1] hover:z-[10]"
+            >
+              <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-black/5 group-hover:bg-black/10 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
+                <HardHat className="w-10 h-10 text-black/70 group-hover:text-black transition-colors duration-300" weight="duotone" />
+              </div>
+              <h3 className="text-[18px] font-semibold text-black mb-3 tracking-tight group-hover:text-black/80 transition-colors duration-300">
+                Architects
+              </h3>
+              <p className="text-[14px] font-normal text-black/60 leading-[1.6]">
+                Award-winning designers creating timeless spaces
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="group bg-white border border-black/[0.06] hover:border-black/[0.12] rounded-3xl p-8 text-center transition-all duration-300 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer hover:-translate-y-1 z-[1] hover:z-[10]"
+            >
+              <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-black/5 group-hover:bg-black/10 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
+                <Scales className="w-10 h-10 text-black/70 group-hover:text-black transition-colors duration-300" weight="duotone" />
+              </div>
+              <h3 className="text-[18px] font-semibold text-black mb-3 tracking-tight group-hover:text-black/80 transition-colors duration-300">
+                Legal Advisors
+              </h3>
+              <p className="text-[14px] font-normal text-black/60 leading-[1.6]">
+                Expert lawyers ensuring secure transactions
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="group bg-white border border-black/[0.06] hover:border-black/[0.12] rounded-3xl p-8 text-center transition-all duration-300 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer hover:-translate-y-1 z-[1] hover:z-[10]"
+            >
+              <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-black/5 group-hover:bg-black/10 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
+                <Palette className="w-10 h-10 text-black/70 group-hover:text-black transition-colors duration-300" weight="duotone" />
+              </div>
+              <h3 className="text-[18px] font-semibold text-black mb-3 tracking-tight group-hover:text-black/80 transition-colors duration-300">
+                Designers
+              </h3>
+              <p className="text-[14px] font-normal text-black/60 leading-[1.6]">
+                Interior specialists crafting refined aesthetics
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="group bg-white border border-black/[0.06] hover:border-black/[0.12] rounded-3xl p-8 text-center transition-all duration-300 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer hover:-translate-y-1 z-[1] hover:z-[10]"
+            >
+              <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-black/5 group-hover:bg-black/10 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
+                <Briefcase className="w-10 h-10 text-black/70 group-hover:text-black transition-colors duration-300" weight="duotone" />
+              </div>
+              <h3 className="text-[18px] font-semibold text-black mb-3 tracking-tight group-hover:text-black/80 transition-colors duration-300">
+                Financial Advisors
+              </h3>
+              <p className="text-[14px] font-normal text-black/60 leading-[1.6]">
+                Strategic guidance for optimal financing
+              </p>
+            </motion.div>
+          </div>
+
+          {/* Values */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-wrap items-center justify-center gap-3 mt-8"
+          >
+            {['Quality', 'Discretion', 'Excellence'].map((value, index) => (
+              <span 
+                key={index}
+                className="px-5 py-2.5 bg-black/5 hover:bg-black/8 rounded-full text-[13px] font-medium text-black/70 transition-all duration-200"
+              >
+                {value}
+              </span>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Call to Action Section - Apple Style */}
+      <section className="py-32 md:py-40 bg-black">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-[900px] mx-auto px-6 md:px-12 text-center"
+        >
+          <h2 className="text-[40px] md:text-[56px] font-semibold text-white mb-8 tracking-[-0.02em] leading-[1.15]">
+            Every search is unique.
+          </h2>
+          <p className="text-[17px] md:text-[21px] font-normal text-white/80 mb-12 max-w-[640px] mx-auto leading-[1.5]">
+            Share your vision — we'll curate a personalized selection for you.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Button 
+              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 min-w-[200px] shadow-sm hover:shadow-md"
+            >
+              Start your search
+            </Button>
+            <Button 
+              className="bg-white/10 text-white hover:bg-white/20 border border-white/20 hover:border-white/30 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 min-w-[200px]"
+            >
+              Book a Call
+            </Button>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Footer */}
+      <Footer />
     </div>
   )
 }
+

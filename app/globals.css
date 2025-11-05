@@ -2,6 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+/* SUL Premium Typography - Ultra-minimal, OpenAI/Meta/Apple-inspired design system */
+@layer base {
+  @supports (font-variation-settings: normal) {
+    /* Use system fonts that mimic San Francisco / Neue Haas */
+    * {
+      font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "zero" 1;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      font-optical-sizing: auto;
+    }
+  }
+
+  /* Premium spacing and rhythm - OpenAI/Meta style */
+  html {
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Ultra-smooth transitions globally - Apple iOS style */
+  * {
+    transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  /* Clean body reset */
+  body {
+    font-weight: 300;
+    letter-spacing: -0.01em;
+  }
+  .theme {
+    --animate-ripple: ripple var(--duration,2s) ease calc(var(--i, 0)*.2s) infinite;
+  }
+}
+
 @layer base {
   :root {
     /* GreenCheck - Modo Claro (não usado, mas mantido para compatibilidade) */
@@ -75,13 +110,13 @@
   :root {
     --vh: 1vh;
   }
-  
+
   /* Custom height classes that use the fixed viewport height */
   .min-h-screen-fixed {
     min-height: 100vh; /* Fallback for browsers that don't support CSS custom properties */
     min-height: calc(var(--vh, 1vh) * 100);
   }
-  
+
   .h-screen-fixed {
     height: 100vh; /* Fallback for browsers that don't support CSS custom properties */
     height: calc(var(--vh, 1vh) * 100);
@@ -96,13 +131,13 @@
     /* Previne layout shift ao abrir modals/dropdowns que causam scrollbar */
     scrollbar-gutter: stable;
   }
-  
+
   body {
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: none; /* Prevents bounce effect on iOS */
   }
-  
+
   /* Additional mobile optimizations */
   @media (max-width: 768px) {
     body {
@@ -193,5 +228,285 @@
   }
   50%, 100% {
     opacity: 0;
+  }
+}
+
+/* iOS Fixed Position Fix - Garante que elementos fixed funcionem corretamente no iOS */
+@layer utilities {
+  /* Fix para position: fixed no iOS/Safari */
+  @supports (-webkit-touch-callout: none) {
+    html, body {
+      /* Previne que transforms nos pais quebrem position: fixed */
+      transform: none !important;
+    }
+
+    /* Force hardware acceleration for fixed elements on iOS */
+    .fixed {
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      -webkit-perspective: 1000;
+      perspective: 1000;
+    }
+  }
+
+  /* Garante que o body não tenha transforms que quebrem o fixed */
+  @media (max-width: 768px) {
+    body {
+      position: relative;
+      transform: none !important;
+      -webkit-transform: none !important;
+    }
+  }
+}
+
+/* SUL Premium Design System - Ultra-minimal & Elegant - OpenAI/Meta/Apple Style */
+@layer utilities {
+  /* Buttery smooth scroll - Apple iOS style */
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 140px;
+  }
+
+  /* Ultra-refined focus states - OpenAI style */
+  *:focus-visible {
+    outline: 1px solid rgba(0, 0, 0, 0.12);
+    outline-offset: 4px;
+    border-radius: 0;
+  }
+
+  /* Premium button styles - Meta style */
+  button {
+    font-weight: 300;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Prevenir scrollbar em botões e elementos inline-flex */
+  button,
+  .inline-flex,
+  [class*="inline-flex"] {
+    overflow: hidden !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  button::-webkit-scrollbar,
+  .inline-flex::-webkit-scrollbar,
+  [class*="inline-flex"]::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  /* Elegant link transitions - Apple style */
+  a {
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Custom scrollbar styling - Ultra-premium feel */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.12);
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  /* Firefox scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.12) transparent;
+  }
+
+  /* Ultra-refined text selection - OpenAI style */
+  ::selection {
+    background: rgba(0, 0, 0, 0.08);
+    color: inherit;
+  }
+
+  ::-moz-selection {
+    background: rgba(0, 0, 0, 0.08);
+    color: inherit;
+  }
+
+  /* Input styling - Apple iOS style */
+  input, textarea {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-weight: 300;
+  }
+
+  /* Remove default button styling */
+  button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+
+  /* Image optimization */
+  img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Prevenir Scroll Horizontal - Fix Global (Refinado) */
+@layer base {
+  /* Apenas elementos que podem causar overflow horizontal */
+  .page-content {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  /* Seções de conteúdo (não navbar ou elementos fixos) */
+  section:not([class*="fixed"]):not([class*="absolute"]) {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  /* Containers de conteúdo específicos */
+  .max-w-6xl,
+  .max-w-7xl,
+  .max-w-5xl,
+  .max-w-4xl,
+  .max-w-3xl {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Grids de conteúdo (não elementos de navegação) */
+  .grid:not([class*="fixed"]):not([class*="absolute"]) {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Garantir que imagens não causem overflow */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Texto que pode causar overflow */
+  .text-nowrap,
+  .whitespace-nowrap {
+    word-break: break-word !important;
+  }
+
+  /* Seções com background específico (conteúdo principal) */
+  .bg-white:not([class*="fixed"]):not([class*="absolute"]),
+  .bg-gray-50:not([class*="fixed"]):not([class*="absolute"]),
+  .bg-slate-50:not([class*="fixed"]):not([class*="absolute"]) {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+}
+
+/* Garantir que elementos fixos (navbar, botão flutuante) não sejam afetados */
+@layer utilities {
+  /* Preservar estilos originais de elementos fixos */
+  nav,
+  .navbar,
+  .floating-contact-button,
+  [class*="fixed"] {
+    /* Não aplicar regras de overflow a elementos fixos */
+    overflow: visible !important;
+    max-width: none !important;
+  }
+}
+
+/* Premium Dropdown Styling - Glassmorphism Effect */
+@layer components {
+  /* Estilo para os selects quando abertos */
+  select {
+    color-scheme: dark;
+  }
+
+  /* Estilização das opções do dropdown - Todas as opções */
+  select option {
+    background-color: #1a1a1a !important;
+    color: white !important;
+    padding: 12px 20px !important;
+    font-weight: 500 !important;
+    border: none !important;
+  }
+
+  /* Primeira opção (placeholder) - mesma cor */
+  select option:first-child {
+    background-color: #1a1a1a !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  /* Hover state */
+  select option:hover {
+    background-color: #2a2a2a !important;
+    color: white !important;
+  }
+
+  /* Selected/Checked state */
+  select option:checked,
+  select option:focus {
+    background-color: #333333 !important;
+    color: white !important;
+  }
+
+  /* Container do dropdown quando aberto */
+  select:focus {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+    border-radius: 20px !important;
+  }
+
+  /* Força border-radius em todos os estados do select */
+  select,
+  select:hover,
+  select:active,
+  select:focus,
+  select:focus-visible,
+  select:focus-within {
+    border-radius: 20px !important;
+  }
+
+  /* Remove a borda padrão do dropdown */
+  select::-ms-expand {
+    display: none;
+  }
+
+  /* Navbar Button - Remove green border bug during transitions */
+  nav button:not([class*="border-white"]) {
+    border-color: transparent !important;
+  }
+
+  nav button:hover:not([class*="border-white"]),
+  nav button:focus:not([class*="border-white"]),
+  nav button:active:not([class*="border-white"]),
+  nav button:focus-visible:not([class*="border-white"]) {
+    border-color: transparent !important;
+    outline: none !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  }
+}
+
+@theme inline {
+  @keyframes ripple {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    }
+  50% {
+    transform: translate(-50%, -50%) scale(0.9);
+    }
   }
 }

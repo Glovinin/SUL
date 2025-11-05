@@ -7,12 +7,22 @@ const nextConfig = {
   images: {
     domains: ['firebasestorage.googleapis.com', 'images.unsplash.com'],
   },
-  webpack: (config) => {
+  transpilePackages: ['@phosphor-icons/react'],
+  webpack: (config, { isServer }) => {
     config.watchOptions = {
       ...config.watchOptions,
       poll: 1000,
       aggregateTimeout: 300,
     };
+    
+    // Handle @phosphor-icons/react ESM module
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+      };
+    }
+    
     return config;
   },
   async redirects() {

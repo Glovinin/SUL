@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
-import { Navbar } from './navbar'
+import { NavBar } from './navbar'
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -23,7 +23,7 @@ export default function Header() {
         : "bg-transparent border-transparent"
     )}>
       <div className="container">
-        <Navbar />
+        <NavBar />
       </div>
     </header>
   )

@@ -2,21 +2,20 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { CheckCircle2 } from 'lucide-react'
 import { useLoading } from '../contexts/loading-context'
 import Image from 'next/image'
 
-// Cache key para o Spline iframe
-const SPLINE_CACHE_KEY = 'greencheck_spline_loaded'
-const SPLINE_CACHE_TIMESTAMP = 'greencheck_spline_timestamp'
+// Cache keys para otimização
+const HERO_IMAGE_CACHE_KEY = 'sul_estate_hero_image_loaded'
+const HERO_IMAGE_CACHE_TIMESTAMP = 'sul_estate_hero_image_timestamp'
 const CACHE_DURATION = 24 * 60 * 60 * 1000 // 24 horas
 
 export default function InitialLoading() {
   const { isInitialLoading, isPageLoading } = useLoading()
   const [mounted, setMounted] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
-  const [splinePreloaded, setSplinePreloaded] = useState(false)
-  const [iframeLoaded, setIframeLoaded] = useState(false)
+  const [heroImagePreloaded, setHeroImagePreloaded] = useState(false)
+  const [heroImageLoaded, setHeroImageLoaded] = useState(false)
   const [logoTransitioning, setLogoTransitioning] = useState(false)
 
   useEffect(() => {
@@ -29,32 +28,28 @@ export default function InitialLoading() {
     checkMobile()
     window.addEventListener('resize', checkMobile)
     
-    // Verificar se o Spline já foi carregado antes (cache)
-    const checkSplineCache = () => {
+    // Verificar se a imagem do hero já foi carregada antes (cache)
+    const checkHeroImageCache = () => {
       try {
-        const cached = localStorage.getItem(SPLINE_CACHE_KEY)
-        const timestamp = localStorage.getItem(SPLINE_CACHE_TIMESTAMP)
+        const cached = localStorage.getItem(HERO_IMAGE_CACHE_KEY)
+        const timestamp = localStorage.getItem(HERO_IMAGE_CACHE_TIMESTAMP)
         
         if (cached && timestamp) {
           const cacheAge = Date.now() - parseInt(timestamp)
           if (cacheAge < CACHE_DURATION) {
-            console.log('🔮 Spline encontrado no cache local')
-            setSplinePreloaded(true)
+            setHeroImagePreloaded(true)
             return
           }
         }
-        
-        console.log('🔮 Spline não encontrado no cache, carregando...')
       } catch (error) {
-        console.error('Erro ao verificar cache do Spline:', error)
+        // Silent error handling
       }
     }
     
-    checkSplineCache()
+    checkHeroImageCache()
     
     // Após 2.5s, iniciar a transição da logo para o navbar
     const transitionTimer = setTimeout(() => {
-      console.log('🚀 Iniciando transição da logo para o navbar')
       setLogoTransitioning(true)
       
       // Notificar o navbar que a transição começou
@@ -80,33 +75,43 @@ export default function InitialLoading() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-[9999] bg-white/80 backdrop-blur-sm flex items-center justify-center"
+          className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-sm flex items-center justify-center"
         >
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
+            initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.8, opacity: 0 }}
+            exit={{ scale: 0.95, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
             className="flex flex-col items-center"
           >
-            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg shadow-emerald-600/20 p-3 mb-2">
-              <Image
-                src="/images/logo greencheck.png"
-                alt="GreenCheck Logo"
-                width={40}
-                height={40}
-                className="object-contain"
-                priority
-              />
+            <h2 className="text-2xl md:text-3xl font-light text-white tracking-[0.1em] mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
+              <span className="font-light">SUL</span>
+              <span className="font-extralight mx-2">ESTATE</span>
+            </h2>
+            <div className="flex gap-1.5">
+              {[0, 1, 2].map((i) => (
+                <motion.div
+                  key={i}
+                  className="w-1.5 h-1.5 bg-white rounded-full"
+                  animate={{
+                    opacity: [0.3, 1, 0.3]
+                  }}
+                  transition={{
+                    duration: 1,
+                    repeat: Infinity,
+                    delay: i * 0.2,
+                    ease: "easeInOut"
+                  }}
+                />
+              ))}
             </div>
-            <div className="w-6 h-6 border-2 border-emerald-200 border-t-emerald-600 rounded-full animate-spin"></div>
           </motion.div>
         </motion.div>
       </AnimatePresence>
     )
   }
 
-  // Versão única com Crystal Ball 3D para todos os dispositivos
+  // Versão ultra-premium - Studio Design Apple Style
   return (
     <AnimatePresence>
       {isInitialLoading && (
@@ -114,166 +119,207 @@ export default function InitialLoading() {
           initial={{ opacity: 1 }}
           animate={{ opacity: logoTransitioning ? 0 : 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="fixed inset-0 z-[9999] w-screen h-screen overflow-hidden bg-[#044050]"
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="fixed inset-0 z-[9999] w-screen h-screen overflow-hidden bg-black"
         >
-          {/* Background gradient - sempre visível */}
+          {/* Background preto premium com gradient sutil */}
           <motion.div 
-            className="absolute inset-0 bg-gradient-to-br from-[#044050] via-[#033842] to-[#022c33]"
+            className="absolute inset-0 bg-gradient-to-b from-black via-black to-black/95"
             animate={{ 
               opacity: logoTransitioning ? 0 : 1
             }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8 }}
           />
           
-          {/* Spline 3D Animation - Carrega em background mas não aparece */}
-          <iframe 
-            src='https://my.spline.design/crystalball-35c36a2f9650bec5da71971cf512f33f/' 
-            frameBorder='0' 
-            width='100%' 
-            height='100%'
-            style={{
-              position: 'absolute',
-              opacity: 0, // Sempre invisível no loading
-              pointerEvents: 'none',
-              top: isMobile ? 0 : '-5%',
-              left: isMobile ? 0 : '-5%',
-              width: isMobile ? '100%' : '110%',
-              height: isMobile ? '100%' : '110%',
-              border: 'none',
-              overflow: 'hidden'
-            }}
+          {/* Subtle vignette effect */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)]" />
+          
+          {/* Hero Image Preload - Carrega em background para cache */}
+          <Image
+            src="/images/herobg.jpg"
+            alt="SUL ESTATE Hero Background"
+            fill
+            className="object-cover opacity-0"
+            priority
             onLoad={() => {
-              console.log('🔮 Spline Crystal Ball carregado em background - pronto para homepage')
-              setIframeLoaded(true)
+              setHeroImageLoaded(true)
               
               // Salvar no cache local
               try {
-                localStorage.setItem(SPLINE_CACHE_KEY, 'true')
-                localStorage.setItem(SPLINE_CACHE_TIMESTAMP, Date.now().toString())
-                console.log('✅ Spline salvo no cache local por 24h')
+                localStorage.setItem(HERO_IMAGE_CACHE_KEY, 'true')
+                localStorage.setItem(HERO_IMAGE_CACHE_TIMESTAMP, Date.now().toString())
               } catch (error) {
-                console.error('Erro ao salvar cache do Spline:', error)
+                // Silent error handling
               }
             }}
-            title="Crystal Ball 3D Preload"
           />
 
-
-          {/* Logo GreenCheck - Transição épica do centro para o navbar */}
-          <motion.div 
-            className="absolute z-[10000] pointer-events-none"
-            initial={{ 
-              top: '50%',
-              left: '50%',
-              x: '-50%',
-              y: '-50%'
-            }}
-            animate={logoTransitioning ? {
-              top: isMobile ? '8px' : '20px',
-              left: isMobile ? '24px' : '40px',
-              x: '0%',
-              y: '0%',
-              scale: isMobile ? 0.4 : 0.6
-            } : {
-              top: '50%',
-              left: '50%',
-              x: '-50%',
-              y: '-50%'
-            }}
-            transition={{
-              duration: 1.2,
-              ease: [0.22, 1, 0.36, 1], // easing suave e profissional
-              delay: 0
-            }}
-          >
+          {/* Container central - Ultra premium */}
+          <div className="absolute inset-0 flex items-center justify-center z-[10000] pointer-events-none">
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
+              className="flex flex-col items-center"
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ 
-                opacity: 1, 
-                scale: 1
+                opacity: logoTransitioning ? 0 : 1,
+                scale: logoTransitioning ? 0.85 : 1
               }}
               transition={{ 
-                duration: 0.8, 
-                delay: 0.5,
+                duration: 0.8,
+                delay: 0.1,
                 ease: [0.22, 1, 0.36, 1]
               }}
-              className="flex flex-col items-center gap-4"
             >
-              {/* Logo com pulse effect - para quando inicia transição */}
-              <motion.div
-                animate={!logoTransitioning ? {
-                  scale: [1, 1.05, 1],
-                  filter: [
-                    "drop-shadow(0 0 20px rgba(229, 255, 186, 0.3))",
-                    "drop-shadow(0 0 30px rgba(229, 255, 186, 0.5))",
-                    "drop-shadow(0 0 20px rgba(229, 255, 186, 0.3))"
-                  ]
-                } : {
-                  filter: "drop-shadow(0 0 0px rgba(229, 255, 186, 0))"
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: logoTransitioning ? 0 : Infinity,
-                  ease: "easeInOut"
-                }}
+              {/* Welcome message - palavra por palavra */}
+              <motion.div 
+                className="mb-12 md:mb-16 overflow-hidden"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: logoTransitioning ? 0 : 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
               >
-                <Image
-                  src="/favicon.png"
-                  alt="GreenCheck Logo"
-                  width={isMobile ? 100 : 120}
-                  height={isMobile ? 100 : 120}
-                  className="drop-shadow-2xl"
-                  priority
-                />
+                <div className="flex items-center justify-center gap-2 md:gap-3 flex-wrap">
+                  {/* "Welcome" */}
+                  <motion.span
+                    initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
+                    animate={{ 
+                      opacity: logoTransitioning ? 0 : 1,
+                      y: logoTransitioning ? 30 : 0,
+                      filter: logoTransitioning ? 'blur(10px)' : 'blur(0px)'
+                    }}
+                    transition={{ 
+                      duration: 0.8,
+                      delay: 0.3,
+                      ease: [0.16, 1, 0.3, 1]
+                    }}
+                    className="text-[17px] md:text-[21px] font-light text-white/70 tracking-[0.02em]"
+                  >
+                    Welcome
+                  </motion.span>
+                  
+                  {/* "to" */}
+                  <motion.span
+                    initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
+                    animate={{ 
+                      opacity: logoTransitioning ? 0 : 1,
+                      y: logoTransitioning ? 30 : 0,
+                      filter: logoTransitioning ? 'blur(10px)' : 'blur(0px)'
+                    }}
+                    transition={{ 
+                      duration: 0.8,
+                      delay: 0.5,
+                      ease: [0.16, 1, 0.3, 1]
+                    }}
+                    className="text-[17px] md:text-[21px] font-light text-white/70 tracking-[0.02em]"
+                  >
+                    to
+                  </motion.span>
+                </div>
               </motion.div>
-              
-              {/* Nome GreenCheck e dots - desaparecem na transição */}
+
+              {/* SUL ESTATE Logo - Ultra elegante */}
               <motion.div
-                initial={{ opacity: 0, y: 10 }}
+                className="text-center mb-8 md:mb-12"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: logoTransitioning ? 0 : 1 }}
+              >
+                <div className="overflow-hidden">
+                  <motion.h1
+                    className={`${isMobile ? 'text-5xl' : 'text-6xl md:text-7xl lg:text-8xl'} font-semibold text-white tracking-[-0.03em] leading-[1.05] mb-2`}
+                  >
+                    {/* SUL */}
+                    <motion.span
+                      initial={{ opacity: 0, y: 60, filter: 'blur(20px)' }}
+                      animate={{ 
+                        opacity: logoTransitioning ? 0 : 1, 
+                        y: logoTransitioning ? 60 : 0,
+                        filter: logoTransitioning ? 'blur(20px)' : 'blur(0px)'
+                      }}
+                      transition={{ 
+                        duration: 1.0, 
+                        delay: 0.7,
+                        ease: [0.16, 1, 0.3, 1]
+                      }}
+                      className="inline-block"
+                    >
+                      SUL
+                    </motion.span>
+                  </motion.h1>
+                  
+                  <motion.h2
+                    className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl lg:text-5xl'} font-light text-white/90 tracking-[0.15em] uppercase`}
+                  >
+                    {/* ESTATE - letra por letra */}
+                    {'ESTATE'.split('').map((letter, index) => (
+                      <motion.span
+                        key={index}
+                        initial={{ opacity: 0, y: 40, filter: 'blur(15px)' }}
+                        animate={{ 
+                          opacity: logoTransitioning ? 0 : 1,
+                          y: logoTransitioning ? 40 : 0,
+                          filter: logoTransitioning ? 'blur(15px)' : 'blur(0px)'
+                        }}
+                        transition={{ 
+                          duration: 0.8,
+                          delay: 0.9 + (index * 0.05),
+                          ease: [0.16, 1, 0.3, 1]
+                        }}
+                        className="inline-block"
+                      >
+                        {letter}
+                      </motion.span>
+                    ))}
+                  </motion.h2>
+                </div>
+              </motion.div>
+
+              {/* Subtítulo elegante */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ 
-                  opacity: logoTransitioning ? 0 : 1, 
-                  y: 0 
+                  opacity: logoTransitioning ? 0 : 0.6,
+                  y: logoTransitioning ? 20 : 0
                 }}
                 transition={{ 
-                  opacity: { duration: 0.3 },
-                  y: { duration: 0.6, delay: 0.8 }
+                  duration: 0.8, 
+                  delay: 1.4,
+                  ease: [0.22, 1, 0.36, 1]
                 }}
-                className="text-center"
+                className="text-white text-[11px] md:text-[13px] font-light tracking-[0.3em] uppercase mb-12 md:mb-16"
               >
-                <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-light text-white drop-shadow-lg tracking-wide`}>
-                  <span className="font-extralight">Green</span>
-                  <span className="font-medium">Check</span>
-                  <span className="text-lg align-super">™</span>
-                </h1>
-                
-                {/* Loading dots animados */}
-                <motion.div
-                  className="flex items-center justify-center gap-1 mt-4"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: logoTransitioning ? 0 : 1 }}
-                  transition={{ delay: 1 }}
-                >
-                  {[0, 1, 2].map((i) => (
-                    <motion.div
-                      key={i}
-                      className="w-2 h-2 bg-[#E5FFBA] rounded-full"
-                      animate={{
-                        y: logoTransitioning ? 0 : [0, -8, 0],
-                        opacity: logoTransitioning ? 0 : [0.5, 1, 0.5]
-                      }}
-                      transition={{
-                        duration: 1,
-                        repeat: logoTransitioning ? 0 : Infinity,
-                        delay: i * 0.2,
-                        ease: "easeInOut"
-                      }}
-                    />
-                  ))}
-                </motion.div>
+                Real Estate Advisory
+              </motion.div>
+
+              {/* Loading dots refinados */}
+              <motion.div
+                className="flex items-center justify-center gap-2.5"
+                initial={{ opacity: 0 }}
+                animate={{ 
+                  opacity: logoTransitioning ? 0 : 1
+                }}
+                transition={{ 
+                  duration: 0.6,
+                  delay: 1.6,
+                  ease: [0.22, 1, 0.36, 1]
+                }}
+              >
+                {[0, 1, 2].map((i) => (
+                  <motion.div
+                    key={i}
+                    className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white/50 rounded-full"
+                    animate={{
+                      scale: logoTransitioning ? 1 : [1, 1.5, 1],
+                      opacity: logoTransitioning ? 0 : [0.3, 1, 0.3]
+                    }}
+                    transition={{
+                      duration: 1.5,
+                      repeat: logoTransitioning ? 0 : Infinity,
+                      delay: i * 0.2,
+                      ease: [0.22, 1, 0.36, 1]
+                    }}
+                  />
+                ))}
               </motion.div>
             </motion.div>
-          </motion.div>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

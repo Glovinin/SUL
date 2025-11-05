@@ -2,10 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import Image from 'next/image'
 
-// Loading LEVE para navegação entre páginas (sem iframe 3D)
-// Visual elegante igual ao initial-loading, mas SEM o globo 3D pesado
+// Loading LEVE para navegação entre páginas
+// Visual elegante minimalista - apenas texto SUL ESTATE em fundo preto
 export default function Loading() {
   const [isMobile, setIsMobile] = useState(false)
 
@@ -24,76 +23,49 @@ export default function Loading() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
-      className="fixed inset-0 z-[9998] w-screen h-screen overflow-hidden bg-[#044050]"
+      className="fixed inset-0 z-[9998] w-screen h-screen overflow-hidden bg-black"
     >
-      {/* Fundo azul escuro sólido - sem iframe 3D para performance */}
-      <div className="absolute inset-0 bg-[#044050]" />
+      {/* Fundo preto */}
+      <div className="absolute inset-0 bg-black" />
 
-      {/* Logo e Nome centralizados - mesmo estilo do initial-loading */}
+      {/* Nome SUL ESTATE centralizado - estilo minimalista premium */}
       <div className="absolute inset-0 flex items-center justify-center">
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
+          initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="flex flex-col items-center gap-4"
+          exit={{ opacity: 0, scale: 0.98 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="flex flex-col items-center gap-6"
         >
-          {/* Logo com pulse effect */}
-          <motion.div
-            animate={{
-              scale: [1, 1.05, 1],
-              filter: [
-                "drop-shadow(0 0 20px rgba(229, 255, 186, 0.3))",
-                "drop-shadow(0 0 30px rgba(229, 255, 186, 0.5))",
-                "drop-shadow(0 0 20px rgba(229, 255, 186, 0.3))"
-              ]
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          >
-            <Image
-              src="/favicon.png"
-              alt="GreenCheck Logo"
-              width={isMobile ? 100 : 120}
-              height={isMobile ? 100 : 120}
-              className="drop-shadow-2xl"
-              priority
-            />
-          </motion.div>
-          
-          {/* Nome GreenCheck */}
+          {/* Nome SUL ESTATE */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
             className="text-center"
           >
-            <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-light text-white drop-shadow-lg tracking-wide`}>
-              <span className="font-extralight">Green</span>
-              <span className="font-medium">Check</span>
-              <span className="text-lg align-super">™</span>
+            <h1 className={`${isMobile ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-light text-white tracking-[0.1em]`} style={{ fontFamily: 'Playfair Display, serif' }}>
+              <span className="font-light">SUL</span>
+              <span className="font-extralight mx-2 md:mx-3">ESTATE</span>
             </h1>
             
-            {/* Loading dots animados */}
+            {/* Loading dots animados - cor branca */}
             <motion.div
-              className="flex items-center justify-center gap-1 mt-4"
+              className="flex items-center justify-center gap-2 mt-6 md:mt-8"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
+              transition={{ delay: 0.3 }}
             >
               {[0, 1, 2].map((i) => (
                 <motion.div
                   key={i}
-                  className="w-2 h-2 bg-[#E5FFBA] rounded-full"
+                  className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white rounded-full"
                   animate={{
                     y: [0, -8, 0],
-                    opacity: [0.5, 1, 0.5]
+                    opacity: [0.4, 1, 0.4]
                   }}
                   transition={{
-                    duration: 1,
+                    duration: 1.2,
                     repeat: Infinity,
                     delay: i * 0.2,
                     ease: "easeInOut"

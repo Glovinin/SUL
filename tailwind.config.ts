@@ -3,7 +3,6 @@ import type { Config } from 'tailwindcss';
 const config: Config = {
   darkMode: ['class'],
   content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
@@ -70,39 +69,29 @@ const config: Config = {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
-        'gradient-x': {
-          '0%, 100%': {
-            'background-size': '200% 200%',
-            'background-position': 'left center',
-          },
-          '50%': {
-            'background-size': '200% 200%',
-            'background-position': 'right center',
-          },
-        },
-        'subtle-float': {
-          '0%, 100%': {
-            transform: 'translateY(0) scale(1.05)',
-          },
-          '50%': {
-            transform: 'translateY(-1%) scale(1.05)',
-          },
-        },
-        'subtle-zoom': {
-          '0%': {
-            transform: 'scale(1.02)',
-          },
-          '100%': {
-            transform: 'scale(1.03)',
-          },
-        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        'gradient-x': 'gradient-x 15s ease infinite',
-        'subtle-float': 'subtle-float 6s ease-in-out infinite',
-        'subtle-zoom': 'subtle-zoom 15s alternate infinite',
+      },
+      transitionDuration: {
+        '800': '800ms',
+        '1500': '1500ms',
+        '20000': '20000ms',
+      },
+      fontSize: {
+        'xs': ['12px', { lineHeight: '1.5', letterSpacing: '0.01em' }],
+        'sm': ['13px', { lineHeight: '1.6', letterSpacing: '0.01em' }],
+        'base': ['16px', { lineHeight: '1.7', letterSpacing: '0' }],
+        'lg': ['18px', { lineHeight: '1.7', letterSpacing: '0' }],
+        'xl': ['20px', { lineHeight: '1.6', letterSpacing: '-0.01em' }],
+        '2xl': ['24px', { lineHeight: '1.5', letterSpacing: '-0.01em' }],
+        '3xl': ['32px', { lineHeight: '1.3', letterSpacing: '-0.02em' }],
+        '4xl': ['40px', { lineHeight: '1.2', letterSpacing: '-0.02em' }],
+        '5xl': ['48px', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
+        '6xl': ['64px', { lineHeight: '1', letterSpacing: '-0.02em' }],
+        '7xl': ['80px', { lineHeight: '0.95', letterSpacing: '-0.02em' }],
+        '8xl': ['120px', { lineHeight: '0.9', letterSpacing: '-0.02em' }],
       },
     },
   },

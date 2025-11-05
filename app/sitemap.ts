@@ -4,7 +4,7 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://greencheck.replit.app'
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://sulbyvs.com'
   
   // Current date for lastModified
   const now = new Date()
@@ -24,42 +24,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/validation`,
+      url: `${baseUrl}/services`,
       lastModified: now,
       changeFrequency: 'weekly' as const,
-      priority: 0.95,
+      priority: 0.9,
     },
     {
-      url: `${baseUrl}/marketplace`,
+      url: `${baseUrl}/properties`,
       lastModified: now,
       changeFrequency: 'daily' as const,
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/investors/nda`,
+      url: `${baseUrl}/contact`,
       lastModified: now,
       changeFrequency: 'monthly' as const,
-      priority: 0.6,
+      priority: 0.8,
     },
     {
-      url: `${baseUrl}/admin/login`,
-      lastModified: now,
-      changeFrequency: 'yearly' as const,
-      priority: 0.3,
-    },
-  ]
-
-  // Language variations for key pages (i18n SEO)
-  const languages = ['en', 'pt', 'es', 'fr']
-  const languagePages = languages.flatMap(lang => [
-    {
-      url: `${baseUrl}/${lang}`,
+      url: `${baseUrl}/blog`,
       lastModified: now,
       changeFrequency: 'weekly' as const,
       priority: 0.8,
-    }
-  ])
+    },
+  ]
 
-  return [...staticPages, ...languagePages]
+  return staticPages
 }
 

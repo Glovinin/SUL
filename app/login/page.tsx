@@ -1,403 +1,237 @@
 "use client"
 
-import { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { User, Mail, Lock, ArrowRight, CheckCircle2, ArrowLeft } from 'lucide-react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { useRouter } from 'next/navigation'
-import Image from 'next/image'
+import { Button } from '../../components/ui/button'
+import { GridPattern } from '../../components/ui/grid-pattern'
+import { Footer } from '../../components/Footer'
+import { 
+  EnvelopeSimple,
+  Lock,
+  Eye,
+  EyeSlash,
+  ArrowRight,
+  User
+} from '@phosphor-icons/react'
 import Link from 'next/link'
-
-// Interface para breakpoints inteligentes
-interface ScreenBreakpoints {
-  isXs: boolean      // < 380px - muito pequeno (mobile portrait pequeno)
-  isSm: boolean      // 380px - 640px - pequeno (mobile portrait)
-  isMd: boolean      // 640px - 768px - médio (mobile landscape)
-  isTablet: boolean  // 768px - 1024px - tablet (iPad Mini/Pro)
-  isLg: boolean      // 1024px - 1280px - desktop pequeno
-  isXl: boolean      // > 1280px - desktop grande
-  
-  // Altura
-  isShortHeight: boolean    // < 600px
-  isMediumHeight: boolean   // 600px - 800px
-  isTallHeight: boolean     // > 800px
-  
-  // Combinações úteis
-  isMobile: boolean         // < 768px
-  isDesktop: boolean        // >= 1024px
-  
-  width: number
-  height: number
-}
-
-// Hook de breakpoints inteligentes
-const useSmartBreakpoints = (): ScreenBreakpoints => {
-  const [viewport, setViewport] = useState({ width: 0, height: 0 })
-
-  useEffect(() => {
-    const updateViewport = () => {
-      setViewport({
-        width: window.innerWidth,
-        height: window.innerHeight
-      })
-    }
-
-    // Set initial viewport
-    updateViewport()
-
-    // Listen for resize events
-    window.addEventListener('resize', updateViewport)
-    window.addEventListener('orientationchange', updateViewport)
-
-    return () => {
-      window.removeEventListener('resize', updateViewport)
-      window.removeEventListener('orientationchange', updateViewport)
-    }
-  }, [])
-
-  const breakpoints = {
-    isXs: viewport.width < 380,
-    isSm: viewport.width >= 380 && viewport.width < 640,
-    isMd: viewport.width >= 640 && viewport.width < 768,
-    isTablet: viewport.width >= 768 && viewport.width < 1024,
-    isLg: viewport.width >= 1024 && viewport.width < 1280,
-    isXl: viewport.width >= 1280,
-    
-    isShortHeight: viewport.height < 600,
-    isMediumHeight: viewport.height >= 600 && viewport.height < 800,
-    isTallHeight: viewport.height >= 800,
-    
-    isMobile: viewport.width < 768,
-    isDesktop: viewport.width >= 1024,
-    
-    width: viewport.width,
-    height: viewport.height
-  }
-
-  return breakpoints
-}
-
-// Função para obter layout inteligente baseado nos breakpoints
-const getSmartLayout = (breakpoints: ScreenBreakpoints) => {
-  const { isXs, isSm, isMd, isTablet, isLg, isXl, isShortHeight, isMediumHeight, isTallHeight, isMobile, isDesktop } = breakpoints
-
-  // Layout para telas muito pequenas (< 380px)
-  if (isXs) {
-    return {
-      containerPadding: 'px-3',
-      maxWidth: 'max-w-sm',
-      sectionPadding: 'py-12',
-      titleSize: 'text-2xl',
-      subtitleSize: 'text-base',
-      cardPadding: 'p-4',
-      buttonHeight: 'h-11',
-      inputHeight: 'h-10'
-    }
-  }
-
-  // Layout para mobile pequeno (380px - 640px)
-  if (isSm) {
-    return {
-      containerPadding: 'px-4',
-      maxWidth: 'max-w-md',
-      sectionPadding: 'py-16',
-      titleSize: 'text-3xl',
-      subtitleSize: 'text-lg',
-      cardPadding: 'p-5',
-      buttonHeight: 'h-12',
-      inputHeight: 'h-11'
-    }
-  }
-
-  // Layout para mobile landscape (640px - 768px)
-  if (isMd) {
-    return {
-      containerPadding: 'px-6',
-      maxWidth: 'max-w-lg',
-      sectionPadding: 'py-20',
-      titleSize: 'text-3xl',
-      subtitleSize: 'text-lg',
-      cardPadding: 'p-6',
-      buttonHeight: 'h-12',
-      inputHeight: 'h-11'
-    }
-  }
-
-  // Layout para tablets (768px - 1024px)
-  if (isTablet) {
-    return {
-      containerPadding: 'px-8',
-      maxWidth: 'max-w-xl',
-      sectionPadding: 'py-24',
-      titleSize: 'text-4xl',
-      subtitleSize: 'text-xl',
-      cardPadding: 'p-7',
-      buttonHeight: 'h-12',
-      inputHeight: 'h-12'
-    }
-  }
-
-  // Layout para desktop pequeno (1024px - 1280px)
-  if (isLg) {
-    return {
-      containerPadding: 'px-8',
-      maxWidth: 'max-w-2xl',
-      sectionPadding: 'py-24',
-      titleSize: 'text-4xl',
-      subtitleSize: 'text-xl',
-      cardPadding: 'p-8',
-      buttonHeight: 'h-12',
-      inputHeight: 'h-12'
-    }
-  }
-
-  // Layout para desktop grande (> 1280px)
-  return {
-    containerPadding: 'px-4 sm:px-6 lg:px-8',
-    maxWidth: 'max-w-2xl',
-    sectionPadding: 'py-24',
-    titleSize: 'text-5xl',
-    subtitleSize: 'text-xl',
-    cardPadding: 'p-8',
-    buttonHeight: 'h-12',
-    inputHeight: 'h-12'
-  }
-}
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [mounted, setMounted] = useState(false)
-  
-  // Hook de breakpoints inteligentes 
-  const breakpoints = useSmartBreakpoints()
+  const [showPassword, setShowPassword] = useState(false)
+  const [rememberMe, setRememberMe] = useState(false)
 
-  // After mounting, we can safely show the UI that depends on the theme
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    setIsLoading(true)
-    
-    // Simular login
-    setTimeout(() => {
-      setIsLoading(false)
-      alert('Funcionalidade em desenvolvimento')
-    }, 1000)
+    // Login logic here
   }
-
-  // Evita flash de conteúdo não hidratado
-  if (!mounted) {
-    return null
-  }
-
-  // Obter layout inteligente baseado nos breakpoints
-  const {
-    containerPadding,
-    maxWidth,
-    sectionPadding,
-    titleSize,
-    subtitleSize,
-    cardPadding,
-    buttonHeight,
-    inputHeight
-  } = getSmartLayout(breakpoints)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white to-slate-50 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.02] mix-blend-overlay" />
-      <div className={`absolute top-0 left-0 ${breakpoints.isMobile ? 'w-48 h-48' : 'w-96 h-96'} bg-[#5FA037]/10 rounded-full blur-[120px] opacity-40`} />
-      <div className={`absolute bottom-0 right-0 ${breakpoints.isMobile ? 'w-48 h-48' : 'w-96 h-96'} bg-[#044050]/10 rounded-full blur-[120px] opacity-40`} />
-      
-      {/* Header com Botão Voltar - Mobile e Desktop */}
-      <div className={`flex items-center justify-between relative z-10 ${
-        breakpoints.isMobile ? 'p-4' : 'p-6'
-      }`}>
-        {/* Botão Voltar */}
-        <Link 
-          href="/"
-          className={`flex items-center gap-2 text-[#044050] hover:text-[#5FA037] transition-all duration-300 group ${
-            breakpoints.isMobile ? '' : 'hover:gap-3'
-          }`}
+    <div className="min-h-screen bg-white flex items-center justify-center overflow-hidden">
+      {/* Background Pattern */}
+      <GridPattern
+        width={40}
+        height={40}
+        className="fill-black/[0.02] stroke-black/[0.02]"
+      />
+
+      {/* Back to Home Link */}
+      <Link 
+        href="/"
+        className="fixed top-8 left-8 text-[22px] md:text-[24px] font-semibold tracking-tight text-black hover:text-black/70 transition-colors z-50"
+      >
+        SUL
+      </Link>
+
+      {/* Login Container */}
+      <div className="relative z-10 w-full max-w-[440px] mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className={`${
-            breakpoints.isMobile ? 'w-10 h-10' : 'w-12 h-12'
-          } rounded-full bg-white/80 backdrop-blur-sm border border-gray-200 flex items-center justify-center group-hover:bg-white group-hover:border-[#5FA037]/30 transition-all duration-300`}>
-            <ArrowLeft className={`${breakpoints.isMobile ? 'w-5 h-5' : 'w-6 h-6'}`} />
-          </div>
-          {!breakpoints.isMobile && (
-            <span className="font-medium">Voltar</span>
-          )}
-        </Link>
-
-        {/* Logo GreenCheck - Apenas Mobile */}
-        {breakpoints.isMobile && (
-          <Link href="/" className="flex items-center gap-2">
-            <Image
-              src="/favicon.png"
-              alt="GreenCheck Logo"
-              width={32}
-              height={32}
-              className="transition-all duration-300"
-              priority
-            />
-            <span className="font-light text-[#044050] tracking-wide text-lg">
-              <span className="font-extralight">Green</span><span className="font-medium">Check®</span>
-            </span>
-          </Link>
-        )}
-
-        {/* Espaço para balanceamento */}
-        <div className={`${breakpoints.isMobile ? 'w-10 h-10' : 'w-12 h-12'}`}></div>
-      </div>
-      
-      <div className={`${maxWidth} mx-auto ${containerPadding} ${breakpoints.isMobile ? 'pt-0' : sectionPadding} relative`}>
-        <div className="max-w-md mx-auto">
-          <motion.div
+          {/* Header */}
+          <motion.div 
+            className="text-center mb-10"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`text-center ${breakpoints.isMobile ? 'mb-6' : 'mb-8'}`}
+            transition={{ duration: 0.7, delay: 0.1 }}
           >
-            {/* Logo apenas no desktop */}
-            {!breakpoints.isMobile && (
-              <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm border border-gray-100 p-3">
-                <Image
-                  src="/favicon.png"
-                  alt="GreenCheck Logo"
-                  width={48}
-                  height={48}
-                  className="object-contain"
-                  priority
-                />
-              </div>
-            )}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-black/5 flex items-center justify-center"
+            >
+              <User className="w-8 h-8 text-black/70" weight="duotone" />
+            </motion.div>
             
-            <h1 className={`${breakpoints.isMobile ? 'text-2xl' : 'text-3xl lg:text-4xl'} font-light text-[#044050] ${breakpoints.isMobile ? 'mb-2' : 'mb-3'} tracking-tight`}>
-              <span className="font-extralight">{breakpoints.isMobile ? 'Welcome' : 'Welcome'}</span>{' '}
-              <span className="font-normal">{breakpoints.isMobile ? 'back' : 'back'}</span>
+            <h1 className="text-[36px] md:text-[42px] font-semibold text-black mb-3 tracking-[-0.03em] leading-[1.1]">
+              Welcome Back
             </h1>
-            <p className={`${subtitleSize} text-gray-600 font-light`}>
-              {breakpoints.isMobile ? 'Sign in to your account' : 'Sign in to your account to continue'}
+            <p className="text-[16px] text-black/60 leading-[1.6]">
+              Sign in to access your account
             </p>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
+          {/* Login Form */}
+          <motion.form 
+            onSubmit={handleSubmit}
+            className="space-y-5"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
           >
-            <Card className={`backdrop-blur-sm ${cardPadding} ${breakpoints.isMobile ? 'rounded-2xl' : 'rounded-3xl'} shadow-sm border transition-all duration-500 group relative overflow-hidden bg-white border-gray-200`}>
-              <CardHeader>
-                <CardTitle className="text-[#044050] flex items-center gap-2 text-xl font-medium">
-                  <User className="w-5 h-5 text-[#5FA037]" />
-                  Login
-                </CardTitle>
-                <CardDescription className="text-gray-600 font-light">
-                  Enter your credentials
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="email" className="text-[#044050] font-medium text-sm">
-                      Email
-                    </Label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="your@email.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className={`pl-10 ${inputHeight} bg-white border-gray-200 text-[#044050] placeholder:text-gray-400 focus:border-[#5FA037] focus:ring-[#5FA037]/20 transition-all duration-300 rounded-xl`}
-                        required
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="password" className="text-[#044050] font-medium text-sm">
-                      Password
-                    </Label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                      <Input
-                        id="password"
-                        type="password"
-                        placeholder="••••••••"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className={`pl-10 ${inputHeight} bg-white border-gray-200 text-[#044050] placeholder:text-gray-400 focus:border-[#5FA037] focus:ring-[#5FA037]/20 transition-all duration-300 rounded-xl`}
-                        required
-                      />
-                    </div>
-                  </div>
+            {/* Email Field */}
+            <div>
+              <label className="block text-[14px] font-medium text-black/70 mb-2">
+                Email
+              </label>
+              <div className="relative">
+                <EnvelopeSimple 
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-black/40" 
+                  weight="duotone" 
+                />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  className="w-full bg-white border border-black/10 text-black placeholder-black/40 pl-12 pr-4 py-3.5 rounded-2xl focus:outline-none focus:border-black/30 focus:bg-black/[0.02] transition-all duration-200 text-[15px]"
+                  required
+                />
+              </div>
+            </div>
 
-                  <Button 
-                    type="submit" 
-                    className={`w-full ${buttonHeight} bg-[#5FA037] hover:bg-[#4d8c2d] text-white rounded-full transition-all duration-300 hover:scale-[1.02] font-medium tracking-wide shadow-sm hover:shadow-md active:scale-[0.98]`}
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      "Signing in..."
-                    ) : (
-                      <>
-                        Sign in
-                        <ArrowRight className="ml-2 w-4 h-4 transition-all duration-300 group-hover:translate-x-0.5" />
-                      </>
-                    )}
-                  </Button>
-                </form>
+            {/* Password Field */}
+            <div>
+              <label className="block text-[14px] font-medium text-black/70 mb-2">
+                Password
+              </label>
+              <div className="relative">
+                <Lock 
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-black/40" 
+                  weight="duotone" 
+                />
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                  className="w-full bg-white border border-black/10 text-black placeholder-black/40 pl-12 pr-12 py-3.5 rounded-2xl focus:outline-none focus:border-black/30 focus:bg-black/[0.02] transition-all duration-200 text-[15px]"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-black/40 hover:text-black/70 transition-colors"
+                >
+                  {showPassword ? (
+                    <EyeSlash className="w-5 h-5" weight="duotone" />
+                  ) : (
+                    <Eye className="w-5 h-5" weight="duotone" />
+                  )}
+                </button>
+              </div>
+            </div>
 
-                <div className="mt-6 pt-6 border-t border-gray-100">
-                  <div className="text-center space-y-2">
-                    <Button 
-                      variant="ghost" 
-                      className="text-[#5FA037] hover:text-[#4d8c2d] hover:bg-[#5FA037]/5 transition-all duration-300 font-medium"
-                    >
-                      Forgot password?
-                    </Button>
-                    <div className="text-sm text-gray-600 font-light">
-                      Don't have an account? {" "}
-                      <Button 
-                        variant="link" 
-                        className="text-[#5FA037] hover:text-[#4d8c2d] p-0 h-auto font-medium"
-                      >
-                        Create account
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Remember Me & Forgot Password */}
+            <div className="flex items-center justify-between">
+              <label className="flex items-center gap-2 cursor-pointer group">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="w-4 h-4 rounded border-black/20 text-black focus:ring-0 focus:ring-offset-0 cursor-pointer"
+                />
+                <span className="text-[14px] text-black/60 group-hover:text-black transition-colors">
+                  Remember me
+                </span>
+              </label>
+              <a 
+                href="#" 
+                className="text-[14px] text-black/60 hover:text-black transition-colors"
+              >
+                Forgot password?
+              </a>
+            </div>
+
+            {/* Submit Button */}
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Button 
+                type="submit"
+                className="w-full bg-black text-white hover:bg-black/90 border-0 px-6 py-3.5 rounded-full text-[15px] font-semibold transition-all duration-200 shadow-sm hover:shadow-md flex items-center justify-center gap-2"
+              >
+                Sign In
+                <ArrowRight className="w-4 h-4" weight="bold" />
+              </Button>
+            </motion.div>
+          </motion.form>
+
+          {/* Divider */}
+          <div className="relative my-8">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-black/10"></div>
+            </div>
+            <div className="relative flex justify-center text-[13px]">
+              <span className="bg-white px-4 text-black/40">or continue with</span>
+            </div>
+          </div>
+
+          {/* Social Login Buttons */}
+          <motion.div 
+            className="grid grid-cols-2 gap-3"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="flex items-center justify-center gap-2 px-4 py-3 bg-white border border-black/10 hover:border-black/20 hover:bg-black/[0.02] rounded-full text-[14px] font-medium text-black/70 transition-all duration-200"
+            >
+              <svg className="w-5 h-5" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+              </svg>
+              Google
+            </motion.button>
+
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="flex items-center justify-center gap-2 px-4 py-3 bg-white border border-black/10 hover:border-black/20 hover:bg-black/[0.02] rounded-full text-[14px] font-medium text-black/70 transition-all duration-200"
+            >
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z"/>
+              </svg>
+              Facebook
+            </motion.button>
           </motion.div>
 
-          {/* Demo Notice */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="mt-6"
+          {/* Sign Up Link */}
+          <motion.p 
+            className="text-center mt-8 text-[14px] text-black/60"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
           >
-            <Card className={`backdrop-blur-sm ${breakpoints.isMobile ? 'p-4' : 'p-5'} ${breakpoints.isMobile ? 'rounded-xl' : 'rounded-2xl'} shadow-sm border bg-[#5FA037]/5 border-[#5FA037]/20`}>
-              <CardContent className="p-0 text-center">
-                <p className={`${breakpoints.isXs ? 'text-xs' : 'text-sm'} text-[#044050] leading-relaxed font-light`}>
-                  🚧 This is a demo version. The complete authentication system 
-                  will be available soon.
-                </p>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
+            Don't have an account?{' '}
+            <a href="#" className="text-black font-medium hover:text-black/70 transition-colors">
+              Sign up
+            </a>
+          </motion.p>
+        </motion.div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   )
 }
+

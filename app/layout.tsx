@@ -3,113 +3,129 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
 import { Toaster } from '../components/ui/toaster'
-import { MobileNav } from '../components/mobile-nav'
 import InitialLoading from '../components/initial-loading'
 import { LoadingProvider } from '../contexts/loading-context'
 import MainContent from '../components/main-content'
 import { AudioController } from '../components/audio-controller'
+import FloatingContactButton from '../components/FloatingContactButton'
 
 const inter = Inter({ subsets: ['latin'] })
 
-// SEO Metadata otimizado para ranquear no Google - GreenCheck
+// SEO Metadata otimizado para SUL ESTATE - Real Estate Portugal
 export const metadata: Metadata = {
   title: {
-    default: 'GreenCheck - Automated ESG Certification with AI & Blockchain | 98.5% Accuracy',
-    template: '%s | GreenCheck - ESG Certification Platform'
+    default: 'SUL ESTATE - Boutique Real Estate & Investment Consultancy in Portugal',
+    template: '%s | SUL ESTATE - Premium Real Estate Portugal'
   },
-  description: 'Automated ESG certification platform with AI (98.5% accuracy), blockchain NFT certificates, and scientific validation. CSRD compliance in 21 days. Save 40% vs traditional methods. €8.5B market opportunity.',
+  description: 'Boutique real estate and investment consultancy in Portugal. Premium property sourcing, investment strategy, and project management for international investors. Lisbon, Azeitão, Algarve.',
   keywords: [
-    // Primary Keywords - High Volume
-    'ESG certification',
-    'automated ESG certification',
-    'ESG compliance software',
-    'CSRD compliance',
-    'corporate sustainability certification',
-    'carbon footprint certification',
-    'sustainability certification platform',
+    // Primary Keywords - Real Estate Portugal
+    'real estate Portugal',
+    'property investment Portugal',
+    'boutique real estate consultancy',
+    'premium real estate Portugal',
+    'property sourcing Portugal',
+    'real estate investment consultancy',
+    'property management Portugal',
     
-    // Technology Keywords - Differentiators
-    'AI ESG certification',
-    'blockchain ESG certificates',
-    'NFT sustainability certificates',
-    'automated carbon offset',
-    'ESG AI platform',
-    'scientific validation ESG',
+    // Location Keywords - High Volume
+    'real estate Lisbon',
+    'property investment Lisbon',
+    'real estate Algarve',
+    'property investment Algarve',
+    'real estate Azeitão',
+    'property investment Azeitão',
+    'Portuguese real estate',
+    'Portugal property market',
     
-    // Industry & Standards
-    'CSRD certification',
-    'EU Taxonomy compliance',
-    'GHG Protocol certification',
-    'ISO 14064 certification',
-    'carbon neutrality certification',
-    'Scope 1 2 3 emissions',
+    // Investment Keywords
+    'property investment strategy',
+    'real estate investment advisory',
+    'property portfolio management',
+    'real estate project management',
+    'property investment consultancy',
+    'real estate investment guidance',
+    'property investment planning',
     
-    // Solution Keywords
-    'ESG certification for SMEs',
-    'fast ESG certification',
-    'affordable ESG certification',
-    'ESG certification software',
-    'digital ESG certification',
-    'ESG audit automation',
+    // International Keywords
+    'international property investment',
+    'foreign investment Portugal',
+    'expat real estate Portugal',
+    'international property consultancy',
+    'European property investment',
+    'Portugal investment opportunities',
+    'real estate for foreigners',
     
-    // Market & Geography
-    'European ESG certification',
-    'ESG certification Portugal',
-    'ESG certification Europe',
-    'CSRD compliance 2025',
+    // Premium Keywords
+    'luxury real estate Portugal',
+    'premium property Portugal',
+    'high-end real estate',
+    'boutique property consultancy',
+    'exclusive real estate',
+    'premium property investment',
+    'luxury property management',
+    
+    // Service Keywords
+    'property sourcing service',
+    'real estate project oversight',
+    'property investment advisory',
+    'real estate network Portugal',
+    'property due diligence',
+    'real estate legal support',
+    'property financing assistance',
     
     // Long-tail Keywords
-    'how to get ESG certification',
-    'ESG certification cost',
-    'ESG certification requirements',
-    'ESG certificate blockchain',
-    'carbon offset marketplace'
+    'how to invest in Portugal real estate',
+    'best real estate investment Portugal',
+    'Portugal property investment guide',
+    'real estate investment opportunities Portugal',
+    'property investment consultancy Lisbon',
+    'premium real estate services Portugal'
   ].join(', '),
   authors: [
-    { name: 'GreenCheck Team', url: 'https://greencheck.replit.app/about' }
+    { name: 'Vincent Santos', url: 'https://sulbyvs.com/about' }
   ],
-  creator: 'GreenCheck',
-  publisher: 'GreenCheck',
+  creator: 'SUL ESTATE',
+  publisher: 'SUL ESTATE',
   formatDetection: {
     telephone: false,
     email: false,
     address: false
   },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://greencheck.replit.app'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://sulbyvs.com'),
   alternates: {
     canonical: '/',
     languages: {
       'en': '/en',
       'pt': '/pt',
-      'es': '/es',
       'fr': '/fr'
     }
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    alternateLocale: ['pt_PT', 'es_ES', 'fr_FR'],
-    url: 'https://greencheck.replit.app',
-    siteName: 'GreenCheck',
-    title: 'GreenCheck - Automated ESG Certification with AI & Blockchain',
-    description: 'Get your ESG certification in 21 days with 98.5% AI accuracy. Immutable blockchain certificates, scientific validation, and CSRD compliance. Save 40% vs traditional methods.',
+    alternateLocale: ['pt_PT', 'fr_FR'],
+    url: 'https://sulbyvs.com',
+    siteName: 'SUL ESTATE',
+    title: 'SUL ESTATE - Boutique Real Estate & Investment Consultancy in Portugal',
+    description: 'Premium real estate and investment consultancy in Portugal. Expert property sourcing, investment strategy, and project management for international investors. Lisbon, Azeitão, Algarve.',
     images: [
       {
-        url: '/socialbanner.jpg',
+        url: '/images/herobg.jpg',
         width: 1200,
         height: 630,
-        alt: 'GreenCheck - Automated ESG Certification Platform with AI and Blockchain',
+        alt: 'SUL ESTATE - Boutique Real Estate & Investment Consultancy in Portugal',
         type: 'image/jpeg'
       }
     ]
   },
   twitter: {
     card: 'summary_large_image',
-    site: '@GreenCheck',
-    creator: '@GreenCheck',
-    title: 'GreenCheck - Automated ESG Certification with AI & Blockchain',
-    description: 'ESG certification in 21 days with 98.5% AI accuracy. Blockchain certificates, scientific validation, CSRD compliance. Save 40%.',
-    images: ['/socialbanner.jpg']
+    site: '@SULESTATE',
+    creator: '@SULESTATE',
+    title: 'SUL ESTATE - Boutique Real Estate & Investment Consultancy in Portugal',
+    description: 'Premium real estate and investment consultancy in Portugal. Expert property sourcing, investment strategy, and project management for international investors.',
+    images: ['/images/herobg.jpg']
   },
   robots: {
     index: true,
@@ -128,8 +144,8 @@ export const metadata: Metadata = {
     // yandex: 'yandex_token',
     // bing: 'bing_token'
   },
-  category: 'technology',
-  classification: 'Business Software, Sustainability, ESG Compliance',
+  category: 'real estate',
+  classification: 'Real Estate, Property Investment, Business Services, Consultancy',
   viewport: {
     width: 'device-width',
     initialScale: 1,
@@ -146,7 +162,7 @@ export const metadata: Metadata = {
     ],
     shortcut: [{ url: '/favicon.png', type: 'image/png' }],
     apple: [{ url: '/favicon.png', type: 'image/png', sizes: '180x180' }],
-    other: [{ rel: 'mask-icon', url: '/favicon.png', color: '#059669' }]
+    other: [{ rel: 'mask-icon', url: '/favicon.png', color: '#2C5F7C' }]
   },
   manifest: '/manifest.json',
   other: {
@@ -168,9 +184,9 @@ export default function RootLayout({
   return (
     <html lang="pt" suppressHydrationWarning>
       <head>
-        <meta name="theme-color" content="#059669" />
-        <meta name="apple-mobile-web-app-title" content="GreenCheck" />
-        <meta name="application-name" content="GreenCheck" />
+        <meta name="theme-color" content="#2C5F7C" />
+        <meta name="apple-mobile-web-app-title" content="SUL ESTATE" />
+        <meta name="application-name" content="SUL ESTATE" />
         
         {/* Preload crítico para otimizar carregamento inicial */}
         <link rel="preload" href="/favicon.png" as="image" type="image/png" />
@@ -181,8 +197,8 @@ export default function RootLayout({
         <style dangerouslySetInnerHTML={{
           __html: `
             html, body {
-              background-color: #f8fafc !important;
-              background: linear-gradient(to bottom right, #f8fafc, #f1f5f9) !important;
+              background-color: #ffffff !important;
+              background: #ffffff !important;
             }
           `
         }} />
@@ -190,16 +206,16 @@ export default function RootLayout({
         {/* Links de favicon para máxima compatibilidade */}
         <link rel="icon" href="/favicon.png" type="image/png" />
         <link rel="apple-touch-icon" href="/favicon.png" />
-        <link rel="mask-icon" href="/favicon.png" color="#059669" />
+        <link rel="mask-icon" href="/favicon.png" color="#2C5F7C" />
         
         {/* Meta tags sociais adicionais para máxima compatibilidade */}
-        <meta property="og:image" content="/socialbanner.jpg" />
+        <meta property="og:image" content="/images/herobg.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:type" content="image/jpeg" />
-        <meta property="og:image:alt" content="GreenCheck - Automated ESG Certification" />
-        <meta name="twitter:image" content="/socialbanner.jpg" />
-        <meta name="twitter:image:alt" content="GreenCheck - Automated ESG Certification" />
+        <meta property="og:image:alt" content="SUL ESTATE - Boutique Real Estate & Investment Consultancy in Portugal" />
+        <meta name="twitter:image" content="/images/herobg.jpg" />
+        <meta name="twitter:image:alt" content="SUL ESTATE - Boutique Real Estate & Investment Consultancy in Portugal" />
         
         {/* Structured Data (JSON-LD) para Google Rich Snippets */}
         <script
@@ -207,83 +223,64 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               '@context': 'https://schema.org',
-              '@type': 'SoftwareApplication',
-              name: 'GreenCheck',
-              applicationCategory: 'BusinessApplication',
-              operatingSystem: 'Web',
-              offers: {
-                '@type': 'AggregateOffer',
-                priceCurrency: 'EUR',
-                lowPrice: '9.99',
-                highPrice: '2500',
-                offers: [
-                  {
-                    '@type': 'Offer',
-                    name: 'ESG Certificate for SMEs',
-                    price: '35',
-                    priceCurrency: 'EUR',
-                    description: 'Per tCO₂e - Automated ESG certification for small businesses'
-                  },
-                  {
-                    '@type': 'Offer',
-                    name: 'Individual Subscription',
-                    price: '9.99',
-                    priceCurrency: 'EUR',
-                    description: 'Monthly subscription for individuals'
-                  },
-                  {
-                    '@type': 'Offer',
-                    name: 'Enterprise Solution',
-                    price: '2500',
-                    priceCurrency: 'EUR',
-                    description: 'Monthly enterprise custom solutions'
-                  }
-                ]
+              '@type': 'RealEstateAgent',
+              name: 'SUL ESTATE',
+              alternateName: 'SUL by VS',
+              description: 'Boutique real estate and investment consultancy in Portugal. Premium property sourcing, investment strategy, and project management for international investors.',
+              url: 'https://sulbyvs.com',
+              image: 'https://sulbyvs.com/images/herobg.jpg',
+              address: {
+                '@type': 'PostalAddress',
+                addressCountry: 'PT',
+                addressRegion: 'Lisbon',
+                addressLocality: 'Lisbon'
               },
-              aggregateRating: {
-                '@type': 'AggregateRating',
-                ratingValue: '4.8',
-                ratingCount: '127',
-                bestRating: '5'
-              },
-              description: 'Automated ESG certification platform with AI (98.5% accuracy), blockchain NFT certificates, and scientific validation. CSRD compliance in 21 days.',
-              url: 'https://greencheck.replit.app',
-              image: 'https://greencheck.replit.app/socialbanner.jpg',
-              author: {
-                '@type': 'Organization',
-                name: 'GreenCheck',
-                url: 'https://greencheck.replit.app/about'
-              },
-              publisher: {
-                '@type': 'Organization',
-                name: 'GreenCheck',
-                logo: {
-                  '@type': 'ImageObject',
-                  url: 'https://greencheck.replit.app/favicon.png'
+              areaServed: [
+                {
+                  '@type': 'Place',
+                  name: 'Lisbon'
+                },
+                {
+                  '@type': 'Place',
+                  name: 'Azeitão'
+                },
+                {
+                  '@type': 'Place',
+                  name: 'Algarve'
                 }
-              },
-              featureList: [
-                'AI-powered ESG data extraction with 98.5% accuracy',
-                'Automated scientific validation via institutional APIs',
-                'Immutable blockchain NFT certificates on Polygon',
-                'CSRD compliance certification',
-                'Carbon offset marketplace integration',
-                'Real-time satellite monitoring',
-                'Multi-language support (8 European languages)',
-                '40% cost reduction vs traditional methods',
-                '4x faster processing (21 days vs 6 months)'
               ],
-              potentialAction: {
-                '@type': 'UseAction',
-                target: {
-                  '@type': 'EntryPoint',
-                  urlTemplate: 'https://greencheck.replit.app/validation',
-                  actionPlatform: [
-                    'http://schema.org/DesktopWebPlatform',
-                    'http://schema.org/MobileWebPlatform'
-                  ]
-                }
-              }
+              serviceType: [
+                'Real Estate Investment Advisory',
+                'Property Sourcing',
+                'Project Management',
+                'Investment Strategy',
+                'Property Portfolio Management'
+              ],
+              founder: {
+                '@type': 'Person',
+                name: 'Vincent Santos',
+                jobTitle: 'Founder & CEO'
+              },
+              foundingDate: '2024',
+              slogan: 'We invest, we curate, we orchestrate',
+              knowsAbout: [
+                'Real Estate Investment',
+                'Property Sourcing',
+                'Investment Strategy',
+                'Project Management',
+                'Portuguese Real Estate Market',
+                'International Property Investment',
+                'Property Portfolio Management'
+              ],
+              contactPoint: {
+                '@type': 'ContactPoint',
+                contactType: 'Customer Service',
+                email: 'hello@sulbyvs.com',
+                availableLanguage: ['English', 'Portuguese', 'French']
+              },
+              sameAs: [
+                'https://linkedin.com/company/sul-estate'
+              ]
             })
           }}
         />
@@ -295,39 +292,41 @@ export default function RootLayout({
             __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'Organization',
-              name: 'GreenCheck',
-              alternateName: 'GreenCheck ESG',
-              url: 'https://greencheck.replit.app',
-              logo: 'https://greencheck.replit.app/favicon.png',
-              description: 'Leading automated ESG certification platform combining AI, blockchain, and scientific validation for corporate sustainability compliance.',
+              name: 'SUL ESTATE',
+              alternateName: 'SUL by VS',
+              url: 'https://sulbyvs.com',
+              logo: 'https://sulbyvs.com/favicon.png',
+              description: 'Boutique real estate and investment consultancy in Portugal. Premium property sourcing, investment strategy, and project management for international investors.',
               address: {
                 '@type': 'PostalAddress',
                 addressCountry: 'PT',
-                addressRegion: 'Europe'
+                addressRegion: 'Lisbon',
+                addressLocality: 'Lisbon'
               },
               sameAs: [
-                'https://twitter.com/GreenCheck',
-                'https://linkedin.com/company/greencheck'
+                'https://linkedin.com/company/sul-estate'
               ],
               contactPoint: {
                 '@type': 'ContactPoint',
                 contactType: 'Customer Support',
-                availableLanguage: ['English', 'Portuguese', 'Spanish', 'French']
+                email: 'hello@sulbyvs.com',
+                availableLanguage: ['English', 'Portuguese', 'French']
               },
               founder: {
                 '@type': 'Person',
-                name: 'GreenCheck Team'
+                name: 'Vincent Santos',
+                jobTitle: 'Founder & CEO'
               },
               foundingDate: '2024',
-              slogan: 'Sustainability without complexity',
+              slogan: 'We invest, we curate, we orchestrate',
               knowsAbout: [
-                'ESG Certification',
-                'CSRD Compliance',
-                'Carbon Footprint Analysis',
-                'Blockchain Technology',
-                'Artificial Intelligence',
-                'Scientific Validation',
-                'Sustainability'
+                'Real Estate Investment',
+                'Property Sourcing',
+                'Investment Strategy',
+                'Project Management',
+                'Portuguese Real Estate Market',
+                'International Property Investment',
+                'Property Portfolio Management'
               ]
             })
           }}
@@ -340,52 +339,69 @@ export default function RootLayout({
             __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'Service',
-              name: 'Automated ESG Certification',
+              name: 'Real Estate Investment Consultancy',
               provider: {
                 '@type': 'Organization',
-                name: 'GreenCheck'
+                name: 'SUL ESTATE'
               },
-              serviceType: 'ESG Certification and Compliance',
-              areaServed: {
-                '@type': 'Place',
-                name: 'Europe'
-              },
+              serviceType: 'Real Estate Investment Advisory',
+              areaServed: [
+                {
+                  '@type': 'Place',
+                  name: 'Lisbon'
+                },
+                {
+                  '@type': 'Place',
+                  name: 'Azeitão'
+                },
+                {
+                  '@type': 'Place',
+                  name: 'Algarve'
+                }
+              ],
               hasOfferCatalog: {
                 '@type': 'OfferCatalog',
-                name: 'ESG Certification Services',
+                name: 'Real Estate Services',
                 itemListElement: [
                   {
                     '@type': 'Offer',
                     itemOffered: {
                       '@type': 'Service',
-                      name: 'CSRD Compliance Certification',
-                      description: 'Automated CSRD compliance certification for European SMEs'
+                      name: 'Investment Strategy & Advisory',
+                      description: 'Personalized strategy based on your goals, risk profile, and long-term vision'
                     }
                   },
                   {
                     '@type': 'Offer',
                     itemOffered: {
                       '@type': 'Service',
-                      name: 'Carbon Footprint Certification',
-                      description: 'AI-powered carbon footprint calculation and certification'
+                      name: 'Property Sourcing',
+                      description: 'Curated selection of premium properties matching your investment criteria'
                     }
                   },
                   {
                     '@type': 'Offer',
                     itemOffered: {
                       '@type': 'Service',
-                      name: 'Blockchain ESG Certificates',
-                      description: 'Immutable NFT certificates on Polygon blockchain'
+                      name: 'Project Oversight',
+                      description: 'End-to-end project management from acquisition to delivery'
+                    }
+                  },
+                  {
+                    '@type': 'Offer',
+                    itemOffered: {
+                      '@type': 'Service',
+                      name: 'Management & Optimization',
+                      description: 'Ongoing asset management to maximize returns and value'
                     }
                   }
                 ]
               },
-              additionalType: 'http://www.productontology.org/id/Certification',
+              additionalType: 'http://www.productontology.org/id/RealEstateAgent',
               offers: {
                 '@type': 'Offer',
                 availability: 'https://schema.org/InStock',
-                priceCurrency: 'EUR',
-                price: '35'
+                priceCurrency: 'EUR'
               }
             })
           }}
@@ -401,42 +417,42 @@ export default function RootLayout({
               mainEntity: [
                 {
                   '@type': 'Question',
-                  name: 'What is ESG certification?',
+                  name: 'What is SUL ESTATE?',
                   acceptedAnswer: {
                     '@type': 'Answer',
-                    text: 'ESG certification validates a company\'s Environmental, Social, and Governance practices. GreenCheck provides automated certification using AI with 98.5% accuracy, blockchain verification, and scientific validation in just 21 days.'
+                    text: 'SUL ESTATE is a boutique real estate and investment consultancy in Portugal, helping international investors secure, structure, and optimize refined property assets. We provide premium property sourcing, investment strategy, and project management services.'
                   }
                 },
                 {
                   '@type': 'Question',
-                  name: 'How much does ESG certification cost?',
+                  name: 'Where does SUL ESTATE operate?',
                   acceptedAnswer: {
                     '@type': 'Answer',
-                    text: 'GreenCheck offers ESG certification from €35 per tCO₂e for SMEs, representing 40% cost savings compared to traditional methods (€45-60/tCO₂e). Enterprise solutions start at €2,500/month.'
+                    text: 'SUL ESTATE operates in Lisbon, Azeitão, and Algarve, Portugal. We serve international investors looking for premium real estate opportunities in these key Portuguese locations.'
                   }
                 },
                 {
                   '@type': 'Question',
-                  name: 'How long does ESG certification take?',
+                  name: 'What services does SUL ESTATE offer?',
                   acceptedAnswer: {
                     '@type': 'Answer',
-                    text: 'GreenCheck provides ESG certification in 21 days, which is 4x faster than traditional methods (6-12 months). Our AI-powered platform automates document processing, validation, and certificate generation.'
+                    text: 'We offer investment strategy & advisory, property sourcing, project oversight, partners & network access, management & optimization, and co-investment opportunities. Our services cover the entire real estate investment journey.'
                   }
                 },
                 {
                   '@type': 'Question',
-                  name: 'What is CSRD compliance?',
+                  name: 'Who is Vincent Santos?',
                   acceptedAnswer: {
                     '@type': 'Answer',
-                    text: 'CSRD (Corporate Sustainability Reporting Directive) is EU legislation requiring 2.4 million European SMEs to report ESG data by 2025. GreenCheck automates CSRD compliance with AI validation and blockchain certificates.'
+                    text: 'Vincent Santos is the founder of SUL ESTATE, trained in International Business Law in France and specialized for almost ten years in real estate investment and project management. Being an investor himself, he brings precision, long-term vision, and refined understanding of value.'
                   }
                 },
                 {
                   '@type': 'Question',
-                  name: 'Are blockchain ESG certificates legally valid?',
+                  name: 'Why invest in Portugal real estate?',
                   acceptedAnswer: {
                     '@type': 'Answer',
-                    text: 'Yes. GreenCheck\'s blockchain NFT certificates on Polygon network are immutable, publicly verifiable, and backed by scientific validation from recognized institutions, making them legally valid for CSRD and EU Taxonomy compliance.'
+                    text: 'Portugal offers a rare equilibrium between lifestyle, stability, and opportunity. With exceptional quality of life, political and economic stability, and a growing international community, it has become one of Europe\'s most attractive real estate markets.'
                   }
                 }
               ]
@@ -445,10 +461,11 @@ export default function RootLayout({
         />
       </head>
       <body 
-        className={`${inter.className} overflow-x-hidden bg-gradient-to-br from-slate-50 to-gray-100`}
+        className={`${inter.className} overflow-x-hidden bg-white antialiased`}
         style={{ 
-          backgroundColor: '#f8fafc', // slate-50 como fallback
-          background: 'linear-gradient(to bottom right, #f8fafc, #f1f5f9)' // from-slate-50 to-gray-100
+          backgroundColor: '#ffffff',
+          background: '#ffffff',
+          fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif'
         }}
       >
         <LoadingProvider>
@@ -456,7 +473,7 @@ export default function RootLayout({
           <AudioController />
           <MainContent>
             {children}
-            <MobileNav />
+            <FloatingContactButton />
             <Toaster />
           </MainContent>
         </LoadingProvider>
