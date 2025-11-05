@@ -4,7 +4,6 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Button } from '../../components/ui/button'
 import { GridPattern } from '../../components/ui/grid-pattern'
-import { Footer } from '../../components/Footer'
 import { 
   EnvelopeSimple,
   Lock,
@@ -228,9 +227,6 @@ export default function LoginPage() {
           </motion.p>
         </motion.div>
       </div>
-
-      {/* Footer */}
-      <Footer />
     </div>
   )
 }

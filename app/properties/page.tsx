@@ -48,79 +48,176 @@ export default function PropertiesPage() {
       {/* Navigation */}
       <NavBar />
 
-      {/* Hero Section */}
-      <section className="relative pt-32 md:pt-40 pb-16 md:pb-20 bg-white">
+      {/* Hero Section - Ultra Premium */}
+      <section className="relative pt-28 md:pt-36 pb-20 md:pb-28 bg-gradient-to-b from-gray-50/50 via-white to-white overflow-hidden">
         <GridPattern
           width={40}
           height={40}
-          className="fill-black/[0.02] stroke-black/[0.02]"
+          className="fill-black/[0.015] stroke-black/[0.015]"
         />
+        
+        {/* Ambient Light Effect */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-radial from-black/[0.03] via-transparent to-transparent blur-3xl pointer-events-none"></div>
         
         <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="text-center mb-12 md:mb-16"
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center mb-16 md:mb-20"
           >
-            <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
-              <span className="text-[12px] font-medium text-black/60">Exclusive Collection</span>
-            </div>
+            {/* Badge Premium */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-black/[0.08] rounded-full mb-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)]"
+            >
+              <div className="w-1.5 h-1.5 rounded-full bg-black animate-pulse"></div>
+              <span className="text-[11px] font-semibold text-black/70 tracking-[0.08em] uppercase">Exclusive Collection</span>
+            </motion.div>
             
-            <h1 className="text-[40px] md:text-[64px] lg:text-[72px] font-semibold text-black mb-6 tracking-[-0.03em] leading-[1.1]">
+            {/* Título Principal - Hero */}
+            <h1 className="text-[48px] md:text-[76px] lg:text-[88px] font-semibold text-black mb-7 tracking-[-0.04em] leading-[0.95] bg-clip-text">
               Premium Properties
             </h1>
             
-            <p className="text-[17px] md:text-[21px] font-normal text-black/60 max-w-[800px] mx-auto leading-[1.6]">
-              Discover our curated selection of exceptional properties across Portugal's most desirable locations
+            {/* Subtítulo Elegante */}
+            <p className="text-[16px] md:text-[20px] lg:text-[22px] font-normal text-black/70 max-w-[750px] mx-auto leading-[1.65] tracking-[-0.01em]">
+              Discover our curated selection of exceptional properties<br className="hidden md:block" />
+              across Portugal's most desirable locations
             </p>
           </motion.div>
 
-          {/* Filters */}
+          {/* Filtros Premium - Estilo Apple */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-wrap items-center justify-center gap-3 md:gap-4 mb-12"
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="max-w-[900px] mx-auto"
           >
-            <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 border border-black/10 shadow-sm">
-              <FunnelSimple className="w-4 h-4 text-black/50" weight="bold" />
-              <span className="text-[13px] font-medium text-black/70">Filters:</span>
+            {/* Container de Filtros - Glass Morphism */}
+            <div className="bg-white backdrop-blur-xl border border-black/[0.12] rounded-[20px] shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-6 md:p-8">
+              <div className="flex flex-col gap-6">
+                {/* Header dos Filtros */}
+                <div className="flex items-center justify-between pb-4 border-b border-black/[0.08]">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-black/[0.06] flex items-center justify-center">
+                      <FunnelSimple className="w-5 h-5 text-black/70" weight="duotone" />
+                    </div>
+                    <div>
+                      <h3 className="text-[16px] font-semibold text-black tracking-[-0.01em]">Filter Properties</h3>
+                      <p className="text-[13px] text-black/55 mt-0.5">
+                        {filteredProperties.length} {filteredProperties.length === 1 ? 'property' : 'properties'} found
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {/* Clear Filters - Apenas se houver filtros ativos */}
+                  <AnimatePresence>
+                    {(selectedType !== 'All' || selectedLocation !== 'All') && (
+                      <motion.button
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        onClick={() => {
+                          setSelectedType('All')
+                          setSelectedLocation('All')
+                        }}
+                        className="text-[13px] font-medium text-black/50 hover:text-black transition-colors duration-200 flex items-center gap-1.5 px-3 py-1.5 rounded-full hover:bg-black/[0.04]"
+                      >
+                        <span>Clear all</span>
+                        <span className="text-[10px]">✕</span>
+                      </motion.button>
+                    )}
+                  </AnimatePresence>
+                </div>
+                
+                {/* Grid de Filtros */}
+                <div className="grid md:grid-cols-2 gap-4">
+                  {/* Type Filter */}
+                  <div className="space-y-2.5">
+                    <label className="text-[12px] font-semibold text-black/50 tracking-[0.05em] uppercase px-1">
+                      Property Type
+                    </label>
+                    <div className="relative">
+                      <select
+                        value={selectedType}
+                        onChange={(e) => setSelectedType(e.target.value)}
+                        className="w-full bg-white border-2 border-black/[0.08] rounded-[14px] px-4 py-3.5 text-[15px] font-medium text-black hover:border-black/[0.15] focus:border-black/[0.25] transition-all cursor-pointer focus:outline-none appearance-none shadow-sm hover:shadow-md"
+                      >
+                        {types.map(type => (
+                          <option key={type} value={type}>{type}</option>
+                        ))}
+                      </select>
+                      <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                        <svg className="w-4 h-4 text-black/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Location Filter */}
+                  <div className="space-y-2.5">
+                    <label className="text-[12px] font-semibold text-black/50 tracking-[0.05em] uppercase px-1">
+                      Location
+                    </label>
+                    <div className="relative">
+                      <select
+                        value={selectedLocation}
+                        onChange={(e) => setSelectedLocation(e.target.value)}
+                        className="w-full bg-white border-2 border-black/[0.08] rounded-[14px] px-4 py-3.5 text-[15px] font-medium text-black hover:border-black/[0.15] focus:border-black/[0.25] transition-all cursor-pointer focus:outline-none appearance-none shadow-sm hover:shadow-md"
+                      >
+                        {locations.map(location => (
+                          <option key={location} value={location}>{location}</option>
+                        ))}
+                      </select>
+                      <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                        <svg className="w-4 h-4 text-black/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Active Filters Tags */}
+                <AnimatePresence>
+                  {(selectedType !== 'All' || selectedLocation !== 'All') && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="flex flex-wrap gap-2 pt-2"
+                    >
+                      {selectedType !== 'All' && (
+                        <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-black/[0.04] rounded-full">
+                          <span className="text-[12px] font-medium text-black/70">{selectedType}</span>
+                          <button
+                            onClick={() => setSelectedType('All')}
+                            className="text-black/50 hover:text-black transition-colors"
+                          >
+                            <span className="text-[10px]">✕</span>
+                          </button>
+                        </div>
+                      )}
+                      {selectedLocation !== 'All' && (
+                        <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-black/[0.04] rounded-full">
+                          <span className="text-[12px] font-medium text-black/70">{selectedLocation}</span>
+                          <button
+                            onClick={() => setSelectedLocation('All')}
+                            className="text-black/50 hover:text-black transition-colors"
+                          >
+                            <span className="text-[10px]">✕</span>
+                          </button>
+                        </div>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
-            
-            {/* Type Filter */}
-            <select
-              value={selectedType}
-              onChange={(e) => setSelectedType(e.target.value)}
-              className="bg-white rounded-full px-5 py-2 border border-black/10 shadow-sm text-[13px] font-medium text-black/70 hover:border-black/20 transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-black/10"
-            >
-              {types.map(type => (
-                <option key={type} value={type}>{type}</option>
-              ))}
-            </select>
-
-            {/* Location Filter */}
-            <select
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
-              className="bg-white rounded-full px-5 py-2 border border-black/10 shadow-sm text-[13px] font-medium text-black/70 hover:border-black/20 transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-black/10"
-            >
-              {locations.map(location => (
-                <option key={location} value={location}>{location}</option>
-              ))}
-            </select>
-
-            {(selectedType !== 'All' || selectedLocation !== 'All') && (
-              <button
-                onClick={() => {
-                  setSelectedType('All')
-                  setSelectedLocation('All')
-                }}
-                className="text-[13px] font-medium text-black/50 hover:text-black underline"
-              >
-                Clear filters
-              </button>
-            )}
           </motion.div>
         </div>
       </section>
