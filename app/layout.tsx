@@ -8,6 +8,7 @@ import { LoadingProvider } from '../contexts/loading-context'
 import MainContent from '../components/main-content'
 import { AudioController } from '../components/audio-controller'
 import FloatingContactButton from '../components/FloatingContactButton'
+import { MotionOptimizer } from '../components/MotionOptimizer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -469,6 +470,7 @@ export default function RootLayout({
         }}
       >
         <LoadingProvider>
+          <MotionOptimizer />
           <InitialLoading />
           <AudioController />
           <MainContent>

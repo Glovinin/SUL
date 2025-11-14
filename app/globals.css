@@ -398,7 +398,14 @@
   /* Garantir que imagens não causem overflow */
   img {
     max-width: 100% !important;
-    height: auto !important;
+  }
+  
+  /* Imagens dentro de containers com aspect ratio devem preencher completamente */
+  .relative[class*="aspect-"] img,
+  [class*="aspect-"] img {
+    height: 100% !important;
+    width: 100% !important;
+    object-fit: cover !important;
   }
 
   /* Texto que pode causar overflow */
@@ -507,6 +514,55 @@
     }
   50% {
     transform: translate(-50%, -50%) scale(0.9);
+    }
+  }
+}
+
+/* Mobile Animation Optimizations - Fix flickering on iOS */
+@layer utilities {
+  /* Force GPU acceleration for all motion components on mobile */
+  @media (max-width: 768px) {
+    [data-framer-motion-component] {
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      -webkit-perspective: 1000;
+      perspective: 1000;
+      will-change: transform, opacity;
+    }
+  }
+
+  /* Optimize Framer Motion animations on iOS */
+  @supports (-webkit-touch-callout: none) {
+    /* iOS Safari specific optimizations */
+    [data-framer-motion-component] {
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      will-change: transform, opacity;
+    }
+
+    /* Reduce animation complexity on mobile */
+    @media (max-width: 768px) {
+      [data-framer-motion-component] {
+        transform-style: preserve-3d;
+        -webkit-transform-style: preserve-3d;
+      }
+    }
+  }
+
+  /* Prevent flickering during scroll on mobile */
+  @media (max-width: 768px) {
+    body {
+      -webkit-overflow-scrolling: touch;
+      overflow-scrolling: touch;
+    }
+
+    /* Optimize viewport-based animations */
+    section {
+      contain: layout style paint;
     }
   }
 }

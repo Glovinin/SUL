@@ -18,7 +18,7 @@ export default function FloatingContactButton() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Hello! I\'m SUL ESTATE\'s AI assistant. How can I help you with your real estate investment in Portugal today?',
+      text: 'Hello! How can I help you with your real estate investment in Portugal today?',
       sender: 'ai',
       timestamp: new Date()
     }
@@ -233,7 +233,7 @@ export default function FloatingContactButton() {
               ? "w-16 h-16" 
               : "w-20 h-20"
           )}
-          aria-label="Open AI Chat"
+          aria-label="Open chat"
         >
           <div className="relative w-full h-full flex items-center justify-center">
             <MessageCircle 
@@ -360,7 +360,7 @@ export default function FloatingContactButton() {
                 <MessageCircle className="w-5 h-5 text-black" />
               </div>
               <div>
-                <h3 className="text-[15px] font-semibold text-black tracking-tight">SUL ESTATE AI</h3>
+                <h3 className="text-[15px] font-semibold text-black tracking-tight">SUL ESTATE</h3>
                 <p className="text-[12px] text-black/50 font-normal">Real Estate Consultant</p>
               </div>
             </div>
@@ -489,7 +489,7 @@ export default function FloatingContactButton() {
             </div>
             
             <p className="text-[11px] text-black/40 text-center mt-4 font-normal">
-              Powered by Gemini AI • SUL by VS
+              SUL by VS
             </p>
           </div>
         </motion.div>

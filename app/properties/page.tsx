@@ -15,11 +15,12 @@ import {
 } from '@phosphor-icons/react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { properties } from '../../data/properties'
 import { useSearchParams } from 'next/navigation'
+import { useProperties } from '../../lib/properties-client'
 
 export default function PropertiesPage() {
   const searchParams = useSearchParams()
+  const { properties, loading } = useProperties()
   const [selectedType, setSelectedType] = useState<string>('All')
   const [selectedLocation, setSelectedLocation] = useState<string>('All')
   
@@ -40,8 +41,8 @@ export default function PropertiesPage() {
   })
 
   // Get unique types and locations
-  const types = ['All', ...Array.from(new Set(properties.map(p => p.type)))]
-  const locations = ['All', ...Array.from(new Set(properties.map(p => p.location)))]
+  const types = ['All', ...Array.from(new Set(properties.map(p => p.type).filter(Boolean)))]
+  const locations = ['All', ...Array.from(new Set(properties.map(p => p.location).filter(Boolean)))]
 
   return (
     <div className="min-h-screen bg-white">
@@ -225,9 +226,15 @@ export default function PropertiesPage() {
       {/* Properties Grid */}
       <section className="relative py-12 md:py-20 bg-white">
         <div className="max-w-[1300px] mx-auto px-6 md:px-12">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10 px-0 py-4 md:p-8 lg:p-12 overflow-visible">
-            {filteredProperties.map((property, index) => (
-              <Link key={property.id} href={`/properties/${property.id}`}>
+          {loading ? (
+            <div className="text-center py-20">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto mb-4"></div>
+              <p className="text-black/60">Loading properties...</p>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10 px-0 py-4 md:p-8 lg:p-12 overflow-visible">
+              {filteredProperties.map((property, index) => (
+                <Link key={property.id} href={`/properties/${property.id}`}>
                 <motion.div
                   initial={{ opacity: 0, scale: 0.96 }}
                   whileInView={{ opacity: 1, scale: 1 }}
@@ -242,9 +249,12 @@ export default function PropertiesPage() {
                     src={property.image}
                     alt={property.title}
                     fill
-                    className="object-cover transition-transform duration-800 ease-out group-hover:scale-[1.08]"
+                    className="object-cover object-center transition-transform duration-800 ease-out group-hover:scale-[1.08]"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    style={{ objectFit: 'cover' }}
+                    style={{ 
+                      objectFit: 'cover',
+                      objectPosition: 'center'
+                    }}
                   />
                   
                   {/* Tag Badge - Ultra Premium */}
@@ -310,9 +320,10 @@ export default function PropertiesPage() {
               </motion.div>
               </Link>
             ))}
-          </div>
+            </div>
+          )}
 
-          {filteredProperties.length === 0 && (
+          {!loading && filteredProperties.length === 0 && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

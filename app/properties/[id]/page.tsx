@@ -23,15 +23,25 @@ import {
   ChartLine
 } from '@phosphor-icons/react'
 import Link from 'next/link'
-import { properties } from '../../../data/properties'
 import { useParams } from 'next/navigation'
+import { useProperty } from '../../../lib/properties-client'
 
 export default function PropertyDetailPage() {
   const params = useParams()
   const propertyId = params.id as string
   const [selectedImage, setSelectedImage] = useState(0)
-  
-  const property = properties.find(p => p.id === propertyId)
+  const { property, loading } = useProperty(propertyId)
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto mb-4"></div>
+          <p className="text-black/60">Loading property...</p>
+        </div>
+      </div>
+    )
+  }
 
   if (!property) {
     return (
@@ -83,7 +93,7 @@ export default function PropertyDetailPage() {
           >
             <motion.img 
               key={selectedImage}
-              src={property.gallery[selectedImage] || property.image} 
+              src={(property.gallery && property.gallery[selectedImage]) || property.image || '/images/placeholder.jpg'} 
               alt={property.title}
               initial={{ opacity: 0, scale: 1.05 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -102,7 +112,7 @@ export default function PropertyDetailPage() {
               transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
               className="absolute top-6 left-6 px-4 py-2 bg-white/95 backdrop-blur-sm rounded-full shadow-sm"
             >
-              <span className="text-[13px] font-semibold text-black">{property.status}</span>
+              <span className="text-[13px] font-semibold text-black">{property.status || 'Available'}</span>
             </motion.div>
 
             {/* Action Buttons */}
@@ -145,7 +155,7 @@ export default function PropertyDetailPage() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="grid grid-cols-4 gap-3 md:gap-4"
           >
-            {property.gallery.slice(0, 4).map((img, index) => (
+            {(property.gallery || [property.image]).slice(0, 4).map((img, index) => (
               <motion.button
                 key={index}
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -282,7 +292,7 @@ export default function PropertyDetailPage() {
               >
                 <h2 className="text-[28px] font-semibold text-black mb-6 tracking-[-0.02em]">Key Features</h2>
                 <div className="grid md:grid-cols-2 gap-3">
-                  {property.features.map((feature, index) => (
+                  {(property.features || []).map((feature, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <CheckCircle className="w-5 h-5 text-black/40 flex-shrink-0 mt-0.5" weight="fill" />
                       <span className="text-[16px] text-black/70 leading-[1.6]">{feature}</span>
@@ -300,7 +310,7 @@ export default function PropertyDetailPage() {
               >
                 <h2 className="text-[28px] font-semibold text-black mb-6 tracking-[-0.02em]">Building Amenities</h2>
                 <div className="grid md:grid-cols-2 gap-3">
-                  {property.amenities.map((amenity, index) => (
+                  {(property.amenities || []).map((amenity, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <CheckCircle className="w-5 h-5 text-black/40 flex-shrink-0 mt-0.5" weight="fill" />
                       <span className="text-[16px] text-black/70 leading-[1.6]">{amenity}</span>

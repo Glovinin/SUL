@@ -7,10 +7,10 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { 
   List,
-  X,
   CaretDown,
   UserCircle
 } from '@phosphor-icons/react'
+import { MobileMenu } from './MobileMenu'
 
 interface NavBarProps {
   /**
@@ -92,7 +92,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className={`text-[20px] md:text-[22px] font-semibold tracking-[-0.02em] transition-colors duration-300 ${
+              className={`text-[24px] md:text-[28px] font-semibold tracking-[-0.02em] transition-colors duration-300 ${
                 useTransparentStyle 
                   ? 'text-white' 
                   : 'text-black hover:text-black/60'
@@ -108,7 +108,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
               href="/" 
               className="relative group"
             >
-              <span className={`text-[13px] font-normal tracking-[-0.01em] transition-all duration-300 ${
+              <span className={`text-[14px] md:text-[15px] font-normal tracking-[-0.01em] transition-all duration-300 ${
                 useTransparentStyle
                   ? isActiveLink('/') 
                     ? 'text-white' 
@@ -133,7 +133,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
               href="/services" 
               className="relative group"
             >
-              <span className={`text-[13px] font-normal tracking-[-0.01em] transition-all duration-300 ${
+              <span className={`text-[14px] md:text-[15px] font-normal tracking-[-0.01em] transition-all duration-300 ${
                 useTransparentStyle
                   ? isActiveLink('/services')
                     ? 'text-white'
@@ -155,10 +155,35 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
               )}
             </Link>
             <Link 
+              href="/portugal" 
+              className="relative group"
+            >
+              <span className={`text-[14px] md:text-[15px] font-normal tracking-[-0.01em] transition-all duration-300 ${
+                useTransparentStyle
+                  ? isActiveLink('/portugal')
+                    ? 'text-white'
+                    : 'text-white/70 hover:text-white'
+                  : isActiveLink('/portugal')
+                    ? 'text-black'
+                    : 'text-black/60 hover:text-black'
+              }`}>
+                About Portugal
+              </span>
+              {isActiveLink('/portugal') && (
+                <motion.div
+                  layoutId="activeIndicator"
+                  className={`absolute -bottom-1 left-0 right-0 h-[1.5px] ${
+                    useTransparentStyle ? 'bg-white' : 'bg-black'
+                  }`}
+                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                />
+              )}
+            </Link>
+            <Link 
               href="/about" 
               className="relative group"
             >
-              <span className={`text-[13px] font-normal tracking-[-0.01em] transition-all duration-300 ${
+              <span className={`text-[14px] md:text-[15px] font-normal tracking-[-0.01em] transition-all duration-300 ${
                 useTransparentStyle
                   ? isActiveLink('/about')
                     ? 'text-white'
@@ -183,7 +208,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
               href="/properties" 
               className="relative group"
             >
-              <span className={`text-[13px] font-normal tracking-[-0.01em] transition-all duration-300 ${
+              <span className={`text-[14px] md:text-[15px] font-normal tracking-[-0.01em] transition-all duration-300 ${
                 useTransparentStyle
                   ? isActiveLink('/properties')
                     ? 'text-white'
@@ -208,7 +233,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
               href="/blog" 
               className="relative group"
             >
-              <span className={`text-[13px] font-normal tracking-[-0.01em] transition-all duration-300 ${
+              <span className={`text-[14px] md:text-[15px] font-normal tracking-[-0.01em] transition-all duration-300 ${
                 useTransparentStyle
                   ? isActiveLink('/blog')
                     ? 'text-white'
@@ -350,203 +375,20 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
                 : 'text-black/60 hover:text-black'
             }`}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
           >
-            {isMenuOpen ? <X size={18} weight="regular" /> : <List size={18} weight="regular" />}
+            <List size={20} weight="regular" />
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className={`md:hidden border-t overflow-hidden backdrop-blur-2xl ${
-              useTransparentStyle
-                ? 'border-white/10 bg-black/40'
-                : 'border-black/5 bg-white/95'
-            }`}
-          >
-            <div className="px-6 py-6 space-y-1">
-              <Link 
-                href="/" 
-                className={`block text-[15px] font-normal tracking-[-0.01em] transition-colors duration-200 py-2.5 ${
-                  useTransparentStyle
-                    ? isActiveLink('/')
-                      ? 'text-white'
-                      : 'text-white/70 hover:text-white'
-                    : isActiveLink('/')
-                      ? 'text-black'
-                      : 'text-black/60 hover:text-black'
-                }`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Home
-              </Link>
-              <Link 
-                href="/services" 
-                className={`block text-[15px] font-normal tracking-[-0.01em] transition-colors duration-200 py-2.5 ${
-                  useTransparentStyle
-                    ? isActiveLink('/services')
-                      ? 'text-white'
-                      : 'text-white/70 hover:text-white'
-                    : isActiveLink('/services')
-                      ? 'text-black'
-                      : 'text-black/60 hover:text-black'
-                }`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Services
-              </Link>
-              <Link 
-                href="/about" 
-                className={`block text-[15px] font-normal tracking-[-0.01em] transition-colors duration-200 py-2.5 ${
-                  useTransparentStyle
-                    ? isActiveLink('/about')
-                      ? 'text-white'
-                      : 'text-white/70 hover:text-white'
-                    : isActiveLink('/about')
-                      ? 'text-black'
-                      : 'text-black/60 hover:text-black'
-                }`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                About
-              </Link>
-              <Link 
-                href="/properties" 
-                className={`block text-[15px] font-normal tracking-[-0.01em] transition-colors duration-200 py-2.5 ${
-                  useTransparentStyle
-                    ? isActiveLink('/properties')
-                      ? 'text-white'
-                      : 'text-white/70 hover:text-white'
-                    : isActiveLink('/properties')
-                      ? 'text-black'
-                      : 'text-black/60 hover:text-black'
-                }`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Collection
-              </Link>
-              <Link 
-                href="/blog" 
-                className={`block text-[15px] font-normal tracking-[-0.01em] transition-colors duration-200 py-2.5 ${
-                  useTransparentStyle
-                    ? isActiveLink('/blog')
-                      ? 'text-white'
-                      : 'text-white/70 hover:text-white'
-                    : isActiveLink('/blog')
-                      ? 'text-black'
-                      : 'text-black/60 hover:text-black'
-                }`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Blog
-              </Link>
-              
-              {/* Language Switcher Mobile */}
-              <div className={`pt-4 mt-4 border-t ${useTransparentStyle ? 'border-white/10' : 'border-black/5'}`}>
-                <div className={`text-[11px] font-normal mb-2 px-2 tracking-[-0.01em] ${
-                  useTransparentStyle ? 'text-white/50' : 'text-black/40'
-                }`}>
-                  Language
-                </div>
-                <div className="space-y-1">
-                  <button 
-                    onClick={() => setCurrentLang('EN')}
-                    className={`block w-full text-left text-[14px] font-normal tracking-[-0.01em] transition-colors duration-200 py-2 px-2 rounded-lg ${
-                      currentLang === 'EN' 
-                        ? useTransparentStyle
-                          ? 'bg-white/10 text-white'
-                          : 'bg-black/5 text-black'
-                        : useTransparentStyle
-                          ? 'text-white/70 hover:bg-white/10'
-                          : 'text-black/60 hover:bg-black/5'
-                    }`}
-                  >
-                    🇬🇧 English
-                  </button>
-                  <button 
-                    onClick={() => setCurrentLang('FR')}
-                    className={`block w-full text-left text-[14px] font-normal tracking-[-0.01em] transition-colors duration-200 py-2 px-2 rounded-lg ${
-                      currentLang === 'FR' 
-                        ? useTransparentStyle
-                          ? 'bg-white/10 text-white'
-                          : 'bg-black/5 text-black'
-                        : useTransparentStyle
-                          ? 'text-white/70 hover:bg-white/10'
-                          : 'text-black/60 hover:bg-black/5'
-                    }`}
-                  >
-                    🇫🇷 Français
-                  </button>
-                  <button 
-                    onClick={() => setCurrentLang('PT')}
-                    className={`block w-full text-left text-[14px] font-normal tracking-[-0.01em] transition-colors duration-200 py-2 px-2 rounded-lg ${
-                      currentLang === 'PT' 
-                        ? useTransparentStyle
-                          ? 'bg-white/10 text-white'
-                          : 'bg-black/5 text-black'
-                        : useTransparentStyle
-                          ? 'text-white/70 hover:bg-white/10'
-                          : 'text-black/60 hover:bg-black/5'
-                    }`}
-                  >
-                    🇵🇹 Português
-                  </button>
-                </div>
-              </div>
-              
-              {/* Mobile Action Buttons */}
-              <div className="pt-4 mt-4 space-y-2">
-                <Link href="/login" className="block" onClick={() => setIsMenuOpen(false)}>
-                  {useTransparentStyle ? (
-                    <Button 
-                      variant="ghost"
-                      className="w-full bg-white/10 backdrop-blur-md text-white hover:bg-white/15 border-0 hover:border-0 focus:border-0 focus-visible:border-0 active:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none px-6 py-2.5 rounded-full text-[13px] font-normal tracking-[-0.01em] transition-all duration-200 flex items-center justify-center gap-2"
-                      style={{ outline: 'none' }}
-                    >
-                      <UserCircle className="w-4 h-4" weight="regular" />
-                      Sign In
-                    </Button>
-                  ) : (
-                    <Button 
-                      variant="ghost"
-                      className="w-full bg-black/5 text-black hover:bg-black/10 border-0 hover:border-0 focus:border-0 focus-visible:border-0 active:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none px-6 py-2.5 rounded-full text-[13px] font-normal tracking-[-0.01em] transition-all duration-200 flex items-center justify-center gap-2"
-                      style={{ border: 'none', outline: 'none' }}
-                    >
-                      <UserCircle className="w-4 h-4" weight="regular" />
-                      Sign In
-                    </Button>
-                  )}
-                </Link>
-                <Link href="/contact" className="block" onClick={() => setIsMenuOpen(false)}>
-                  {useTransparentStyle ? (
-                    <Button 
-                      variant="ghost"
-                      className="w-full bg-white/10 backdrop-blur-md text-white hover:bg-white/15 border-0 hover:border-0 focus:border-0 focus-visible:border-0 active:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none px-6 py-2.5 rounded-full text-[13px] font-normal tracking-[-0.01em] transition-all duration-200"
-                      style={{ outline: 'none' }}
-                    >
-                      Get In Touch
-                    </Button>
-                  ) : (
-                    <Button 
-                      variant="ghost"
-                      className="w-full bg-black text-white hover:bg-black/90 border-0 hover:border-0 focus:border-0 focus-visible:border-0 active:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none px-6 py-2.5 rounded-full text-[13px] font-normal tracking-[-0.01em] transition-all duration-200"
-                      style={{ border: 'none', outline: 'none' }}
-                    >
-                      Get In Touch
-                    </Button>
-                  )}
-                </Link>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Mobile Menu Full Screen Component */}
+      <MobileMenu 
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        currentLang={currentLang}
+        setCurrentLang={setCurrentLang}
+      />
     </motion.nav>
   )
 }

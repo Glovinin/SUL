@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 import { Button } from '../components/ui/button'
 import { NumberTicker } from '../components/ui/number-ticker'
@@ -9,6 +9,7 @@ import { NavBar } from '../components/navbar'
 import { Footer } from '../components/Footer'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useFeaturedProperties } from '../lib/properties-client'
 import { 
   ArrowRight,
   Buildings,
@@ -59,75 +60,7 @@ const services = [
   }
 ]
 
-// Featured projects with detailed info
-const featuredProjects = [
-  {
-    id: 1,
-    title: 'Belém Heritage Apartment',
-    location: 'Lisbon',
-    price: '€1,250,000',
-    beds: 4,
-    baths: 3,
-    sqft: '2,650',
-    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=1000&fit=crop&q=80',
-    tag: 'Featured'
-  },
-  {
-    id: 2,
-    title: 'Ericeira Seaside Villa',
-    location: 'Ericeira',
-    price: '€2,800,000',
-    beds: 5,
-    baths: 4,
-    sqft: '3,200',
-    image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&h=1000&fit=crop&q=80',
-    tag: 'New'
-  },
-  {
-    id: 3,
-    title: 'Comporta Beach Estate',
-    location: 'Comporta',
-    price: '€4,500,000',
-    beds: 6,
-    baths: 5,
-    sqft: '4,800',
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=1000&fit=crop&q=80',
-    tag: 'Luxury'
-  },
-  {
-    id: 4,
-    title: 'Algarve Cliffside Residence',
-    location: 'Algarve',
-    price: '€3,200,000',
-    beds: 5,
-    baths: 4,
-    sqft: '3,650',
-    image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=1000&fit=crop&q=80',
-    tag: 'Premium'
-  },
-  {
-    id: 5,
-    title: 'Lisbon Penthouse',
-    location: 'Lisbon',
-    price: '€1,800,000',
-    beds: 3,
-    baths: 3,
-    sqft: '2,200',
-    image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&h=1000&fit=crop&q=80',
-    tag: 'Featured'
-  },
-  {
-    id: 6,
-    title: 'Douro Valley Retreat',
-    location: 'Douro',
-    price: '€1,950,000',
-    beds: 4,
-    baths: 3,
-    sqft: '2,850',
-    image: 'https://images.unsplash.com/photo-1600585154084-4e5fe7c39198?w=800&h=1000&fit=crop&q=80',
-    tag: 'New'
-  }
-]
+// Featured projects will be loaded from Firebase
 
 // Blog posts
 const blogPosts = [
@@ -168,6 +101,31 @@ const blogPosts = [
 
 export default function Home() {
   const router = useRouter()
+  const [isMobile, setIsMobile] = useState(false)
+  const { featuredProperties, loading: propertiesLoading } = useFeaturedProperties()
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // Optimized animation props for mobile
+  const getAnimationProps = (delay = 0) => ({
+    transition: {
+      duration: isMobile ? 0.4 : 0.8,
+      delay: isMobile ? delay * 0.5 : delay,
+      ease: (isMobile ? [0.25, 0.1, 0.25, 1] : [0.22, 1, 0.36, 1]) as [number, number, number, number]
+    },
+    viewport: {
+      once: true,
+      margin: isMobile ? '0px' : '-50px',
+      amount: isMobile ? 0.2 : undefined
+    }
+  })
   const [propertyType, setPropertyType] = useState('')
   const [location, setLocation] = useState('')
   const [priceRange, setPriceRange] = useState('')
@@ -238,19 +196,6 @@ export default function Home() {
         {/* Hero Content - Apple-Inspired Typography */}
         <div className="relative z-10 w-full max-w-[1300px] mx-auto px-6 md:px-12 pt-32 pb-20">
           <div className="text-center mb-16">
-            {/* Badge - Premium Shimmer Design */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="mb-10"
-            >
-              <span className="group relative inline-flex items-center px-5 py-2 bg-white/10 backdrop-blur-md rounded-full text-[12px] font-medium text-white/90 border border-white/20 hover:border-white/30 transition-all duration-300 overflow-hidden">
-                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1500"></span>
-                <span className="relative">Boutique Real Estate Advisory</span>
-              </span>
-            </motion.div>
-
             {/* Main Heading - Premium Text Reveal */}
             <motion.h1
               initial={{ opacity: 0 }}
@@ -264,16 +209,7 @@ export default function Home() {
                 transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 className="inline-block"
               >
-                Live beautifully.
-              </motion.span>
-              <br />
-              <motion.span
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="inline-block"
-              >
-                Invest wisely.
+                Boutique Real Estate & Investment Consultancy in Portugal
               </motion.span>
             </motion.h1>
 
@@ -281,10 +217,20 @@ export default function Home() {
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[19px] md:text-[22px] font-normal text-white/85 mb-10 leading-[1.6] max-w-[760px] mx-auto"
+              transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[19px] md:text-[22px] font-normal text-white/85 mb-6 leading-[1.6] max-w-[760px] mx-auto"
             >
-              We assist international clients in finding and shaping their ideal home or investment in Portugal, from strategic sourcing to complete project management.
+              We assist international clients finding their ideal home or investment.
+            </motion.p>
+
+            {/* New SUL Description */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[17px] md:text-[19px] font-normal text-white/80 mb-10 leading-[1.7] max-w-[800px] mx-auto"
+            >
+              SUL is an independent boutique real estate advisory, offering bespoke guidance in property acquisition, development, and management across Portugal. We assist international clients in finding and shaping their ideal home or investment — from strategic sourcing to full project coordination and long-term value enhancement.
             </motion.p>
 
             {/* Modern Filter/Quick Search - Integrated with Action */}
@@ -388,65 +334,6 @@ export default function Home() {
             </motion.div>
           </div>
 
-          {/* Insight Cards - Premium Glassmorphism with Glow - Apple Style */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 lg:gap-8 max-w-[1120px] lg:max-w-[1280px] mx-auto relative z-[5]">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative bg-white/10 backdrop-blur-xl rounded-[24px] p-6 md:p-7 lg:p-8 border border-white/20 hover:bg-white/[0.12] hover:border-white/30 hover:shadow-[0_0_40px_rgba(255,255,255,0.1)] transition-all duration-500 cursor-default z-[1] hover:z-[20]"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[24px]"></div>
-              <div className="flex flex-col relative z-10">
-                <div className="text-[38px] md:text-[44px] lg:text-[48px] font-semibold text-white mb-2 tracking-tight">
-                  <NumberTicker value={15} startValue={0} className="text-white" />+
-                </div>
-                <div className="text-[14px] md:text-[15px] font-medium text-white/95 mb-2">Years of Experience</div>
-                <div className="text-[13px] md:text-[14px] font-normal text-white/65 leading-relaxed">
-                  Trusted expertise in Portugal's premium real estate market
-                </div>
-              </div>
-              <div className="absolute top-6 right-6 w-2.5 h-2.5 rounded-full bg-white/20 opacity-0 group-hover:opacity-100 group-hover:shadow-[0_0_15px_rgba(255,255,255,0.5)] transition-all duration-500"></div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative bg-white/10 backdrop-blur-xl rounded-[24px] p-6 md:p-7 lg:p-8 border border-white/20 hover:bg-white/[0.12] hover:border-white/30 hover:shadow-[0_0_40px_rgba(255,255,255,0.1)] transition-all duration-500 cursor-default z-[1] hover:z-[20]"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[24px]"></div>
-              <div className="flex flex-col relative z-10">
-                <div className="text-[38px] md:text-[44px] lg:text-[48px] font-semibold text-white mb-2 tracking-tight">
-                  €<NumberTicker value={500} startValue={0} className="text-white" />M+
-                </div>
-                <div className="text-[14px] md:text-[15px] font-medium text-white/95 mb-2">Portfolio Value</div>
-                <div className="text-[13px] md:text-[14px] font-normal text-white/65 leading-relaxed">
-                  Successfully managed properties across Portugal's finest locations
-                </div>
-              </div>
-              <div className="absolute top-6 right-6 w-2.5 h-2.5 rounded-full bg-white/20 opacity-0 group-hover:opacity-100 group-hover:shadow-[0_0_15px_rgba(255,255,255,0.5)] transition-all duration-500"></div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 1.1, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative bg-white/10 backdrop-blur-xl rounded-[24px] p-6 md:p-7 lg:p-8 border border-white/20 hover:bg-white/[0.12] hover:border-white/30 hover:shadow-[0_0_40px_rgba(255,255,255,0.1)] transition-all duration-500 cursor-default z-[1] hover:z-[20]"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[24px]"></div>
-              <div className="flex flex-col relative z-10">
-                <div className="text-[38px] md:text-[44px] lg:text-[48px] font-semibold text-white mb-2 tracking-tight">
-                  <NumberTicker value={98} startValue={0} className="text-white" />%
-                </div>
-                <div className="text-[14px] md:text-[15px] font-medium text-white/95 mb-2">Client Satisfaction</div>
-                <div className="text-[13px] md:text-[14px] font-normal text-white/65 leading-relaxed">
-                  Exceptional service that exceeds expectations every time
-                </div>
-              </div>
-              <div className="absolute top-6 right-6 w-2.5 h-2.5 rounded-full bg-white/20 opacity-0 group-hover:opacity-100 group-hover:shadow-[0_0_15px_rgba(255,255,255,0.5)] transition-all duration-500"></div>
-            </motion.div>
-          </div>
         </div>
 
         {/* Scroll Indicator - Premium */}
@@ -473,132 +360,6 @@ export default function Home() {
       {/* Divider - Smooth Transition */}
       <div className="border-t border-black/[0.03] bg-white"></div>
 
-      {/* Why Portugal Section - Premium Apple Style */}
-      <section id="why-portugal" className="relative py-32 md:py-40 bg-white overflow-visible">
-        {/* Static Grid Background */}
-        <GridPattern
-          width={40}
-          height={40}
-          className="fill-black/[0.03] stroke-black/[0.03]"
-        />
-        
-        <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible">
-          {/* Header Section - Ultra Clean */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="text-center mb-20"
-          >
-            {/* Badge Premium */}
-            <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
-              <span className="text-[12px] font-medium text-black/60">Why Portugal</span>
-            </div>
-
-            {/* Main Title - Apple Style */}
-            <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[40px] md:text-[56px] font-semibold text-black mb-8 tracking-[-0.02em] leading-[1.1] max-w-[900px] mx-auto"
-            >
-              A rare equilibrium between lifestyle, stability and opportunity
-            </motion.h2>
-
-            {/* Subtitle - Elegant */}
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[17px] md:text-[21px] font-normal text-black/60 max-w-[760px] mx-auto leading-[1.6]"
-            >
-              Portugal offers a unique blend of quality living, architectural heritage, and strategic investment potential
-            </motion.p>
-          </motion.div>
-
-          {/* Key Benefits Grid */}
-          <div className="relative z-10 grid md:grid-cols-3 gap-6 md:gap-8 lg:gap-10 mb-16 overflow-visible px-0 py-4 md:p-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative bg-white rounded-3xl p-8 text-center cursor-pointer shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 border border-black/[0.06] hover:border-black/[0.1] hover:-translate-y-1"
-            >
-              <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-black/5 group-hover:bg-black/10 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
-                <Bank className="w-8 h-8 text-black/70 group-hover:text-black transition-colors duration-300" weight="duotone" />
-              </div>
-              <h3 className="text-[20px] font-semibold text-black mb-3 tracking-tight group-hover:text-black/80 transition-colors duration-300">
-                Stability & Safety
-              </h3>
-              <p className="text-[15px] font-normal text-black/60 leading-[1.6]">
-                Political and economic stability combined with one of the world's safest environments
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative bg-white rounded-3xl p-8 text-center cursor-pointer shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 border border-black/[0.06] hover:border-black/[0.1] hover:-translate-y-1"
-            >
-              <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-black/5 group-hover:bg-black/10 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
-                <Sparkle className="w-8 h-8 text-black/70 group-hover:text-black transition-colors duration-300" weight="duotone" />
-              </div>
-              <h3 className="text-[20px] font-semibold text-black mb-3 tracking-tight group-hover:text-black/80 transition-colors duration-300">
-                Quality of Life
-              </h3>
-              <p className="text-[15px] font-normal text-black/60 leading-[1.6]">
-                Exceptional climate, rich culture, and a lifestyle that balances tradition with modernity
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative bg-white rounded-3xl p-8 text-center cursor-pointer shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 border border-black/[0.06] hover:border-black/[0.1] hover:-translate-y-1"
-            >
-              <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-black/5 group-hover:bg-black/10 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
-                <PaintBrush className="w-8 h-8 text-black/70 group-hover:text-black transition-colors duration-300" weight="duotone" />
-              </div>
-              <h3 className="text-[20px] font-semibold text-black mb-3 tracking-tight group-hover:text-black/80 transition-colors duration-300">
-                Architecture & Design
-              </h3>
-              <p className="text-[15px] font-normal text-black/60 leading-[1.6]">
-                From historic heritage to contemporary design, Portugal offers timeless aesthetic value
-              </p>
-            </motion.div>
-          </div>
-
-          {/* Visual Keywords */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-wrap items-center justify-center gap-3 mt-12"
-          >
-            {['Stability', 'Safety', 'Architecture', 'Lifestyle', 'Quality of Life', 'Design', 'Culture'].map((keyword, index) => (
-              <span 
-                key={index}
-                className="px-5 py-2.5 bg-black/5 hover:bg-black/8 rounded-full text-[13px] font-medium text-black/70 transition-all duration-200"
-              >
-                {keyword}
-              </span>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Divider */}
-      <div className="border-t border-black/[0.03]"></div>
-
       {/* Featured Projects Section - Modern Apple Grid */}
       <section id="projects" className="py-32 md:py-40 bg-white overflow-visible">
         <div className="max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible pb-8">
@@ -606,9 +367,9 @@ export default function Home() {
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            {...getAnimationProps()}
             className="flex flex-col lg:flex-row items-start lg:items-end justify-between mb-16 gap-8"
+            style={{ willChange: 'transform, opacity' }}
           >
             <div className="max-w-[700px]">
               {/* Badge */}
@@ -620,9 +381,9 @@ export default function Home() {
               <motion.h2 
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                {...getAnimationProps(0.2)}
                 className="text-[40px] md:text-[52px] font-semibold text-black mb-6 tracking-[-0.02em] leading-[1.1]"
+                style={{ willChange: 'transform, opacity' }}
               >
                 Find homes that perfectly match your lifestyle
               </motion.h2>
@@ -631,32 +392,77 @@ export default function Home() {
               <motion.p 
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="text-[17px] md:text-[19px] font-normal text-black/60 leading-[1.6]"
+                {...getAnimationProps(0.3)}
+                className="text-[17px] md:text-[19px] font-normal text-black/60 leading-[1.6] mb-8"
+                style={{ willChange: 'transform, opacity' }}
               >
                 Curated collection of premium properties across Portugal's most desirable locations
               </motion.p>
-            </div>
-            <Link href="/properties">
-              <Button 
-                className="bg-black text-white hover:bg-black/90 border-0 px-6 py-3 rounded-full text-[14px] font-medium transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2"
+
+              {/* Find your property with us button */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                {...getAnimationProps(0.4)}
+                style={{ willChange: 'transform, opacity' }}
               >
-                View all
-                <ArrowRight className="w-4 h-4" weight="bold" />
-              </Button>
-            </Link>
+                <Button 
+                  onClick={() => router.push('/properties')}
+                  className="bg-black text-white hover:bg-black/90 border-0 px-6 py-3 rounded-full text-[14px] font-medium transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2 inline-flex"
+                >
+                  Find your property with us
+                  <ArrowRight className="w-4 h-4" weight="bold" />
+                </Button>
+              </motion.div>
+            </div>
+            <div className="flex flex-col gap-4 items-end lg:items-end">
+              <Link href="/properties?featured=true">
+                <Button 
+                  className="bg-black text-white hover:bg-black/90 border-0 px-6 py-3 rounded-full text-[14px] font-medium transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2"
+                >
+                  Success Stories
+                  <ArrowRight className="w-4 h-4" weight="bold" />
+                </Button>
+              </Link>
+              <Link href="/properties">
+                <Button 
+                  className="bg-black text-white hover:bg-black/90 border-0 px-6 py-3 rounded-full text-[14px] font-medium transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2"
+                >
+                  Properties For Sale
+                  <ArrowRight className="w-4 h-4" weight="bold" />
+                </Button>
+              </Link>
+            </div>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10 px-0 py-4 md:p-8 lg:p-12 overflow-visible">
-            {featuredProjects.map((project, index) => (
-              <Link key={project.id} href={`/properties/${project.id === 1 ? 'belem-heritage-apartment' : project.id === 2 ? 'ericeira-seaside-villa' : project.id === 3 ? 'comporta-beach-estate' : project.id === 4 ? 'algarve-cliffside-residence' : project.id === 5 ? 'lisbon-penthouse' : 'douro-valley-retreat'}`}>
+            {propertiesLoading ? (
+              <div className="col-span-full text-center py-20">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto mb-4"></div>
+                <p className="text-black/60">Loading properties...</p>
+              </div>
+            ) : featuredProperties.length === 0 ? (
+              <div className="col-span-full text-center py-20">
+                <p className="text-black/60">No properties available yet.</p>
+              </div>
+            ) : (
+              featuredProperties.map((project, index) => (
+              <Link key={project.id} href={`/properties/${project.id}`}>
                 <motion.div
                   initial={{ opacity: 0, scale: 0.96 }}
                   whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
+                  viewport={{
+                    once: true,
+                    margin: isMobile ? '0px' : '-50px',
+                    amount: isMobile ? 0.2 : undefined
+                  }}
+                  transition={{
+                    duration: isMobile ? 0.4 : 0.6,
+                    delay: isMobile ? index * 0.02 : index * 0.05,
+                    ease: isMobile ? [0.25, 0.1, 0.25, 1] : [0.22, 1, 0.36, 1]
+                  }}
                   className="group cursor-pointer z-[1] hover:z-[10] hover:-translate-y-1 transition-all duration-300"
+                  style={{ willChange: 'transform, opacity' }}
                 >
                 {/* Property Image Container - Premium Apple Style */}
                 <div className="relative aspect-[4/5] md:aspect-[16/11] lg:aspect-[4/5] overflow-hidden mb-7 rounded-[24px] shadow-sm group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 ease-out bg-gray-100">
@@ -664,8 +470,13 @@ export default function Home() {
                   <img 
                     src={project.image} 
                     alt={project.title}
-                    className="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-800 ease-out group-hover:scale-[1.08]"
-                    style={{ objectFit: 'cover' }}
+                    className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-800 ease-out group-hover:scale-[1.08]"
+                    style={{ 
+                      objectFit: 'cover',
+                      objectPosition: 'center',
+                      minWidth: '100%',
+                      minHeight: '100%'
+                    }}
                   />
                   
                   {/* Tag Badge - Ultra Premium */}
@@ -730,7 +541,8 @@ export default function Home() {
                 </div>
               </motion.div>
               </Link>
-            ))}
+            ))
+            )}
           </div>
         </div>
       </section>
@@ -816,6 +628,34 @@ export default function Home() {
                   With deep local knowledge and international perspective, we guide discerning clients through every stage of their real estate journey.
                 </motion.p>
               </div>
+
+              {/* Stats Section - Moved from Hero */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                className="grid grid-cols-3 gap-4 md:gap-6 mt-12 pt-12 border-t border-black/10"
+              >
+                <div className="text-center">
+                  <div className="text-[32px] md:text-[40px] font-semibold text-black mb-1 tracking-tight">
+                    <NumberTicker value={15} startValue={0} className="text-black" />+
+                  </div>
+                  <div className="text-[12px] md:text-[13px] font-medium text-black/60">Years</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-[32px] md:text-[40px] font-semibold text-black mb-1 tracking-tight">
+                    €<NumberTicker value={500} startValue={0} className="text-black" />M+
+                  </div>
+                  <div className="text-[12px] md:text-[13px] font-medium text-black/60">Portfolio</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-[32px] md:text-[40px] font-semibold text-black mb-1 tracking-tight">
+                    <NumberTicker value={98} startValue={0} className="text-black" />%
+                  </div>
+                  <div className="text-[12px] md:text-[13px] font-medium text-black/60">Satisfaction</div>
+                </div>
+              </motion.div>
             </motion.div>
           </div>
         </div>
@@ -1426,16 +1266,26 @@ export default function Home() {
           <p className="text-[17px] md:text-[21px] font-normal text-white/80 mb-12 max-w-[640px] mx-auto leading-[1.5]">
             Share your vision — we'll curate a personalized selection for you.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
             <Button 
+              onClick={() => router.push('/properties')}
               className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 min-w-[200px] shadow-sm hover:shadow-md"
             >
               Start your search
             </Button>
             <Button 
+              onClick={() => window.open('https://calendly.com/jules-portugal/45min?month=2025-11', '_blank')}
               className="bg-white/10 text-white hover:bg-white/20 border border-white/20 hover:border-white/30 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 min-w-[200px]"
             >
-              Book a Call
+              Book a Free Call
+            </Button>
+          </div>
+          <div className="pt-8 border-t border-white/10">
+            <Button 
+              onClick={() => router.push('/contact?action=sell')}
+              className="bg-transparent text-white hover:bg-white/10 border border-white/30 hover:border-white/40 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200"
+            >
+              SELL WITH US — Tell us about your property
             </Button>
           </div>
         </motion.div>
