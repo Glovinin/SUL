@@ -1,12 +1,21 @@
 "use client"
 
-import { motion, MotionProps } from 'framer-motion'
-import { ReactNode, useMemo } from 'react'
+import { motion, Variant, Transition, MotionStyle } from 'framer-motion'
+import { ReactNode, useMemo, CSSProperties } from 'react'
 import { useMobileOptimizedAnimation } from '../lib/useMobileOptimizedAnimation'
 
-interface OptimizedMotionProps extends MotionProps {
+interface OptimizedMotionProps {
   children: ReactNode
   className?: string
+  initial?: boolean | Variant | any
+  whileInView?: Variant | any
+  viewport?: {
+    once?: boolean
+    margin?: string
+    amount?: number | 'some' | 'all'
+  }
+  transition?: Transition
+  style?: MotionStyle
 }
 
 /**
@@ -20,7 +29,7 @@ export function OptimizedMotion({
   whileInView,
   viewport,
   transition,
-  ...props 
+  style
 }: OptimizedMotionProps) {
   const { isMobile, isIOS, getAnimationProps, gpuAccelerated } = useMobileOptimizedAnimation()
   const animProps = getAnimationProps()
@@ -80,14 +89,12 @@ export function OptimizedMotion({
       transition={optimizedTransition}
       className={`${gpuAccelerated} ${className}`}
       style={{
-        ...props.style,
-        // Force GPU acceleration
+        ...style,
         backfaceVisibility: 'hidden',
         perspective: 1000,
         WebkitBackfaceVisibility: 'hidden',
         WebkitPerspective: 1000,
-      }}
-      {...props}
+      } as any}
     >
       {children}
     </motion.div>
