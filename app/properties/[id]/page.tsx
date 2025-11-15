@@ -63,24 +63,27 @@ export default function PropertyDetailPage() {
       {/* Navigation */}
       <NavBar />
 
-      {/* Back Button */}
-      <div className="fixed top-24 left-6 md:left-12 z-40">
-        <Link href="/properties">
-          <motion.button
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-md rounded-full shadow-md hover:shadow-lg transition-all duration-200 border border-black/5"
-          >
-            <ArrowLeft className="w-4 h-4 text-black/70" weight="bold" />
-            <span className="text-[13px] font-medium text-black/70">Back</span>
-          </motion.button>
-        </Link>
-      </div>
-
       {/* Hero Gallery */}
-      <section className="relative pt-24 md:pt-28 pb-12 md:pb-16 bg-white overflow-hidden">
+      <section className="relative pt-20 md:pt-24 pb-12 md:pb-16 bg-white overflow-hidden">
         <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+          {/* Back Button - Above Gallery */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-6 md:mb-8"
+          >
+            <Link href="/properties">
+              <motion.button
+                whileHover={{ scale: 1.02, x: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className="flex items-center gap-2 px-4 py-2.5 bg-white rounded-full shadow-sm hover:shadow-md transition-all duration-200 border border-black/10 hover:border-black/20 group"
+              >
+                <ArrowLeft className="w-4 h-4 text-black/70 group-hover:text-black transition-colors" weight="bold" />
+                <span className="text-[14px] font-medium text-black/70 group-hover:text-black transition-colors">Back to Collection</span>
+              </motion.button>
+            </Link>
+          </motion.div>
           {/* Main Image */}
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
@@ -89,7 +92,7 @@ export default function PropertyDetailPage() {
               duration: 1, 
               ease: [0.16, 1, 0.3, 1]
             }}
-            className="relative aspect-[16/9] md:aspect-[21/9] rounded-[24px] md:rounded-[32px] overflow-hidden mb-4 md:mb-6 group"
+            className="relative aspect-[16/10] md:aspect-[21/10] lg:aspect-[21/9] rounded-[20px] md:rounded-[28px] overflow-hidden mb-5 md:mb-6 group"
           >
             <motion.img 
               key={selectedImage}
@@ -110,13 +113,13 @@ export default function PropertyDetailPage() {
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute top-6 left-6 px-4 py-2 bg-white/95 backdrop-blur-sm rounded-full shadow-sm"
+              className="absolute top-5 left-5 md:top-6 md:left-6 px-3.5 py-1.5 md:px-4 md:py-2 bg-white/95 backdrop-blur-md rounded-full shadow-md border border-white/50"
             >
-              <span className="text-[13px] font-semibold text-black">{property.status || 'Available'}</span>
+              <span className="text-[12px] md:text-[13px] font-semibold text-black">{property.status || 'Available'}</span>
             </motion.div>
 
             {/* Action Buttons */}
-            <div className="absolute top-6 right-6 flex items-center gap-3">
+            <div className="absolute top-5 right-5 md:top-6 md:right-6 flex items-center gap-2.5 md:gap-3">
               <motion.button
                 initial={{ opacity: 0, scale: 0.5, y: -10 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -125,11 +128,11 @@ export default function PropertyDetailPage() {
                   delay: 0.5,
                   ease: [0.16, 1, 0.3, 1]
                 }}
-                whileHover={{ scale: 1.1, transition: { duration: 0.2 } }}
+                whileHover={{ scale: 1.08, transition: { duration: 0.2 } }}
                 whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
-                className="w-10 h-10 rounded-full bg-white/95 backdrop-blur-sm flex items-center justify-center hover:bg-white transition-all duration-300 shadow-sm hover:shadow-md"
+                className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-white/95 backdrop-blur-md flex items-center justify-center hover:bg-white transition-all duration-300 shadow-md hover:shadow-lg border border-white/50"
               >
-                <Heart className="w-5 h-5 text-black/70" weight="bold" />
+                <Heart className="w-4 h-4 md:w-5 md:h-5 text-black/70" weight="bold" />
               </motion.button>
               <motion.button
                 initial={{ opacity: 0, scale: 0.5, y: -10 }}
@@ -139,11 +142,11 @@ export default function PropertyDetailPage() {
                   delay: 0.6,
                   ease: [0.16, 1, 0.3, 1]
                 }}
-                whileHover={{ scale: 1.1, transition: { duration: 0.2 } }}
+                whileHover={{ scale: 1.08, transition: { duration: 0.2 } }}
                 whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
-                className="w-10 h-10 rounded-full bg-white/95 backdrop-blur-sm flex items-center justify-center hover:bg-white transition-all duration-300 shadow-sm hover:shadow-md"
+                className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-white/95 backdrop-blur-md flex items-center justify-center hover:bg-white transition-all duration-300 shadow-md hover:shadow-lg border border-white/50"
               >
-                <ShareNetwork className="w-5 h-5 text-black/70" weight="bold" />
+                <ShareNetwork className="w-4 h-4 md:w-5 md:h-5 text-black/70" weight="bold" />
               </motion.button>
             </div>
           </motion.div>
@@ -153,7 +156,7 @@ export default function PropertyDetailPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="grid grid-cols-4 gap-3 md:gap-4"
+            className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4"
           >
             {(property.gallery || [property.image]).slice(0, 4).map((img, index) => (
               <motion.button
@@ -171,7 +174,7 @@ export default function PropertyDetailPage() {
                 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setSelectedImage(index)}
-                className={`relative aspect-video rounded-[16px] overflow-hidden ${selectedImage === index ? 'ring-2 ring-black ring-offset-2' : 'opacity-60 hover:opacity-100'} transition-all duration-300`}
+                className={`relative aspect-video rounded-[12px] md:rounded-[16px] overflow-hidden ${selectedImage === index ? 'ring-2 ring-black ring-offset-2 ring-offset-white' : 'opacity-60 hover:opacity-100'} transition-all duration-300 cursor-pointer`}
               >
                 <img src={img} alt={`Gallery ${index + 1}`} className="w-full h-full object-cover" />
               </motion.button>
@@ -181,7 +184,7 @@ export default function PropertyDetailPage() {
       </section>
 
       {/* Property Info */}
-      <section className="relative py-12 md:py-20 bg-white overflow-hidden">
+      <section className="relative py-16 md:py-24 lg:py-28 bg-white overflow-hidden">
         <GridPattern
           width={40}
           height={40}
@@ -189,7 +192,7 @@ export default function PropertyDetailPage() {
         />
         
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-12">
-          <div className="grid lg:grid-cols-[1fr_400px] gap-12 lg:gap-16">
+          <div className="grid lg:grid-cols-[1fr_420px] gap-10 lg:gap-20 xl:gap-24">
             {/* Left Column - Details */}
             <div>
               {/* Header */}
@@ -198,23 +201,23 @@ export default function PropertyDetailPage() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="mb-10"
+                className="mb-12 md:mb-14"
               >
                 <motion.div 
-                  className="flex items-center gap-2 mb-4"
+                  className="flex items-center gap-2.5 mb-5 md:mb-6"
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.1 }}
                 >
-                  <MapPin className="w-5 h-5 text-black/40" weight="fill" />
-                  <span className="text-[15px] font-medium text-black/50">{property.location}</span>
-                  <span className="text-black/30">•</span>
-                  <span className="text-[15px] font-medium text-black/50">{property.type}</span>
+                  <MapPin className="w-4 h-4 md:w-5 md:h-5 text-black/40 flex-shrink-0" weight="fill" />
+                  <span className="text-[14px] md:text-[15px] font-medium text-black/50">{property.location}</span>
+                  <span className="text-black/30 mx-1">•</span>
+                  <span className="text-[14px] md:text-[15px] font-medium text-black/50">{property.type}</span>
                 </motion.div>
 
                 <motion.h1 
-                  className="text-[36px] md:text-[52px] font-semibold text-black mb-6 tracking-[-0.03em] leading-[1.1]"
+                  className="text-[32px] md:text-[44px] lg:text-[48px] font-semibold text-black mb-6 md:mb-8 tracking-[-0.03em] leading-[1.1]"
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
@@ -224,7 +227,7 @@ export default function PropertyDetailPage() {
                 </motion.h1>
 
                 <motion.div 
-                  className="flex flex-wrap items-center gap-6 mb-6"
+                  className="flex flex-wrap items-center gap-4 md:gap-6 mb-8 md:mb-10 pb-8 md:pb-10 border-b border-black/10"
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
@@ -238,7 +241,7 @@ export default function PropertyDetailPage() {
                   ].map((item, idx) => (
                     <motion.div 
                       key={idx}
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-2.5"
                       initial={{ opacity: 0, scale: 0.9 }}
                       whileInView={{ opacity: 1, scale: 1 }}
                       viewport={{ once: true }}
@@ -248,14 +251,14 @@ export default function PropertyDetailPage() {
                         ease: [0.22, 1, 0.36, 1]
                       }}
                     >
-                      <item.icon className="w-6 h-6 text-black/40" weight="duotone" />
-                      <span className="text-[16px] font-semibold text-black">{item.label}</span>
+                      <item.icon className="w-5 h-5 md:w-6 md:h-6 text-black/40 flex-shrink-0" weight="duotone" />
+                      <span className="text-[15px] md:text-[16px] font-semibold text-black">{item.label}</span>
                     </motion.div>
                   ))}
                 </motion.div>
 
                 <motion.div 
-                  className="text-[42px] md:text-[56px] font-semibold text-black tracking-tight"
+                  className="text-[36px] md:text-[48px] lg:text-[52px] font-semibold text-black tracking-tight"
                   initial={{ opacity: 0, scale: 0.95 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
@@ -271,15 +274,17 @@ export default function PropertyDetailPage() {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="mb-12"
+                className="mb-12 md:mb-14"
               >
-                <h2 className="text-[28px] font-semibold text-black mb-4 tracking-[-0.02em]">About This Property</h2>
-                <p className="text-[17px] text-black/70 leading-[1.7] mb-4">
-                  {property.longDescription}
-                </p>
-                <p className="text-[17px] text-black/70 leading-[1.7]">
-                  {property.description}
-                </p>
+                <h2 className="text-[24px] md:text-[28px] font-semibold text-black mb-5 md:mb-6 tracking-[-0.02em]">About This Property</h2>
+                <div className="space-y-4 md:space-y-5">
+                  <p className="text-[16px] md:text-[17px] text-black/70 leading-[1.7]">
+                    {property.longDescription}
+                  </p>
+                  <p className="text-[16px] md:text-[17px] text-black/70 leading-[1.7]">
+                    {property.description}
+                  </p>
+                </div>
               </motion.div>
 
               {/* Features */}
@@ -288,14 +293,14 @@ export default function PropertyDetailPage() {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="mb-12"
+                className="mb-12 md:mb-14"
               >
-                <h2 className="text-[28px] font-semibold text-black mb-6 tracking-[-0.02em]">Key Features</h2>
-                <div className="grid md:grid-cols-2 gap-3">
+                <h2 className="text-[24px] md:text-[28px] font-semibold text-black mb-6 md:mb-7 tracking-[-0.02em]">Key Features</h2>
+                <div className="grid md:grid-cols-2 gap-3 md:gap-4">
                   {(property.features || []).map((feature, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <CheckCircle className="w-5 h-5 text-black/40 flex-shrink-0 mt-0.5" weight="fill" />
-                      <span className="text-[16px] text-black/70 leading-[1.6]">{feature}</span>
+                      <span className="text-[15px] md:text-[16px] text-black/70 leading-[1.6]">{feature}</span>
                     </div>
                   ))}
                 </div>
@@ -308,12 +313,12 @@ export default function PropertyDetailPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
-                <h2 className="text-[28px] font-semibold text-black mb-6 tracking-[-0.02em]">Building Amenities</h2>
-                <div className="grid md:grid-cols-2 gap-3">
+                <h2 className="text-[24px] md:text-[28px] font-semibold text-black mb-6 md:mb-7 tracking-[-0.02em]">Building Amenities</h2>
+                <div className="grid md:grid-cols-2 gap-3 md:gap-4">
                   {(property.amenities || []).map((amenity, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <CheckCircle className="w-5 h-5 text-black/40 flex-shrink-0 mt-0.5" weight="fill" />
-                      <span className="text-[16px] text-black/70 leading-[1.6]">{amenity}</span>
+                      <span className="text-[15px] md:text-[16px] text-black/70 leading-[1.6]">{amenity}</span>
                     </div>
                   ))}
                 </div>
@@ -327,11 +332,11 @@ export default function PropertyDetailPage() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-                className="sticky top-32"
+                className="sticky top-24 md:top-32"
               >
-                <div className="bg-white rounded-[24px] p-8 border border-black/10 shadow-[0_8px_30px_rgba(0,0,0,0.08)]">
+                <div className="bg-white rounded-[20px] md:rounded-[24px] p-6 md:p-8 border border-black/10 shadow-[0_4px_20px_rgba(0,0,0,0.06)] md:shadow-[0_8px_30px_rgba(0,0,0,0.08)]">
                   <motion.h3 
-                    className="text-[24px] font-semibold text-black mb-6 tracking-[-0.02em]"
+                    className="text-[22px] md:text-[24px] font-semibold text-black mb-5 md:mb-6 tracking-[-0.02em]"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
@@ -341,7 +346,7 @@ export default function PropertyDetailPage() {
                   </motion.h3>
                   
                   <motion.p 
-                    className="text-[15px] text-black/60 mb-8 leading-[1.6]"
+                    className="text-[14px] md:text-[15px] text-black/60 mb-7 md:mb-8 leading-[1.6]"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
@@ -350,7 +355,7 @@ export default function PropertyDetailPage() {
                     Contact our team to schedule a private viewing or to learn more about this exceptional property.
                   </motion.p>
 
-                  <div className="space-y-3 mb-8">
+                  <div className="space-y-3 mb-7 md:mb-8">
                     <motion.div
                       initial={{ opacity: 0, scale: 0.95 }}
                       whileInView={{ opacity: 1, scale: 1 }}
@@ -377,18 +382,18 @@ export default function PropertyDetailPage() {
                     </motion.div>
                   </div>
 
-                  <div className="pt-8 border-t border-black/10">
+                  <div className="pt-7 md:pt-8 border-t border-black/10">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-12 h-12 rounded-full bg-black/5 flex items-center justify-center">
-                        <Users className="w-6 h-6 text-black/70" weight="duotone" />
+                      <div className="w-11 h-11 md:w-12 md:h-12 rounded-full bg-black/5 flex items-center justify-center flex-shrink-0">
+                        <Users className="w-5 h-5 md:w-6 md:h-6 text-black/70" weight="duotone" />
                       </div>
                       <div>
-                        <div className="text-[15px] font-semibold text-black">SUL Estate Team</div>
-                        <div className="text-[13px] text-black/50">Property Specialists</div>
+                        <div className="text-[14px] md:text-[15px] font-semibold text-black">SUL Estate Team</div>
+                        <div className="text-[12px] md:text-[13px] text-black/50">Property Specialists</div>
                       </div>
                     </div>
                     
-                    <p className="text-[14px] text-black/60 leading-[1.6]">
+                    <p className="text-[13px] md:text-[14px] text-black/60 leading-[1.6]">
                       Our expert advisors are ready to guide you through every step of your property journey.
                     </p>
                   </div>

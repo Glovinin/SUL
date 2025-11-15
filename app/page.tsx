@@ -201,7 +201,7 @@ export default function Home() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1.2, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[52px] md:text-[80px] lg:text-[104px] font-semibold tracking-[-0.04em] text-white leading-[1.05] mb-6 drop-shadow-[0_2px_20px_rgba(255,255,255,0.15)]"
+              className="text-[36px] md:text-[48px] lg:text-[56px] font-semibold tracking-[-0.04em] text-white leading-[1.05] mb-6 drop-shadow-[0_2px_20px_rgba(255,255,255,0.15)]"
             >
               <motion.span
                 initial={{ opacity: 0, y: 30 }}
@@ -218,7 +218,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[19px] md:text-[22px] font-normal text-white/85 mb-6 leading-[1.6] max-w-[760px] mx-auto"
+              className="text-[16px] md:text-[18px] font-normal text-white/85 mb-6 leading-[1.6] max-w-[760px] mx-auto"
             >
               We assist international clients finding their ideal home or investment.
             </motion.p>
@@ -228,7 +228,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[17px] md:text-[19px] font-normal text-white/80 mb-10 leading-[1.7] max-w-[800px] mx-auto"
+              className="text-[15px] md:text-[16px] font-normal text-white/80 mb-10 leading-[1.7] max-w-[800px] mx-auto"
             >
               SUL is an independent boutique real estate advisory, offering bespoke guidance in property acquisition, development, and management across Portugal. We assist international clients in finding and shaping their ideal home or investment — from strategic sourcing to full project coordination and long-term value enhancement.
             </motion.p>
