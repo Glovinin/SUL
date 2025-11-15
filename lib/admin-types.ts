@@ -13,6 +13,10 @@ export interface Property {
   image: string
   images?: string[]
   description?: string
+  longDescription?: string
+  features?: string[]
+  amenities?: string[]
+  yearBuilt?: string
   featured?: boolean
   createdAt?: Date
   updatedAt?: Date
@@ -57,6 +61,16 @@ export interface Analytics {
   propertiesViews: number
   blogViews: number
   period: 'day' | 'week' | 'month'
+}
+
+export interface HomepageSettings {
+  id?: string
+  heroVideo?: string
+  heroVideoPoster?: string
+  aboutUsImage?: string
+  ourApproachImage1?: string
+  ourApproachImage2?: string
+  updatedAt?: Date
 }
 
 

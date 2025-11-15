@@ -28,11 +28,11 @@ function convertToDisplayProperty(prop: AdminProperty): any {
     type: prop.type || 'Property',
     featured: prop.featured || false,
     status: 'Available', // Default status
-    description: prop.description || '',
-    longDescription: prop.description || '',
-    features: [],
-    amenities: [],
-    yearBuilt: new Date().getFullYear(),
+    description: prop.longDescription || prop.description || '',
+    longDescription: prop.longDescription || prop.description || '',
+    features: prop.features || [],
+    amenities: prop.amenities || [],
+    yearBuilt: prop.yearBuilt || new Date().getFullYear().toString(),
     highlights: [],
   }
 }
@@ -68,10 +68,18 @@ export function useProperties() {
 export function useFeaturedProperties() {
   const { properties, loading, error } = useProperties()
   
-  const featured = properties.filter(p => p.featured).slice(0, 6)
+  // Prioriza propriedades featured, depois as não-featured
+  const featured = properties.filter(p => p.featured)
+  const nonFeatured = properties.filter(p => !p.featured)
+  
+  // Combina: primeiro as featured, depois as não-featured
+  const allProperties = [...featured, ...nonFeatured]
+  
+  // Limita a 9 propriedades para a homepage
+  const limitedProperties = allProperties.slice(0, 9)
   
   return { 
-    featuredProperties: featured.length > 0 ? featured : properties.slice(0, 6),
+    featuredProperties: limitedProperties,
     loading, 
     error 
   }

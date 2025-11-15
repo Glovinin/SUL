@@ -11,7 +11,8 @@ import {
   Article, 
   SignOut,
   X,
-  List
+  List,
+  House
 } from '@phosphor-icons/react'
 import Link from 'next/link'
 
@@ -69,6 +70,12 @@ export default function AdminLayout({
       label: 'Blog',
       href: '/admin/blog',
       active: pathname?.startsWith('/admin/blog'),
+    },
+    {
+      icon: House,
+      label: 'Homepage',
+      href: '/admin/homepage',
+      active: pathname?.startsWith('/admin/homepage'),
     },
   ]
 

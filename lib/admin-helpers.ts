@@ -16,13 +16,14 @@ import {
 } from 'firebase/firestore'
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
 import { db, storage } from './firebase'
-import { Property, BlogPost, Lead } from './admin-types'
+import { Property, BlogPost, Lead, HomepageSettings } from './admin-types'
 
 // Collections
 const PROPERTIES_COLLECTION = 'properties'
 const BLOG_COLLECTION = 'blog'
 const LEADS_COLLECTION = 'leads'
 const ANALYTICS_COLLECTION = 'analytics'
+const HOMEPAGE_COLLECTION = 'homepage'
 
 // ==================== PROPERTIES ====================
 
@@ -219,6 +220,61 @@ export async function getAnalytics(period: 'day' | 'week' | 'month' = 'month'): 
     totalBlogPosts: blogPosts.length,
     newLeads: leads.filter(l => l.status === 'new').length,
   }
+}
+
+// ==================== HOMEPAGE ====================
+
+export async function getHomepageSettings(): Promise<HomepageSettings | null> {
+  if (!db) throw new Error('Firestore not initialized')
+  
+  const q = query(collection(db, HOMEPAGE_COLLECTION), limit(1))
+  const snapshot = await getDocs(q)
+  
+  if (snapshot.empty) return null
+  
+  const doc = snapshot.docs[0]
+  return {
+    id: doc.id,
+    ...doc.data(),
+    updatedAt: doc.data().updatedAt?.toDate(),
+  } as HomepageSettings
+}
+
+export async function updateHomepageSettings(settings: Partial<HomepageSettings>): Promise<void> {
+  if (!db) throw new Error('Firestore not initialized')
+  
+  const existing = await getHomepageSettings()
+  
+  if (existing && existing.id) {
+    const docRef = doc(db, HOMEPAGE_COLLECTION, existing.id)
+    await updateDoc(docRef, {
+      ...settings,
+      updatedAt: serverTimestamp(),
+    })
+  } else {
+    await addDoc(collection(db, HOMEPAGE_COLLECTION), {
+      ...settings,
+      updatedAt: serverTimestamp(),
+    })
+  }
+}
+
+// Upload homepage video
+export async function uploadHomepageVideo(file: File): Promise<string> {
+  if (!storage) throw new Error('Storage not initialized')
+  
+  const storageRef = ref(storage, `homepage/video_${Date.now()}_${file.name}`)
+  await uploadBytes(storageRef, file)
+  return await getDownloadURL(storageRef)
+}
+
+// Upload homepage image
+export async function uploadHomepageImage(file: File, imageType: 'aboutUs' | 'ourApproach1' | 'ourApproach2' | 'heroPoster'): Promise<string> {
+  if (!storage) throw new Error('Storage not initialized')
+  
+  const storageRef = ref(storage, `homepage/${imageType}_${Date.now()}_${file.name}`)
+  await uploadBytes(storageRef, file)
+  return await getDownloadURL(storageRef)
 }
 
 

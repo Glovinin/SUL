@@ -17,28 +17,74 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { useProperties } from '../../lib/properties-client'
+import { formatPrice } from '../../lib/format-price'
 
 export default function PropertiesPage() {
   const searchParams = useSearchParams()
   const { properties, loading } = useProperties()
   const [selectedType, setSelectedType] = useState<string>('All')
   const [selectedLocation, setSelectedLocation] = useState<string>('All')
+  const [selectedPriceRange, setSelectedPriceRange] = useState<string>('')
   
   // Apply URL params on mount
   useEffect(() => {
     const typeParam = searchParams.get('type')
     const locationParam = searchParams.get('location')
+    const priceParam = searchParams.get('price')
     
     if (typeParam) setSelectedType(typeParam)
     if (locationParam) setSelectedLocation(locationParam)
+    if (priceParam) setSelectedPriceRange(priceParam)
   }, [searchParams])
 
+  // Sort properties: featured first, then by creation date
+  const sortedProperties = [...properties].sort((a, b) => {
+    if (a.featured && !b.featured) return -1
+    if (!a.featured && b.featured) return 1
+    return 0
+  })
+
   // Filter properties
-  const filteredProperties = properties.filter(property => {
+  const filteredProperties = sortedProperties.filter(property => {
     const matchesType = selectedType === 'All' || property.type === selectedType
     const matchesLocation = selectedLocation === 'All' || property.location === selectedLocation
-    return matchesType && matchesLocation
+    
+    // Price filter logic
+    let matchesPrice = true
+    if (selectedPriceRange) {
+      const priceNum = parseInt(property.price.replace(/[€.\s]/g, '')) || 0
+      switch (selectedPriceRange) {
+        case '500k-1m':
+          matchesPrice = priceNum >= 500000 && priceNum <= 1000000
+          break
+        case '1m-2m':
+          matchesPrice = priceNum >= 1000000 && priceNum <= 2000000
+          break
+        case '2m-5m':
+          matchesPrice = priceNum >= 2000000 && priceNum <= 5000000
+          break
+        case '5m+':
+          matchesPrice = priceNum >= 5000000
+          break
+        default:
+          matchesPrice = true
+      }
+    }
+    
+    return matchesType && matchesLocation && matchesPrice
   })
+
+  // Update URL when filters change
+  useEffect(() => {
+    const params = new URLSearchParams()
+    if (selectedType !== 'All') params.append('type', selectedType)
+    if (selectedLocation !== 'All') params.append('location', selectedLocation)
+    if (selectedPriceRange) params.append('price', selectedPriceRange)
+    
+    const queryString = params.toString()
+    const newUrl = queryString ? `/properties?${queryString}` : '/properties'
+    window.history.replaceState({}, '', newUrl)
+  }, [selectedType, selectedLocation, selectedPriceRange])
 
   // Get unique types and locations
   const types = ['All', ...Array.from(new Set(properties.map(p => p.type).filter(Boolean)))]
@@ -116,7 +162,7 @@ export default function PropertiesPage() {
                   
                   {/* Clear Filters - Apenas se houver filtros ativos */}
                   <AnimatePresence>
-                    {(selectedType !== 'All' || selectedLocation !== 'All') && (
+                    {(selectedType !== 'All' || selectedLocation !== 'All' || selectedPriceRange) && (
                       <motion.button
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -124,6 +170,7 @@ export default function PropertiesPage() {
                         onClick={() => {
                           setSelectedType('All')
                           setSelectedLocation('All')
+                          setSelectedPriceRange('')
                         }}
                         className="text-[13px] font-medium text-black/50 hover:text-black transition-colors duration-200 flex items-center gap-1.5 px-3 py-1.5 rounded-full hover:bg-black/[0.04]"
                       >
@@ -135,7 +182,7 @@ export default function PropertiesPage() {
                 </div>
                 
                 {/* Grid de Filtros */}
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-3 gap-4">
                   {/* Type Filter */}
                   <div className="space-y-2.5">
                     <label className="text-[12px] font-semibold text-black/50 tracking-[0.05em] uppercase px-1">
@@ -181,11 +228,36 @@ export default function PropertiesPage() {
                       </div>
                     </div>
                   </div>
+
+                  {/* Price Range Filter */}
+                  <div className="space-y-2.5">
+                    <label className="text-[12px] font-semibold text-black/50 tracking-[0.05em] uppercase px-1">
+                      Price Range
+                    </label>
+                    <div className="relative">
+                      <select
+                        value={selectedPriceRange}
+                        onChange={(e) => setSelectedPriceRange(e.target.value)}
+                        className="w-full bg-white border-2 border-black/[0.08] rounded-[14px] px-4 py-3.5 text-[15px] font-medium text-black hover:border-black/[0.15] focus:border-black/[0.25] transition-all cursor-pointer focus:outline-none appearance-none shadow-sm hover:shadow-md"
+                      >
+                        <option value="">All Prices</option>
+                        <option value="500k-1m">€500K - €1M</option>
+                        <option value="1m-2m">€1M - €2M</option>
+                        <option value="2m-5m">€2M - €5M</option>
+                        <option value="5m+">€5M+</option>
+                      </select>
+                      <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                        <svg className="w-4 h-4 text-black/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 
                 {/* Active Filters Tags */}
                 <AnimatePresence>
-                  {(selectedType !== 'All' || selectedLocation !== 'All') && (
+                  {(selectedType !== 'All' || selectedLocation !== 'All' || selectedPriceRange) && (
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
@@ -208,6 +280,22 @@ export default function PropertiesPage() {
                           <span className="text-[12px] font-medium text-black/70">{selectedLocation}</span>
                           <button
                             onClick={() => setSelectedLocation('All')}
+                            className="text-black/50 hover:text-black transition-colors"
+                          >
+                            <span className="text-[10px]">✕</span>
+                          </button>
+                        </div>
+                      )}
+                      {selectedPriceRange && (
+                        <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-black/[0.04] rounded-full">
+                          <span className="text-[12px] font-medium text-black/70">
+                            {selectedPriceRange === '500k-1m' && '€500K - €1M'}
+                            {selectedPriceRange === '1m-2m' && '€1M - €2M'}
+                            {selectedPriceRange === '2m-5m' && '€2M - €5M'}
+                            {selectedPriceRange === '5m+' && '€5M+'}
+                          </span>
+                          <button
+                            onClick={() => setSelectedPriceRange('')}
                             className="text-black/50 hover:text-black transition-colors"
                           >
                             <span className="text-[10px]">✕</span>
@@ -291,7 +379,7 @@ export default function PropertiesPage() {
                   {/* Price - Hero Element */}
                   <div className="mb-6">
                     <p className="text-[32px] md:text-[36px] font-semibold text-black tracking-[-0.02em] leading-none">
-                      {property.price}
+                      {formatPrice(property.price)}
                     </p>
                   </div>
                   

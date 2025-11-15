@@ -9,7 +9,8 @@ import { NavBar } from '../components/navbar'
 import { Footer } from '../components/Footer'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useFeaturedProperties } from '../lib/properties-client'
+import { useFeaturedProperties, useProperties } from '../lib/properties-client'
+import { formatPrice } from '../lib/format-price'
 import { 
   ArrowRight,
   Buildings,
@@ -28,7 +29,8 @@ import {
   Scales,
   Palette,
   Briefcase,
-  CaretDown
+  CaretDown,
+  Star
 } from '@phosphor-icons/react'
 
 // Services data
@@ -103,6 +105,7 @@ export default function Home() {
   const router = useRouter()
   const [isMobile, setIsMobile] = useState(false)
   const { featuredProperties, loading: propertiesLoading } = useFeaturedProperties()
+  const { properties: allProperties } = useProperties()
 
   useEffect(() => {
     const checkMobile = () => {
@@ -130,6 +133,10 @@ export default function Home() {
   const [location, setLocation] = useState('')
   const [priceRange, setPriceRange] = useState('')
   const videoRef = React.useRef<HTMLVideoElement>(null)
+
+  // Get unique types and locations from actual properties
+  const uniqueTypes = Array.from(new Set(allProperties.map(p => p.type).filter(Boolean))).sort()
+  const uniqueLocations = Array.from(new Set(allProperties.map(p => p.location).filter(Boolean))).sort()
   
   // Ensure video plays on mount and handles autoplay restrictions
   React.useEffect(() => {
@@ -254,10 +261,21 @@ export default function Home() {
                       }}
                       className="relative w-full h-[52px] bg-white/[0.08] backdrop-blur-xl hover:bg-white/[0.12] text-white border border-white/20 hover:border-white/30 !rounded-[20px] px-5 text-[15px] font-medium appearance-none cursor-pointer transition-all duration-300 focus:outline-none focus:border-white/40 focus:bg-white/[0.15] focus:shadow-lg focus:shadow-white/5 transform-gpu">
                       <option value="">Property Type</option>
-                      <option value="Villa">Villas</option>
-                      <option value="Apartment">Apartments</option>
-                      <option value="Penthouse">Penthouses</option>
-                      <option value="Estate">Estates</option>
+                      {uniqueTypes.length > 0 ? (
+                        uniqueTypes.map((type) => (
+                          <option key={type} value={type}>{type}</option>
+                        ))
+                      ) : (
+                        <>
+                          <option value="Apartment">Apartment</option>
+                          <option value="Villa">Villa</option>
+                          <option value="House">House</option>
+                          <option value="Studio">Studio</option>
+                          <option value="Penthouse">Penthouse</option>
+                          <option value="Estate">Estate</option>
+                          <option value="Townhouse">Townhouse</option>
+                        </>
+                      )}
                     </select>
                     <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none transition-transform duration-300 group-hover:translate-y-[-10px]">
                       <CaretDown className="w-4 h-4 text-white/80 drop-shadow-sm" weight="bold" />
@@ -276,11 +294,19 @@ export default function Home() {
                       }}
                       className="relative w-full h-[52px] bg-white/[0.08] backdrop-blur-xl hover:bg-white/[0.12] text-white border border-white/20 hover:border-white/30 !rounded-[20px] px-5 text-[15px] font-medium appearance-none cursor-pointer transition-all duration-300 focus:outline-none focus:border-white/40 focus:bg-white/[0.15] focus:shadow-lg focus:shadow-white/5 transform-gpu">
                       <option value="">Location</option>
-                      <option value="Lisbon">Lisbon</option>
-                      <option value="Comporta">Comporta</option>
-                      <option value="Algarve">Algarve</option>
-                      <option value="Ericeira">Ericeira</option>
-                      <option value="Douro">Douro</option>
+                      {uniqueLocations.length > 0 ? (
+                        uniqueLocations.map((loc) => (
+                          <option key={loc} value={loc}>{loc}</option>
+                        ))
+                      ) : (
+                        <>
+                          <option value="Lisbon">Lisbon</option>
+                          <option value="Comporta">Comporta</option>
+                          <option value="Algarve">Algarve</option>
+                          <option value="Ericeira">Ericeira</option>
+                          <option value="Douro">Douro</option>
+                        </>
+                      )}
                     </select>
                     <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none transition-transform duration-300 group-hover:translate-y-[-10px]">
                       <CaretDown className="w-4 h-4 text-white/80 drop-shadow-sm" weight="bold" />
@@ -480,10 +506,18 @@ export default function Home() {
                   />
                   
                   {/* Tag Badge - Ultra Premium */}
-                  <div className="absolute top-6 left-6 z-20">
-                    <div className="bg-white/95 backdrop-blur-2xl px-4 py-2 rounded-full shadow-[0_2px_12px_rgba(0,0,0,0.08)]">
-                      <span className="text-[10px] font-semibold text-black tracking-[0.08em] uppercase">{project.tag}</span>
-                    </div>
+                  <div className="absolute top-6 left-6 z-20 flex flex-col gap-2">
+                    {project.featured && (
+                      <div className="bg-black text-white px-4 py-2 rounded-full shadow-[0_2px_12px_rgba(0,0,0,0.2)] flex items-center gap-1.5">
+                        <Star className="w-3 h-3" weight="fill" />
+                        <span className="text-[10px] font-semibold tracking-[0.08em] uppercase">Featured</span>
+                      </div>
+                    )}
+                    {project.tag && project.tag !== 'Featured' && (
+                      <div className="bg-white/95 backdrop-blur-2xl px-4 py-2 rounded-full shadow-[0_2px_12px_rgba(0,0,0,0.08)]">
+                        <span className="text-[10px] font-semibold text-black tracking-[0.08em] uppercase">{project.tag}</span>
+                      </div>
+                    )}
                   </div>
                   
                   {/* Overlay Premium - Aparece no hover */}
@@ -513,7 +547,7 @@ export default function Home() {
                   {/* Price - Hero Element */}
                   <div className="mb-6">
                     <p className="text-[32px] md:text-[36px] font-semibold text-black tracking-[-0.02em] leading-none">
-                      {project.price}
+                      {formatPrice(project.price)}
                     </p>
                   </div>
                   
@@ -544,6 +578,27 @@ export default function Home() {
             ))
             )}
           </div>
+          
+          {/* Show More Link if there are more properties */}
+          {allProperties.length > 9 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="text-center mt-12"
+            >
+              <Link href="/properties">
+                <Button className="bg-black text-white hover:bg-black/90 border-0 px-8 py-3 rounded-full text-[15px] font-semibold transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2 mx-auto">
+                  View All Properties
+                  <ArrowRight className="w-4 h-4" weight="bold" />
+                </Button>
+              </Link>
+              <p className="text-sm text-black/50 mt-4">
+                Showing {featuredProperties.length} of {allProperties.length} properties. View all to see more.
+              </p>
+            </motion.div>
+          )}
         </div>
       </section>
 
