@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
+import { toast } from 'sonner'
 import { ArrowLeft, Upload, X } from '@phosphor-icons/react'
 import { Button } from '../../../../components/ui/button'
 import {
@@ -67,7 +68,9 @@ export default function BlogEditPage() {
       setPost({ ...post, image: url })
     } catch (error) {
       console.error('Error uploading image:', error)
-      alert('Failed to upload image')
+      toast.error('Erro ao fazer upload da imagem', {
+        description: 'Tente novamente ou verifique sua conexão.',
+      })
     } finally {
       setUploading(false)
     }
@@ -80,13 +83,25 @@ export default function BlogEditPage() {
     try {
       if (isNew) {
         await createBlogPost(post as Omit<BlogPost, 'id' | 'createdAt' | 'updatedAt'>)
+        toast.success('Post criado com sucesso!', {
+          description: 'O post foi adicionado ao blog.',
+          duration: 3000,
+        })
       } else {
         await updateBlogPost(id, post)
+        toast.success('Post atualizado com sucesso!', {
+          description: 'As alterações foram salvas.',
+          duration: 3000,
+        })
       }
-      router.push('/admin/blog')
+      setTimeout(() => {
+        router.push('/admin/blog')
+      }, 1500)
     } catch (error) {
       console.error('Error saving blog post:', error)
-      alert('Failed to save blog post')
+      toast.error('Erro ao salvar post', {
+        description: 'Tente novamente ou verifique sua conexão.',
+      })
     } finally {
       setLoading(false)
     }

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { 
   ArrowLeft, 
   Upload, 
@@ -54,13 +55,54 @@ export default function HomepageEditPage() {
     const file = e.target.files?.[0]
     if (!file) return
 
+    // Verificar tamanho do arquivo e avisar se muito grande
+    const maxSize = 50 * 1024 * 1024 // 50MB
+    if (file.size > maxSize) {
+      toast.warning('Vídeo muito grande', {
+        description: `O vídeo tem ${(file.size / 1024 / 1024).toFixed(1)}MB. Vídeos grandes podem demorar para carregar na homepage.`,
+        action: {
+          label: 'Continuar mesmo assim',
+          onClick: async () => {
+            try {
+              setUploading('heroVideo')
+              const url = await uploadHomepageVideo(file)
+              setSettings({ ...settings, heroVideo: url })
+              toast.success('Vídeo enviado com sucesso!', {
+                description: 'Recomendamos comprimir o vídeo para melhor performance.',
+              })
+            } catch (error) {
+              console.error('Error uploading video:', error)
+              toast.error('Erro ao fazer upload do vídeo', {
+                description: 'Tente novamente ou verifique sua conexão.',
+              })
+            } finally {
+              setUploading(null)
+            }
+          },
+        },
+        cancel: {
+          label: 'Cancelar',
+          onClick: () => {
+            e.target.value = '' // Reset input
+          },
+        },
+        duration: 8000,
+      })
+      return
+    }
+
     try {
       setUploading('heroVideo')
       const url = await uploadHomepageVideo(file)
       setSettings({ ...settings, heroVideo: url })
+      toast.success('Vídeo enviado com sucesso!', {
+        description: 'O vídeo foi atualizado na homepage.',
+      })
     } catch (error) {
       console.error('Error uploading video:', error)
-      alert('Failed to upload video')
+      toast.error('Erro ao fazer upload do vídeo', {
+        description: 'Tente novamente ou verifique sua conexão.',
+      })
     } finally {
       setUploading(null)
     }
@@ -75,11 +117,18 @@ export default function HomepageEditPage() {
 
     try {
       setUploading(imageType)
-      const url = await uploadHomepageImage(file, imageType)
+      
+      // Comprimir imagem antes do upload
+      const { compressImage } = await import('../../../lib/utils')
+      const compressedFile = await compressImage(file, 1920, 0.85) // maxWidth 1920px, quality 85%
+      
+      const url = await uploadHomepageImage(compressedFile, imageType)
       setSettings({ ...settings, [imageType === 'aboutUs' ? 'aboutUsImage' : imageType === 'ourApproach1' ? 'ourApproachImage1' : imageType === 'ourApproach2' ? 'ourApproachImage2' : 'heroVideoPoster']: url })
     } catch (error) {
       console.error('Error uploading image:', error)
-      alert('Failed to upload image')
+      toast.error('Erro ao fazer upload da imagem', {
+        description: 'Tente novamente ou verifique sua conexão.',
+      })
     } finally {
       setUploading(null)
     }
@@ -91,11 +140,18 @@ export default function HomepageEditPage() {
 
     try {
       await updateHomepageSettings(settings)
-      alert('Homepage settings saved successfully!')
-      router.push('/admin')
+      toast.success('Configurações salvas com sucesso!', {
+        description: 'As alterações da homepage foram aplicadas.',
+        duration: 3000,
+      })
+      setTimeout(() => {
+        router.push('/admin')
+      }, 1500)
     } catch (error) {
       console.error('Error saving homepage settings:', error)
-      alert('Failed to save homepage settings')
+      toast.error('Erro ao salvar configurações', {
+        description: 'Tente novamente ou verifique sua conexão.',
+      })
     } finally {
       setLoading(false)
     }
@@ -145,6 +201,20 @@ export default function HomepageEditPage() {
                 <h2 className="text-xl font-semibold text-black">Hero Section Video</h2>
                 <p className="text-sm text-black/50">Main video background for homepage hero</p>
               </div>
+            </div>
+
+            {/* Video Optimization Tips */}
+            <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+              <h3 className="text-sm font-semibold text-blue-900 mb-2 flex items-center gap-2">
+                <span>💡</span> Dicas de Otimização:
+              </h3>
+              <ul className="text-xs text-blue-800 space-y-1 list-disc list-inside">
+                <li>Resolução recomendada: 1920x1080 (Full HD)</li>
+                <li>Tamanho ideal: &lt; 10MB para carregamento rápido</li>
+                <li>Codec: H.264 (MP4) para melhor compatibilidade</li>
+                <li>Duração: Mantenha curto (10-30 segundos) para loop suave</li>
+                <li>Use ferramentas como HandBrake ou FFmpeg para comprimir</li>
+              </ul>
             </div>
 
             <div className="space-y-4">

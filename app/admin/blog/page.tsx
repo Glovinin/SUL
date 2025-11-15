@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { Plus, Pencil, Trash } from '@phosphor-icons/react'
 import { Button } from '../../../components/ui/button'
 import { getBlogPosts, deleteBlogPost } from '../../../lib/admin-helpers'
@@ -29,15 +30,31 @@ export default function BlogPage() {
   }
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this blog post?')) return
-
-    try {
-      await deleteBlogPost(id)
-      await loadPosts()
-    } catch (error) {
-      console.error('Error deleting blog post:', error)
-      alert('Failed to delete blog post')
-    }
+    toast('Tem certeza que deseja excluir este post?', {
+      description: 'Esta ação não pode ser desfeita.',
+      action: {
+        label: 'Excluir',
+        onClick: async () => {
+          try {
+            await deleteBlogPost(id)
+            await loadPosts()
+            toast.success('Post excluído com sucesso!', {
+              description: 'O post foi removido permanentemente.',
+            })
+          } catch (error) {
+            console.error('Error deleting blog post:', error)
+            toast.error('Erro ao excluir post', {
+              description: 'Tente novamente ou verifique sua conexão.',
+            })
+          }
+        },
+      },
+      cancel: {
+        label: 'Cancelar',
+        onClick: () => {},
+      },
+      duration: 5000,
+    })
   }
 
   if (loading) {

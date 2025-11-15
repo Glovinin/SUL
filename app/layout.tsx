@@ -193,6 +193,9 @@ export default function RootLayout({
         <link rel="preload" href="/favicon.png" as="image" type="image/png" />
         <link rel="preconnect" href="https://my.spline.design" />
         <link rel="dns-prefetch" href="https://my.spline.design" />
+        {/* Firebase Storage preconnect for faster video/image loading */}
+        <link rel="preconnect" href="https://firebasestorage.googleapis.com" />
+        <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />
         
         {/* Estilo inline para evitar flash escuro */}
         <style dangerouslySetInnerHTML={{

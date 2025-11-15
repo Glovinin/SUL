@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
+import { toast } from 'sonner'
 import { 
   ArrowLeft, 
   Upload, 
@@ -159,14 +160,21 @@ export default function PropertyEditPage() {
     const imagesToAdd = isMain ? filesArray.length : filesArray.length
     
     if (currentImages + imagesToAdd > maxFiles) {
-      alert(`Maximum ${maxFiles} images allowed. You can add ${maxFiles - currentImages} more.`)
+      toast.warning('Limite de imagens atingido', {
+        description: `Você pode adicionar no máximo ${maxFiles} imagens. Você pode adicionar mais ${maxFiles - currentImages}.`,
+      })
       return
     }
 
     try {
       setUploading(isMain ? 'main' : 'gallery')
+      
+      // Comprimir imagens antes do upload
+      const { compressImages } = await import('../../../../lib/utils')
+      const compressedFiles = await compressImages(filesArray, 1920, 0.85) // maxWidth 1920px, quality 85%
+      
       const propertyId = isNew ? 'temp' : id
-      const uploadPromises = filesArray.map(file => uploadPropertyImage(file, propertyId))
+      const uploadPromises = compressedFiles.map(file => uploadPropertyImage(file, propertyId))
       const urls = await Promise.all(uploadPromises)
 
       if (isMain) {
@@ -192,7 +200,9 @@ export default function PropertyEditPage() {
       }
     } catch (error) {
       console.error('Error uploading images:', error)
-      alert('Failed to upload images')
+      toast.error('Erro ao fazer upload das imagens', {
+        description: 'Tente novamente ou verifique sua conexão.',
+      })
     } finally {
       setUploading(null)
     }
@@ -338,13 +348,25 @@ export default function PropertyEditPage() {
 
       if (isNew) {
         await createProperty(finalProperty as Omit<Property, 'id' | 'createdAt' | 'updatedAt'>)
+        toast.success('Propriedade criada com sucesso!', {
+          description: 'A propriedade foi adicionada à sua coleção.',
+          duration: 3000,
+        })
       } else {
         await updateProperty(id, finalProperty)
+        toast.success('Propriedade atualizada com sucesso!', {
+          description: 'As alterações foram salvas.',
+          duration: 3000,
+        })
       }
-      router.push('/admin/properties')
+      setTimeout(() => {
+        router.push('/admin/properties')
+      }, 1500)
     } catch (error) {
       console.error('Error saving property:', error)
-      alert('Failed to save property')
+      toast.error('Erro ao salvar propriedade', {
+        description: 'Tente novamente ou verifique sua conexão.',
+      })
     } finally {
       setLoading(false)
     }

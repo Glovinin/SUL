@@ -16,9 +16,15 @@ export function cn(...inputs: ClassValue[]) {
 export const compressImage = async (
   file: File,
   maxWidth: number = 1920,
-  quality: number = 0.8
+  quality: number = 0.85
 ): Promise<File> => {
   return new Promise((resolve, reject) => {
+    // Se o arquivo já é pequeno (< 500KB), não precisa comprimir
+    if (file.size < 500 * 1024) {
+      resolve(file);
+      return;
+    }
+    
     const reader = new FileReader();
     
     reader.onload = (event) => {
@@ -29,29 +35,41 @@ export const compressImage = async (
         let width = img.width;
         let height = img.height;
         
+        // Redimensionar apenas se for maior que maxWidth
         if (width > maxWidth) {
           height = (height * maxWidth) / width;
           width = maxWidth;
         }
         
-        // Criar canvas para redimensionar
+        // Criar canvas para redimensionar com melhor qualidade
         const canvas = document.createElement('canvas');
         canvas.width = width;
         canvas.height = height;
         
-        // Desenhar imagem redimensionada
-        const ctx = canvas.getContext('2d');
+        // Desenhar imagem redimensionada com alta qualidade
+        const ctx = canvas.getContext('2d', { 
+          alpha: true,
+          desynchronized: false,
+          willReadFrequently: false
+        });
         if (!ctx) {
           reject(new Error('Não foi possível obter contexto do canvas'));
           return;
         }
         
+        // Melhorar qualidade de renderização
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        
         ctx.drawImage(img, 0, 0, width, height);
         
         // Determinar o tipo de saída (manter PNG para PNGs, JPEG para outros)
-        const outputType = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+        // Para melhor compressão, converter PNGs grandes para JPEG
+        const isPNG = file.type === 'image/png';
+        const shouldConvertToJPEG = isPNG && file.size > 1000 * 1024; // PNGs > 1MB
+        const outputType = shouldConvertToJPEG ? 'image/jpeg' : (isPNG ? 'image/png' : 'image/jpeg');
         
-        // Converter para blob
+        // Converter para blob com qualidade otimizada
         canvas.toBlob(
           (blob) => {
             if (!blob) {
@@ -59,10 +77,11 @@ export const compressImage = async (
               return;
             }
             
-            // Criar novo arquivo
+            // Criar novo arquivo com nome otimizado
+            const fileName = file.name.replace(/\.[^/.]+$/, '') + (shouldConvertToJPEG ? '.jpg' : file.name.match(/\.[^/.]+$/)?.[0] || '.jpg');
             const compressedFile = new File(
               [blob], 
-              file.name, 
+              fileName, 
               { type: outputType }
             );
             

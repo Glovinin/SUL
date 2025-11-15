@@ -9,7 +9,7 @@ import { NavBar } from '../components/navbar'
 import { Footer } from '../components/Footer'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useFeaturedProperties, useProperties } from '../lib/properties-client'
+import { useFeaturedProperties, useProperties, useHomepageSettings } from '../lib/properties-client'
 import { formatPrice } from '../lib/format-price'
 import { 
   ArrowRight,
@@ -133,15 +133,30 @@ export default function Home() {
   const [location, setLocation] = useState('')
   const [priceRange, setPriceRange] = useState('')
   const videoRef = React.useRef<HTMLVideoElement>(null)
+  const [videoLoaded, setVideoLoaded] = useState(false)
+  const [videoError, setVideoError] = useState(false)
+  const { settings: homepageSettings } = useHomepageSettings()
 
   // Get unique types and locations from actual properties
   const uniqueTypes = Array.from(new Set(allProperties.map(p => p.type).filter(Boolean))).sort()
   const uniqueLocations = Array.from(new Set(allProperties.map(p => p.location).filter(Boolean))).sort()
   
-  // Ensure video plays on mount and handles autoplay restrictions
+  // Use homepage settings video or fallback to default
+  const heroVideo = homepageSettings?.heroVideo || '/videos/video.mp4'
+  const heroVideoPoster = homepageSettings?.heroVideoPoster || '/images/hero-poster.jpg'
+  
+  // Optimized video loading - carrega apenas quando necessário
   React.useEffect(() => {
     const video = videoRef.current
-    if (video) {
+    if (!video || !heroVideo) return
+
+    // Reset states quando vídeo muda
+    setVideoLoaded(false)
+    setVideoError(false)
+
+    // Event listeners para otimização
+    const handleCanPlay = () => {
+      setVideoError(false)
       video.muted = true
       const playPromise = video.play()
       
@@ -158,7 +173,20 @@ export default function Home() {
           })
       }
     }
-  }, [])
+
+    const handleError = () => {
+      console.error('Video loading error')
+      setVideoError(true)
+    }
+
+    video.addEventListener('canplay', handleCanPlay)
+    video.addEventListener('error', handleError)
+
+    return () => {
+      video.removeEventListener('canplay', handleCanPlay)
+      video.removeEventListener('error', handleError)
+    }
+  }, [heroVideo])
   
   // Handle property search
   const handlePropertySearch = () => {
@@ -180,19 +208,60 @@ export default function Home() {
       <section className="relative min-h-screen flex items-center justify-center bg-black">
         {/* Background Video with Elegant Overlay */}
         <div className="absolute inset-0 overflow-hidden">
+          {/* Loading state - mostra poster enquanto carrega */}
+          {!videoLoaded && !videoError && (
+            <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+              {heroVideoPoster && (
+                <img 
+                  src={heroVideoPoster} 
+                  alt="Loading video" 
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              )}
+              <div className="relative z-10 flex flex-col items-center gap-3">
+                <div className="animate-spin rounded-full h-8 w-8 border-2 border-white/30 border-t-white"></div>
+                <p className="text-white/70 text-sm">Loading video...</p>
+              </div>
+            </div>
+          )}
+          
           <video
+            key={heroVideo}
             ref={videoRef}
             autoPlay
             loop
             muted
             playsInline
-            preload="auto"
-            poster="/images/hero-poster.jpg"
-            className="absolute inset-0 w-full h-full object-cover scale-110 transition-transform duration-20000 ease-out hover:scale-105"
+            preload="metadata"
+            poster={heroVideoPoster}
+            className={`absolute inset-0 w-full h-full object-cover scale-110 transition-opacity duration-500 transition-transform duration-20000 ease-out hover:scale-105 ${
+              videoLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+            onLoadedData={() => {
+              // Garantir que o vídeo está pronto antes de mostrar
+              if (videoRef.current) {
+                setVideoLoaded(true)
+              }
+            }}
+            onCanPlay={() => {
+              // Mostrar vídeo quando estiver pronto para reproduzir
+              if (videoRef.current) {
+                setVideoLoaded(true)
+              }
+            }}
           >
-            <source src="/videos/video.mp4" type="video/mp4" />
+            <source src={heroVideo} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
+          
+          {/* Fallback se vídeo falhar */}
+          {videoError && heroVideoPoster && (
+            <img 
+              src={heroVideoPoster} 
+              alt="Hero background" 
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          )}
           {/* Vignette effect - Premium depth */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,transparent_40%,rgba(0,0,0,0.4)_100%)]" />
           {/* Modern gradient overlays */}
@@ -441,24 +510,6 @@ export default function Home() {
                 </Button>
               </motion.div>
             </div>
-            <div className="flex flex-col gap-4 items-end lg:items-end">
-              <Link href="/properties?featured=true">
-                <Button 
-                  className="bg-black text-white hover:bg-black/90 border-0 px-6 py-3 rounded-full text-[14px] font-medium transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2"
-                >
-                  Success Stories
-                  <ArrowRight className="w-4 h-4" weight="bold" />
-                </Button>
-              </Link>
-              <Link href="/properties">
-                <Button 
-                  className="bg-black text-white hover:bg-black/90 border-0 px-6 py-3 rounded-full text-[14px] font-medium transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2"
-                >
-                  Properties For Sale
-                  <ArrowRight className="w-4 h-4" weight="bold" />
-                </Button>
-              </Link>
-            </div>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10 px-0 py-4 md:p-8 lg:p-12 overflow-visible">
@@ -622,9 +673,19 @@ export default function Home() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative aspect-[4/5] w-full max-w-[500px] mx-auto bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl flex items-center justify-center overflow-hidden shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-black/[0.04] hover:border-black/[0.08]"
+              className="group relative aspect-[4/5] w-full max-w-[500px] mx-auto bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl overflow-hidden shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-black/[0.04] hover:border-black/[0.08]"
             >
-              <span className="text-[14px] font-medium text-black/20 group-hover:text-black/30 transition-colors duration-300">Vincent Santos</span>
+              {homepageSettings?.aboutUsImage ? (
+                <img 
+                  src={homepageSettings.aboutUsImage} 
+                  alt="About Us" 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <span className="text-[14px] font-medium text-black/20 group-hover:text-black/30 transition-colors duration-300">Vincent Santos</span>
+                </div>
+              )}
             </motion.div>
 
             {/* About Content */}
@@ -847,7 +908,7 @@ export default function Home() {
                 className="group absolute top-0 right-0 w-[75%] h-[45%] rounded-3xl shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] overflow-hidden transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-black/[0.04] hover:border-black/[0.08]"
               >
                 <img 
-                  src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=1000&fit=crop&q=80" 
+                  src={homepageSettings?.ourApproachImage1 || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=1000&fit=crop&q=80"} 
                   alt="Portuguese architecture and real estate"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-800 ease-out group-hover:scale-[1.08]"
                 />
@@ -872,7 +933,7 @@ export default function Home() {
                 className="group absolute bottom-0 left-0 w-[75%] h-[45%] rounded-3xl shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] overflow-hidden transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-black/[0.04] hover:border-black/[0.08]"
               >
                 <img 
-                  src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=1000&fit=crop&q=80" 
+                  src={homepageSettings?.ourApproachImage2 || "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=1000&fit=crop&q=80"} 
                   alt="Luxury real estate interior"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-800 ease-out group-hover:scale-[1.08]"
                 />

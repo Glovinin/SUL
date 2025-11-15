@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { 
   Plus, 
   Pencil, 
@@ -45,15 +46,31 @@ export default function PropertiesPage() {
   }
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this property?')) return
-
-    try {
-      await deleteProperty(id)
-      await loadProperties()
-    } catch (error) {
-      console.error('Error deleting property:', error)
-      alert('Failed to delete property')
-    }
+    toast('Tem certeza que deseja excluir esta propriedade?', {
+      description: 'Esta ação não pode ser desfeita.',
+      action: {
+        label: 'Excluir',
+        onClick: async () => {
+          try {
+            await deleteProperty(id)
+            await loadProperties()
+            toast.success('Propriedade excluída com sucesso!', {
+              description: 'A propriedade foi removida permanentemente.',
+            })
+          } catch (error) {
+            console.error('Error deleting property:', error)
+            toast.error('Erro ao excluir propriedade', {
+              description: 'Tente novamente ou verifique sua conexão.',
+            })
+          }
+        },
+      },
+      cancel: {
+        label: 'Cancelar',
+        onClick: () => {},
+      },
+      duration: 5000,
+    })
   }
 
   if (loading) {

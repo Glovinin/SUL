@@ -2,8 +2,8 @@
 "use client"
 
 import { useEffect, useState } from 'react'
-import { getProperties } from './admin-helpers'
-import { Property as AdminProperty } from './admin-types'
+import { getProperties, getHomepageSettings } from './admin-helpers'
+import { Property as AdminProperty, HomepageSettings } from './admin-types'
 
 // Convert admin property to display property format
 function convertToDisplayProperty(prop: AdminProperty): any {
@@ -83,6 +83,31 @@ export function useFeaturedProperties() {
     loading, 
     error 
   }
+}
+
+export function useHomepageSettings() {
+  const [settings, setSettings] = useState<HomepageSettings | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    async function loadSettings() {
+      try {
+        setLoading(true)
+        const data = await getHomepageSettings()
+        setSettings(data)
+      } catch (err) {
+        console.error('Error loading homepage settings:', err)
+        setError('Failed to load homepage settings')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadSettings()
+  }, [])
+
+  return { settings, loading, error }
 }
 
 export function useProperty(id: string | null) {
