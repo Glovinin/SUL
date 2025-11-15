@@ -189,8 +189,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="SUL ESTATE" />
         <meta name="application-name" content="SUL ESTATE" />
         
-        {/* Preload crítico para otimizar carregamento inicial */}
-        <link rel="preload" href="/favicon.png" as="image" type="image/png" />
+        {/* Preload crítico para otimizar carregamento inicial - removido preload do favicon para evitar warning */}
         <link rel="preconnect" href="https://my.spline.design" />
         <link rel="dns-prefetch" href="https://my.spline.design" />
         {/* Firebase Storage preconnect for faster video/image loading */}

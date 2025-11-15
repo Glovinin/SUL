@@ -44,7 +44,17 @@ export default function AdminLayout({
       return
     }
 
-    const unsubscribe = auth?.onAuthStateChanged((user) => {
+    if (!auth) {
+      // If auth is not initialized, wait a bit and try again
+      const timer = setTimeout(() => {
+        if (!auth) {
+          router.push('/login')
+        }
+      }, 1000)
+      return () => clearTimeout(timer)
+    }
+
+    const unsubscribe = auth.onAuthStateChanged((user) => {
       if (!user) {
         router.push('/login')
       } else {
@@ -52,15 +62,24 @@ export default function AdminLayout({
       }
     })
 
-    return () => unsubscribe?.()
+    return () => {
+      if (unsubscribe) {
+        unsubscribe()
+      }
+    }
   }, [router, pathname])
 
   const handleLogout = async () => {
     try {
-      await signOut(auth!)
+      if (!auth) {
+        router.push('/login')
+        return
+      }
+      await signOut(auth)
       router.push('/login')
     } catch (error) {
       console.error('Error signing out:', error)
+      router.push('/login')
     }
   }
 

@@ -27,20 +27,40 @@ function LoginForm() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [successMessage, setSuccessMessage] = useState('')
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!mounted) return
+
     // Check for registration success message
-    if (searchParams.get('registered') === 'true') {
-      setSuccessMessage('Account created successfully! Please sign in.')
+    try {
+      if (searchParams?.get('registered') === 'true') {
+        setSuccessMessage('Account created successfully! Please sign in.')
+      }
+    } catch (e) {
+      // Ignore searchParams errors
     }
 
-    const unsubscribe = auth?.onAuthStateChanged((user) => {
+    if (!auth) {
+      return
+    }
+
+    const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         router.push('/admin')
       }
     })
-    return () => unsubscribe?.()
-  }, [router, searchParams])
+    
+    return () => {
+      if (unsubscribe) {
+        unsubscribe()
+      }
+    }
+  }, [router, searchParams, mounted])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -48,17 +68,43 @@ function LoginForm() {
     setLoading(true)
 
     try {
+      if (!mounted) {
+        throw new Error('Please wait for the page to load')
+      }
+
       if (!auth) {
-        throw new Error('Firebase auth not initialized')
+        throw new Error('Firebase auth not initialized. Please refresh the page.')
       }
       
       await signInWithEmailAndPassword(auth, email, password)
       router.push('/admin')
     } catch (err: any) {
-      setError(err.message || 'Failed to sign in. Please check your credentials.')
+      console.error('Login error:', err)
+      const errorMessage = err.code === 'auth/user-not-found' 
+        ? 'User not found. Please check your email.'
+        : err.code === 'auth/wrong-password'
+        ? 'Incorrect password. Please try again.'
+        : err.code === 'auth/invalid-email'
+        ? 'Invalid email address.'
+        : err.code === 'auth/too-many-requests'
+        ? 'Too many failed attempts. Please try again later.'
+        : err.message || 'Failed to sign in. Please check your credentials.'
+      
+      setError(errorMessage)
     } finally {
       setLoading(false)
     }
+  }
+
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto mb-4"></div>
+          <p className="text-black/60">Loading...</p>
+        </div>
+      </div>
+    )
   }
 
   return (

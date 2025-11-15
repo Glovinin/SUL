@@ -14,12 +14,22 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "1:903719442990:web:10337e90c801746b28ddbf"
 }
 
-const app = typeof window !== 'undefined' && !getApps().length 
-  ? initializeApp(firebaseConfig) 
-  : getApps()[0]
+// Initialize Firebase only on client side
+let app: any = null
+let auth: any = null
+let db: any = null
+let storage: any = null
 
-const auth = typeof window !== 'undefined' && app ? getAuth(app) : undefined
-const db = typeof window !== 'undefined' && app ? getFirestore(app) : undefined
-const storage = typeof window !== 'undefined' && app ? getStorage(app) : undefined
+if (typeof window !== 'undefined') {
+  if (!getApps().length) {
+    app = initializeApp(firebaseConfig)
+  } else {
+    app = getApps()[0]
+  }
+  
+  auth = getAuth(app)
+  db = getFirestore(app)
+  storage = getStorage(app)
+}
 
 export { auth, db, storage, app }
