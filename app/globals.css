@@ -542,22 +542,30 @@
     }
   }
 
-  /* Optimize Framer Motion animations on iOS */
-  @supports (-webkit-touch-callout: none) {
-    /* iOS Safari specific optimizations */
+  /* Force GPU acceleration for all motion components on mobile */
+  @media (max-width: 768px) {
+    [data-framer-component],
     [data-framer-motion-component] {
-      -webkit-transform: translateZ(0);
-      transform: translateZ(0);
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
-      will-change: transform, opacity;
+      -webkit-transform: translateZ(0) !important;
+      transform: translateZ(0) !important;
+      -webkit-backface-visibility: hidden !important;
+      backface-visibility: hidden !important;
+      will-change: transform, opacity !important;
     }
+  }
 
-    /* Reduce animation complexity on mobile */
+  /* iOS Safari specific optimizations */
+  @supports (-webkit-touch-callout: none) {
     @media (max-width: 768px) {
+      [data-framer-component],
       [data-framer-motion-component] {
-        transform-style: preserve-3d;
-        -webkit-transform-style: preserve-3d;
+        -webkit-transform: translateZ(0) !important;
+        transform: translateZ(0) !important;
+        -webkit-backface-visibility: hidden !important;
+        backface-visibility: hidden !important;
+        will-change: transform, opacity !important;
+        transform-style: preserve-3d !important;
+        -webkit-transform-style: preserve-3d !important;
       }
     }
   }

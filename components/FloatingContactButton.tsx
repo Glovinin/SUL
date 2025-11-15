@@ -15,6 +15,12 @@ interface Message {
 
 export default function FloatingContactButton() {
   const pathname = usePathname()
+  
+  // Não renderizar o chatbot nas páginas do admin (ANTES dos hooks!)
+  if (pathname?.startsWith('/admin')) {
+    return null
+  }
+
   const [isOpen, setIsOpen] = useState(false)
   const [isMinimized, setIsMinimized] = useState(false)
   const [messages, setMessages] = useState<Message[]>([
@@ -30,11 +36,6 @@ export default function FloatingContactButton() {
   const [isMobile, setIsMobile] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
-
-  // Não renderizar o chatbot nas páginas do admin
-  if (pathname?.startsWith('/admin')) {
-    return null
-  }
 
   // Detect mobile
   useEffect(() => {

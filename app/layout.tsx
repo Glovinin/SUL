@@ -8,7 +8,6 @@ import { LoadingProvider } from '../contexts/loading-context'
 import MainContent from '../components/main-content'
 import { AudioController } from '../components/audio-controller'
 import FloatingContactButton from '../components/FloatingContactButton'
-import { MotionOptimizer } from '../components/MotionOptimizer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -184,7 +183,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt" suppressHydrationWarning>
-      <head>
+      <head suppressHydrationWarning>
         <meta name="theme-color" content="#2C5F7C" />
         <meta name="apple-mobile-web-app-title" content="SUL ESTATE" />
         <meta name="application-name" content="SUL ESTATE" />
@@ -195,16 +194,6 @@ export default function RootLayout({
         {/* Firebase Storage preconnect for faster video/image loading */}
         <link rel="preconnect" href="https://firebasestorage.googleapis.com" />
         <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />
-        
-        {/* Estilo inline para evitar flash escuro */}
-        <style dangerouslySetInnerHTML={{
-          __html: `
-            html, body {
-              background-color: #ffffff !important;
-              background: #ffffff !important;
-            }
-          `
-        }} />
         
         {/* Links de favicon para máxima compatibilidade */}
         <link rel="icon" href="/favicon.png" type="image/png" />
@@ -222,6 +211,7 @@ export default function RootLayout({
         
         {/* Structured Data (JSON-LD) para Google Rich Snippets */}
         <script
+          suppressHydrationWarning
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
@@ -290,6 +280,7 @@ export default function RootLayout({
         
         {/* Organization Schema for Brand Recognition */}
         <script
+          suppressHydrationWarning
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
@@ -337,6 +328,7 @@ export default function RootLayout({
         
         {/* Service Schema for SEO */}
         <script
+          suppressHydrationWarning
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
@@ -412,6 +404,7 @@ export default function RootLayout({
         
         {/* FAQ Schema for Rich Snippets */}
         <script
+          suppressHydrationWarning
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
@@ -472,7 +465,6 @@ export default function RootLayout({
         }}
       >
         <LoadingProvider>
-          <MotionOptimizer />
           <InitialLoading />
           <AudioController />
           <MainContent>
