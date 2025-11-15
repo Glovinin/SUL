@@ -174,9 +174,11 @@ export default function PropertyDetailPage() {
                 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setSelectedImage(index)}
-                className={`relative aspect-video rounded-[12px] md:rounded-[16px] overflow-hidden ${selectedImage === index ? 'ring-2 ring-black ring-offset-2 ring-offset-white' : 'opacity-60 hover:opacity-100'} transition-all duration-300 cursor-pointer`}
+                className={`relative aspect-video ${selectedImage === index ? 'ring-2 ring-black ring-offset-2 ring-offset-white' : 'opacity-60 hover:opacity-100'} transition-all duration-300 cursor-pointer`}
               >
-                <img src={img} alt={`Gallery ${index + 1}`} className="w-full h-full object-cover" />
+                <div className="w-full h-full rounded-[12px] md:rounded-[16px] overflow-hidden">
+                  <img src={img} alt={`Gallery ${index + 1}`} className="w-full h-full object-cover" />
+                </div>
               </motion.button>
             ))}
           </motion.div>
