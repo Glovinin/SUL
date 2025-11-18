@@ -378,7 +378,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
                   className="bg-white/10 backdrop-blur-md text-white hover:bg-white/15 border-0 hover:border-0 focus:border-0 focus-visible:border-0 active:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none px-5 py-2 rounded-full text-[13px] font-normal tracking-[-0.01em] transition-all duration-200"
                   style={{ outline: 'none' }}
                 >
-                  Get In Touch
+                  Contact Us
                 </Button>
               ) : (
                 <Button 
@@ -386,7 +386,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
                   className="bg-black text-white hover:bg-black/90 border-0 hover:border-0 focus:border-0 focus-visible:border-0 active:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none px-5 py-2 rounded-full text-[13px] font-normal tracking-[-0.01em] transition-all duration-200 shadow-sm hover:shadow-md"
                   style={{ border: 'none', outline: 'none' }}
                 >
-                  Get In Touch
+                  Contact Us
                 </Button>
               )}
             </Link>
