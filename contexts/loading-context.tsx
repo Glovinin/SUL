@@ -32,13 +32,10 @@ export function LoadingProvider({ children }: { children: ReactNode }) {
   }, [])
 
   // Controlar loading inicial (primeira vez que abre o site)
+  // Agora o loading é controlado pelo initial-loading.tsx quando o vídeo carregar
   useEffect(() => {
     setMounted(true)
-    const timer = setTimeout(() => {
-      setIsInitialLoading(false)
-    }, isMobile ? 1500 : 2500) // Mobile: 1.5s, Desktop: 2.5s
-
-    return () => clearTimeout(timer)
+    // Removido o timer automático - o loading será escondido quando o vídeo carregar
   }, [isMobile])
 
   // Controlar loading entre páginas - DESABILITADO PERMANENTEMENTE

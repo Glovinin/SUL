@@ -19,6 +19,7 @@ import {
   Lightbulb
 } from '@phosphor-icons/react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 // Detailed services data
 const detailedServices = [
@@ -118,6 +119,8 @@ const whyChooseUs = [
 ]
 
 export default function ServicesPage() {
+  const router = useRouter()
+  
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
@@ -316,39 +319,44 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 md:py-32 bg-black">
-        <div className="max-w-[1100px] mx-auto px-6 md:px-12 text-center">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <h2 className="text-[36px] md:text-[52px] font-semibold text-white mb-6 tracking-[-0.02em] leading-[1.1]">
-              Ready to Begin Your Journey?
-            </h2>
-            <p className="text-[17px] md:text-[20px] font-normal text-white/80 mb-10 max-w-[700px] mx-auto leading-[1.6]">
-              Let's discuss how we can help you find and shape your ideal property in Portugal
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button 
-                className="bg-white text-black hover:bg-white/90 border-0 px-8 py-3 rounded-full text-[15px] font-semibold transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2"
-              >
-                Schedule a Call
-                <ArrowRight className="w-4 h-4" weight="bold" />
-              </Button>
-              <Link href="/">
-                <Button 
-                  variant="ghost"
-                  className="bg-white/10 backdrop-blur-md text-white hover:bg-white/20 border border-white/20 px-8 py-3 rounded-full text-[15px] font-semibold transition-all duration-200"
-                >
-                  Back to Home
-                </Button>
-              </Link>
-            </div>
-          </motion.div>
-        </div>
+      {/* Call to Action Section - Apple Style */}
+      <section className="py-32 md:py-40 bg-black">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-[900px] mx-auto px-6 md:px-12 text-center"
+        >
+          <h2 className="text-[40px] md:text-[56px] font-semibold text-white mb-8 tracking-[-0.02em] leading-[1.15]">
+            Every search is unique.
+          </h2>
+          <p className="text-[17px] md:text-[21px] font-normal text-white/80 mb-12 max-w-[640px] mx-auto leading-[1.5]">
+            Share your vision — we'll curate a personalized selection for you.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+            <Button 
+              onClick={() => router.push('/properties')}
+              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 min-w-[200px] shadow-sm hover:shadow-md"
+            >
+              Start your search
+            </Button>
+            <Button 
+              onClick={() => window.open('https://calendly.com/jules-portugal/45min?month=2025-11', '_blank')}
+              className="bg-white/10 text-white hover:bg-white/20 border border-white/20 hover:border-white/30 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 min-w-[200px]"
+            >
+              Book a Free Call
+            </Button>
+          </div>
+          <div className="pt-8 border-t border-white/10">
+            <Button 
+              onClick={() => router.push('/contact?action=sell')}
+              className="bg-transparent text-white hover:bg-white/10 border border-white/30 hover:border-white/40 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200"
+            >
+              SELL WITH US — Tell us about your property
+            </Button>
+          </div>
+        </motion.div>
       </section>
 
       {/* Footer */}

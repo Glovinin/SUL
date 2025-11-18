@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 import { Button } from '../components/ui/button'
+import { NumberTicker } from '../components/ui/number-ticker'
 import { GridPattern } from '../components/ui/grid-pattern'
 import { NavBar } from '../components/navbar'
 import { Footer } from '../components/Footer'
@@ -13,14 +14,93 @@ import { formatPrice } from '../lib/format-price'
 import { useLoading } from '../contexts/loading-context'
 import { 
   ArrowRight,
+  Buildings,
+  MagnifyingGlass,
+  Eye,
+  Wallet,
+  GearSix,
   Bed,
   Bathtub,
   ArrowsOut,
   User,
+  Bank,
+  Sparkle,
+  PaintBrush,
+  HardHat,
+  Scales,
+  Palette,
+  Briefcase,
+  CaretDown,
   Star
 } from '@phosphor-icons/react'
 
+// Services data
+const services = [
+  {
+    icon: Buildings,
+    title: 'Strategy & Advisory',
+    description: 'Strategic guidance for property acquisition and investment decisions.'
+  },
+  {
+    icon: MagnifyingGlass,
+    title: 'Property Search',
+    description: 'Curated selection of premium properties tailored to your vision.'
+  },
+  {
+    icon: Eye,
+    title: 'Project Supervision',
+    description: 'Oversight and management of development projects from concept to completion.'
+  },
+  {
+    icon: Wallet,
+    title: 'Financing',
+    description: 'Expert assistance in securing optimal financing solutions.'
+  },
+  {
+    icon: GearSix,
+    title: 'Property Management',
+    description: 'Comprehensive management services for your real estate portfolio.'
+  }
+]
+
 // Featured projects will be loaded from Firebase
+
+// Blog posts
+const blogPosts = [
+  {
+    id: 1,
+    title: 'High-end properties',
+    subtitle: 'Luxury homebuyers and sellers are navigating changing market conditions',
+    image: '/images/blog-1.jpg',
+    readTime: '7 min read',
+    author: {
+      name: 'Vincent Santos',
+      role: 'Real Estate Expert'
+    }
+  },
+  {
+    id: 2,
+    title: 'Investment trends 2024',
+    subtitle: 'Key insights for property investment in Portugal\'s prime markets',
+    image: '/images/blog-2.jpg',
+    readTime: '5 min read',
+    author: {
+      name: 'Ana Silva',
+      role: 'Market Analyst'
+    }
+  },
+  {
+    id: 3,
+    title: 'Coastal living guide',
+    subtitle: 'Discovering the perfect beachfront property in Portugal',
+    image: '/images/blog-3.jpg',
+    readTime: '6 min read',
+    author: {
+      name: 'João Costa',
+      role: 'Property Consultant'
+    }
+  }
+]
 
 export default function Home() {
   const router = useRouter()
@@ -50,6 +130,9 @@ export default function Home() {
       amount: isMobile ? 0.2 : undefined
     }
   })
+  const [propertyType, setPropertyType] = useState('')
+  const [location, setLocation] = useState('')
+  const [priceRange, setPriceRange] = useState('')
   const videoRef = React.useRef<HTMLVideoElement>(null)
   const [videoLoaded, setVideoLoaded] = useState(false)
   const [videoError, setVideoError] = useState(false)
@@ -75,6 +158,10 @@ export default function Home() {
     }
   }, [isInitialLoading])
 
+  // Get unique types and locations from actual properties
+  const uniqueTypes = Array.from(new Set(allProperties.map(p => p.type).filter(Boolean))).sort()
+  const uniqueLocations = Array.from(new Set(allProperties.map(p => p.location).filter(Boolean))).sort()
+  
   // Use homepage settings video or fallback to default
   const heroVideo = homepageSettings?.heroVideo || '/videos/video.mp4'
   const heroVideoPoster = homepageSettings?.heroVideoPoster || '/images/hero-poster.jpg'
@@ -144,6 +231,17 @@ export default function Home() {
       video.removeEventListener('error', handleError)
     }
   }, [heroVideo, videoLoaded])
+  
+  // Handle property search
+  const handlePropertySearch = () => {
+    const params = new URLSearchParams()
+    if (propertyType) params.append('type', propertyType)
+    if (location) params.append('location', location)
+    if (priceRange) params.append('price', priceRange)
+    
+    const queryString = params.toString()
+    router.push(`/properties${queryString ? `?${queryString}` : ''}`)
+  }
 
   return (
     <AnimatePresence mode="wait">
@@ -263,6 +361,125 @@ export default function Home() {
             >
               SUL is an independent boutique real estate advisory, offering bespoke guidance in property acquisition, development, and management across Portugal. We assist international clients in finding and shaping their ideal home or investment — from strategic sourcing to full project coordination and long-term value enhancement.
             </motion.p>
+
+            {/* Modern Filter/Quick Search - Integrated with Action */}
+            <motion.div
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.7, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="max-w-[1000] mx-auto mb-10 transform-gpu"
+            >
+              <div className="bg-white/10 backdrop-blur-2xl rounded-[28px] p-4 border border-white/20 shadow-2xl transform-gpu isolate">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
+                  {/* Property Type Filter */}
+                  <div className="relative group">
+                    <div className="absolute inset-0 bg-white/5 rounded-[20px] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <select 
+                      value={propertyType}
+                      onChange={(e) => setPropertyType(e.target.value)}
+                      style={{
+                        backgroundImage: 'none',
+                        borderRadius: '20px',
+                      }}
+                      className="relative w-full h-[52px] bg-white/[0.08] backdrop-blur-xl hover:bg-white/[0.12] text-white border border-white/20 hover:border-white/30 !rounded-[20px] px-5 text-[15px] font-medium appearance-none cursor-pointer transition-all duration-300 focus:outline-none focus:border-white/40 focus:bg-white/[0.15] focus:shadow-lg focus:shadow-white/5 transform-gpu">
+                      <option value="">Property Type</option>
+                      {uniqueTypes.length > 0 ? (
+                        uniqueTypes.map((type) => (
+                          <option key={type} value={type}>{type}</option>
+                        ))
+                      ) : (
+                        <>
+                          <option value="Apartment">Apartment</option>
+                          <option value="Villa">Villa</option>
+                          <option value="House">House</option>
+                          <option value="Studio">Studio</option>
+                          <option value="Penthouse">Penthouse</option>
+                          <option value="Estate">Estate</option>
+                          <option value="Townhouse">Townhouse</option>
+                        </>
+                      )}
+                    </select>
+                    <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none transition-transform duration-300 group-hover:translate-y-[-10px]">
+                      <CaretDown className="w-4 h-4 text-white/80 drop-shadow-sm" weight="bold" />
+                    </div>
+                  </div>
+
+                  {/* Location Filter */}
+                  <div className="relative group">
+                    <div className="absolute inset-0 bg-white/5 rounded-[20px] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <select 
+                      value={location}
+                      onChange={(e) => setLocation(e.target.value)}
+                      style={{
+                        backgroundImage: 'none',
+                        borderRadius: '20px',
+                      }}
+                      className="relative w-full h-[52px] bg-white/[0.08] backdrop-blur-xl hover:bg-white/[0.12] text-white border border-white/20 hover:border-white/30 !rounded-[20px] px-5 text-[15px] font-medium appearance-none cursor-pointer transition-all duration-300 focus:outline-none focus:border-white/40 focus:bg-white/[0.15] focus:shadow-lg focus:shadow-white/5 transform-gpu">
+                      <option value="">Location</option>
+                      {uniqueLocations.length > 0 ? (
+                        uniqueLocations.map((loc) => (
+                          <option key={loc} value={loc}>{loc}</option>
+                        ))
+                      ) : (
+                        <>
+                          <option value="Lisbon">Lisbon</option>
+                          <option value="Comporta">Comporta</option>
+                          <option value="Algarve">Algarve</option>
+                          <option value="Ericeira">Ericeira</option>
+                          <option value="Douro">Douro</option>
+                        </>
+                      )}
+                    </select>
+                    <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none transition-transform duration-300 group-hover:translate-y-[-10px]">
+                      <CaretDown className="w-4 h-4 text-white/80 drop-shadow-sm" weight="bold" />
+                    </div>
+                  </div>
+
+                  {/* Price Range Filter */}
+                  <div className="relative group">
+                    <div className="absolute inset-0 bg-white/5 rounded-[20px] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <select 
+                      value={priceRange}
+                      onChange={(e) => setPriceRange(e.target.value)}
+                      style={{
+                        backgroundImage: 'none',
+                        borderRadius: '20px',
+                      }}
+                      className="relative w-full h-[52px] bg-white/[0.08] backdrop-blur-xl hover:bg-white/[0.12] text-white border border-white/20 hover:border-white/30 !rounded-[20px] px-5 text-[15px] font-medium appearance-none cursor-pointer transition-all duration-300 focus:outline-none focus:border-white/40 focus:bg-white/[0.15] focus:shadow-lg focus:shadow-white/5 transform-gpu">
+                      <option value="">Price Range</option>
+                      <option value="500k-1m">€500K - €1M</option>
+                      <option value="1m-2m">€1M - €2M</option>
+                      <option value="2m-5m">€2M - €5M</option>
+                      <option value="5m+">€5M+</option>
+                    </select>
+                    <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none transition-transform duration-300 group-hover:translate-y-[-10px]">
+                      <CaretDown className="w-4 h-4 text-white/80 drop-shadow-sm" weight="bold" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Action Buttons Row */}
+                <div className="grid grid-cols-2 gap-3">
+                  {/* Buy Button */}
+                  <Button 
+                    onClick={handlePropertySearch}
+                    className="group h-[52px] bg-white text-black hover:bg-white/95 border-0 rounded-[20px] text-[15px] font-semibold transition-all duration-200 shadow-sm hover:shadow-md hover:scale-[1.01] flex items-center justify-center gap-2"
+                  >
+                    <Buildings className="w-[18px] h-[18px]" weight="bold" />
+                    Buy Property
+                  </Button>
+
+                  {/* Invest Button */}
+                  <Button 
+                    onClick={handlePropertySearch}
+                    className="group h-[52px] bg-black text-white hover:bg-black/90 border-0 rounded-[20px] text-[15px] font-semibold transition-all duration-200 shadow-sm hover:shadow-md hover:scale-[1.01] flex items-center justify-center gap-2"
+                  >
+                    <Wallet className="w-[18px] h-[18px]" weight="bold" />
+                    Invest Now
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
           </div>
 
         </div>
@@ -490,6 +707,130 @@ export default function Home() {
       {/* Divider */}
       <div className="border-t border-black/[0.03]"></div>
 
+      {/* About SUL Section - Modern Apple Style */}
+      <section id="about" className="relative py-32 md:py-40 bg-white overflow-visible">
+        {/* Static Grid Background */}
+        <GridPattern
+          width={40}
+          height={40}
+          className="fill-black/[0.03] stroke-black/[0.03]"
+        />
+        
+        <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible">
+          <div className="grid md:grid-cols-2 gap-12 md:gap-16 lg:gap-24 items-center overflow-visible px-0 py-4 md:p-8">
+            {/* Founder Image */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.96 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="group relative aspect-[4/5] w-full max-w-[500px] mx-auto bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl overflow-hidden shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-black/[0.04] hover:border-black/[0.08]"
+            >
+              {homepageSettings?.aboutUsImage ? (
+                <img 
+                  src={homepageSettings.aboutUsImage} 
+                  alt="About Us" 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <span className="text-[14px] font-medium text-black/20 group-hover:text-black/30 transition-colors duration-300">Vincent Santos</span>
+                </div>
+              )}
+            </motion.div>
+
+            {/* About Content */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="max-w-[560px]"
+            >
+              {/* Badge */}
+              <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
+                <span className="text-[12px] font-medium text-black/60">About Us</span>
+              </div>
+              
+              {/* Main Title */}
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                className="text-[40px] md:text-[52px] font-semibold text-black mb-8 tracking-[-0.02em] leading-[1.1]"
+              >
+                About SUL
+              </motion.h2>
+              
+              {/* Content Paragraphs */}
+              <div className="space-y-6 text-black/70 leading-[1.7]">
+                <motion.p 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                  className="text-[17px] md:text-[19px] font-normal"
+                >
+                  SUL represents a refined approach to real estate advisory, combining strategic insight with an unwavering commitment to excellence.
+                </motion.p>
+                
+                <motion.p 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  className="text-[17px] md:text-[19px] font-normal"
+                >
+                  We understand that each property search is unique, and we curate personalized selections that align with your vision and long-term objectives.
+                </motion.p>
+                
+                <motion.p 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  className="text-[17px] md:text-[19px] font-normal"
+                >
+                  With deep local knowledge and international perspective, we guide discerning clients through every stage of their real estate journey.
+                </motion.p>
+              </div>
+
+              {/* Stats Section - Moved from Hero */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                className="grid grid-cols-3 gap-4 md:gap-6 mt-12 pt-12 border-t border-black/10"
+              >
+                <div className="text-center">
+                  <div className="text-[32px] md:text-[40px] font-semibold text-black mb-1 tracking-tight">
+                    <NumberTicker value={15} startValue={0} className="text-black" />+
+                  </div>
+                  <div className="text-[12px] md:text-[13px] font-medium text-black/60">Years</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-[32px] md:text-[40px] font-semibold text-black mb-1 tracking-tight">
+                    €<NumberTicker value={500} startValue={0} className="text-black" />M+
+                  </div>
+                  <div className="text-[12px] md:text-[13px] font-medium text-black/60">Portfolio</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-[32px] md:text-[40px] font-semibold text-black mb-1 tracking-tight">
+                    <NumberTicker value={98} startValue={0} className="text-black" />%
+                  </div>
+                  <div className="text-[12px] md:text-[13px] font-medium text-black/60">Satisfaction</div>
+                </div>
+              </motion.div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Divider */}
+      <div className="border-t border-black/[0.03]"></div>
+
       {/* Approach Section - Storytelling with Elegant Animations */}
       <section id="approach" className="py-32 md:py-40 bg-gray-50 overflow-visible">
         <div className="max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible">
@@ -659,6 +1000,276 @@ export default function Home() {
                 />
               </motion.div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Divider */}
+      <div className="border-t border-black/[0.03]"></div>
+
+      {/* Services Section - Ultra Premium Apple/Tesla Style - Mobile First */}
+      <section id="services" className="relative py-20 md:py-32 lg:py-40 pb-32 md:pb-40 lg:pb-48 bg-gradient-to-b from-white via-gray-50/30 to-white overflow-visible">
+        {/* Static Grid Background */}
+        <GridPattern
+          width={40}
+          height={40}
+          className="fill-black/[0.02] stroke-black/[0.02]"
+        />
+        
+        {/* Subtle Background Pattern */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(0,0,0,0.015)_0%,transparent_50%)] pointer-events-none"></div>
+        
+        <div className="relative max-w-[1300px] mx-auto px-4 md:px-6 lg:px-12 overflow-visible pb-8 md:pb-16 lg:pb-20">
+          {/* Header Section - Ultra Clean - Mobile First */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center mb-16 md:mb-20 lg:mb-24"
+          >
+            {/* Badge Premium */}
+            <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
+              <span className="text-[12px] font-medium text-black/60">Services</span>
+            </div>
+
+            {/* Main Title - Apple Style - Mobile First */}
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[36px] sm:text-[44px] md:text-[56px] lg:text-[64px] font-semibold text-black mb-5 md:mb-6 lg:mb-8 tracking-[-0.03em] leading-[1.08] px-2"
+            >
+              Comprehensive<br className="hidden md:block" /> Solutions
+            </motion.h2>
+
+            {/* Subtitle - Elegant - Mobile First */}
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[16px] sm:text-[17px] md:text-[19px] lg:text-[21px] font-light text-black/75 max-w-[680px] mx-auto leading-[1.65] tracking-[-0.01em] px-4"
+            >
+              Tailored real estate services designed to meet your unique needs
+            </motion.p>
+          </motion.div>
+
+          {/* Services Grid - Premium Layout - Mobile First */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 lg:gap-8 px-0 py-4 md:p-8 lg:p-12 overflow-visible">
+            {services.slice(0, 3).map((service, index) => {
+              const Icon = service.icon
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  className="group relative bg-white rounded-[24px] md:rounded-[28px] p-7 sm:p-8 md:p-10 lg:p-12 cursor-default shadow-[0_2px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_40px_rgba(0,0,0,0.12)] border border-black/[0.04] hover:border-black/[0.08] transition-all duration-700 ease-out z-[1] hover:z-[10]"
+                >
+                  {/* Number Badge - Top Right - Hidden on Mobile */}
+                  <div className="hidden md:flex absolute top-6 lg:top-7 right-6 lg:right-7 w-7 h-7 lg:w-8 lg:h-8 rounded-full bg-black/[0.03] items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <span className="text-[10px] lg:text-[11px] font-semibold text-black/40">0{index + 1}</span>
+                  </div>
+
+                  {/* Gradient Shine Effect - Apple Style */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
+                    <div className="absolute inset-0 bg-gradient-to-br from-black/[0.01] via-transparent to-transparent"></div>
+                  </div>
+
+                  {/* Icon Container - Premium - Mobile First */}
+                  <div className="relative mb-6 md:mb-7 lg:mb-8">
+                    <div className="relative inline-flex items-center justify-center">
+                      {/* Icon Background with Gradient */}
+                      <div className="absolute inset-0 w-[60px] md:w-[68px] lg:w-[72px] h-[60px] md:h-[68px] lg:h-[72px] rounded-[18px] md:rounded-[20px] bg-gradient-to-br from-black/[0.04] to-black/[0.08] group-hover:from-black/[0.08] group-hover:to-black/[0.12] transition-all duration-500"></div>
+                      {/* Icon */}
+                      <div className="relative w-[60px] md:w-[68px] lg:w-[72px] h-[60px] md:h-[68px] lg:h-[72px] rounded-[18px] md:rounded-[20px] flex items-center justify-center">
+                        <Icon className="w-7 md:w-[30px] lg:w-8 h-7 md:h-[30px] lg:h-8 text-black/80 group-hover:text-black transition-colors duration-500" weight="duotone" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Content - Mobile First */}
+                  <div className="relative">
+                    {/* Title - Bold & Clean */}
+                    <h3 className="text-[20px] sm:text-[21px] md:text-[23px] lg:text-[24px] font-semibold text-black mb-3 md:mb-4 tracking-[-0.02em] leading-[1.25] group-hover:text-black/70 transition-colors duration-500">
+                      {service.title}
+                    </h3>
+
+                    {/* Description - Light & Elegant - Always Visible */}
+                    <p className="text-[14px] sm:text-[15px] md:text-[15px] lg:text-[16px] font-normal text-black/60 leading-[1.65] md:leading-[1.7] tracking-[-0.01em]">
+                      {service.description}
+                    </p>
+                  </div>
+
+                  {/* Bottom Accent Line - Hidden on Mobile */}
+                  <div className="hidden md:block absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-black/[0.08] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                </motion.div>
+              )
+            })}
+          </div>
+
+          {/* Second Row - 2 Columns Centered - Premium - Mobile First */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 lg:gap-8 max-w-[920px] mx-auto overflow-visible px-0 py-4 md:p-8 lg:p-12">
+            {services.slice(3, 5).map((service, index) => {
+              const Icon = service.icon
+              return (
+                <motion.div
+                  key={index + 3}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7, delay: (index + 3) * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  className="group relative bg-white rounded-[24px] md:rounded-[28px] p-7 sm:p-8 md:p-10 lg:p-12 cursor-default shadow-[0_2px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_40px_rgba(0,0,0,0.12)] border border-black/[0.04] hover:border-black/[0.08] transition-all duration-700 ease-out z-[1] hover:z-[10]"
+                >
+                  {/* Number Badge - Top Right - Hidden on Mobile */}
+                  <div className="hidden md:flex absolute top-6 lg:top-7 right-6 lg:right-7 w-7 h-7 lg:w-8 lg:h-8 rounded-full bg-black/[0.03] items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <span className="text-[10px] lg:text-[11px] font-semibold text-black/40">0{index + 4}</span>
+                  </div>
+
+                  {/* Gradient Shine Effect - Apple Style */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
+                    <div className="absolute inset-0 bg-gradient-to-br from-black/[0.01] via-transparent to-transparent"></div>
+                  </div>
+
+                  {/* Icon Container - Premium - Mobile First */}
+                  <div className="relative mb-6 md:mb-7 lg:mb-8">
+                    <div className="relative inline-flex items-center justify-center">
+                      {/* Icon Background with Gradient */}
+                      <div className="absolute inset-0 w-[60px] md:w-[68px] lg:w-[72px] h-[60px] md:h-[68px] lg:h-[72px] rounded-[18px] md:rounded-[20px] bg-gradient-to-br from-black/[0.04] to-black/[0.08] group-hover:from-black/[0.08] group-hover:to-black/[0.12] transition-all duration-500"></div>
+                      {/* Icon */}
+                      <div className="relative w-[60px] md:w-[68px] lg:w-[72px] h-[60px] md:h-[68px] lg:h-[72px] rounded-[18px] md:rounded-[20px] flex items-center justify-center">
+                        <Icon className="w-7 md:w-[30px] lg:w-8 h-7 md:h-[30px] lg:h-8 text-black/80 group-hover:text-black transition-colors duration-500" weight="duotone" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Content - Mobile First */}
+                  <div className="relative">
+                    {/* Title - Bold & Clean */}
+                    <h3 className="text-[20px] sm:text-[21px] md:text-[23px] lg:text-[24px] font-semibold text-black mb-3 md:mb-4 tracking-[-0.02em] leading-[1.25] group-hover:text-black/70 transition-colors duration-500">
+                      {service.title}
+                    </h3>
+
+                    {/* Description - Light & Elegant - Always Visible */}
+                    <p className="text-[14px] sm:text-[15px] md:text-[15px] lg:text-[16px] font-normal text-black/60 leading-[1.65] md:leading-[1.7] tracking-[-0.01em]">
+                      {service.description}
+                    </p>
+                  </div>
+
+                  {/* Bottom Accent Line - Hidden on Mobile */}
+                  <div className="hidden md:block absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-black/[0.08] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                </motion.div>
+              )
+            })}
+          </div>
+
+          {/* View All Services Button */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center mt-12 md:mt-16"
+          >
+            <Link href="/services">
+              <Button 
+                className="bg-black text-white hover:bg-black/90 border-0 px-8 py-3 rounded-full text-[15px] font-semibold transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2 mx-auto"
+              >
+                View All Services
+                <ArrowRight className="w-4 h-4" weight="bold" />
+              </Button>
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Divider */}
+      <div className="border-t border-black/[0.03]"></div>
+
+      {/* Blog Section - Modern Insights */}
+      <section id="blog" className="py-32 md:py-40 bg-gray-50 overflow-visible">
+        <div className="max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible pb-8">
+          {/* Header Section */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col lg:flex-row items-start lg:items-end justify-between mb-16 gap-8"
+          >
+            <div className="max-w-[700px]">
+              {/* Badge */}
+              <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
+                <span className="text-[12px] font-medium text-black/60">Blog</span>
+              </div>
+              
+              {/* Main Title */}
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                className="text-[40px] md:text-[52px] font-semibold text-black mb-6 tracking-[-0.02em] leading-[1.1]"
+              >
+                Latest real estate insights
+              </motion.h2>
+            </div>
+            <Link href="/blog">
+              <Button 
+                className="bg-black text-white hover:bg-black/90 border-0 px-6 py-3 rounded-full text-[14px] font-medium transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2"
+              >
+                View all
+                <ArrowRight className="w-4 h-4" weight="bold" />
+              </Button>
+            </Link>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8 px-0 py-4 md:p-8 lg:p-12 overflow-visible">
+            {blogPosts.map((post, index) => (
+              <motion.div
+                key={post.id}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                className="bg-white rounded-3xl group cursor-pointer shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 z-[1] hover:z-[10]"
+              >
+                {/* Blog Image */}
+                <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
+                  {/* Read Time Badge */}
+                  <div className="absolute top-4 right-4 z-10 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full">
+                    <span className="text-[11px] font-medium text-black">{post.readTime}</span>
+                  </div>
+                  
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-500 bg-black/5"></div>
+                </div>
+                
+                {/* Blog Content */}
+                <div className="p-6 md:p-8">
+                  <h3 className="text-[19px] font-semibold text-black mb-3 leading-tight">
+                    {post.title}
+                  </h3>
+                  <p className="text-[15px] font-normal text-black/60 mb-6 leading-relaxed">
+                    {post.subtitle}
+                  </p>
+                  
+                  {/* Author Info */}
+                  <div className="flex items-center gap-3 pt-4 border-t border-black/5">
+                    <div className="w-10 h-10 rounded-full bg-black/5 flex items-center justify-center">
+                      <User className="w-5 h-5 text-black/40" weight="duotone" />
+                    </div>
+                    <div>
+                      <div className="text-[13px] font-medium text-black">{post.author.name}</div>
+                      <div className="text-[12px] font-normal text-black/50">{post.author.role}</div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>

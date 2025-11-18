@@ -7,6 +7,9 @@ import { GridPattern } from '../../components/ui/grid-pattern'
 import { NavBar } from '../../components/navbar'
 import { Footer } from '../../components/Footer'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { NumberTicker } from '../../components/ui/number-ticker'
+import { useHomepageSettings } from '../../lib/properties-client'
 import { 
   ArrowRight,
   User,
@@ -15,10 +18,16 @@ import {
   Handshake,
   Eye,
   Target,
-  CheckCircle
+  CheckCircle,
+  HardHat,
+  Scales,
+  Palette
 } from '@phosphor-icons/react'
 
 export default function AboutPage() {
+  const router = useRouter()
+  const { settings: homepageSettings } = useHomepageSettings()
+  
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
@@ -51,6 +60,130 @@ export default function AboutPage() {
               A premium, independent and selective structure based in Lisbon, dedicated to guiding international investors through refined and stable real estate projects in Portugal.
             </p>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Divider */}
+      <div className="border-t border-black/[0.03]"></div>
+
+      {/* About SUL Section - From Homepage */}
+      <section id="about" className="relative py-32 md:py-40 bg-white overflow-visible">
+        {/* Static Grid Background */}
+        <GridPattern
+          width={40}
+          height={40}
+          className="fill-black/[0.03] stroke-black/[0.03]"
+        />
+        
+        <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible">
+          <div className="grid md:grid-cols-2 gap-12 md:gap-16 lg:gap-24 items-center overflow-visible px-0 py-4 md:p-8">
+            {/* Founder Image */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.96 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="group relative aspect-[4/5] w-full max-w-[500px] mx-auto bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl overflow-hidden shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-black/[0.04] hover:border-black/[0.08]"
+            >
+              {homepageSettings?.aboutUsImage ? (
+                <img 
+                  src={homepageSettings.aboutUsImage} 
+                  alt="About Us" 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <span className="text-[14px] font-medium text-black/20 group-hover:text-black/30 transition-colors duration-300">Vincent Santos</span>
+                </div>
+              )}
+            </motion.div>
+
+            {/* About Content */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="max-w-[560px]"
+            >
+              {/* Badge */}
+              <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
+                <span className="text-[12px] font-medium text-black/60">About Us</span>
+              </div>
+              
+              {/* Main Title */}
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                className="text-[40px] md:text-[52px] font-semibold text-black mb-8 tracking-[-0.02em] leading-[1.1]"
+              >
+                About SUL
+              </motion.h2>
+              
+              {/* Content Paragraphs */}
+              <div className="space-y-6 text-black/70 leading-[1.7]">
+                <motion.p 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                  className="text-[17px] md:text-[19px] font-normal"
+                >
+                  SUL represents a refined approach to real estate advisory, combining strategic insight with an unwavering commitment to excellence.
+                </motion.p>
+                
+                <motion.p 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  className="text-[17px] md:text-[19px] font-normal"
+                >
+                  We understand that each property search is unique, and we curate personalized selections that align with your vision and long-term objectives.
+                </motion.p>
+                
+                <motion.p 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  className="text-[17px] md:text-[19px] font-normal"
+                >
+                  With deep local knowledge and international perspective, we guide discerning clients through every stage of their real estate journey.
+                </motion.p>
+              </div>
+
+              {/* Stats Section - Moved from Hero */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                className="grid grid-cols-3 gap-4 md:gap-6 mt-12 pt-12 border-t border-black/10"
+              >
+                <div className="text-center">
+                  <div className="text-[32px] md:text-[40px] font-semibold text-black mb-1 tracking-tight">
+                    <NumberTicker value={15} startValue={0} className="text-black" />+
+                  </div>
+                  <div className="text-[12px] md:text-[13px] font-medium text-black/60">Years</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-[32px] md:text-[40px] font-semibold text-black mb-1 tracking-tight">
+                    €<NumberTicker value={500} startValue={0} className="text-black" />M+
+                  </div>
+                  <div className="text-[12px] md:text-[13px] font-medium text-black/60">Portfolio</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-[32px] md:text-[40px] font-semibold text-black mb-1 tracking-tight">
+                    <NumberTicker value={98} startValue={0} className="text-black" />%
+                  </div>
+                  <div className="text-[12px] md:text-[13px] font-medium text-black/60">Satisfaction</div>
+                </div>
+              </motion.div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -369,71 +502,188 @@ export default function AboutPage() {
       {/* Divider */}
       <div className="border-t border-black/[0.03]"></div>
 
-      {/* CTA Section */}
-      <section className="py-24 md:py-32 bg-black">
-        <div className="max-w-[1100px] mx-auto px-6 md:px-12 text-center">
+      {/* Partners & Network Section - Premium Apple Style */}
+      <section id="partners" className="relative py-32 md:py-40 bg-white overflow-visible">
+        {/* Static Grid Background */}
+        <GridPattern
+          width={40}
+          height={40}
+          className="fill-black/[0.03] stroke-black/[0.03]"
+        />
+        
+        <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible">
+          {/* Header Section */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center mb-20"
           >
-            <motion.h2 
-              className="text-[36px] md:text-[52px] font-semibold text-white mb-6 tracking-[-0.02em] leading-[1.1]"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-            >
-              Ready to Start Your Journey?
-            </motion.h2>
-            <motion.p 
-              className="text-[17px] md:text-[20px] font-normal text-white/80 mb-10 max-w-[700px] mx-auto leading-[1.6]"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-            >
-              Let us guide you through Portugal's premium real estate market with precision, taste, and strategic vision.
-            </motion.p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/contact">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.4 }}
-                  whileHover={{ scale: 1.05, transition: { duration: 0.3 } }}
-                  whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
-                >
-                  <Button 
-                    className="bg-white text-black hover:bg-white/90 border-0 px-8 py-3 rounded-full text-[15px] font-semibold transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2"
-                  >
-                    Get In Touch
-                    <ArrowRight className="w-4 h-4" weight="bold" />
-                  </Button>
-                </motion.div>
-              </Link>
-              <Link href="/properties">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.5 }}
-                  whileHover={{ scale: 1.05, transition: { duration: 0.3 } }}
-                  whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
-                >
-                  <Button 
-                    variant="ghost"
-                    className="bg-white/10 text-white hover:bg-white/20 border border-white/20 hover:border-white/30 px-8 py-3 rounded-full text-[15px] font-semibold transition-all duration-200"
-                  >
-                    View Properties
-                  </Button>
-                </motion.div>
-              </Link>
+            {/* Badge */}
+            <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
+              <span className="text-[12px] font-medium text-black/60">Network</span>
             </div>
+            
+            {/* Main Title */}
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[40px] md:text-[56px] font-semibold text-black mb-8 tracking-[-0.02em] leading-[1.1] max-w-[900px] mx-auto"
+            >
+              A trusted ecosystem of excellence
+            </motion.h2>
+            
+            {/* Subtitle */}
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[17px] md:text-[21px] font-normal text-black/60 max-w-[760px] mx-auto leading-[1.6]"
+            >
+              We act as a bridge between foreign investors and the Portuguese reality, collaborating with carefully selected professionals
+            </motion.p>
+          </motion.div>
+
+          {/* Partners Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mb-16 overflow-visible px-0 py-4 md:p-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="group bg-white border border-black/[0.06] hover:border-black/[0.12] rounded-3xl p-8 text-center transition-all duration-300 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer hover:-translate-y-1 z-[1] hover:z-[10]"
+            >
+              <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-black/5 group-hover:bg-black/10 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
+                <HardHat className="w-10 h-10 text-black/70 group-hover:text-black transition-colors duration-300" weight="duotone" />
+              </div>
+              <h3 className="text-[18px] font-semibold text-black mb-3 tracking-tight group-hover:text-black/80 transition-colors duration-300">
+                Architects
+              </h3>
+              <p className="text-[14px] font-normal text-black/60 leading-[1.6]">
+                Award-winning designers creating timeless spaces
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="group bg-white border border-black/[0.06] hover:border-black/[0.12] rounded-3xl p-8 text-center transition-all duration-300 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer hover:-translate-y-1 z-[1] hover:z-[10]"
+            >
+              <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-black/5 group-hover:bg-black/10 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
+                <Scales className="w-10 h-10 text-black/70 group-hover:text-black transition-colors duration-300" weight="duotone" />
+              </div>
+              <h3 className="text-[18px] font-semibold text-black mb-3 tracking-tight group-hover:text-black/80 transition-colors duration-300">
+                Legal Advisors
+              </h3>
+              <p className="text-[14px] font-normal text-black/60 leading-[1.6]">
+                Expert lawyers ensuring secure transactions
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="group bg-white border border-black/[0.06] hover:border-black/[0.12] rounded-3xl p-8 text-center transition-all duration-300 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer hover:-translate-y-1 z-[1] hover:z-[10]"
+            >
+              <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-black/5 group-hover:bg-black/10 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
+                <Palette className="w-10 h-10 text-black/70 group-hover:text-black transition-colors duration-300" weight="duotone" />
+              </div>
+              <h3 className="text-[18px] font-semibold text-black mb-3 tracking-tight group-hover:text-black/80 transition-colors duration-300">
+                Designers
+              </h3>
+              <p className="text-[14px] font-normal text-black/60 leading-[1.6]">
+                Interior specialists crafting refined aesthetics
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="group bg-white border border-black/[0.06] hover:border-black/[0.12] rounded-3xl p-8 text-center transition-all duration-300 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer hover:-translate-y-1 z-[1] hover:z-[10]"
+            >
+              <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-black/5 group-hover:bg-black/10 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
+                <Briefcase className="w-10 h-10 text-black/70 group-hover:text-black transition-colors duration-300" weight="duotone" />
+              </div>
+              <h3 className="text-[18px] font-semibold text-black mb-3 tracking-tight group-hover:text-black/80 transition-colors duration-300">
+                Financial Advisors
+              </h3>
+              <p className="text-[14px] font-normal text-black/60 leading-[1.6]">
+                Strategic guidance for optimal financing
+              </p>
+            </motion.div>
+          </div>
+
+          {/* Values */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-wrap items-center justify-center gap-3 mt-8"
+          >
+            {['Quality', 'Discretion', 'Excellence'].map((value, index) => (
+              <span 
+                key={index}
+                className="px-5 py-2.5 bg-black/5 hover:bg-black/8 rounded-full text-[13px] font-medium text-black/70 transition-all duration-200"
+              >
+                {value}
+              </span>
+            ))}
           </motion.div>
         </div>
+      </section>
+
+      {/* Divider */}
+      <div className="border-t border-black/[0.03]"></div>
+
+      {/* Call to Action Section - Apple Style */}
+      <section className="py-32 md:py-40 bg-black">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-[900px] mx-auto px-6 md:px-12 text-center"
+        >
+          <h2 className="text-[40px] md:text-[56px] font-semibold text-white mb-8 tracking-[-0.02em] leading-[1.15]">
+            Every search is unique.
+          </h2>
+          <p className="text-[17px] md:text-[21px] font-normal text-white/80 mb-12 max-w-[640px] mx-auto leading-[1.5]">
+            Share your vision — we'll curate a personalized selection for you.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+            <Button 
+              onClick={() => router.push('/properties')}
+              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 min-w-[200px] shadow-sm hover:shadow-md"
+            >
+              Start your search
+            </Button>
+            <Button 
+              onClick={() => window.open('https://calendly.com/jules-portugal/45min?month=2025-11', '_blank')}
+              className="bg-white/10 text-white hover:bg-white/20 border border-white/20 hover:border-white/30 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 min-w-[200px]"
+            >
+              Book a Free Call
+            </Button>
+          </div>
+          <div className="pt-8 border-t border-white/10">
+            <Button 
+              onClick={() => router.push('/contact?action=sell')}
+              className="bg-transparent text-white hover:bg-white/10 border border-white/30 hover:border-white/40 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200"
+            >
+              SELL WITH US — Tell us about your property
+            </Button>
+          </div>
+        </motion.div>
       </section>
 
       {/* Footer */}

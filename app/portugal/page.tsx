@@ -2,12 +2,16 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
+import { Button } from '../../components/ui/button'
 import { GridPattern } from '../../components/ui/grid-pattern'
 import { NavBar } from '../../components/navbar'
 import { Footer } from '../../components/Footer'
+import { useRouter } from 'next/navigation'
 import { Bank, Sparkle, PaintBrush } from '@phosphor-icons/react'
 
 export default function PortugalPage() {
+  const router = useRouter()
+  
   const locations = [
     {
       name: 'Lisbon',
@@ -191,6 +195,49 @@ export default function PortugalPage() {
             ))}
           </div>
         </div>
+      </section>
+
+      {/* Divider */}
+      <div className="border-t border-black/[0.03]"></div>
+
+      {/* Call to Action Section - Apple Style */}
+      <section className="py-32 md:py-40 bg-black">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-[900px] mx-auto px-6 md:px-12 text-center"
+        >
+          <h2 className="text-[40px] md:text-[56px] font-semibold text-white mb-8 tracking-[-0.02em] leading-[1.15]">
+            Every search is unique.
+          </h2>
+          <p className="text-[17px] md:text-[21px] font-normal text-white/80 mb-12 max-w-[640px] mx-auto leading-[1.5]">
+            Share your vision — we'll curate a personalized selection for you.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+            <Button 
+              onClick={() => router.push('/properties')}
+              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 min-w-[200px] shadow-sm hover:shadow-md"
+            >
+              Start your search
+            </Button>
+            <Button 
+              onClick={() => window.open('https://calendly.com/jules-portugal/45min?month=2025-11', '_blank')}
+              className="bg-white/10 text-white hover:bg-white/20 border border-white/20 hover:border-white/30 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 min-w-[200px]"
+            >
+              Book a Free Call
+            </Button>
+          </div>
+          <div className="pt-8 border-t border-white/10">
+            <Button 
+              onClick={() => router.push('/contact?action=sell')}
+              className="bg-transparent text-white hover:bg-white/10 border border-white/30 hover:border-white/40 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200"
+            >
+              SELL WITH US — Tell us about your property
+            </Button>
+          </div>
+        </motion.div>
       </section>
 
       {/* Footer */}

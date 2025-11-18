@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import { Button } from './ui/button'
+import Link from 'next/link'
 import { 
   EnvelopeSimple,
   Phone as PhoneIcon,
@@ -22,6 +23,126 @@ export function Footer() {
   return (
     <footer id="contact" className="bg-black text-white py-24 md:py-32">
       <div className="max-w-[1300px] mx-auto px-6 md:px-12">
+        {/* Navigation Links */}
+        <div className="mb-20 pb-20 border-b border-white/10">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-12">
+            {/* Services */}
+            <div>
+              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-6">Services</h4>
+              <ul className="space-y-4">
+                <li>
+                  <Link href="/services" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
+                    Investment Strategy
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/services" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
+                    Property Sourcing
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/services" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
+                    Project Oversight
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/services" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
+                    Management
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* About Portugal */}
+            <div>
+              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-6">About Portugal</h4>
+              <ul className="space-y-4">
+                <li>
+                  <Link href="/portugal" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
+                    Why Portugal
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/portugal" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
+                    Regions
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/portugal" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
+                    Investment Guide
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* About */}
+            <div>
+              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-6">About</h4>
+              <ul className="space-y-4">
+                <li>
+                  <Link href="/about" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
+                    Our Story
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/about" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
+                    Approach
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/contact" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
+                    Contact
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Collection */}
+            <div>
+              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-6">Collection</h4>
+              <ul className="space-y-4">
+                <li>
+                  <Link href="/properties" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
+                    All Properties
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/properties" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
+                    Featured
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/properties" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
+                    New Listings
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Blog */}
+            <div>
+              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-6">Blog</h4>
+              <ul className="space-y-4">
+                <li>
+                  <Link href="/blog" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
+                    Latest Posts
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/blog" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
+                    Market Insights
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/blog" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
+                    Guides
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
         <div className="grid md:grid-cols-2 gap-16 md:gap-24 mb-20">
           {/* Contact Info */}
           <div>
