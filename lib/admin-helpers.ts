@@ -16,7 +16,7 @@ import {
 } from 'firebase/firestore'
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
 import { db, storage } from './firebase'
-import { Property, BlogPost, Lead, HomepageSettings } from './admin-types'
+import { Property, BlogPost, Lead, HomepageSettings, PortfolioItem } from './admin-types'
 
 // Collections
 const PROPERTIES_COLLECTION = 'properties'
@@ -24,6 +24,7 @@ const BLOG_COLLECTION = 'blog'
 const LEADS_COLLECTION = 'leads'
 const ANALYTICS_COLLECTION = 'analytics'
 const HOMEPAGE_COLLECTION = 'homepage'
+const PORTFOLIO_COLLECTION = 'portfolio'
 
 // ==================== PROPERTIES ====================
 
@@ -273,6 +274,76 @@ export async function uploadHomepageImage(file: File, imageType: 'aboutUs' | 'he
   if (!storage) throw new Error('Storage not initialized')
   
   const storageRef = ref(storage, `homepage/${imageType}_${Date.now()}_${file.name}`)
+  await uploadBytes(storageRef, file)
+  return await getDownloadURL(storageRef)
+}
+
+// ==================== PORTFOLIO ====================
+
+export async function getPortfolioItems(): Promise<PortfolioItem[]> {
+  if (!db) throw new Error('Firestore not initialized')
+  
+  const q = query(collection(db, PORTFOLIO_COLLECTION), orderBy('createdAt', 'desc'))
+  const snapshot = await getDocs(q)
+  
+  return snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+    createdAt: doc.data().createdAt?.toDate(),
+    updatedAt: doc.data().updatedAt?.toDate(),
+  })) as PortfolioItem[]
+}
+
+export async function getPortfolioItem(id: string): Promise<PortfolioItem | null> {
+  if (!db) throw new Error('Firestore not initialized')
+  
+  const docRef = doc(db, PORTFOLIO_COLLECTION, id)
+  const docSnap = await getDoc(docRef)
+  
+  if (!docSnap.exists()) return null
+  
+  return {
+    id: docSnap.id,
+    ...docSnap.data(),
+    createdAt: docSnap.data().createdAt?.toDate(),
+    updatedAt: docSnap.data().updatedAt?.toDate(),
+  } as PortfolioItem
+}
+
+export async function createPortfolioItem(portfolioItem: Omit<PortfolioItem, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
+  if (!db) throw new Error('Firestore not initialized')
+  
+  const docRef = await addDoc(collection(db, PORTFOLIO_COLLECTION), {
+    ...portfolioItem,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  })
+  
+  return docRef.id
+}
+
+export async function updatePortfolioItem(id: string, portfolioItem: Partial<PortfolioItem>): Promise<void> {
+  if (!db) throw new Error('Firestore not initialized')
+  
+  const docRef = doc(db, PORTFOLIO_COLLECTION, id)
+  await updateDoc(docRef, {
+    ...portfolioItem,
+    updatedAt: serverTimestamp(),
+  })
+}
+
+export async function deletePortfolioItem(id: string): Promise<void> {
+  if (!db) throw new Error('Firestore not initialized')
+  
+  const docRef = doc(db, PORTFOLIO_COLLECTION, id)
+  await deleteDoc(docRef)
+}
+
+// Upload portfolio image
+export async function uploadPortfolioImage(file: File, portfolioId: string): Promise<string> {
+  if (!storage) throw new Error('Storage not initialized')
+  
+  const storageRef = ref(storage, `portfolio/${portfolioId}/${Date.now()}_${file.name}`)
   await uploadBytes(storageRef, file)
   return await getDownloadURL(storageRef)
 }

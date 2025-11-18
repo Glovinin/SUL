@@ -13,7 +13,8 @@ import {
   X,
   List,
   House,
-  Clock
+  Clock,
+  Briefcase
 } from '@phosphor-icons/react'
 import Link from 'next/link'
 import { Toaster } from 'sonner'
@@ -95,6 +96,12 @@ export default function AdminLayout({
       label: 'Properties',
       href: '/admin/properties',
       active: pathname?.startsWith('/admin/properties'),
+    },
+    {
+      icon: Briefcase,
+      label: 'Portfolio',
+      href: '/admin/portfolio',
+      active: pathname?.startsWith('/admin/portfolio'),
     },
     {
       icon: Article,

@@ -93,6 +93,7 @@ export function MobileMenu({ isOpen, onClose, currentLang, setCurrentLang }: Mob
     { href: '/portugal', label: 'About Portugal' },
     { href: '/about', label: 'About' },
     { href: '/properties', label: 'Collection' },
+    { href: '/portfolio', label: 'Portfolio' },
     { href: '/blog', label: 'Blog' }
   ]
 

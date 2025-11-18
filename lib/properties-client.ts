@@ -2,8 +2,8 @@
 "use client"
 
 import { useEffect, useState } from 'react'
-import { getProperties, getHomepageSettings } from './admin-helpers'
-import { Property as AdminProperty, HomepageSettings } from './admin-types'
+import { getProperties, getHomepageSettings, getPortfolioItems, getPortfolioItem } from './admin-helpers'
+import { Property as AdminProperty, HomepageSettings, PortfolioItem as AdminPortfolioItem } from './admin-types'
 
 // Convert admin property to display property format
 function convertToDisplayProperty(prop: AdminProperty): any {
@@ -144,5 +144,99 @@ export function useProperty(id: string | null) {
   }, [id])
 
   return { property, loading, error }
+}
+
+// Convert admin portfolio item to display format
+function convertToDisplayPortfolioItem(item: AdminPortfolioItem): any {
+  const gallery = item.images && item.images.length > 0 
+    ? item.images 
+    : item.image 
+      ? [item.image] 
+      : ['/images/placeholder.jpg']
+
+  return {
+    id: item.id || '',
+    title: item.title,
+    location: item.location,
+    price: item.price,
+    beds: item.beds || '0',
+    baths: item.baths || '0',
+    sqft: item.area || '0',
+    image: item.image || gallery[0] || '/images/placeholder.jpg',
+    gallery: gallery,
+    tag: item.tag || 'Sold',
+    type: item.type || 'Property',
+    featured: item.featured || false,
+    status: 'Sold',
+    description: item.longDescription || item.description || '',
+    longDescription: item.longDescription || item.description || '',
+    features: item.features || [],
+    amenities: item.amenities || [],
+    yearBuilt: item.yearBuilt || new Date().getFullYear().toString(),
+    soldDate: item.soldDate || '',
+    highlights: [],
+  }
+}
+
+export function usePortfolio() {
+  const [portfolioItems, setPortfolioItems] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    async function loadPortfolio() {
+      try {
+        setLoading(true)
+        const data = await getPortfolioItems()
+        const converted = data.map(convertToDisplayPortfolioItem)
+        setPortfolioItems(converted)
+      } catch (err: any) {
+        console.error('Error loading portfolio:', err)
+        setError(err.message || 'Failed to load portfolio')
+        setPortfolioItems([])
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadPortfolio()
+  }, [])
+
+  return { portfolioItems, loading, error }
+}
+
+export function usePortfolioItem(id: string | null) {
+  const [portfolioItem, setPortfolioItem] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!id) {
+      setLoading(false)
+      return
+    }
+
+    async function loadPortfolioItem() {
+      try {
+        setLoading(true)
+        const data = await getPortfolioItem(id)
+        if (data) {
+          setPortfolioItem(convertToDisplayPortfolioItem(data))
+        } else {
+          setPortfolioItem(null)
+        }
+      } catch (err: any) {
+        console.error('Error loading portfolio item:', err)
+        setError(err.message || 'Failed to load portfolio item')
+        setPortfolioItem(null)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadPortfolioItem()
+  }, [id])
+
+  return { portfolioItem, loading, error }
 }
 

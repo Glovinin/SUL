@@ -71,4 +71,27 @@ export interface HomepageSettings {
   updatedAt?: Date
 }
 
+export interface PortfolioItem {
+  id?: string
+  title: string
+  location: string
+  type: string
+  price: string
+  beds: string
+  baths: string
+  area: string
+  tag: string
+  image: string
+  images?: string[]
+  description?: string
+  longDescription?: string
+  features?: string[]
+  amenities?: string[]
+  yearBuilt?: string
+  soldDate?: string
+  featured?: boolean
+  createdAt?: Date
+  updatedAt?: Date
+}
+
 

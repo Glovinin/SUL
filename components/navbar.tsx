@@ -192,9 +192,34 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
                     ? 'text-black'
                     : 'text-black/60 hover:text-black'
               }`}>
-                About
+                About Sul
               </span>
               {isActiveLink('/about') && (
+                <motion.div
+                  layoutId="activeIndicator"
+                  className={`absolute -bottom-1 left-0 right-0 h-[1.5px] ${
+                    useTransparentStyle ? 'bg-white' : 'bg-black'
+                  }`}
+                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                />
+              )}
+            </Link>
+            <Link 
+              href="/portfolio" 
+              className="relative group"
+            >
+              <span className={`text-[14px] md:text-[15px] font-normal tracking-[-0.01em] transition-all duration-300 ${
+                useTransparentStyle
+                  ? isActiveLink('/portfolio')
+                    ? 'text-white'
+                    : 'text-white/70 hover:text-white'
+                  : isActiveLink('/portfolio')
+                    ? 'text-black'
+                    : 'text-black/60 hover:text-black'
+              }`}>
+                Portfolio
+              </span>
+              {isActiveLink('/portfolio') && (
                 <motion.div
                   layoutId="activeIndicator"
                   className={`absolute -bottom-1 left-0 right-0 h-[1.5px] ${
@@ -217,7 +242,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
                     ? 'text-black'
                     : 'text-black/60 hover:text-black'
               }`}>
-                Collection
+                Properties
               </span>
               {isActiveLink('/properties') && (
                 <motion.div
