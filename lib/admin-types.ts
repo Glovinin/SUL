@@ -68,8 +68,6 @@ export interface HomepageSettings {
   heroVideo?: string
   heroVideoPoster?: string
   aboutUsImage?: string
-  ourApproachImage1?: string
-  ourApproachImage2?: string
   updatedAt?: Date
 }
 

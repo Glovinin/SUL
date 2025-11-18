@@ -269,7 +269,7 @@ export async function uploadHomepageVideo(file: File): Promise<string> {
 }
 
 // Upload homepage image
-export async function uploadHomepageImage(file: File, imageType: 'aboutUs' | 'ourApproach1' | 'ourApproach2' | 'heroPoster'): Promise<string> {
+export async function uploadHomepageImage(file: File, imageType: 'aboutUs' | 'heroPoster'): Promise<string> {
   if (!storage) throw new Error('Storage not initialized')
   
   const storageRef = ref(storage, `homepage/${imageType}_${Date.now()}_${file.name}`)

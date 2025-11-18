@@ -253,16 +253,6 @@ export default function Home() {
             >
               We assist international clients finding their ideal home or investment.
             </motion.p>
-
-            {/* New SUL Description */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[15px] md:text-[16px] font-normal text-white/80 mb-10 leading-[1.7] max-w-[800px] mx-auto"
-            >
-              SUL is an independent boutique real estate advisory, offering bespoke guidance in property acquisition, development, and management across Portugal. We assist international clients in finding and shaping their ideal home or investment — from strategic sourcing to full project coordination and long-term value enhancement.
-            </motion.p>
           </div>
 
         </div>
@@ -290,6 +280,45 @@ export default function Home() {
 
       {/* Divider - Smooth Transition */}
       <div className="border-t border-black/[0.03] bg-white"></div>
+
+      {/* About SUL Section - Premium Design */}
+      <section className="relative py-32 md:py-40 bg-gray-50 overflow-visible">
+        {/* Static Grid Background */}
+        <GridPattern
+          width={40}
+          height={40}
+          className="fill-black/[0.02] stroke-black/[0.02]"
+        />
+        
+        <div className="relative z-10 max-w-[900px] mx-auto px-6 md:px-12">
+          {/* Badge */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center mb-8"
+          >
+            <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
+              <span className="text-[12px] font-medium text-black/60">About SUL</span>
+            </div>
+          </motion.div>
+
+          {/* Main Description */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="text-[17px] md:text-[19px] lg:text-[21px] font-normal text-black/70 leading-[1.7] text-center"
+          >
+            SUL is an independent boutique real estate advisory, offering bespoke guidance in property acquisition, development, and management across Portugal. We assist international clients in finding and shaping their ideal home or investment — from strategic sourcing to full project coordination and long-term value enhancement.
+          </motion.p>
+        </div>
+      </section>
+
+      {/* Divider */}
+      <div className="border-t border-black/[0.03]"></div>
 
       {/* Featured Projects Section - Modern Apple Grid */}
       <section id="projects" className="py-32 md:py-40 bg-white overflow-visible">
@@ -484,182 +513,6 @@ export default function Home() {
               </Button>
             </motion.div>
           )}
-        </div>
-      </section>
-
-      {/* Divider */}
-      <div className="border-t border-black/[0.03]"></div>
-
-      {/* Approach Section - Storytelling with Elegant Animations */}
-      <section id="approach" className="py-32 md:py-40 bg-gray-50 overflow-visible">
-        <div className="max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible">
-          <div className="grid md:grid-cols-2 gap-12 md:gap-16 lg:gap-24 items-center overflow-visible px-0 py-4 md:p-8">
-            {/* Approach Content */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="max-w-[560px]"
-            >
-              {/* Badge */}
-              <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
-                <span className="text-[12px] font-medium text-black/60">Our Approach</span>
-              </div>
-              
-              {/* Main Title */}
-              <motion.h2 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                className="text-[40px] md:text-[52px] font-semibold text-black mb-8 tracking-[-0.02em] leading-[1.1]"
-              >
-                Strategic and human
-              </motion.h2>
-              
-              {/* Quote with subtle animation */}
-              <motion.div 
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="relative pl-6 border-l-2 border-black/20 mb-12"
-              >
-                <p className="text-[19px] md:text-[21px] font-normal text-black/80 italic leading-[1.6]">
-                  "We believe in strategy, discretion and beauty that endures."
-                </p>
-              </motion.div>
-
-              {/* Method Points - Progressive Storytelling */}
-              <div className="space-y-8 relative">
-                {/* Connecting Line */}
-                <motion.div
-                  initial={{ height: 0 }}
-                  whileInView={{ height: "100%" }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 2, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute left-[3px] top-0 w-[2px] bg-gradient-to-b from-black/20 via-black/10 to-transparent"
-                />
-
-                {[
-                  {
-                    title: "Personalized Strategy",
-                    description: "Every client receives a tailored approach aligned with their unique vision and goals",
-                    delay: 0.4
-                  },
-                  {
-                    title: "Trusted Partners",
-                    description: "We collaborate with a curated network of architects, lawyers, and designers",
-                    delay: 0.5
-                  },
-                  {
-                    title: "Full Transparency",
-                    description: "Clear communication and honest guidance throughout the entire process",
-                    delay: 0.6
-                  },
-                  {
-                    title: "Continuous Optimization",
-                    description: "Long-term value creation through ongoing management and refinement",
-                    delay: 0.7
-                  }
-                ].map((point, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.8, delay: point.delay, ease: [0.22, 1, 0.36, 1] }}
-                    className="flex items-start gap-4 relative"
-                  >
-                    {/* Animated Dot */}
-                    <motion.div 
-                      initial={{ scale: 0 }}
-                      whileInView={{ scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: point.delay + 0.1, ease: [0.22, 1, 0.36, 1] }}
-                      className="relative mt-2 flex-shrink-0"
-                    >
-                      <div className="w-2 h-2 rounded-full bg-black/80"></div>
-                      <motion.div
-                        initial={{ scale: 1, opacity: 0.5 }}
-                        animate={{ scale: 1.5, opacity: 0 }}
-                        transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
-                        className="absolute inset-0 w-2 h-2 rounded-full bg-black/40"
-                      />
-                    </motion.div>
-                    
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, delay: point.delay + 0.2, ease: [0.22, 1, 0.36, 1] }}
-                    >
-                      <h3 className="text-[17px] font-semibold text-black mb-2">
-                        {point.title}
-                      </h3>
-                      <p className="text-[15px] font-normal text-black/60 leading-[1.6]">
-                        {point.description}
-                      </p>
-                    </motion.div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Visual Element - Real Photos with Stagger */}
-            <div className="relative aspect-[4/5] w-full max-w-[500px] mx-auto md:ml-auto md:mr-0">
-              {/* Top Image - Portuguese Architecture */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="group absolute top-0 right-0 w-[75%] h-[45%] rounded-3xl shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] overflow-hidden transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-black/[0.04] hover:border-black/[0.08]"
-              >
-                <img 
-                  src={homepageSettings?.ourApproachImage1 || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=1000&fit=crop&q=80"} 
-                  alt="Portuguese architecture and real estate"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-800 ease-out group-hover:scale-[1.08]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                
-                {/* Subtle shimmer effect */}
-                <motion.div
-                  initial={{ x: "-100%" }}
-                  whileInView={{ x: "200%" }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 2, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute inset-0 w-1/2 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12"
-                />
-              </motion.div>
-              
-              {/* Bottom Image - Luxury Property */}
-              <motion.div 
-                initial={{ opacity: 0, y: -20, scale: 0.9 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="group absolute bottom-0 left-0 w-[75%] h-[45%] rounded-3xl shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] overflow-hidden transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-black/[0.04] hover:border-black/[0.08]"
-              >
-                <img 
-                  src={homepageSettings?.ourApproachImage2 || "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=1000&fit=crop&q=80"} 
-                  alt="Luxury real estate interior"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-800 ease-out group-hover:scale-[1.08]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                
-                {/* Subtle shimmer effect */}
-                <motion.div
-                  initial={{ x: "-100%" }}
-                  whileInView={{ x: "200%" }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 2, delay: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute inset-0 w-1/2 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12"
-                />
-              </motion.div>
-            </div>
-          </div>
         </div>
       </section>
 

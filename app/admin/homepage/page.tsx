@@ -29,8 +29,6 @@ export default function HomepageEditPage() {
     heroVideo: '',
     heroVideoPoster: '',
     aboutUsImage: '',
-    ourApproachImage1: '',
-    ourApproachImage2: '',
   })
 
   useEffect(() => {
@@ -110,7 +108,7 @@ export default function HomepageEditPage() {
 
   const handleImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
-    imageType: 'aboutUs' | 'ourApproach1' | 'ourApproach2' | 'heroPoster'
+    imageType: 'aboutUs' | 'heroPoster'
   ) => {
     const file = e.target.files?.[0]
     if (!file) return
@@ -123,7 +121,7 @@ export default function HomepageEditPage() {
       const compressedFile = await compressImage(file, 1920, 0.85) // maxWidth 1920px, quality 85%
       
       const url = await uploadHomepageImage(compressedFile, imageType)
-      setSettings({ ...settings, [imageType === 'aboutUs' ? 'aboutUsImage' : imageType === 'ourApproach1' ? 'ourApproachImage1' : imageType === 'ourApproach2' ? 'ourApproachImage2' : 'heroVideoPoster']: url })
+      setSettings({ ...settings, [imageType === 'aboutUs' ? 'aboutUsImage' : 'heroVideoPoster']: url })
     } catch (error) {
       console.error('Error uploading image:', error)
       toast.error('Erro ao fazer upload da imagem', {
@@ -366,115 +364,6 @@ export default function HomepageEditPage() {
                   )}
                 </label>
               )}
-            </div>
-          </div>
-
-          {/* Section 3: Our Approach Images */}
-          <div className="bg-white rounded-2xl border border-black/10 p-6 md:p-8 shadow-sm">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-black/5 flex items-center justify-center">
-                <ImageIcon className="w-5 h-5 text-black" weight="duotone" />
-              </div>
-              <div>
-                <h2 className="text-xl font-semibold text-black">Our Approach Images</h2>
-                <p className="text-sm text-black/50">Two images displayed in the Our Approach section</p>
-              </div>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* Image 1 */}
-              <div>
-                <label className="block text-sm font-medium text-black/70 mb-2">
-                  Image 1 (Top Right)
-                </label>
-                <div className="relative">
-                  {settings.ourApproachImage1 ? (
-                    <div className="relative aspect-[4/5] rounded-xl overflow-hidden bg-black/5 border-2 border-black/10">
-                      <img
-                        src={settings.ourApproachImage1}
-                        alt="Our Approach 1"
-                        className="w-full h-full object-cover"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setSettings({ ...settings, ourApproachImage1: '' })}
-                        className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/80 hover:bg-black flex items-center justify-center transition-colors"
-                      >
-                        <X className="w-4 h-4 text-white" />
-                      </button>
-                    </div>
-                  ) : (
-                    <label className="flex flex-col items-center justify-center aspect-[4/5] rounded-xl border-2 border-dashed border-black/20 bg-black/5 hover:bg-black/10 cursor-pointer transition-colors">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => handleImageUpload(e, 'ourApproach1')}
-                        className="hidden"
-                        disabled={uploading === 'ourApproach1'}
-                      />
-                      {uploading === 'ourApproach1' ? (
-                        <div className="text-center">
-                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black mx-auto mb-2"></div>
-                          <p className="text-sm text-black/60">Uploading...</p>
-                        </div>
-                      ) : (
-                        <>
-                          <ImageIcon className="w-12 h-12 text-black/40 mb-2" />
-                          <p className="text-sm font-medium text-black/70">Click to upload</p>
-                          <p className="text-xs text-black/50 mt-1">JPG, PNG</p>
-                        </>
-                      )}
-                    </label>
-                  )}
-                </div>
-              </div>
-
-              {/* Image 2 */}
-              <div>
-                <label className="block text-sm font-medium text-black/70 mb-2">
-                  Image 2 (Bottom Left)
-                </label>
-                <div className="relative">
-                  {settings.ourApproachImage2 ? (
-                    <div className="relative aspect-[4/5] rounded-xl overflow-hidden bg-black/5 border-2 border-black/10">
-                      <img
-                        src={settings.ourApproachImage2}
-                        alt="Our Approach 2"
-                        className="w-full h-full object-cover"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setSettings({ ...settings, ourApproachImage2: '' })}
-                        className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/80 hover:bg-black flex items-center justify-center transition-colors"
-                      >
-                        <X className="w-4 h-4 text-white" />
-                      </button>
-                    </div>
-                  ) : (
-                    <label className="flex flex-col items-center justify-center aspect-[4/5] rounded-xl border-2 border-dashed border-black/20 bg-black/5 hover:bg-black/10 cursor-pointer transition-colors">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => handleImageUpload(e, 'ourApproach2')}
-                        className="hidden"
-                        disabled={uploading === 'ourApproach2'}
-                      />
-                      {uploading === 'ourApproach2' ? (
-                        <div className="text-center">
-                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black mx-auto mb-2"></div>
-                          <p className="text-sm text-black/60">Uploading...</p>
-                        </div>
-                      ) : (
-                        <>
-                          <ImageIcon className="w-12 h-12 text-black/40 mb-2" />
-                          <p className="text-sm font-medium text-black/70">Click to upload</p>
-                          <p className="text-xs text-black/50 mt-1">JPG, PNG</p>
-                        </>
-                      )}
-                    </label>
-                  )}
-                </div>
-              </div>
             </div>
           </div>
 
