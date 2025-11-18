@@ -26,6 +26,16 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isLangOpen, setIsLangOpen] = useState(false)
   const [currentLang, setCurrentLang] = useState('EN')
+  const [shouldAnimateLogo, setShouldAnimateLogo] = useState(false)
+  
+  // Only animate logo on very first page load, not on navigation
+  useEffect(() => {
+    const hasAnimatedBefore = sessionStorage.getItem('sul_navbar_logo_animated')
+    if (!hasAnimatedBefore) {
+      setShouldAnimateLogo(true)
+      sessionStorage.setItem('sul_navbar_logo_animated', 'true')
+    }
+  }, [])
   
   // Handle scroll detection
   useEffect(() => {
@@ -89,9 +99,9 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
           {/* Logo */}
           <Link href="/">
             <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              initial={shouldAnimateLogo ? { opacity: 0, y: -10 } : false}
+              animate={shouldAnimateLogo ? { opacity: 1, y: 0 } : {}}
+              transition={shouldAnimateLogo ? { duration: 0.5, ease: [0.22, 1, 0.36, 1] } : {}}
               className={`text-[24px] md:text-[28px] font-semibold tracking-[-0.02em] transition-colors duration-300 ${
                 useTransparentStyle 
                   ? 'text-white' 

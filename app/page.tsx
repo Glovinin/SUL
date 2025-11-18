@@ -154,7 +154,7 @@ export default function Home() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="min-h-screen bg-white"
         >
       {/* Navigation */}
@@ -230,9 +230,9 @@ export default function Home() {
           <div className="text-center flex flex-col items-center justify-center min-h-[60vh]">
             {/* Main Heading - Large, Elegant, Minimalist */}
             <motion.h1
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1.4, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className="text-[40px] sm:text-[52px] md:text-[64px] lg:text-[72px] xl:text-[80px] font-light tracking-[-0.02em] text-white leading-[1.05] mb-8 md:mb-12 max-w-[1200px] mx-auto"
               style={{ 
                 letterSpacing: '-0.02em',
@@ -241,9 +241,9 @@ export default function Home() {
               }}
             >
               <motion.span
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 className="inline-block"
               >
                 Real Estate & Investment<br className="hidden md:block" /> in Portugal
@@ -252,9 +252,9 @@ export default function Home() {
 
             {/* Subtitle - Refined, Harmonious */}
             <motion.p
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="text-[18px] md:text-[22px] lg:text-[24px] font-light text-white/90 leading-[1.5] max-w-[680px] mx-auto tracking-[-0.01em]"
               style={{ 
                 fontWeight: 300,
@@ -271,7 +271,7 @@ export default function Home() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.5 }}
+          transition={{ duration: 0.8, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
           className="absolute bottom-14 left-1/2 -translate-x-1/2 z-[10] hidden md:block"
         >
           <motion.div
@@ -303,10 +303,10 @@ export default function Home() {
         <div className="relative z-10 max-w-[900px] mx-auto px-6 md:px-12">
           {/* Badge */}
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="text-center mb-8"
           >
             <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
@@ -316,10 +316,10 @@ export default function Home() {
 
           {/* Main Description */}
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
             className="text-[17px] md:text-[19px] lg:text-[21px] font-normal text-black/70 leading-[1.7] text-center"
           >
             SUL is an independent boutique real estate advisory, offering bespoke guidance in property acquisition, development, and management across Portugal. We assist international clients in finding and shaping their ideal home or investment — from strategic sourcing to full project coordination and long-term value enhancement.
@@ -335,46 +335,52 @@ export default function Home() {
         <div className="max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible pb-8">
           {/* Header Section */}
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
-            {...getAnimationProps()}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col lg:flex-row items-start lg:items-end justify-between mb-16 gap-8"
-            style={{ willChange: 'transform, opacity' }}
           >
             <div className="max-w-[700px]">
               {/* Badge */}
-              <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6"
+              >
                 <span className="text-[12px] font-medium text-black/60">Portfolio</span>
-              </div>
+              </motion.div>
               
               {/* Main Title */}
               <motion.h2 
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                {...getAnimationProps(0.2)}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
                 className="text-[40px] md:text-[52px] font-semibold text-black mb-6 tracking-[-0.02em] leading-[1.1]"
-                style={{ willChange: 'transform, opacity' }}
               >
                 Our completed projects and success stories
               </motion.h2>
               
               {/* Subtitle */}
               <motion.p 
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                {...getAnimationProps(0.3)}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 className="text-[17px] md:text-[19px] font-normal text-black/60 leading-[1.6] mb-8"
-                style={{ willChange: 'transform, opacity' }}
               >
                 A selection of projects led, coordinated, or orchestrated by SUL, for our clients or our own portfolio.
               </motion.p>
 
               {/* View portfolio button */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                {...getAnimationProps(0.4)}
-                style={{ willChange: 'transform, opacity' }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
               >
                 <Button 
                   onClick={() => router.push('/portfolio')}
@@ -544,46 +550,52 @@ export default function Home() {
         <div className="max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible pb-8">
           {/* Header Section */}
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
-            {...getAnimationProps()}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col lg:flex-row items-start lg:items-end justify-between mb-16 gap-8"
-            style={{ willChange: 'transform, opacity' }}
           >
             <div className="max-w-[700px]">
               {/* Badge */}
-              <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6"
+              >
                 <span className="text-[12px] font-medium text-black/60">Properties</span>
-              </div>
+              </motion.div>
               
               {/* Main Title */}
               <motion.h2 
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                {...getAnimationProps(0.2)}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
                 className="text-[40px] md:text-[52px] font-semibold text-black mb-6 tracking-[-0.02em] leading-[1.1]"
-                style={{ willChange: 'transform, opacity' }}
               >
                 Find homes that perfectly match your lifestyle
               </motion.h2>
               
               {/* Subtitle */}
               <motion.p 
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                {...getAnimationProps(0.3)}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 className="text-[17px] md:text-[19px] font-normal text-black/60 leading-[1.6] mb-8"
-                style={{ willChange: 'transform, opacity' }}
               >
                 Curated collection of premium properties across Portugal's most desirable locations
               </motion.p>
 
               {/* Find your property with us button */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                {...getAnimationProps(0.4)}
-                style={{ willChange: 'transform, opacity' }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
               >
                 <Button 
                   onClick={() => router.push('/properties')}
