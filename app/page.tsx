@@ -224,32 +224,41 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
         </div>
         
-        {/* Hero Content - Apple-Inspired Typography */}
-        <div className="relative z-10 w-full max-w-[1300px] mx-auto px-6 md:px-12 pt-32 pb-20">
-          <div className="text-center mb-16">
-            {/* Main Heading - Premium Text Reveal */}
+        {/* Hero Content - Ultra Elegant Typography */}
+        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 md:px-12 pt-32 pb-20">
+          <div className="text-center flex flex-col items-center justify-center min-h-[60vh]">
+            {/* Main Heading - Large, Elegant, Minimalist */}
             <motion.h1
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 1.2, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[36px] md:text-[48px] lg:text-[56px] font-semibold tracking-[-0.04em] text-white leading-[1.05] mb-6 drop-shadow-[0_2px_20px_rgba(255,255,255,0.15)]"
+              transition={{ duration: 1.4, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[40px] sm:text-[52px] md:text-[64px] lg:text-[72px] xl:text-[80px] font-light tracking-[-0.02em] text-white leading-[1.05] mb-8 md:mb-12 max-w-[1200px] mx-auto"
+              style={{ 
+                letterSpacing: '-0.02em',
+                fontWeight: 300,
+                textShadow: '0 2px 40px rgba(0,0,0,0.3), 0 1px 20px rgba(0,0,0,0.2)'
+              }}
             >
               <motion.span
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 className="inline-block"
               >
-                Real Estate & Investment in Portugal
+                Real Estate & Investment<br className="hidden md:block" /> in Portugal
               </motion.span>
             </motion.h1>
 
-            {/* Subtitle - Premium Typography */}
+            {/* Subtitle - Refined, Harmonious */}
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[16px] md:text-[18px] font-normal text-white/85 mb-6 leading-[1.6] max-w-[760px] mx-auto"
+              transition={{ duration: 1, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[18px] md:text-[22px] lg:text-[24px] font-light text-white/90 leading-[1.5] max-w-[680px] mx-auto tracking-[-0.01em]"
+              style={{ 
+                fontWeight: 300,
+                textShadow: '0 2px 30px rgba(0,0,0,0.25), 0 1px 15px rgba(0,0,0,0.15)'
+              }}
             >
               We assist international clients finding their ideal home or investment.
             </motion.p>
