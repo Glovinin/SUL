@@ -251,6 +251,92 @@ export default function PropertiesPage() {
         </div>
       </section>
 
+      {/* Find Property Section */}
+      <section className="py-32 md:py-40 bg-white relative overflow-x-hidden">
+        <GridPattern
+          width={40}
+          height={40}
+          className="fill-black/[0.02] stroke-black/[0.02]"
+        />
+        <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            {/* Left Side - Image */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="relative w-full max-w-full"
+            >
+              <div className="relative aspect-[4/5] overflow-hidden rounded-[24px] shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
+                <img
+                  src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=1000&fit=crop&q=80"
+                  alt="Property Search"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
+              </div>
+            </motion.div>
+
+            {/* Right Side - Content */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+              className="flex flex-col justify-center py-8 lg:py-12"
+            >
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6 w-fit"
+              >
+                <span className="text-[12px] font-medium text-black/60">Property Search</span>
+              </motion.div>
+
+              <motion.h2
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="text-[40px] md:text-[52px] font-semibold text-black mb-6 tracking-[-0.02em] leading-[1.1]"
+              >
+                Can't find what you're looking for?
+              </motion.h2>
+
+              <motion.p
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="text-[17px] md:text-[19px] font-normal text-black/60 leading-[1.6] mb-10"
+              >
+                We help our clients find houses, apartments, or businesses to buy or invest in Portugal. 
+                Tell us what you're looking for and we'll help you find the perfect property.
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="w-fit"
+              >
+                <Button
+                  onClick={() => router.push('/find-property')}
+                  className="bg-black text-white hover:bg-black/90 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2"
+                >
+                  Search for your property with us
+                  <ArrowRight className="w-4 h-4" weight="bold" />
+                </Button>
+              </motion.div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Filter Properties Section */}
       <section className="relative py-16 md:py-24 bg-white overflow-hidden">
         <div className="max-w-[1300px] mx-auto px-6 md:px-12">

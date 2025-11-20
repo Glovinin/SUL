@@ -1,5 +1,4 @@
 run = "npm run dev"
-entrypoint = "index.js"
 modules = ["nodejs-20:v9-20231020-a3526c9"]
 hidden = [".config", "package-lock.json", ".next", ".swc", "app/api"]
 
@@ -9,15 +8,13 @@ channel = "stable-23_05"
 [env]
 NEXT_TELEMETRY_DISABLED = "1"
 NEXT_PUBLIC_SITE_URL = "https://greencheck.replit.app"
+PORT = "3000"
+HOST = "0.0.0.0"
 
 [deployment]
-build = ["sh", "-c", "npm run build"]
+build = ["sh", "-c", "npm install && npm run build"]
 deploymentTarget = "cloudrun"
 run = ["sh", "-c", "npm run start"]
-
-[[deployment.rewrites]]
-from = "/*"
-to = "/index.html"
 
 [[deployment.responseHeaders]]
 path = "/*"
@@ -45,6 +42,10 @@ externalPort = 3001
 [[ports]]
 localPort = 5000
 externalPort = 80
+
+[[ports]]
+localPort = 39401
+externalPort = 3002
 
 [agent]
 expertMode = true

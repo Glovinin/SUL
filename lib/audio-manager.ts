@@ -31,7 +31,7 @@ class AudioManager {
         this.currentAudio.currentTime = 0
         this.currentAudio = null
       } catch (error) {
-        console.log('Audio stop failed:', error)
+        // Silent error handling
       }
     }
   }
@@ -42,7 +42,6 @@ class AudioManager {
 
     // Check if this audio should only play once
     if (playOnce && this.playedAudios.has(audioPath)) {
-      console.log(`Audio ${audioPath} already played in this session`)
       return
     }
 
@@ -54,10 +53,9 @@ class AudioManager {
       audio.volume = volume
       this.currentAudio = audio
 
-      audio.play().catch(error => {
-        console.log('Audio play failed:', error)
+      audio.play().catch(() => {
         // Audio play failed (likely due to browser autoplay policy)
-        // This is normal and expected behavior
+        // This is normal and expected behavior - silent failure
       })
 
       // Mark as played if playOnce is true
@@ -76,7 +74,7 @@ class AudioManager {
         this.currentAudio = null
       })
     } catch (error) {
-      console.log('Audio creation failed:', error)
+      // Silent error handling
     }
   }
 

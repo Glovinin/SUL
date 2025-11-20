@@ -45,6 +45,8 @@ export function MagicCard({
   }, [reset])
 
   useEffect(() => {
+    if (typeof window === 'undefined') return
+    
     const handleGlobalPointerOut = (e: PointerEvent) => {
       if (!e.relatedTarget) {
         reset()

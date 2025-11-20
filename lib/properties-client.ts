@@ -50,7 +50,6 @@ export function useProperties() {
         const converted = data.map(convertToDisplayProperty)
         setProperties(converted)
       } catch (err: any) {
-        console.error('Error loading properties:', err)
         setError(err.message || 'Failed to load properties')
         // Fallback to empty array on error
         setProperties([])
@@ -97,7 +96,6 @@ export function useHomepageSettings() {
         const data = await getHomepageSettings()
         setSettings(data)
       } catch (err) {
-        console.error('Error loading homepage settings:', err)
         setError('Failed to load homepage settings')
       } finally {
         setLoading(false)
@@ -132,7 +130,6 @@ export function useProperty(id: string | null) {
           setProperty(null)
         }
       } catch (err: any) {
-        console.error('Error loading property:', err)
         setError(err.message || 'Failed to load property')
         setProperty(null)
       } finally {
@@ -191,7 +188,6 @@ export function usePortfolio() {
         const converted = data.map(convertToDisplayPortfolioItem)
         setPortfolioItems(converted)
       } catch (err: any) {
-        console.error('Error loading portfolio:', err)
         setError(err.message || 'Failed to load portfolio')
         setPortfolioItems([])
       } finally {
@@ -226,7 +222,6 @@ export function usePortfolioItem(id: string | null) {
           setPortfolioItem(null)
         }
       } catch (err: any) {
-        console.error('Error loading portfolio item:', err)
         setError(err.message || 'Failed to load portfolio item')
         setPortfolioItem(null)
       } finally {

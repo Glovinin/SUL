@@ -23,6 +23,8 @@ export function LoadingProvider({ children }: { children: ReactNode }) {
 
   // Detectar mobile para otimizar tempos
   useEffect(() => {
+    if (typeof window === 'undefined') return
+    
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
     }

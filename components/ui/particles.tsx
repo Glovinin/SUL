@@ -21,6 +21,8 @@ function MousePosition(): MousePosition {
   })
 
   useEffect(() => {
+    if (typeof window === 'undefined') return
+    
     const handleMouseMove = (event: MouseEvent) => {
       setMousePosition({ x: event.clientX, y: event.clientY })
     }
@@ -116,16 +118,20 @@ export const Particles: React.FC<ParticlesProps> = ({
       }, 200)
     }
 
-    window.addEventListener("resize", handleResize)
+    if (typeof window !== 'undefined') {
+      window.addEventListener("resize", handleResize)
+    }
 
     return () => {
-      if (rafID.current != null) {
-        window.cancelAnimationFrame(rafID.current)
+      if (typeof window !== 'undefined') {
+        if (rafID.current != null) {
+          window.cancelAnimationFrame(rafID.current)
+        }
+        window.removeEventListener("resize", handleResize)
       }
       if (resizeTimeout.current) {
         clearTimeout(resizeTimeout.current)
       }
-      window.removeEventListener("resize", handleResize)
     }
   }, [color])
 

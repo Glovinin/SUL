@@ -11,6 +11,8 @@ export function useMobileOptimizedAnimation() {
   const [isIOS, setIsIOS] = useState(false)
 
   useEffect(() => {
+    if (typeof window === 'undefined') return
+    
     const checkDevice = () => {
       const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera
       const isMobileDevice = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase())

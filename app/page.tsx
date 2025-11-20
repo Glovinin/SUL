@@ -17,7 +17,8 @@ import {
   Bathtub,
   ArrowsOut,
   User,
-  Star
+  Star,
+  Buildings
 } from '@phosphor-icons/react'
 
 // Featured projects will be loaded from Firebase
@@ -30,6 +31,8 @@ export default function Home() {
   const { portfolioItems, loading: portfolioLoading } = usePortfolio()
 
   useEffect(() => {
+    if (typeof window === 'undefined') return
+    
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768)
     }
@@ -60,6 +63,8 @@ export default function Home() {
 
   // Escutar evento para permitir que a página apareça suavemente
   React.useEffect(() => {
+    if (typeof window === 'undefined') return
+    
     const handlePageCanAppear = () => {
       setPageCanAppear(true)
     }
@@ -82,7 +87,7 @@ export default function Home() {
   
   // Verificar cache do vídeo
   React.useEffect(() => {
-    if (!heroVideo) return
+    if (!heroVideo || typeof window === 'undefined') return
     
     try {
       const cached = localStorage.getItem('sul_estate_hero_video_loaded')
@@ -114,20 +119,18 @@ export default function Home() {
       
       if (playPromise !== undefined) {
         playPromise
-          .then(() => {
-            console.log('Video playing successfully')
-          })
-          .catch((error) => {
-            console.log('Autoplay prevented, retrying...', error)
+          .catch(() => {
+            // Autoplay prevented - tentar novamente silenciosamente
             setTimeout(() => {
-              video.play().catch(e => console.log('Retry failed:', e))
+              video.play().catch(() => {
+                // Falha silenciosa - autoplay não permitido
+              })
             }, 1000)
           })
       }
     }
 
     const handleError = () => {
-      console.error('Video loading error')
       setVideoError(true)
     }
 
@@ -292,38 +295,57 @@ export default function Home() {
       <div className="border-t border-black/[0.03] bg-white"></div>
 
       {/* About SUL Section - Premium Design */}
-      <section className="relative py-32 md:py-40 bg-gray-50 overflow-visible">
-        {/* Static Grid Background */}
+      <section className="relative py-32 md:py-40 bg-white overflow-visible">
         <GridPattern
           width={40}
           height={40}
-          className="fill-black/[0.02] stroke-black/[0.02]"
+          className="fill-black/[0.015] stroke-black/[0.015]"
         />
         
-        <div className="relative z-10 max-w-[900px] mx-auto px-6 md:px-12">
-          {/* Badge */}
-          <motion.div 
-            initial={{ opacity: 0, y: 15 }}
+        {/* Ambient Light Effect */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-radial from-black/[0.02] via-transparent to-transparent blur-3xl pointer-events-none"></div>
+        
+        <div className="relative z-10 max-w-[1000px] mx-auto px-6 md:px-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="text-center mb-8"
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center"
           >
-            <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
+            {/* Badge */}
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-8"
+            >
               <span className="text-[12px] font-medium text-black/60">About SUL</span>
-            </div>
-          </motion.div>
+            </motion.div>
 
-          {/* Main Description */}
-          <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="text-[17px] md:text-[19px] lg:text-[21px] font-normal text-black/70 leading-[1.7] text-center"
-          >
-            SUL is an independent boutique real estate advisory, offering bespoke guidance in property acquisition, development, and management across Portugal. We assist international clients in finding and shaping their ideal home or investment — from strategic sourcing to full project coordination and long-term value enhancement.
-          </motion.p>
+            {/* Main Title */}
+            <motion.h2
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[40px] md:text-[56px] lg:text-[64px] font-semibold text-black mb-10 tracking-[-0.02em] leading-[1.1]"
+            >
+              Boutique Real Estate<br />and Investment Consultancy
+            </motion.h2>
+
+            {/* Main Description */}
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[18px] md:text-[20px] lg:text-[22px] font-normal text-black/70 leading-[1.8] max-w-[900px] mx-auto"
+            >
+              SUL is an independent boutique real estate advisory, offering bespoke guidance in property acquisition, development, and management across Portugal. We assist international clients in finding and shaping their ideal home or investment — from strategic sourcing to full project coordination and long-term value enhancement.
+            </motion.p>
+          </motion.div>
         </div>
       </section>
 
@@ -539,6 +561,92 @@ export default function Home() {
               </Button>
             </motion.div>
           )}
+        </div>
+      </section>
+
+      {/* Find Property Section */}
+      <section className="py-32 md:py-40 bg-white relative overflow-x-hidden">
+        <GridPattern
+          width={40}
+          height={40}
+          className="fill-black/[0.02] stroke-black/[0.02]"
+        />
+        <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            {/* Left Side - Image */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="relative w-full max-w-full"
+            >
+              <div className="relative aspect-[4/5] overflow-hidden rounded-[24px] shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
+                <img
+                  src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=1000&fit=crop&q=80"
+                  alt="Property Search"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
+              </div>
+            </motion.div>
+
+            {/* Right Side - Content */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+              className="flex flex-col justify-center py-8 lg:py-12"
+            >
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6 w-fit"
+              >
+                <span className="text-[12px] font-medium text-black/60">Property Search</span>
+              </motion.div>
+
+              <motion.h2
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="text-[40px] md:text-[52px] font-semibold text-black mb-6 tracking-[-0.02em] leading-[1.1]"
+              >
+                Can't find what you're looking for?
+              </motion.h2>
+
+              <motion.p
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="text-[17px] md:text-[19px] font-normal text-black/60 leading-[1.6] mb-10"
+              >
+                We help our clients find houses, apartments, or businesses to buy or invest in Portugal. 
+                Tell us what you're looking for and we'll help you find the perfect property.
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="w-fit"
+              >
+                <Button
+                  onClick={() => router.push('/find-property')}
+                  className="bg-black text-white hover:bg-black/90 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2"
+                >
+                  Search for your property with us
+                  <ArrowRight className="w-4 h-4" weight="bold" />
+                </Button>
+              </motion.div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -770,7 +878,11 @@ export default function Home() {
               Start your search
             </Button>
             <Button 
-              onClick={() => window.open('https://calendly.com/jules-portugal/45min?month=2025-11', '_blank')}
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  window.open('https://calendly.com/jules-portugal/45min?month=2025-11', '_blank')
+                }
+              }}
               className="bg-white/10 text-white hover:bg-white/20 border border-white/20 hover:border-white/30 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 min-w-[200px]"
             >
               Book a Free Call

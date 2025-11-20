@@ -37,6 +37,8 @@ export default function InitialLoading() {
     setMounted(true)
     setAnimationStartTime(Date.now()) // Registrar quando a animação começou
     
+    if (typeof window === 'undefined') return
+    
     // Detectar se é mobile para otimizar performance
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))

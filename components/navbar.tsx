@@ -7,10 +7,10 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { 
   List,
-  CaretDown,
   UserCircle
 } from '@phosphor-icons/react'
 import { MobileMenu } from './MobileMenu'
+import { AdminContactCard } from './AdminContactCard'
 
 interface NavBarProps {
   /**
@@ -24,7 +24,6 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
   const pathname = usePathname()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
-  const [isLangOpen, setIsLangOpen] = useState(false)
   const [currentLang, setCurrentLang] = useState('EN')
   const [shouldAnimateLogo, setShouldAnimateLogo] = useState(false)
   
@@ -39,6 +38,8 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
   
   // Handle scroll detection
   useEffect(() => {
+    if (typeof window === 'undefined') return
+    
     const handleScroll = () => {
       const scrollPosition = window.scrollY
       setIsScrolled(scrollPosition > 50)
@@ -48,18 +49,6 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Close language dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement
-      if (isLangOpen && !target.closest('.language-dropdown')) {
-        setIsLangOpen(false)
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [isLangOpen])
 
   // Determine if we should use transparent styling (only on homepage when not scrolled)
   const useTransparentStyle = isHomePage && !isScrolled
@@ -95,14 +84,14 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
       className="fixed top-0 left-0 right-0 z-50 border-b"
     >
       <div className="max-w-[1400px] mx-auto px-6 md:px-8 lg:px-12">
-        <div className="flex items-center justify-between h-[56px] md:h-[64px]">
+        <div className="flex items-center justify-between h-[72px] md:h-[80px]">
           {/* Logo */}
           <Link href="/">
             <motion.div
               initial={shouldAnimateLogo ? { opacity: 0, y: -10 } : false}
               animate={shouldAnimateLogo ? { opacity: 1, y: 0 } : {}}
               transition={shouldAnimateLogo ? { duration: 0.5, ease: [0.22, 1, 0.36, 1] } : {}}
-              className={`text-[24px] md:text-[28px] font-semibold tracking-[-0.02em] transition-colors duration-300 ${
+              className={`text-[22px] md:text-[26px] font-semibold tracking-[-0.02em] transition-colors duration-300 ${
                 useTransparentStyle 
                   ? 'text-white' 
                   : 'text-black hover:text-black/60'
@@ -112,13 +101,13 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
             </motion.div>
           </Link>
 
-          {/* Desktop Navigation Links */}
-          <div className="hidden md:flex items-center space-x-8 lg:space-x-10">
+          {/* Desktop Navigation Links - Only visible on large screens (lg+) */}
+          <div className="hidden lg:flex items-center gap-6 lg:gap-8">
             <Link 
               href="/" 
               className="relative group"
             >
-              <span className={`text-[14px] md:text-[15px] font-normal tracking-[-0.01em] transition-all duration-300 ${
+              <span className={`text-[14px] font-medium tracking-[-0.01em] transition-all duration-300 ${
                 useTransparentStyle
                   ? isActiveLink('/') 
                     ? 'text-white' 
@@ -143,7 +132,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
               href="/services" 
               className="relative group"
             >
-              <span className={`text-[14px] md:text-[15px] font-normal tracking-[-0.01em] transition-all duration-300 ${
+              <span className={`text-[14px] font-medium tracking-[-0.01em] transition-all duration-300 ${
                 useTransparentStyle
                   ? isActiveLink('/services')
                     ? 'text-white'
@@ -168,7 +157,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
               href="/portugal" 
               className="relative group"
             >
-              <span className={`text-[14px] md:text-[15px] font-normal tracking-[-0.01em] transition-all duration-300 ${
+              <span className={`text-[14px] font-medium tracking-[-0.01em] transition-all duration-300 ${
                 useTransparentStyle
                   ? isActiveLink('/portugal')
                     ? 'text-white'
@@ -193,7 +182,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
               href="/about" 
               className="relative group"
             >
-              <span className={`text-[14px] md:text-[15px] font-normal tracking-[-0.01em] transition-all duration-300 ${
+              <span className={`text-[14px] font-medium tracking-[-0.01em] transition-all duration-300 ${
                 useTransparentStyle
                   ? isActiveLink('/about')
                     ? 'text-white'
@@ -218,7 +207,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
               href="/portfolio" 
               className="relative group"
             >
-              <span className={`text-[14px] md:text-[15px] font-normal tracking-[-0.01em] transition-all duration-300 ${
+              <span className={`text-[14px] font-medium tracking-[-0.01em] transition-all duration-300 ${
                 useTransparentStyle
                   ? isActiveLink('/portfolio')
                     ? 'text-white'
@@ -243,7 +232,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
               href="/properties" 
               className="relative group"
             >
-              <span className={`text-[14px] md:text-[15px] font-normal tracking-[-0.01em] transition-all duration-300 ${
+              <span className={`text-[14px] font-medium tracking-[-0.01em] transition-all duration-300 ${
                 useTransparentStyle
                   ? isActiveLink('/properties')
                     ? 'text-white'
@@ -268,7 +257,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
               href="/blog" 
               className="relative group"
             >
-              <span className={`text-[14px] md:text-[15px] font-normal tracking-[-0.01em] transition-all duration-300 ${
+              <span className={`text-[14px] font-medium tracking-[-0.01em] transition-all duration-300 ${
                 useTransparentStyle
                   ? isActiveLink('/blog')
                     ? 'text-white'
@@ -291,80 +280,15 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
             </Link>
           </div>
 
-          {/* Desktop Right Side Actions */}
-          <div className="hidden md:flex items-center gap-2">
-            {/* Language Switcher Dropdown */}
-            <div className="relative language-dropdown">
-              <button 
-                onClick={() => setIsLangOpen(!isLangOpen)}
-                className={`px-3 py-1.5 rounded-full text-[12px] font-normal tracking-[-0.01em] transition-all duration-200 flex items-center gap-1.5 ${
-                  useTransparentStyle
-                    ? 'text-white/70 hover:text-white hover:bg-white/5'
-                    : 'text-black/60 hover:text-black hover:bg-black/5'
-                }`}
-              >
-                {currentLang}
-                <CaretDown className={`w-3 h-3 transition-transform duration-200 ${isLangOpen ? 'rotate-180' : ''}`} weight="regular" />
-              </button>
-              
-              <AnimatePresence>
-                {isLangOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                    className={`absolute top-full mt-1.5 right-0 w-28 rounded-xl shadow-lg overflow-hidden ${
-                      useTransparentStyle
-                        ? 'bg-black/95 backdrop-blur-xl border border-white/10'
-                        : 'bg-white border border-black/5'
-                    }`}
-                  >
-                    <button
-                      onClick={() => { setCurrentLang('EN'); setIsLangOpen(false); }}
-                      className={`w-full text-left px-3 py-2 text-[12px] font-normal transition-all duration-200 ${
-                        currentLang === 'EN' 
-                          ? useTransparentStyle
-                            ? 'bg-white/10 text-white'
-                            : 'bg-black/5 text-black'
-                          : useTransparentStyle
-                            ? 'text-white/60 hover:bg-white/10'
-                            : 'text-black/60 hover:bg-black/5'
-                      }`}
-                    >
-                      🇬🇧 English
-                    </button>
-                    <button
-                      onClick={() => { setCurrentLang('FR'); setIsLangOpen(false); }}
-                      className={`w-full text-left px-3 py-2 text-[12px] font-normal transition-all duration-200 ${
-                        currentLang === 'FR' 
-                          ? useTransparentStyle
-                            ? 'bg-white/10 text-white'
-                            : 'bg-black/5 text-black'
-                          : useTransparentStyle
-                            ? 'text-white/60 hover:bg-white/10'
-                            : 'text-black/60 hover:bg-black/5'
-                      }`}
-                    >
-                      🇫🇷 Français
-                    </button>
-                    <button
-                      onClick={() => { setCurrentLang('PT'); setIsLangOpen(false); }}
-                      className={`w-full text-left px-3 py-2 text-[12px] font-normal transition-all duration-200 ${
-                        currentLang === 'PT' 
-                          ? useTransparentStyle
-                            ? 'bg-white/10 text-white'
-                            : 'bg-black/5 text-black'
-                          : useTransparentStyle
-                            ? 'text-white/60 hover:bg-white/10'
-                            : 'text-black/60 hover:bg-black/5'
-                      }`}
-                    >
-                      🇵🇹 Português
-                    </button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+          {/* Right Side Actions - Visible on tablet (md) and desktop */}
+          <div className="hidden md:flex items-center gap-4">
+            {/* Language Indicator - Simple text, no dropdown */}
+            <div className={`text-[13px] font-normal tracking-[-0.01em] ${
+              useTransparentStyle
+                ? 'text-white/60'
+                : 'text-black/50'
+            }`}>
+              {currentLang}
             </div>
 
             {/* Login Button */}
@@ -380,31 +304,18 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
               </button>
             </Link>
             
-            {/* Get In Touch Button */}
-            <Link href="/contact">
-              {useTransparentStyle ? (
-                <Button 
-                  variant="ghost"
-                  className="bg-white/10 backdrop-blur-md text-white hover:bg-white/15 border-0 hover:border-0 focus:border-0 focus-visible:border-0 active:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none px-5 py-2 rounded-full text-[13px] font-normal tracking-[-0.01em] transition-all duration-200"
-                  style={{ outline: 'none' }}
-                >
-                  Contact Us
-                </Button>
-              ) : (
-                <Button 
-                  variant="ghost"
-                  className="bg-black text-white hover:bg-black/90 border-0 hover:border-0 focus:border-0 focus-visible:border-0 active:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none px-5 py-2 rounded-full text-[13px] font-normal tracking-[-0.01em] transition-all duration-200 shadow-sm hover:shadow-md"
-                  style={{ border: 'none', outline: 'none' }}
-                >
-                  Contact Us
-                </Button>
-              )}
+            {/* Admin Contact Card - Visible on tablet and desktop */}
+            <AdminContactCard useTransparentStyle={useTransparentStyle} />
+            
+            {/* Fallback Contact Us Link (hidden, apenas para SEO) */}
+            <Link href="/contact" className="hidden">
+              Contact Us
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Hamburger Menu Button - Visible on mobile and tablet (up to lg) */}
           <button 
-            className={`md:hidden transition-colors duration-200 ${
+            className={`lg:hidden transition-colors duration-200 ${
               useTransparentStyle
                 ? 'text-white/70 hover:text-white'
                 : 'text-black/60 hover:text-black'

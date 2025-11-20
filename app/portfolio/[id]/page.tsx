@@ -79,6 +79,8 @@ export default function PortfolioDetailPage() {
       }
     }
 
+    if (typeof window === 'undefined') return
+    
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [isFullscreen, handleNext, handlePrevious])

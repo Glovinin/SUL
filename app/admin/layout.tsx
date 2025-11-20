@@ -14,7 +14,8 @@ import {
   List,
   House,
   Clock,
-  Briefcase
+  Briefcase,
+  ChatCircle
 } from '@phosphor-icons/react'
 import Link from 'next/link'
 import { Toaster } from 'sonner'
@@ -114,6 +115,12 @@ export default function AdminLayout({
       label: 'Homepage',
       href: '/admin/homepage',
       active: pathname?.startsWith('/admin/homepage'),
+    },
+    {
+      icon: ChatCircle,
+      label: 'Chat',
+      href: '/admin/chat',
+      active: pathname?.startsWith('/admin/chat'),
     },
   ]
 
