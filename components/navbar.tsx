@@ -118,14 +118,14 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
       className="fixed top-0 left-0 right-0 z-50 border-b"
     >
       <div className="max-w-[1400px] mx-auto px-6 md:px-8 lg:px-12">
-        <div className="flex items-center justify-between h-[88px] md:h-[96px]">
+        <div className="flex items-center justify-between h-[100px] md:h-[108px]">
           {/* Logo */}
           <Link href="/">
             <motion.div
               initial={shouldAnimateLogo ? { opacity: 0, y: -10 } : false}
               animate={shouldAnimateLogo ? { opacity: 1, y: 0 } : {}}
               transition={shouldAnimateLogo ? { duration: 0.5, ease: [0.22, 1, 0.36, 1] } : {}}
-              className={`text-[28px] md:text-[32px] lg:text-[34px] font-semibold tracking-[-0.02em] transition-colors duration-300 ${
+              className={`text-[34px] md:text-[38px] lg:text-[42px] font-semibold tracking-[-0.02em] transition-colors duration-300 ${
                 useTransparentStyle 
                   ? 'text-white' 
                   : 'text-black hover:text-black/60'

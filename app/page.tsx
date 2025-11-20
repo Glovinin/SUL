@@ -423,23 +423,6 @@ export default function Home() {
             >
               SUL Collection: Success Stories.
             </motion.p>
-
-            {/* View portfolio button */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="flex justify-center"
-            >
-              <Button 
-                onClick={() => router.push('/portfolio')}
-                className="bg-black text-white hover:bg-black/90 border-0 px-6 py-3 rounded-full text-[14px] font-medium transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2 inline-flex"
-              >
-                View our portfolio
-                <ArrowRight className="w-4 h-4" weight="bold" />
-              </Button>
-            </motion.div>
           </motion.div>
 
           {/* Sort portfolio items: featured first */}
@@ -570,7 +553,7 @@ export default function Home() {
             )
           })()}
           
-          {/* View All Portfolio Button */}
+          {/* View Portfolio Button */}
           {portfolioItems.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -583,7 +566,7 @@ export default function Home() {
                 onClick={() => router.push('/portfolio')}
                 className="bg-black text-white hover:bg-black/90 border-0 px-8 py-3 rounded-full text-[15px] font-semibold transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2 mx-auto"
               >
-                View All Projects
+                View our portfolio
                 <ArrowRight className="w-4 h-4" weight="bold" />
               </Button>
             </motion.div>
@@ -723,23 +706,6 @@ export default function Home() {
             >
               Curated collection of premium properties across Portugal's most desirable locations
             </motion.p>
-
-            {/* Find your property with us button */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="flex justify-center"
-            >
-              <Button 
-                onClick={() => router.push('/properties')}
-                className="bg-black text-white hover:bg-black/90 border-0 px-6 py-3 rounded-full text-[14px] font-medium transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2 inline-flex"
-              >
-                Find your property with us
-                <ArrowRight className="w-4 h-4" weight="bold" />
-              </Button>
-            </motion.div>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10 px-0 py-4 md:p-8 lg:p-12 overflow-visible">
@@ -873,7 +839,7 @@ export default function Home() {
                 onClick={() => router.push('/properties')}
                 className="bg-black text-white hover:bg-black/90 border-0 px-8 py-3 rounded-full text-[15px] font-semibold transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2 mx-auto"
               >
-                View All Properties
+                View all Properties
                 <ArrowRight className="w-4 h-4" weight="bold" />
               </Button>
             </motion.div>
