@@ -539,7 +539,7 @@ export default function PropertiesPage() {
               Start your search
             </Button>
             <Button 
-              onClick={() => window.open('https://calendly.com/jules-portugal/45min?month=2025-11', '_blank')}
+              onClick={() => window.open('https://wa.me/33662527879', '_blank')}
               className="bg-white/10 text-white hover:bg-white/20 border border-white/20 hover:border-white/30 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 min-w-[200px]"
             >
               Book a Free Call

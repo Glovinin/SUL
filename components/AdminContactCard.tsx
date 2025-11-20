@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { useRouter } from 'next/navigation'
 
 interface AdminSettings {
   avatar: string
@@ -10,6 +11,7 @@ interface AdminSettings {
 }
 
 export function AdminContactCard({ useTransparentStyle = false }: { useTransparentStyle?: boolean }) {
+  const router = useRouter()
   const [adminSettings, setAdminSettings] = useState<AdminSettings | null>(null)
 
   useEffect(() => {
@@ -35,11 +37,8 @@ export function AdminContactCard({ useTransparentStyle = false }: { useTranspare
   }, [])
 
   const handleBookCall = () => {
-    // Abrir o chat ao clicar - usando evento customizado
-    if (typeof window !== 'undefined') {
-      const event = new CustomEvent('openChatFromNavbar')
-      window.dispatchEvent(event)
-    }
+    // Navegar para a página de contato
+    router.push('/contact')
   }
 
   if (!adminSettings) {

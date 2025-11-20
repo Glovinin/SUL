@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React from 'react'
 import { Button } from './ui/button'
 import Link from 'next/link'
 import { 
@@ -11,14 +11,6 @@ import {
 } from '@phosphor-icons/react'
 
 export function Footer() {
-  const [email, setEmail] = useState('')
-  
-  // Handle email submission
-  const handleEmailSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log('Email submitted:', email)
-    setEmail('')
-  }
 
   return (
     <footer id="contact" className="bg-black text-white py-24 md:py-32">
@@ -170,28 +162,23 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Email Form */}
+          {/* Get in Touch Button */}
           <div>
             <h3 className="text-[28px] font-semibold mb-12 tracking-tight">Get in Touch</h3>
-            <form onSubmit={handleEmailSubmit} className="space-y-6">
-              <div>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Your email"
-                  className="w-full bg-white/5 border border-white/10 text-white placeholder-white/40 px-6 py-4 rounded-2xl focus:outline-none focus:border-white/30 focus:bg-white/10 transition-all duration-200 font-normal text-[16px]"
-                  required
-                />
-              </div>
-              <Button 
-                type="submit"
-                className="w-full bg-white text-black hover:bg-white/95 border-0 px-8 py-4 rounded-full text-[16px] font-medium transition-all duration-200 shadow-sm hover:shadow-md flex items-center justify-center gap-2"
-              >
-                Send Message
-                <ArrowRight className="w-4 h-4" weight="bold" />
-              </Button>
-            </form>
+            <p className="text-[16px] font-normal text-white/70 mb-8 leading-[1.6]">
+              Reach out to us on WhatsApp for immediate assistance
+            </p>
+            <Button 
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  window.open('https://wa.me/33662527879', '_blank')
+                }
+              }}
+              className="w-full bg-white text-black hover:bg-white/95 border-0 px-8 py-4 rounded-full text-[16px] font-medium transition-all duration-200 shadow-sm hover:shadow-md flex items-center justify-center gap-2"
+            >
+              Contact on WhatsApp
+              <ArrowRight className="w-4 h-4" weight="bold" />
+            </Button>
           </div>
         </div>
 
