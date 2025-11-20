@@ -7,9 +7,20 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { 
   List,
-  UserCircle
+  UserCircle,
+  CaretDown
 } from '@phosphor-icons/react'
 import { MobileMenu } from './MobileMenu'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from './ui/dropdown-menu'
+import GB from 'country-flag-icons/react/3x2/GB'
+import PT from 'country-flag-icons/react/3x2/PT'
+import FR from 'country-flag-icons/react/3x2/FR'
+import ES from 'country-flag-icons/react/3x2/ES'
 
 interface NavBarProps {
   /**
@@ -23,8 +34,32 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
   const pathname = usePathname()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
-  const [currentLang, setCurrentLang] = useState('EN')
+  const [currentLang, setCurrentLang] = useState<'EN' | 'PT' | 'FR' | 'ES'>('EN')
   const [shouldAnimateLogo, setShouldAnimateLogo] = useState(false)
+  
+  // Load language from localStorage on mount
+  useEffect(() => {
+    const savedLang = localStorage.getItem('language') as 'EN' | 'PT' | 'FR' | 'ES' | null
+    if (savedLang && ['EN', 'PT', 'FR', 'ES'].includes(savedLang)) {
+      setCurrentLang(savedLang)
+    }
+  }, [])
+  
+  // Save language to localStorage when it changes
+  const handleLanguageChange = (lang: 'EN' | 'PT' | 'FR' | 'ES') => {
+    setCurrentLang(lang)
+    localStorage.setItem('language', lang)
+  }
+  
+  // Language configuration
+  const languages = {
+    EN: { flag: GB, name: 'English', code: 'EN' },
+    PT: { flag: PT, name: 'Português', code: 'PT' },
+    FR: { flag: FR, name: 'Français', code: 'FR' },
+    ES: { flag: ES, name: 'Español', code: 'ES' },
+  }
+  
+  const CurrentFlag = languages[currentLang].flag
   
   // Only animate logo on very first page load, not on navigation
   useEffect(() => {
@@ -281,14 +316,58 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
 
           {/* Right Side Actions - Visible on tablet (md) and desktop */}
           <div className="hidden md:flex items-center gap-4">
-            {/* Language Indicator - Simple text, no dropdown */}
-            <div className={`text-[13px] font-normal tracking-[-0.01em] ${
-              useTransparentStyle
-                ? 'text-white/60'
-                : 'text-black/50'
-            }`}>
-              {currentLang}
-            </div>
+            {/* Language Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className={`flex items-center gap-2 px-3 py-2 rounded-full transition-all duration-200 ${
+                    useTransparentStyle
+                      ? 'text-white/70 hover:text-white hover:bg-white/5'
+                      : 'text-black/60 hover:text-black hover:bg-black/5'
+                  }`}
+                >
+                  <div className="w-5 h-5 rounded overflow-hidden flex-shrink-0">
+                    <CurrentFlag className="w-full h-full object-cover" />
+                  </div>
+                  <span className="text-[13px] font-normal tracking-[-0.01em]">
+                    {currentLang}
+                  </span>
+                  <CaretDown 
+                    className={`w-3 h-3 transition-transform duration-200 ${
+                      useTransparentStyle ? 'text-white/60' : 'text-black/40'
+                    }`} 
+                    weight="regular" 
+                  />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="min-w-[160px]">
+                {(Object.keys(languages) as Array<'EN' | 'PT' | 'FR' | 'ES'>).map((langCode) => {
+                  const LangFlag = languages[langCode].flag
+                  const isSelected = currentLang === langCode
+                  return (
+                    <DropdownMenuItem
+                      key={langCode}
+                      onClick={() => handleLanguageChange(langCode)}
+                      className={`flex items-center gap-3 cursor-pointer ${
+                        isSelected ? 'bg-black/5' : ''
+                      }`}
+                    >
+                      <div className="w-5 h-5 rounded overflow-hidden flex-shrink-0">
+                        <LangFlag className="w-full h-full object-cover" />
+                      </div>
+                      <span className="text-[14px] font-medium tracking-[-0.01em]">
+                        {languages[langCode].name}
+                      </span>
+                      {isSelected && (
+                        <span className="ml-auto text-[12px] text-black/40">
+                          ✓
+                        </span>
+                      )}
+                    </DropdownMenuItem>
+                  )
+                })}
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             {/* Login Button */}
             <Link href="/login">
@@ -337,7 +416,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
         currentLang={currentLang}
-        setCurrentLang={setCurrentLang}
+        setCurrentLang={handleLanguageChange}
       />
     </motion.nav>
   )
