@@ -326,7 +326,7 @@ export default function InitialLoading() {
                 </div>
               </motion.div>
 
-              {/* SUL ESTATE Logo - Ultra elegante */}
+              {/* SUL Logo - Ultra elegante */}
               <motion.div
                 className="text-center mb-8 md:mb-12"
                 initial={{ opacity: 0 }}
@@ -354,31 +354,6 @@ export default function InitialLoading() {
                       SUL
                     </motion.span>
                   </motion.h1>
-                  
-                  <motion.h2
-                    className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl lg:text-5xl'} font-light text-white/90 tracking-[0.15em] uppercase`}
-                  >
-                    {/* ESTATE - letra por letra */}
-                    {'ESTATE'.split('').map((letter, index) => (
-                      <motion.span
-                        key={index}
-                        initial={{ opacity: 0, y: 40, filter: 'blur(15px)' }}
-                        animate={{ 
-                          opacity: logoTransitioning ? 0 : 1,
-                          y: logoTransitioning ? 40 : 0,
-                          filter: logoTransitioning ? 'blur(15px)' : 'blur(0px)'
-                        }}
-                        transition={{ 
-                          duration: 0.8,
-                          delay: 0.9 + (index * 0.05),
-                          ease: [0.16, 1, 0.3, 1]
-                        }}
-                        className="inline-block"
-                      >
-                        {letter}
-                      </motion.span>
-                    ))}
-                  </motion.h2>
                 </div>
               </motion.div>
 
@@ -396,7 +371,7 @@ export default function InitialLoading() {
                 }}
                 className="text-white text-[11px] md:text-[13px] font-light tracking-[0.3em] uppercase mb-12 md:mb-16"
               >
-                Real Estate Advisory
+                Real Estate Advisory In Portugal
               </motion.div>
 
               {/* Loading dots refinados */}

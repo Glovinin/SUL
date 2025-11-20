@@ -2,8 +2,8 @@
 "use client"
 
 import { useEffect, useState } from 'react'
-import { getProperties, getHomepageSettings, getPortfolioItems, getPortfolioItem } from './admin-helpers'
-import { Property as AdminProperty, HomepageSettings, PortfolioItem as AdminPortfolioItem } from './admin-types'
+import { getProperties, getHomepageSettings, getPortfolioItems, getPortfolioItem, getPublishedBlogPosts, getBlogPost } from './admin-helpers'
+import { Property as AdminProperty, HomepageSettings, PortfolioItem as AdminPortfolioItem, BlogPost as AdminBlogPost } from './admin-types'
 
 // Convert admin property to display property format
 function convertToDisplayProperty(prop: AdminProperty): any {
@@ -233,5 +233,66 @@ export function usePortfolioItem(id: string | null) {
   }, [id])
 
   return { portfolioItem, loading, error }
+}
+
+// ==================== BLOG ====================
+
+export function useBlogPosts() {
+  const [blogPosts, setBlogPosts] = useState<AdminBlogPost[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    async function loadBlogPosts() {
+      try {
+        setLoading(true)
+        const data = await getPublishedBlogPosts()
+        setBlogPosts(data)
+      } catch (err: any) {
+        setError(err.message || 'Failed to load blog posts')
+        setBlogPosts([])
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadBlogPosts()
+  }, [])
+
+  return { blogPosts, loading, error }
+}
+
+export function useBlogPost(id: string | null) {
+  const [blogPost, setBlogPost] = useState<AdminBlogPost | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!id) {
+      setLoading(false)
+      return
+    }
+
+    async function loadBlogPost() {
+      try {
+        setLoading(true)
+        const data = await getBlogPost(id)
+        if (data && data.published) {
+          setBlogPost(data)
+        } else {
+          setBlogPost(null)
+        }
+      } catch (err: any) {
+        setError(err.message || 'Failed to load blog post')
+        setBlogPost(null)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadBlogPost()
+  }, [id])
+
+  return { blogPost, loading, error }
 }
 

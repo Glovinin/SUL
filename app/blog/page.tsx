@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '../../components/ui/button'
 import { GridPattern } from '../../components/ui/grid-pattern'
@@ -15,105 +15,31 @@ import {
 } from '@phosphor-icons/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-
-// Blog posts data with more detailed information
-const blogPosts = [
-  {
-    id: 1,
-    title: 'High-end properties',
-    subtitle: 'Luxury homebuyers and sellers are navigating changing market conditions',
-    image: '/images/blog-1.jpg',
-    readTime: '7 min read',
-    date: 'November 15, 2024',
-    category: 'Market Trends',
-    author: {
-      name: 'Vincent Santos',
-      role: 'Real Estate Expert'
-    },
-    excerpt: 'The luxury real estate market is experiencing significant shifts as buyers and sellers adapt to new economic conditions. Understanding these trends is crucial for making informed decisions in the premium property segment.'
-  },
-  {
-    id: 2,
-    title: 'Investment trends 2024',
-    subtitle: 'Key insights for property investment in Portugal\'s prime markets',
-    image: '/images/blog-2.jpg',
-    readTime: '5 min read',
-    date: 'November 10, 2024',
-    category: 'Investment',
-    author: {
-      name: 'Ana Silva',
-      role: 'Market Analyst'
-    },
-    excerpt: 'Discover the emerging opportunities in Portugal\'s real estate market. From Lisbon to Algarve, we analyze the trends shaping investment strategies for 2024 and beyond.'
-  },
-  {
-    id: 3,
-    title: 'Coastal living guide',
-    subtitle: 'Discovering the perfect beachfront property in Portugal',
-    image: '/images/blog-3.jpg',
-    readTime: '6 min read',
-    date: 'November 5, 2024',
-    category: 'Lifestyle',
-    author: {
-      name: 'João Costa',
-      role: 'Property Consultant'
-    },
-    excerpt: 'Explore Portugal\'s stunning coastline and learn what makes beachfront properties a unique investment. From Comporta to Algarve, find your perfect coastal retreat.'
-  },
-  {
-    id: 4,
-    title: 'Renovation strategies',
-    subtitle: 'Maximizing value through thoughtful property improvements',
-    image: 'https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?w=800&h=600&fit=crop&q=80',
-    readTime: '8 min read',
-    date: 'October 28, 2024',
-    category: 'Development',
-    author: {
-      name: 'Miguel Ferreira',
-      role: 'Renovation Specialist'
-    },
-    excerpt: 'Strategic renovation can significantly enhance property value. Learn about the most effective improvements that deliver the best return on investment in Portugal\'s premium market.'
-  },
-  {
-    id: 5,
-    title: 'Golden Visa update',
-    subtitle: 'Latest changes to Portugal\'s residency program',
-    image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=600&fit=crop&q=80',
-    readTime: '6 min read',
-    date: 'October 20, 2024',
-    category: 'Legal & Regulation',
-    author: {
-      name: 'Carolina Sousa',
-      role: 'Legal Advisor'
-    },
-    excerpt: 'Stay informed about the recent modifications to Portugal\'s Golden Visa program and understand how they impact international real estate investors.'
-  },
-  {
-    id: 6,
-    title: 'Sustainable luxury',
-    subtitle: 'Eco-friendly features in premium Portuguese properties',
-    image: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&h=600&fit=crop&q=80',
-    readTime: '5 min read',
-    date: 'October 12, 2024',
-    category: 'Sustainability',
-    author: {
-      name: 'Teresa Alves',
-      role: 'Sustainability Consultant'
-    },
-    excerpt: 'Modern luxury embraces sustainability. Discover how Portugal\'s premium properties are incorporating eco-friendly features without compromising on elegance and comfort.'
-  }
-]
-
-const categories = ['All', 'Market Trends', 'Investment', 'Lifestyle', 'Development', 'Legal & Regulation', 'Sustainability']
+import { useBlogPosts } from '../../lib/properties-client'
 
 export default function BlogPage() {
   const router = useRouter()
+  const { blogPosts, loading } = useBlogPosts()
   const [selectedCategory, setSelectedCategory] = useState('All')
 
+  // Extract unique categories from posts
+  const categories = useMemo(() => {
+    const cats = new Set<string>(['All'])
+    blogPosts.forEach(post => {
+      if (post.category) {
+        cats.add(post.category)
+      }
+    })
+    return Array.from(cats)
+  }, [blogPosts])
+
   // Filter posts by category
-  const filteredPosts = selectedCategory === 'All' 
-    ? blogPosts 
-    : blogPosts.filter(post => post.category === selectedCategory)
+  const filteredPosts = useMemo(() => {
+    if (selectedCategory === 'All') {
+      return blogPosts
+    }
+    return blogPosts.filter(post => post.category === selectedCategory)
+  }, [blogPosts, selectedCategory])
 
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
@@ -185,16 +111,22 @@ export default function BlogPage() {
         />
         
         <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12">
-          <AnimatePresence mode="wait">
-            <motion.div 
-              key={selectedCategory}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 lg:gap-12"
-            >
-              {filteredPosts.map((post, index) => (
+          {loading ? (
+            <div className="text-center py-20">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto mb-4"></div>
+              <p className="text-black/60">Loading blog posts...</p>
+            </div>
+          ) : (
+            <AnimatePresence mode="wait">
+              <motion.div 
+                key={selectedCategory}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 lg:gap-12"
+              >
+                {filteredPosts.map((post, index) => (
                 <motion.article
                   key={post.id}
                   initial={{ opacity: 0, scale: 0.95 }}
@@ -205,14 +137,20 @@ export default function BlogPage() {
                 >
                   {/* Post Image */}
                   <div className="relative aspect-[16/11] overflow-hidden mb-6 rounded-[24px] bg-gray-100 shadow-sm group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300">
-                    <div 
-                      className="absolute inset-0 bg-gray-200"
-                      style={{
-                        backgroundImage: `url(${post.image})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center'
-                      }}
-                    />
+                    {post.image ? (
+                      <div 
+                        className="absolute inset-0 bg-gray-200"
+                        style={{
+                          backgroundImage: `url(${post.image})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center'
+                        }}
+                      />
+                    ) : (
+                      <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                        <span className="text-gray-400 text-sm">No image</span>
+                      </div>
+                    )}
                     {/* Overlay on hover */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     
@@ -268,25 +206,33 @@ export default function BlogPage() {
 
                     {/* Read More Link */}
                     <div className="mt-6">
-                      <button className="flex items-center gap-2 text-[14px] font-medium text-black/70 hover:text-black transition-colors duration-200 group/btn">
+                      <Link 
+                        href={`/blog/${post.id}`}
+                        className="flex items-center gap-2 text-[14px] font-medium text-black/70 hover:text-black transition-colors duration-200 group/btn"
+                      >
                         Read Article
                         <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover/btn:translate-x-1" weight="bold" />
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </motion.article>
-              ))}
-            </motion.div>
-          </AnimatePresence>
+                ))}
+              </motion.div>
+            </AnimatePresence>
+          )}
 
           {/* No Results */}
-          {filteredPosts.length === 0 && (
+          {!loading && filteredPosts.length === 0 && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="text-center py-20"
             >
-              <p className="text-[17px] text-black/50">No articles found in this category.</p>
+              <p className="text-[17px] text-black/50">
+                {blogPosts.length === 0 
+                  ? 'No blog posts available yet.' 
+                  : 'No articles found in this category.'}
+              </p>
             </motion.div>
           )}
         </div>

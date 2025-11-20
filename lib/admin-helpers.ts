@@ -112,6 +112,25 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
   })) as BlogPost[]
 }
 
+export async function getPublishedBlogPosts(): Promise<BlogPost[]> {
+  if (!db) throw new Error('Firestore not initialized')
+  
+  // Get all posts and filter/order in memory to avoid index issues
+  const q = query(collection(db, BLOG_COLLECTION), orderBy('createdAt', 'desc'))
+  const snapshot = await getDocs(q)
+  
+  const posts = snapshot.docs
+    .map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+      createdAt: doc.data().createdAt?.toDate(),
+      updatedAt: doc.data().updatedAt?.toDate(),
+    })) as BlogPost[]
+  
+  // Filter only published posts and maintain order
+  return posts.filter(post => post.published === true)
+}
+
 export async function getBlogPost(id: string): Promise<BlogPost | null> {
   if (!db) throw new Error('Firestore not initialized')
   

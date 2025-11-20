@@ -10,7 +10,6 @@ import {
   UserCircle
 } from '@phosphor-icons/react'
 import { MobileMenu } from './MobileMenu'
-import { AdminContactCard } from './AdminContactCard'
 
 interface NavBarProps {
   /**
@@ -304,12 +303,17 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
               </button>
             </Link>
             
-            {/* Admin Contact Card - Visible on tablet and desktop */}
-            <AdminContactCard useTransparentStyle={useTransparentStyle} />
-            
-            {/* Fallback Contact Us Link (hidden, apenas para SEO) */}
-            <Link href="/contact" className="hidden">
-              Contact Us
+            {/* Contact Button */}
+            <Link href="/contact">
+              <button 
+                className={`px-4 py-2 rounded-full text-[14px] font-medium tracking-[-0.01em] transition-all duration-200 ${
+                  useTransparentStyle
+                    ? 'bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-white/30'
+                    : 'bg-black hover:bg-black/90 text-white border border-black/10'
+                }`}
+              >
+                Contact
+              </button>
             </Link>
           </div>
 
