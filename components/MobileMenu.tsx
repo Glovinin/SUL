@@ -7,12 +7,16 @@ import { Button } from './ui/button'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { X, UserCircle } from '@phosphor-icons/react'
+import GB from 'country-flag-icons/react/3x2/GB'
+import PT from 'country-flag-icons/react/3x2/PT'
+import FR from 'country-flag-icons/react/3x2/FR'
+import ES from 'country-flag-icons/react/3x2/ES'
 
 interface MobileMenuProps {
   isOpen: boolean
   onClose: () => void
-  currentLang: string
-  setCurrentLang: (lang: string) => void
+  currentLang: 'EN' | 'PT' | 'FR' | 'ES'
+  setCurrentLang: (lang: 'EN' | 'PT' | 'FR' | 'ES') => void
 }
 
 export function MobileMenu({ isOpen, onClose, currentLang, setCurrentLang }: MobileMenuProps) {
@@ -179,36 +183,58 @@ export function MobileMenu({ isOpen, onClose, currentLang, setCurrentLang }: Mob
                 <div className="text-[11px] font-medium mb-3 text-black/40 tracking-[-0.01em] uppercase">
                   Language
                 </div>
-                <div className="flex gap-2">
+                <div className="grid grid-cols-2 gap-2">
                   <button
                     onClick={() => setCurrentLang('EN')}
-                    className={`flex-1 text-center text-[14px] font-medium tracking-[-0.01em] transition-all duration-200 py-3 px-4 rounded-full ${
+                    className={`flex items-center justify-center gap-2 text-[14px] font-medium tracking-[-0.01em] transition-all duration-200 py-3 px-4 rounded-full ${
                       currentLang === 'EN'
                         ? 'bg-black text-white'
                         : 'bg-black/5 text-black/60 hover:bg-black/10'
                     }`}
                   >
-                    🇬🇧 EN
-                  </button>
-                  <button
-                    onClick={() => setCurrentLang('FR')}
-                    className={`flex-1 text-center text-[14px] font-medium tracking-[-0.01em] transition-all duration-200 py-3 px-4 rounded-full ${
-                      currentLang === 'FR'
-                        ? 'bg-black text-white'
-                        : 'bg-black/5 text-black/60 hover:bg-black/10'
-                    }`}
-                  >
-                    🇫🇷 FR
+                    <div className="w-5 h-5 rounded overflow-hidden flex-shrink-0">
+                      <GB className="w-full h-full object-cover" />
+                    </div>
+                    <span>EN</span>
                   </button>
                   <button
                     onClick={() => setCurrentLang('PT')}
-                    className={`flex-1 text-center text-[14px] font-medium tracking-[-0.01em] transition-all duration-200 py-3 px-4 rounded-full ${
+                    className={`flex items-center justify-center gap-2 text-[14px] font-medium tracking-[-0.01em] transition-all duration-200 py-3 px-4 rounded-full ${
                       currentLang === 'PT'
                         ? 'bg-black text-white'
                         : 'bg-black/5 text-black/60 hover:bg-black/10'
                     }`}
                   >
-                    🇵🇹 PT
+                    <div className="w-5 h-5 rounded overflow-hidden flex-shrink-0">
+                      <PT className="w-full h-full object-cover" />
+                    </div>
+                    <span>PT</span>
+                  </button>
+                  <button
+                    onClick={() => setCurrentLang('FR')}
+                    className={`flex items-center justify-center gap-2 text-[14px] font-medium tracking-[-0.01em] transition-all duration-200 py-3 px-4 rounded-full ${
+                      currentLang === 'FR'
+                        ? 'bg-black text-white'
+                        : 'bg-black/5 text-black/60 hover:bg-black/10'
+                    }`}
+                  >
+                    <div className="w-5 h-5 rounded overflow-hidden flex-shrink-0">
+                      <FR className="w-full h-full object-cover" />
+                    </div>
+                    <span>FR</span>
+                  </button>
+                  <button
+                    onClick={() => setCurrentLang('ES')}
+                    className={`flex items-center justify-center gap-2 text-[14px] font-medium tracking-[-0.01em] transition-all duration-200 py-3 px-4 rounded-full ${
+                      currentLang === 'ES'
+                        ? 'bg-black text-white'
+                        : 'bg-black/5 text-black/60 hover:bg-black/10'
+                    }`}
+                  >
+                    <div className="w-5 h-5 rounded overflow-hidden flex-shrink-0">
+                      <ES className="w-full h-full object-cover" />
+                    </div>
+                    <span>ES</span>
                   </button>
                 </div>
               </motion.div>
