@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation'
 import { useFeaturedProperties, useProperties, useHomepageSettings, usePortfolio } from '../lib/properties-client'
 import { formatPrice } from '../lib/format-price'
 import { useLoading } from '../contexts/loading-context'
+import { TypingEffect } from '../components/typing-effect'
 import { 
   ArrowRight,
   Bed,
@@ -228,14 +229,25 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
         </div>
         
-        {/* Hero Content - Ultra Elegant Typography */}
-        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 md:px-12 pt-32 pb-20">
+        {/* Hero Content - Ultra Elegant Typography - iOS Style */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="relative z-10 w-full max-w-[1400px] mx-auto px-6 md:px-12 pt-32 pb-20"
+        >
           <div className="text-center flex flex-col items-center justify-center min-h-[60vh]">
-            {/* Main Heading - Large, Elegant, Minimalist */}
+            {/* Main Heading - Large, Elegant, Minimalist - iOS Spring Animation */}
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              initial={{ opacity: 0, y: 40, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ 
+                type: "spring",
+                stiffness: 100,
+                damping: 20,
+                mass: 1,
+                delay: 0.2
+              }}
               className="text-[40px] sm:text-[52px] md:text-[64px] lg:text-[72px] xl:text-[80px] font-light tracking-[-0.02em] text-white leading-[1.05] mb-8 md:mb-12 max-w-[1200px] mx-auto"
               style={{ 
                 letterSpacing: '-0.02em',
@@ -246,40 +258,67 @@ export default function Home() {
               <motion.span
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ 
+                  type: "spring",
+                  stiffness: 120,
+                  damping: 25,
+                  mass: 0.8,
+                  delay: 0.4
+                }}
                 className="inline-block"
               >
                 Real Estate & Investment<br className="hidden md:block" /> in Portugal
               </motion.span>
             </motion.h1>
 
-            {/* Subtitle - Refined, Harmonious */}
+            {/* Subtitle - Refined, Harmonious - iOS Fade with Typing */}
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              initial={{ opacity: 0, y: 30, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ 
+                type: "spring",
+                stiffness: 100,
+                damping: 20,
+                mass: 0.9,
+                delay: 0.7
+              }}
               className="text-[18px] md:text-[22px] lg:text-[24px] font-light text-white/90 leading-[1.5] max-w-[680px] mx-auto tracking-[-0.01em]"
               style={{ 
                 fontWeight: 300,
                 textShadow: '0 2px 30px rgba(0,0,0,0.25), 0 1px 15px rgba(0,0,0,0.15)'
               }}
             >
-              We assist international clients finding their ideal home or investment.
+              <TypingEffect 
+                text="We assist international clients finding their ideal home or investment."
+                speed={35}
+                delay={1100}
+              />
             </motion.p>
           </div>
 
-        </div>
+        </motion.div>
 
-        {/* Scroll Indicator - Premium */}
+        {/* Scroll Indicator - Premium - iOS Style */}
         <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0, y: 20, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ 
+            type: "spring",
+            stiffness: 100,
+            damping: 20,
+            mass: 0.8,
+            delay: 1.4
+          }}
           className="absolute bottom-14 left-1/2 -translate-x-1/2 z-[10] hidden md:block"
         >
           <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: [0.22, 1, 0.36, 1] }}
+            animate={{ y: [0, 8, 0] }}
+            transition={{ 
+              duration: 2.5, 
+              repeat: Infinity, 
+              ease: [0.4, 0, 0.2, 1],
+              repeatDelay: 0.5
+            }}
             className="w-7 h-11 rounded-full border-2 border-white/30 flex items-start justify-center p-2.5 backdrop-blur-sm bg-white/5 shadow-lg"
           >
             <motion.div
@@ -323,17 +362,6 @@ export default function Home() {
             >
               <span className="text-[12px] font-medium text-black/60">About SUL</span>
             </motion.div>
-
-            {/* Main Title */}
-            <motion.h2
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="text-[40px] md:text-[56px] lg:text-[64px] font-semibold text-black mb-10 tracking-[-0.02em] leading-[1.1]"
-            >
-              Boutique Real Estate<br />and Investment Consultancy
-            </motion.h2>
 
             {/* Main Description */}
             <motion.p
