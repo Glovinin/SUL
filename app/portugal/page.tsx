@@ -92,7 +92,7 @@ export default function PortugalPage() {
       <div className="border-t border-black/[0.03]"></div>
 
       {/* Why Portugal Benefits Section */}
-      <section className="relative py-32 md:py-40 bg-white overflow-visible">
+      <section className="relative py-20 md:py-28 bg-white overflow-visible">
         <GridPattern
           width={40}
           height={40}
@@ -151,7 +151,7 @@ export default function PortugalPage() {
       <div className="border-t border-black/[0.03]"></div>
 
       {/* Visual Gallery Section */}
-      <section className="py-32 md:py-40 bg-white">
+      <section className="py-20 md:py-28 bg-white">
         <div className="max-w-[1300px] mx-auto px-6 md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -201,7 +201,7 @@ export default function PortugalPage() {
       <div className="border-t border-black/[0.03]"></div>
 
       {/* Call to Action Section - Apple Style */}
-      <section className="py-32 md:py-40 bg-black">
+      <section className="py-20 md:py-28 bg-black">
         <motion.div 
           initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}

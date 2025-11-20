@@ -184,7 +184,7 @@ export default function PortfolioPage() {
       </section>
 
       {/* Call to Action Section - Apple Style */}
-      <section className="py-32 md:py-40 bg-black">
+      <section className="py-20 md:py-28 bg-black">
         <motion.div 
           initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}

@@ -334,7 +334,7 @@ export default function Home() {
       <div className="border-t border-black/[0.03] bg-white"></div>
 
       {/* About SUL Section - Premium Design */}
-      <section className="relative py-32 md:py-40 bg-white overflow-visible">
+      <section className="relative py-20 md:py-28 bg-white overflow-visible">
         <GridPattern
           width={40}
           height={40}
@@ -381,7 +381,7 @@ export default function Home() {
       <div className="border-t border-black/[0.03]"></div>
 
       {/* Portfolio Section - Modern Apple Grid */}
-      <section id="portfolio" className="py-32 md:py-40 bg-white overflow-visible">
+      <section id="portfolio" className="py-20 md:py-28 bg-white overflow-visible">
         <div className="max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible pb-8">
           {/* Header Section */}
           <motion.div 
@@ -389,58 +389,57 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col lg:flex-row items-start lg:items-end justify-between mb-16 gap-8"
+            className="text-center mb-16"
           >
-            <div className="max-w-[700px]">
-              {/* Badge */}
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6"
-              >
-                <span className="text-[12px] font-medium text-black/60">Portfolio</span>
-              </motion.div>
-              
-              {/* Main Title */}
-              <motion.h2 
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                className="text-[40px] md:text-[52px] font-semibold text-black mb-6 tracking-[-0.02em] leading-[1.1]"
-              >
-                Our completed projects and success stories
-              </motion.h2>
-              
-              {/* Subtitle */}
-              <motion.p 
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                className="text-[17px] md:text-[19px] font-normal text-black/60 leading-[1.6] mb-8"
-              >
-                A selection of projects led, coordinated, or orchestrated by SUL, for our clients or our own portfolio.
-              </motion.p>
+            {/* Badge */}
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6"
+            >
+              <span className="text-[12px] font-medium text-black/60">Portfolio</span>
+            </motion.div>
+            
+            {/* Main Title */}
+            <motion.h2 
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[40px] md:text-[52px] font-semibold text-black mb-6 tracking-[-0.02em] leading-[1.1] max-w-[900px] mx-auto"
+            >
+              Our completed projects and success stories
+            </motion.h2>
+            
+            {/* Subtitle */}
+            <motion.p 
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[17px] md:text-[19px] font-normal text-black/60 leading-[1.6] mb-8 max-w-[700px] mx-auto"
+            >
+              SUL Collection: Success Stories.
+            </motion.p>
 
-              {/* View portfolio button */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            {/* View portfolio button */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="flex justify-center"
+            >
+              <Button 
+                onClick={() => router.push('/portfolio')}
+                className="bg-black text-white hover:bg-black/90 border-0 px-6 py-3 rounded-full text-[14px] font-medium transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2 inline-flex"
               >
-                <Button 
-                  onClick={() => router.push('/portfolio')}
-                  className="bg-black text-white hover:bg-black/90 border-0 px-6 py-3 rounded-full text-[14px] font-medium transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2 inline-flex"
-                >
-                  View our portfolio
-                  <ArrowRight className="w-4 h-4" weight="bold" />
-                </Button>
-              </motion.div>
-            </div>
+                View our portfolio
+                <ArrowRight className="w-4 h-4" weight="bold" />
+              </Button>
+            </motion.div>
           </motion.div>
 
           {/* Sort portfolio items: featured first */}
@@ -593,7 +592,7 @@ export default function Home() {
       </section>
 
       {/* Find Property Section */}
-      <section className="py-32 md:py-40 bg-white relative overflow-x-hidden">
+      <section className="py-20 md:py-28 bg-white relative overflow-x-hidden">
         <GridPattern
           width={40}
           height={40}
@@ -682,7 +681,7 @@ export default function Home() {
       <div className="border-t border-black/[0.03]"></div>
 
       {/* Featured Projects Section - Modern Apple Grid */}
-      <section id="projects" className="py-32 md:py-40 bg-white overflow-visible">
+      <section id="projects" className="py-20 md:py-28 bg-white overflow-visible">
         <div className="max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible pb-8">
           {/* Header Section */}
           <motion.div 
@@ -690,58 +689,57 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col lg:flex-row items-start lg:items-end justify-between mb-16 gap-8"
+            className="text-center mb-16"
           >
-            <div className="max-w-[700px]">
-              {/* Badge */}
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6"
-              >
-                <span className="text-[12px] font-medium text-black/60">Properties</span>
-              </motion.div>
-              
-              {/* Main Title */}
-              <motion.h2 
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                className="text-[40px] md:text-[52px] font-semibold text-black mb-6 tracking-[-0.02em] leading-[1.1]"
-              >
-                Find homes that perfectly match your lifestyle
-              </motion.h2>
-              
-              {/* Subtitle */}
-              <motion.p 
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                className="text-[17px] md:text-[19px] font-normal text-black/60 leading-[1.6] mb-8"
-              >
-                Curated collection of premium properties across Portugal's most desirable locations
-              </motion.p>
+            {/* Badge */}
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6"
+            >
+              <span className="text-[12px] font-medium text-black/60">Properties</span>
+            </motion.div>
+            
+            {/* Main Title */}
+            <motion.h2 
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[40px] md:text-[52px] font-semibold text-black mb-6 tracking-[-0.02em] leading-[1.1] max-w-[900px] mx-auto"
+            >
+              Find homes that perfectly match your lifestyle
+            </motion.h2>
+            
+            {/* Subtitle */}
+            <motion.p 
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[17px] md:text-[19px] font-normal text-black/60 leading-[1.6] mb-8 max-w-[700px] mx-auto"
+            >
+              Curated collection of premium properties across Portugal's most desirable locations
+            </motion.p>
 
-              {/* Find your property with us button */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            {/* Find your property with us button */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="flex justify-center"
+            >
+              <Button 
+                onClick={() => router.push('/properties')}
+                className="bg-black text-white hover:bg-black/90 border-0 px-6 py-3 rounded-full text-[14px] font-medium transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2 inline-flex"
               >
-                <Button 
-                  onClick={() => router.push('/properties')}
-                  className="bg-black text-white hover:bg-black/90 border-0 px-6 py-3 rounded-full text-[14px] font-medium transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2 inline-flex"
-                >
-                  Find your property with us
-                  <ArrowRight className="w-4 h-4" weight="bold" />
-                </Button>
-              </motion.div>
-            </div>
+                Find your property with us
+                <ArrowRight className="w-4 h-4" weight="bold" />
+              </Button>
+            </motion.div>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10 px-0 py-4 md:p-8 lg:p-12 overflow-visible">
@@ -884,7 +882,7 @@ export default function Home() {
       </section>
 
       {/* Call to Action Section - Apple Style */}
-      <section className="py-32 md:py-40 bg-black">
+      <section className="py-20 md:py-28 bg-black">
         <motion.div 
           initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}

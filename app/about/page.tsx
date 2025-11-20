@@ -67,7 +67,7 @@ export default function AboutPage() {
       <div className="border-t border-black/[0.03]"></div>
 
       {/* About SUL Section - From Homepage */}
-      <section id="about" className="relative py-32 md:py-40 bg-white overflow-visible">
+      <section id="about" className="relative py-20 md:py-28 bg-white overflow-visible">
         {/* Static Grid Background */}
         <GridPattern
           width={40}
@@ -191,7 +191,7 @@ export default function AboutPage() {
       <div className="border-t border-black/[0.03]"></div>
 
       {/* About SUL Section */}
-      <section className="relative py-32 md:py-40 bg-white overflow-visible">
+      <section className="relative py-20 md:py-28 bg-white overflow-visible">
         <GridPattern
           width={40}
           height={40}
@@ -266,7 +266,7 @@ export default function AboutPage() {
       <div className="border-t border-black/[0.03]"></div>
 
       {/* Vincent Santos Section */}
-      <section className="relative py-32 md:py-40 bg-gray-50 overflow-visible">
+      <section className="relative py-20 md:py-28 bg-gray-50 overflow-visible">
         <div className="max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible">
           <div className="grid md:grid-cols-2 gap-12 md:gap-16 lg:gap-24 items-center overflow-visible px-0 py-4 md:p-8">
             {/* Visual Element */}
@@ -335,7 +335,7 @@ export default function AboutPage() {
       <div className="border-t border-black/[0.03]"></div>
 
       {/* Our Values Section */}
-      <section className="relative py-32 md:py-40 bg-white overflow-visible">
+      <section className="relative py-20 md:py-28 bg-white overflow-visible">
         <GridPattern
           width={40}
           height={40}
@@ -417,7 +417,7 @@ export default function AboutPage() {
       <div className="border-t border-black/[0.03]"></div>
 
       {/* Approach Section */}
-      <section className="relative py-32 md:py-40 bg-gray-50 overflow-visible">
+      <section className="relative py-20 md:py-28 bg-gray-50 overflow-visible">
         <div className="max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -647,7 +647,7 @@ export default function AboutPage() {
       <div className="border-t border-black/[0.03]"></div>
 
       {/* Call to Action Section - Apple Style */}
-      <section className="py-32 md:py-40 bg-black">
+      <section className="py-20 md:py-28 bg-black">
         <motion.div 
           initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}
