@@ -4,7 +4,6 @@ import React, { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '../../components/ui/button'
 import { GridPattern } from '../../components/ui/grid-pattern'
-import { NavBar } from '../../components/navbar'
 import { Footer } from '../../components/Footer'
 import { 
   ArrowRight,
@@ -44,7 +43,6 @@ export default function BlogPage() {
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
       {/* Navigation */}
-      <NavBar />
 
       {/* Hero Section */}
       <section className="relative pt-32 md:pt-40 pb-16 md:pb-20 bg-white">

@@ -4,7 +4,6 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Button } from '../../components/ui/button'
 import { GridPattern } from '../../components/ui/grid-pattern'
-import { NavBar } from '../../components/navbar'
 import { Footer } from '../../components/Footer'
 import { 
   EnvelopeSimple,
@@ -54,7 +53,6 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
       {/* Navigation */}
-      <NavBar />
 
       {/* Hero Section */}
       <section className="relative min-h-[60vh] flex items-center justify-center bg-black pt-[72px] overflow-hidden">

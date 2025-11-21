@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 import { Button } from '../components/ui/button'
 import { GridPattern } from '../components/ui/grid-pattern'
-import { NavBar } from '../components/navbar'
 import { Footer } from '../components/Footer'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -232,8 +231,6 @@ export default function Home() {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="min-h-screen bg-white"
         >
-      {/* Navigation */}
-      <NavBar isHomePage={true} />
 
       {/* Hero Section - Ultra-Premium Design */}
       <section className="relative min-h-screen flex items-center justify-center bg-black">

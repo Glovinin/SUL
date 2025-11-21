@@ -3,7 +3,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { GridPattern } from '../../../components/ui/grid-pattern'
-import { NavBar } from '../../../components/navbar'
 import { Footer } from '../../../components/Footer'
 import { 
   ArrowLeft,
@@ -31,7 +30,6 @@ export default function BlogPostPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-white">
-        <NavBar />
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto mb-4"></div>
@@ -46,7 +44,6 @@ export default function BlogPostPage() {
   if (error || !blogPost) {
     return (
       <div className="min-h-screen bg-white">
-        <NavBar />
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <h1 className="text-2xl font-semibold text-black mb-4">Article not found</h1>
@@ -68,7 +65,6 @@ export default function BlogPostPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <NavBar />
 
       {/* Hero Section */}
       <section className="relative pt-28 md:pt-36 pb-12 md:pb-16 bg-white overflow-hidden">

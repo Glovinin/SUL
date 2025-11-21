@@ -4,7 +4,6 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { Button } from '../../components/ui/button'
 import { GridPattern } from '../../components/ui/grid-pattern'
-import { NavBar } from '../../components/navbar'
 import { Footer } from '../../components/Footer'
 import { useRouter } from 'next/navigation'
 import { Bank, Sparkle, PaintBrush } from '@phosphor-icons/react'
@@ -58,7 +57,6 @@ export default function PortugalPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <NavBar />
 
       {/* Hero Section */}
       <section className="relative pt-32 md:pt-40 pb-20 md:pb-28 bg-white">

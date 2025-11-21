@@ -176,71 +176,7 @@ export default function InitialLoading() {
     return null
   }
 
-  // Loading rápido para navegação entre páginas - iOS Style
-  if (isPageLoading && !isInitialLoading) {
-    return (
-      <AnimatePresence>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-          className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-md flex items-center justify-center"
-        >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.92, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.92, y: 20 }}
-            transition={{ 
-              type: "spring",
-              stiffness: 200,
-              damping: 25,
-              mass: 0.8
-            }}
-            className="flex flex-col items-center"
-          >
-            <motion.h2 
-              className="text-[36px] md:text-[42px] lg:text-[48px] font-semibold text-white tracking-[-0.02em] mb-6"
-              initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
-              animate={{ 
-                opacity: 1, 
-                y: 0, 
-                filter: 'blur(0px)'
-              }}
-              transition={{ 
-                type: "spring",
-                stiffness: 150,
-                damping: 20,
-                mass: 0.9,
-                delay: 0.1
-              }}
-            >
-              SUL
-            </motion.h2>
-            <div className="flex gap-1.5">
-              {[0, 1, 2].map((i) => (
-                <motion.div
-                  key={i}
-                  className="w-1.5 h-1.5 bg-white/60 rounded-full"
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{
-                    opacity: [0.3, 1, 0.3],
-                    scale: 1
-                  }}
-                  transition={{
-                    duration: 1.2,
-                    repeat: Infinity,
-                    delay: i * 0.2,
-                    ease: [0.4, 0, 0.2, 1]
-                  }}
-                />
-              ))}
-            </div>
-          </motion.div>
-        </motion.div>
-      </AnimatePresence>
-    )
-  }
+  // Loading rápido para navegação entre páginas removido em favor de transições fluidas (app/template.tsx)
 
   // Versão ultra-premium - Studio Design Apple Style
   return (

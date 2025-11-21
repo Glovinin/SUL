@@ -4,7 +4,6 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { Button } from '../../components/ui/button'
 import { GridPattern } from '../../components/ui/grid-pattern'
-import { NavBar } from '../../components/navbar'
 import { Footer } from '../../components/Footer'
 import { 
   Bed,
@@ -31,7 +30,6 @@ export default function PortfolioPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <NavBar />
 
       {/* Hero Section - Ultra Premium */}
       <section className="relative pt-28 md:pt-36 pb-20 md:pb-28 bg-gradient-to-b from-gray-50/50 via-white to-white overflow-hidden">

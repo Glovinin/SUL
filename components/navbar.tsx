@@ -22,16 +22,11 @@ import PT from 'country-flag-icons/react/3x2/PT'
 import FR from 'country-flag-icons/react/3x2/FR'
 import ES from 'country-flag-icons/react/3x2/ES'
 
-interface NavBarProps {
-  /**
-   * If true, the navbar will have transparent background on homepage hero section
-   * and change to white on scroll. If false, it will always have white background.
-   */
-  isHomePage?: boolean
-}
-
-export function NavBar({ isHomePage = false }: NavBarProps) {
+export function NavBar() {
   const pathname = usePathname()
+  
+  // Detect homepage internally using pathname
+  const isHomePage = pathname === '/'
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [currentLang, setCurrentLang] = useState<'EN' | 'PT' | 'FR' | 'ES'>('EN')
@@ -115,7 +110,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
           : '0 1px 0 rgba(0, 0, 0, 0.02)'
       }}
       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-      className="fixed top-0 left-0 right-0 z-50 border-b"
+      className="fixed top-0 left-0 right-0 z-[100] border-b"
     >
       <div className="max-w-[1400px] mx-auto px-6 md:px-8 lg:px-12">
         <div className="flex items-center justify-between h-[100px] md:h-[108px]">

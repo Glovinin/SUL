@@ -7,7 +7,6 @@ import { Input } from '../../components/ui/input'
 import { Textarea } from '../../components/ui/textarea'
 import { Checkbox } from '../../components/ui/checkbox'
 import { GridPattern } from '../../components/ui/grid-pattern'
-import { NavBar } from '../../components/navbar'
 import { Footer } from '../../components/Footer'
 import { 
   ArrowRight,
@@ -135,7 +134,6 @@ export default function FindPropertyPage() {
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
       {/* Navigation */}
-      <NavBar />
 
       {/* Hero Section */}
       <section className="relative min-h-[60vh] flex items-center justify-center bg-black pt-[72px] overflow-hidden">

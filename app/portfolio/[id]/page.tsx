@@ -4,7 +4,6 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '../../../components/ui/button'
 import { GridPattern } from '../../../components/ui/grid-pattern'
-import { NavBar } from '../../../components/navbar'
 import { Footer } from '../../../components/Footer'
 import { 
   Bed,
@@ -114,7 +113,6 @@ export default function PortfolioDetailPage() {
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
       {/* Navigation */}
-      <NavBar />
 
       {/* Hero Gallery */}
       <section className="relative pt-28 md:pt-32 pb-12 md:pb-16 bg-white overflow-hidden">

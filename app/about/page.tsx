@@ -4,7 +4,6 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { Button } from '../../components/ui/button'
 import { GridPattern } from '../../components/ui/grid-pattern'
-import { NavBar } from '../../components/navbar'
 import { Footer } from '../../components/Footer'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -31,7 +30,6 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <NavBar />
 
       {/* Hero Section */}
       <section className="relative pt-32 md:pt-40 pb-16 md:pb-20 bg-white">
