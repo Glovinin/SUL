@@ -176,7 +176,7 @@ export default function InitialLoading() {
     return null
   }
 
-  // Loading rápido para navegação entre páginas
+  // Loading rápido para navegação entre páginas - iOS Style
   if (isPageLoading && !isInitialLoading) {
     return (
       <AnimatePresence>
@@ -184,33 +184,54 @@ export default function InitialLoading() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-sm flex items-center justify-center"
+          transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+          className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-md flex items-center justify-center"
         >
           <motion.div
-            initial={{ scale: 0.95, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.95, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
+            initial={{ opacity: 0, scale: 0.92, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.92, y: 20 }}
+            transition={{ 
+              type: "spring",
+              stiffness: 200,
+              damping: 25,
+              mass: 0.8
+            }}
             className="flex flex-col items-center"
           >
-            <h2 className="text-2xl md:text-3xl font-light text-white tracking-[0.1em] mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
-              <span className="font-light">SUL</span>
-              <span className="font-extralight mx-2">ESTATE</span>
-            </h2>
+            <motion.h2 
+              className="text-[36px] md:text-[42px] lg:text-[48px] font-semibold text-white tracking-[-0.02em] mb-6"
+              initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
+              animate={{ 
+                opacity: 1, 
+                y: 0, 
+                filter: 'blur(0px)'
+              }}
+              transition={{ 
+                type: "spring",
+                stiffness: 150,
+                damping: 20,
+                mass: 0.9,
+                delay: 0.1
+              }}
+            >
+              SUL
+            </motion.h2>
             <div className="flex gap-1.5">
               {[0, 1, 2].map((i) => (
                 <motion.div
                   key={i}
-                  className="w-1.5 h-1.5 bg-white rounded-full"
+                  className="w-1.5 h-1.5 bg-white/60 rounded-full"
+                  initial={{ opacity: 0, scale: 0 }}
                   animate={{
-                    opacity: [0.3, 1, 0.3]
+                    opacity: [0.3, 1, 0.3],
+                    scale: 1
                   }}
                   transition={{
-                    duration: 1,
+                    duration: 1.2,
                     repeat: Infinity,
                     delay: i * 0.2,
-                    ease: "easeInOut"
+                    ease: [0.4, 0, 0.2, 1]
                   }}
                 />
               ))}
