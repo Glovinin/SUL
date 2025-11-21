@@ -481,7 +481,14 @@ export default function PortfolioDetailPage() {
                       whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
                       whileTap={{ scale: 0.98, transition: { duration: 0.1 } }}
                     >
-                      <Button className="w-full bg-[#404040] text-white hover:bg-[#4a4a4a] border-0 px-6 py-3.5 rounded-full text-[15px] font-semibold transition-all duration-200">
+                      <Button 
+                        onClick={() => {
+                          if (typeof window !== 'undefined') {
+                            window.open('https://api.whatsapp.com/send/?phone=33662527879&text&type=phone_number&app_absent=0', '_blank')
+                          }
+                        }}
+                        className="w-full bg-[#404040] text-white hover:bg-[#4a4a4a] border-0 px-6 py-3.5 rounded-full text-[15px] font-semibold transition-all duration-200"
+                      >
                         Request Information
                       </Button>
                     </motion.div>

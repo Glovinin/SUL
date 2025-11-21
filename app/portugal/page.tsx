@@ -7,6 +7,7 @@ import { GridPattern } from '../../components/ui/grid-pattern'
 import { Footer } from '../../components/Footer'
 import { useRouter } from 'next/navigation'
 import { Bank, Sparkle, PaintBrush } from '@phosphor-icons/react'
+import Image from 'next/image'
 
 export default function PortugalPage() {
   const router = useRouter()
@@ -15,7 +16,7 @@ export default function PortugalPage() {
     {
       name: 'Lisbon',
       description: 'Historic charm meets cosmopolitan living',
-      image: 'https://images.unsplash.com/photo-1585208798174-202cedd5e8b0?w=1200&h=800&fit=crop&q=80&auto=format'
+      image: 'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=1200&h=800&fit=crop&q=80&auto=format'
     },
     {
       name: 'Cascais Coast',
@@ -59,7 +60,44 @@ export default function PortugalPage() {
       {/* Navigation */}
 
       {/* Hero Section */}
-      <section className="relative pt-32 md:pt-40 pb-20 md:pb-28 bg-white">
+      <section className="relative min-h-[60vh] flex items-center justify-center bg-black pt-[72px]">
+        {/* Background Image */}
+        <div className="absolute inset-0 overflow-hidden">
+          <Image
+            src="https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=1920&h=1080&fit=crop&q=80"
+            alt="Lisbon, Portugal"
+            fill
+            priority
+            className="object-cover"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_80%)]"></div>
+        </div>
+        
+        {/* Hero Content */}
+        <div className="relative z-10 w-full max-w-[1300px] mx-auto px-6 md:px-12 py-20 md:py-32">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center"
+          >
+            <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-full mb-8">
+              <span className="text-[12px] font-medium text-white/90">About Portugal</span>
+            </div>
+            <h1 className="text-[48px] md:text-[72px] lg:text-[80px] font-semibold tracking-[-0.03em] text-white leading-[1.05] mb-6">
+              Discover Portugal
+            </h1>
+            <p className="text-[18px] md:text-[22px] font-normal text-white/85 max-w-[800px] mx-auto leading-[1.6]">
+              A rare equilibrium between lifestyle, stability, and opportunity in one of Europe's most attractive destinations
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Content Section */}
+      <section className="relative pt-20 md:pt-28 pb-20 md:pb-28 bg-white">
         <GridPattern
           width={40}
           height={40}

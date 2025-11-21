@@ -32,7 +32,41 @@ export default function AboutPage() {
       {/* Navigation */}
 
       {/* Hero Section */}
-      <section className="relative pt-32 md:pt-40 pb-16 md:pb-20 bg-white">
+      <section className="relative min-h-[60vh] flex items-center justify-center bg-black pt-[72px]">
+        {/* Background Image */}
+        <div className="absolute inset-0 overflow-hidden">
+          <img 
+            src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&h=1080&fit=crop&q=80"
+            alt="About SUL"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_100%)]"></div>
+        </div>
+        
+        {/* Hero Content */}
+        <div className="relative z-10 w-full max-w-[1300px] mx-auto px-6 md:px-12 py-20 md:py-32">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center"
+          >
+            <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-full mb-8">
+              <span className="text-[12px] font-medium text-white/90">About SUL</span>
+            </div>
+            <h1 className="text-[48px] md:text-[72px] lg:text-[80px] font-semibold tracking-[-0.03em] text-white leading-[1.05] mb-6">
+              We invest, we curate, we orchestrate
+            </h1>
+            <p className="text-[18px] md:text-[22px] font-normal text-white/85 max-w-[800px] mx-auto leading-[1.6]">
+              A boutique real estate and investment consultancy helping international clients secure, structure, and optimize refined property assets in Portugal
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Content Section */}
+      <section className="relative pt-20 md:pt-28 pb-16 md:pb-20 bg-white">
         <GridPattern
           width={40}
           height={40}
@@ -46,9 +80,6 @@ export default function AboutPage() {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="text-center mb-12 md:mb-16"
           >
-            <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
-              <span className="text-[12px] font-medium text-black/60">About SUL</span>
-            </div>
             
             <h1 className="text-[40px] md:text-[64px] lg:text-[72px] font-semibold text-black mb-6 tracking-[-0.03em] leading-[1.1]">
               Boutique Real Estate<br />and Investment Consultancy

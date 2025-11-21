@@ -94,16 +94,47 @@ export default function PropertiesPage() {
     <div className="min-h-screen bg-white">
       {/* Navigation */}
 
-      {/* Hero Section - Ultra Premium */}
-      <section className="relative pt-28 md:pt-36 pb-20 md:pb-28 bg-gradient-to-b from-gray-50/50 via-white to-white overflow-hidden">
+      {/* Hero Section */}
+      <section className="relative min-h-[60vh] flex items-center justify-center bg-black pt-[72px]">
+        {/* Background Image */}
+        <div className="absolute inset-0 overflow-hidden">
+          <img 
+            src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1920&h=1080&fit=crop&q=80"
+            alt="Properties"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_100%)]"></div>
+        </div>
+        
+        {/* Hero Content */}
+        <div className="relative z-10 w-full max-w-[1300px] mx-auto px-6 md:px-12 py-20 md:py-32">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center"
+          >
+            <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-full mb-8">
+              <span className="text-[12px] font-medium text-white/90">Premium Properties</span>
+            </div>
+            <h1 className="text-[48px] md:text-[72px] lg:text-[80px] font-semibold tracking-[-0.03em] text-white leading-[1.05] mb-6">
+              Exclusive Collection
+            </h1>
+            <p className="text-[18px] md:text-[22px] font-normal text-white/85 max-w-[800px] mx-auto leading-[1.6]">
+              Discover our curated selection of premium properties across Portugal's most desirable locations
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Content Section */}
+      <section className="relative pt-20 md:pt-28 pb-20 md:pb-28 bg-white overflow-hidden">
         <GridPattern
           width={40}
           height={40}
           className="fill-black/[0.015] stroke-black/[0.015]"
         />
-        
-        {/* Ambient Light Effect */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-radial from-black/[0.03] via-transparent to-transparent blur-3xl pointer-events-none"></div>
         
         <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12">
           <motion.div
