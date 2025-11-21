@@ -150,7 +150,7 @@ export function NavBar() {
               {isActiveLink('/') && (
                 <motion.div
                   layoutId="activeIndicator"
-                  className={`absolute -bottom-1 left-0 right-0 h-[1.5px] ${
+                  className={`absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${
                     useTransparentStyle ? 'bg-white' : 'bg-black'
                   }`}
                   transition={{ type: "spring", stiffness: 380, damping: 30 }}
@@ -175,7 +175,7 @@ export function NavBar() {
               {isActiveLink('/services') && (
                 <motion.div
                   layoutId="activeIndicator"
-                  className={`absolute -bottom-1 left-0 right-0 h-[1.5px] ${
+                  className={`absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${
                     useTransparentStyle ? 'bg-white' : 'bg-black'
                   }`}
                   transition={{ type: "spring", stiffness: 380, damping: 30 }}
@@ -200,7 +200,7 @@ export function NavBar() {
               {isActiveLink('/portugal') && (
                 <motion.div
                   layoutId="activeIndicator"
-                  className={`absolute -bottom-1 left-0 right-0 h-[1.5px] ${
+                  className={`absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${
                     useTransparentStyle ? 'bg-white' : 'bg-black'
                   }`}
                   transition={{ type: "spring", stiffness: 380, damping: 30 }}
@@ -225,7 +225,7 @@ export function NavBar() {
               {isActiveLink('/about') && (
                 <motion.div
                   layoutId="activeIndicator"
-                  className={`absolute -bottom-1 left-0 right-0 h-[1.5px] ${
+                  className={`absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${
                     useTransparentStyle ? 'bg-white' : 'bg-black'
                   }`}
                   transition={{ type: "spring", stiffness: 380, damping: 30 }}
@@ -250,7 +250,7 @@ export function NavBar() {
               {isActiveLink('/portfolio') && (
                 <motion.div
                   layoutId="activeIndicator"
-                  className={`absolute -bottom-1 left-0 right-0 h-[1.5px] ${
+                  className={`absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${
                     useTransparentStyle ? 'bg-white' : 'bg-black'
                   }`}
                   transition={{ type: "spring", stiffness: 380, damping: 30 }}
@@ -275,7 +275,7 @@ export function NavBar() {
               {isActiveLink('/properties') && (
                 <motion.div
                   layoutId="activeIndicator"
-                  className={`absolute -bottom-1 left-0 right-0 h-[1.5px] ${
+                  className={`absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${
                     useTransparentStyle ? 'bg-white' : 'bg-black'
                   }`}
                   transition={{ type: "spring", stiffness: 380, damping: 30 }}
@@ -300,7 +300,7 @@ export function NavBar() {
               {isActiveLink('/blog') && (
                 <motion.div
                   layoutId="activeIndicator"
-                  className={`absolute -bottom-1 left-0 right-0 h-[1.5px] ${
+                  className={`absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${
                     useTransparentStyle ? 'bg-white' : 'bg-black'
                   }`}
                   transition={{ type: "spring", stiffness: 380, damping: 30 }}
