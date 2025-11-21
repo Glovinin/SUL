@@ -676,7 +676,7 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="text-[40px] md:text-[52px] font-semibold text-black mb-6 tracking-[-0.02em] leading-[1.1] max-w-[900px] mx-auto"
             >
-              Find homes that perfectly match your lifestyle
+              Exclusive collection of Properties
             </motion.h2>
             
             {/* Subtitle */}
@@ -687,7 +687,7 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className="text-[17px] md:text-[19px] font-normal text-black/60 leading-[1.6] mb-8 max-w-[700px] mx-auto"
             >
-              Curated collection of premium properties across Portugal's most desirable locations
+              Discover our curated selection of premium properties across Portugal
             </motion.p>
           </motion.div>
 
@@ -845,12 +845,28 @@ export default function Home() {
           <p className="text-[17px] md:text-[21px] font-normal text-white/80 mb-12 max-w-[640px] mx-auto leading-[1.5]">
             Share your vision — we'll curate a personalized selection for you.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+          <div className="flex flex-col items-center justify-center gap-4 mb-8">
             <Button 
               onClick={() => router.push('/find-property')}
-              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 min-w-[200px] shadow-sm hover:shadow-md"
+              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-full max-w-[300px] shadow-sm hover:shadow-md"
             >
-              Start your search
+              Invest / Buy with us
+            </Button>
+            <Button 
+              onClick={() => router.push('/find-property')}
+              className="bg-white/10 text-white hover:bg-white/20 border border-white/20 hover:border-white/30 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-full max-w-[300px]"
+            >
+              Sell with us
+            </Button>
+            <Button 
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  window.open('https://calendly.com/jules-portugal/45min', '_blank')
+                }
+              }}
+              className="bg-white/10 text-white hover:bg-white/20 border border-white/20 hover:border-white/30 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-full max-w-[300px]"
+            >
+              Book a free call
             </Button>
             <Button 
               onClick={() => {
@@ -858,17 +874,9 @@ export default function Home() {
                   window.open('https://wa.me/33662527879', '_blank')
                 }
               }}
-              className="bg-white/10 text-white hover:bg-white/20 border border-white/20 hover:border-white/30 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 min-w-[200px]"
+              className="bg-white/10 text-white hover:bg-white/20 border border-white/20 hover:border-white/30 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-full max-w-[300px]"
             >
-              Book a Free Call
-            </Button>
-          </div>
-          <div className="pt-8 border-t border-white/10">
-            <Button 
-              onClick={() => router.push('/contact?action=sell')}
-              className="bg-transparent text-white hover:bg-white/10 border border-white/30 hover:border-white/40 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200"
-            >
-              SELL WITH US — Tell us about your property
+              Speak with us on WhatsApp
             </Button>
           </div>
         </motion.div>
