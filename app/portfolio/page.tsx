@@ -200,7 +200,7 @@ export default function PortfolioPage() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
             <Button 
-              onClick={() => router.push('/properties')}
+              onClick={() => router.push('/find-property')}
               className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 min-w-[200px] shadow-sm hover:shadow-md"
             >
               Start your search

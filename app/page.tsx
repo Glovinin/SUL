@@ -410,7 +410,7 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="text-[40px] md:text-[52px] font-semibold text-black mb-6 tracking-[-0.02em] leading-[1.1] max-w-[900px] mx-auto"
             >
-              Our completed projects and success stories
+              SUL Collection: Success Stories.
             </motion.h2>
             
             {/* Subtitle */}
@@ -421,7 +421,7 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className="text-[17px] md:text-[19px] font-normal text-black/60 leading-[1.6] mb-8 max-w-[700px] mx-auto"
             >
-              SUL Collection: Success Stories.
+              A selection of projects led, coordinated, or orchestrated by SUL, for our clients or our own portfolio
             </motion.p>
           </motion.div>
 
@@ -864,7 +864,7 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
             <Button 
-              onClick={() => router.push('/properties')}
+              onClick={() => router.push('/find-property')}
               className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 min-w-[200px] shadow-sm hover:shadow-md"
             >
               Start your search

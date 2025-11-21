@@ -125,7 +125,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
               initial={shouldAnimateLogo ? { opacity: 0, y: -10 } : false}
               animate={shouldAnimateLogo ? { opacity: 1, y: 0 } : {}}
               transition={shouldAnimateLogo ? { duration: 0.5, ease: [0.22, 1, 0.36, 1] } : {}}
-              className={`text-[34px] md:text-[38px] lg:text-[42px] font-semibold tracking-[-0.02em] transition-colors duration-300 ${
+              className={`text-[34px] md:text-[38px] lg:text-[42px] font-semibold tracking-[-0.02em] transition-colors duration-300 pt-1 ${
                 useTransparentStyle 
                   ? 'text-white' 
                   : 'text-black hover:text-black/60'
@@ -141,7 +141,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
               href="/" 
               className="relative group"
             >
-              <span className={`text-[14px] font-medium tracking-[-0.01em] transition-all duration-300 ${
+              <span className={`text-[16px] font-medium tracking-[-0.01em] transition-all duration-300 ${
                 useTransparentStyle
                   ? isActiveLink('/') 
                     ? 'text-white' 
@@ -166,7 +166,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
               href="/services" 
               className="relative group"
             >
-              <span className={`text-[14px] font-medium tracking-[-0.01em] transition-all duration-300 ${
+              <span className={`text-[16px] font-medium tracking-[-0.01em] transition-all duration-300 ${
                 useTransparentStyle
                   ? isActiveLink('/services')
                     ? 'text-white'
@@ -191,7 +191,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
               href="/portugal" 
               className="relative group"
             >
-              <span className={`text-[14px] font-medium tracking-[-0.01em] transition-all duration-300 ${
+              <span className={`text-[16px] font-medium tracking-[-0.01em] transition-all duration-300 ${
                 useTransparentStyle
                   ? isActiveLink('/portugal')
                     ? 'text-white'
@@ -216,7 +216,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
               href="/about" 
               className="relative group"
             >
-              <span className={`text-[14px] font-medium tracking-[-0.01em] transition-all duration-300 ${
+              <span className={`text-[16px] font-medium tracking-[-0.01em] transition-all duration-300 ${
                 useTransparentStyle
                   ? isActiveLink('/about')
                     ? 'text-white'
@@ -241,7 +241,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
               href="/portfolio" 
               className="relative group"
             >
-              <span className={`text-[14px] font-medium tracking-[-0.01em] transition-all duration-300 ${
+              <span className={`text-[16px] font-medium tracking-[-0.01em] transition-all duration-300 ${
                 useTransparentStyle
                   ? isActiveLink('/portfolio')
                     ? 'text-white'
@@ -266,7 +266,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
               href="/properties" 
               className="relative group"
             >
-              <span className={`text-[14px] font-medium tracking-[-0.01em] transition-all duration-300 ${
+              <span className={`text-[16px] font-medium tracking-[-0.01em] transition-all duration-300 ${
                 useTransparentStyle
                   ? isActiveLink('/properties')
                     ? 'text-white'
@@ -291,7 +291,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
               href="/blog" 
               className="relative group"
             >
-              <span className={`text-[14px] font-medium tracking-[-0.01em] transition-all duration-300 ${
+              <span className={`text-[16px] font-medium tracking-[-0.01em] transition-all duration-300 ${
                 useTransparentStyle
                   ? isActiveLink('/blog')
                     ? 'text-white'
@@ -329,7 +329,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
                   <div className="w-5 h-5 rounded overflow-hidden flex-shrink-0">
                     <CurrentFlag className="w-full h-full object-cover" />
                   </div>
-                  <span className="text-[13px] font-normal tracking-[-0.01em]">
+                  <span className="text-[15px] font-normal tracking-[-0.01em]">
                     {currentLang}
                   </span>
                   <CaretDown 
@@ -385,7 +385,7 @@ export function NavBar({ isHomePage = false }: NavBarProps) {
             {/* Contact Button */}
             <Link href="/contact">
               <button 
-                className={`px-4 py-2 rounded-full text-[14px] font-medium tracking-[-0.01em] transition-all duration-200 ${
+                className={`px-4 py-2 rounded-full text-[16px] font-medium tracking-[-0.01em] transition-all duration-200 ${
                   useTransparentStyle
                     ? 'bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-white/30'
                     : 'bg-black hover:bg-black/90 text-white border border-black/10'
