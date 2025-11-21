@@ -334,26 +334,38 @@ export default function ServicesPage() {
           <p className="text-[17px] md:text-[21px] font-normal text-white/80 mb-12 max-w-[640px] mx-auto leading-[1.5]">
             Share your vision — we'll curate a personalized selection for you.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+          <div className="flex flex-col items-center justify-center gap-4 mb-8">
             <Button 
               onClick={() => router.push('/find-property')}
-              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 min-w-[200px] shadow-sm hover:shadow-md"
+              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
             >
-              Start your search
+              Invest / Buy with us
             </Button>
             <Button 
-              onClick={() => window.open('https://wa.me/33662527879', '_blank')}
-              className="bg-white/10 text-white hover:bg-white/20 border border-white/20 hover:border-white/30 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 min-w-[200px]"
+              onClick={() => router.push('/find-property')}
+              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
             >
-              Book a Free Call
+              Sell with us
             </Button>
-          </div>
-          <div className="pt-8 border-t border-white/10">
             <Button 
-              onClick={() => router.push('/contact?action=sell')}
-              className="bg-transparent text-white hover:bg-white/10 border border-white/30 hover:border-white/40 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200"
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  window.open('https://calendly.com/jules-portugal/45min', '_blank')
+                }
+              }}
+              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
             >
-              SELL WITH US — Tell us about your property
+              Book a free call
+            </Button>
+            <Button 
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  window.open('https://wa.me/33662527879', '_blank')
+                }
+              }}
+              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
+            >
+              Speak with us on WhatsApp
             </Button>
           </div>
         </motion.div>

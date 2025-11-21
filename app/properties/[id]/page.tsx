@@ -117,7 +117,7 @@ export default function PropertyDetailPage() {
       <NavBar />
 
       {/* Hero Gallery */}
-      <section className="relative pt-20 md:pt-24 pb-12 md:pb-16 bg-white overflow-hidden">
+      <section className="relative pt-28 md:pt-32 pb-12 md:pb-16 bg-white overflow-hidden">
         <div className="max-w-[1400px] mx-auto px-6 md:px-12">
           {/* Back Button - Above Gallery */}
           <motion.div

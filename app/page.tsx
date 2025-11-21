@@ -86,36 +86,101 @@ export default function Home() {
   const heroVideo = homepageSettings?.heroVideo || '/videos/video.mp4'
   const heroVideoPoster = homepageSettings?.heroVideoPoster || '/images/hero-poster.jpg'
   
-  // Verificar cache do vídeo
+  // Cache do vídeo usando Cache API
+  const cacheVideo = React.useCallback(async (videoUrl: string) => {
+    if (typeof window === 'undefined' || !('caches' in window)) return false
+    
+    try {
+      const cache = await caches.open('sul-estate-video-cache-v1')
+      const cachedResponse = await cache.match(videoUrl)
+      
+      if (cachedResponse) {
+        // Vídeo já está em cache
+        return true
+      }
+      
+      // Baixar e armazenar no cache
+      const response = await fetch(videoUrl)
+      if (response.ok) {
+        await cache.put(videoUrl, response.clone())
+        localStorage.setItem('sul_estate_hero_video_url', videoUrl)
+        localStorage.setItem('sul_estate_hero_video_cached', 'true')
+        return true
+      }
+    } catch (error) {
+      console.error('Error caching video:', error)
+    }
+    
+    return false
+  }, [])
+  
+  // Verificar e carregar vídeo do cache
   React.useEffect(() => {
     if (!heroVideo || typeof window === 'undefined') return
     
-    try {
-      const cached = localStorage.getItem('sul_estate_hero_video_loaded')
-      const cachedUrl = localStorage.getItem('sul_estate_hero_video_url')
-      
-      // Se o vídeo está em cache e é o mesmo vídeo, considerar como carregado
-      if (cached === 'true' && cachedUrl === heroVideo) {
-        setVideoLoaded(true)
+    const loadVideoFromCache = async () => {
+      try {
+        // Verificar se está em cache
+        if ('caches' in window) {
+          const cache = await caches.open('sul-estate-video-cache-v1')
+          const cachedResponse = await cache.match(heroVideo)
+          
+          if (cachedResponse) {
+            // Criar blob URL do cache
+            const blob = await cachedResponse.blob()
+            const blobUrl = URL.createObjectURL(blob)
+            
+            if (videoRef.current) {
+              videoRef.current.src = blobUrl
+              setVideoLoaded(true)
+              return
+            }
+          }
+        }
+        
+        // Se não estiver em cache, verificar localStorage e tentar cachear
+        const cached = localStorage.getItem('sul_estate_hero_video_cached')
+        const cachedUrl = localStorage.getItem('sul_estate_hero_video_url')
+        
+        if (cached === 'true' && cachedUrl === heroVideo) {
+          // Tentar cachear em background para próxima vez
+          cacheVideo(heroVideo)
+        } else {
+          // Cachear o vídeo em background
+          cacheVideo(heroVideo)
+        }
+      } catch (error) {
+        // Silent error handling
       }
-    } catch (error) {
-      // Silent error handling
     }
-  }, [heroVideo])
+    
+    loadVideoFromCache()
+  }, [heroVideo, cacheVideo])
   
   // Optimized video loading - carrega apenas quando necessário
   React.useEffect(() => {
     const video = videoRef.current
-    if (!video || !heroVideo || videoLoaded) return
+    if (!video || !heroVideo) return
 
     // Reset states quando vídeo muda
     setVideoError(false)
 
+    // Preload agressivo
+    video.preload = 'auto'
+    
     // Event listeners para otimização
-    const handleCanPlay = () => {
+    const handleCanPlay = async () => {
       setVideoLoaded(true)
       setVideoError(false)
       video.muted = true
+      
+      // Salvar no cache após carregar
+      try {
+        await cacheVideo(heroVideo)
+      } catch (error) {
+        // Silent error
+      }
+      
       const playPromise = video.play()
       
       if (playPromise !== undefined) {
@@ -135,8 +200,14 @@ export default function Home() {
       setVideoError(true)
     }
 
-    const handleLoadedData = () => {
+    const handleLoadedData = async () => {
       setVideoLoaded(true)
+      // Salvar no cache quando dados carregarem
+      try {
+        await cacheVideo(heroVideo)
+      } catch (error) {
+        // Silent error
+      }
     }
 
     video.addEventListener('canplay', handleCanPlay)
@@ -148,7 +219,7 @@ export default function Home() {
       video.removeEventListener('loadeddata', handleLoadedData)
       video.removeEventListener('error', handleError)
     }
-  }, [heroVideo, videoLoaded])
+  }, [heroVideo, cacheVideo])
 
   return (
     <AnimatePresence mode="wait">
@@ -192,7 +263,7 @@ export default function Home() {
             loop
             muted
             playsInline
-            preload="metadata"
+            preload="auto"
             poster={heroVideoPoster}
             className={`absolute inset-0 w-full h-full object-cover scale-110 transition-opacity duration-500 transition-transform duration-20000 ease-out hover:scale-105 ${
               videoLoaded ? 'opacity-100' : 'opacity-0'
