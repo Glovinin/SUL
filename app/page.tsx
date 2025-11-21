@@ -848,13 +848,13 @@ export default function Home() {
           <div className="flex flex-col items-center justify-center gap-4 mb-8">
             <Button 
               onClick={() => router.push('/find-property')}
-              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-full max-w-[300px] shadow-sm hover:shadow-md"
+              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
             >
               Invest / Buy with us
             </Button>
             <Button 
               onClick={() => router.push('/find-property')}
-              className="bg-white/10 text-white hover:bg-white/20 border border-white/20 hover:border-white/30 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-full max-w-[300px]"
+              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
             >
               Sell with us
             </Button>
@@ -864,7 +864,7 @@ export default function Home() {
                   window.open('https://calendly.com/jules-portugal/45min', '_blank')
                 }
               }}
-              className="bg-white/10 text-white hover:bg-white/20 border border-white/20 hover:border-white/30 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-full max-w-[300px]"
+              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
             >
               Book a free call
             </Button>
@@ -874,7 +874,7 @@ export default function Home() {
                   window.open('https://wa.me/33662527879', '_blank')
                 }
               }}
-              className="bg-white/10 text-white hover:bg-white/20 border border-white/20 hover:border-white/30 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-full max-w-[300px]"
+              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
             >
               Speak with us on WhatsApp
             </Button>
