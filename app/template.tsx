@@ -1,8 +1,19 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useEffect } from 'react'
 
 export default function Template({ children }: { children: React.ReactNode }) {
+  // Prevenir scrollbar durante animação
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    
+    return () => {
+      document.body.style.overflow = originalOverflow
+    }
+  }, [])
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 50, scale: 0.97, filter: 'blur(15px)' }}
@@ -14,7 +25,11 @@ export default function Template({ children }: { children: React.ReactNode }) {
         mass: 0.9,
         restDelta: 0.001
       }}
-      className="min-h-screen bg-white will-change-transform backface-visibility-hidden"
+      onAnimationComplete={() => {
+        // Restaurar scroll após animação completar
+        document.body.style.overflow = ''
+      }}
+      className="min-h-screen bg-white will-change-transform backface-visibility-hidden overflow-hidden"
       style={{
         transformOrigin: 'center top'
       }}

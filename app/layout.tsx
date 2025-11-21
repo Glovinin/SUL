@@ -458,11 +458,12 @@ export default function RootLayout({
         />
       </head>
       <body 
-        className={`${inter.className} overflow-x-hidden bg-white antialiased`}
+        className={`${inter.className} overflow-x-hidden overflow-y-auto bg-white antialiased`}
         style={{ 
           backgroundColor: '#ffffff',
           background: '#ffffff',
-          fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif'
+          fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif',
+          overscrollBehavior: 'none'
         }}
       >
         <LoadingProvider>
