@@ -16,7 +16,10 @@ import {
   Handshake,
   Eye,
   Target,
-  CheckCircle
+  CheckCircle,
+  MagnifyingGlass,
+  Shield,
+  ChartLine
 } from '@phosphor-icons/react'
 
 export default function AboutPage() {
@@ -52,44 +55,15 @@ export default function AboutPage() {
               <span className="text-[12px] font-medium text-white/90">About SUL</span>
             </div>
             <h1 className="text-[48px] md:text-[72px] lg:text-[80px] font-semibold tracking-[-0.03em] text-white leading-[1.05] mb-6">
-              We invest, we curate, we orchestrate
+            The Story Behind SUL
             </h1>
             <p className="text-[18px] md:text-[22px] font-normal text-white/85 max-w-[800px] mx-auto leading-[1.6]">
-              A boutique real estate and investment consultancy helping international clients secure, structure, and optimize refined property assets in Portugal
+              Local expertise with a global perspective — delivering discreet, tailored and detail-driven property advisory for exceptional opportunities in Portugal.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Content Section */}
-      <section className="relative pt-20 md:pt-28 pb-16 md:pb-20 bg-white">
-        <GridPattern
-          width={40}
-          height={40}
-          className="fill-black/[0.02] stroke-black/[0.02]"
-        />
-        
-        <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="text-center mb-12 md:mb-16"
-          >
-            
-            <h1 className="text-[40px] md:text-[64px] lg:text-[72px] font-semibold text-black mb-6 tracking-[-0.03em] leading-[1.1]">
-              Boutique Real Estate<br />and Investment Consultancy
-            </h1>
-            
-            <p className="text-[17px] md:text-[21px] font-normal text-black/60 max-w-[800px] mx-auto leading-[1.6]">
-              A premium, independent and selective structure based in Lisbon, dedicated to guiding international investors through refined and stable real estate projects in Portugal.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Divider */}
-      <div className="border-t border-black/[0.03]"></div>
 
       {/* About SUL Section - From Homepage */}
       <section id="about" className="relative py-20 md:py-28 bg-white overflow-visible">
@@ -156,7 +130,7 @@ export default function AboutPage() {
                   transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
                   className="text-[17px] md:text-[19px] font-normal"
                 >
-                  SUL represents a refined approach to real estate advisory, combining strategic insight with an unwavering commitment to excellence.
+                  Founded by Vincent Santos, trained in International Business Law, SUL brings over a decade of experience in real estate investment, project management, and premium property advisory in Portugal. Living in Lisbon with his family, Vincent has invested personally in key regions such as Lisboa (Estrela, Chiado), the Algarve (Lagos), Azeitão (vineyard estates), and Sesimbra (South Coast) — combining local experience with international perspective.
                 </motion.p>
                 
                 <motion.p 
@@ -166,17 +140,7 @@ export default function AboutPage() {
                   transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
                   className="text-[17px] md:text-[19px] font-normal"
                 >
-                  We understand that each property search is unique, and we curate personalized selections that align with your vision and long-term objectives.
-                </motion.p>
-                
-                <motion.p 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                  className="text-[17px] md:text-[19px] font-normal"
-                >
-                  With deep local knowledge and international perspective, we guide discerning clients through every stage of their real estate journey.
+                  Surrounded by a handpicked network of professionals — lawyers, architects, engineers, designers, and bankers — SUL acts as the conductor of each project, from strategy to delivery. SUL believes in a human, bespoke, and demanding approach.
                 </motion.p>
               </div>
 
@@ -190,21 +154,21 @@ export default function AboutPage() {
               >
                 <div className="text-center">
                   <div className="text-[32px] md:text-[40px] font-semibold text-black mb-1 tracking-tight">
-                    <NumberTicker value={15} startValue={0} className="text-black" />+
+                    <NumberTicker value={10} startValue={0} className="text-black" />
                   </div>
-                  <div className="text-[12px] md:text-[13px] font-medium text-black/60">Years</div>
+                  <div className="text-[12px] md:text-[13px] font-medium text-black/60">years experience</div>
                 </div>
                 <div className="text-center">
                   <div className="text-[32px] md:text-[40px] font-semibold text-black mb-1 tracking-tight">
-                    €<NumberTicker value={500} startValue={0} className="text-black" />M+
+                    <NumberTicker value={200} startValue={0} className="text-black" />+
                   </div>
-                  <div className="text-[12px] md:text-[13px] font-medium text-black/60">Portfolio</div>
+                  <div className="text-[12px] md:text-[13px] font-medium text-black/60">clients advised</div>
                 </div>
                 <div className="text-center">
                   <div className="text-[32px] md:text-[40px] font-semibold text-black mb-1 tracking-tight">
-                    <NumberTicker value={98} startValue={0} className="text-black" />%
+                    <NumberTicker value={23} startValue={0} className="text-black" />
                   </div>
-                  <div className="text-[12px] md:text-[13px] font-medium text-black/60">Satisfaction</div>
+                  <div className="text-[12px] md:text-[13px] font-medium text-black/60">nationalities</div>
                 </div>
               </motion.div>
             </motion.div>
@@ -215,149 +179,7 @@ export default function AboutPage() {
       {/* Divider */}
       <div className="border-t border-black/[0.03]"></div>
 
-      {/* About SUL Section */}
-      <section className="relative py-20 md:py-28 bg-white overflow-visible">
-        <GridPattern
-          width={40}
-          height={40}
-          className="fill-black/[0.02] stroke-black/[0.02]"
-        />
-        
-        <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12">
-          <div className="grid md:grid-cols-2 gap-12 md:gap-16 lg:gap-24 items-center overflow-visible px-0 py-4 md:p-8">
-            {/* Content */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="max-w-[560px]"
-            >
-              {/* Badge */}
-              <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
-                <span className="text-[12px] font-medium text-black/60">Who We Are</span>
-              </div>
-              
-              {/* Main Title */}
-              <motion.h2 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                className="text-[40px] md:text-[52px] font-semibold text-black mb-8 tracking-[-0.02em] leading-[1.1]"
-              >
-                Independent. Experienced. Human.
-              </motion.h2>
-              
-              {/* Description */}
-              <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="text-[17px] md:text-[19px] font-normal text-black/60 mb-6 leading-[1.6]"
-              >
-                SUL by VS is a Lisbon-based boutique real estate and investment consultancy helping international investors secure, structure, and optimize refined property assets in Portugal.
-              </motion.p>
 
-              <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                className="text-[17px] md:text-[19px] font-normal text-black/60 leading-[1.6]"
-              >
-                We combine precision, rentability and long-term vision with strategy, taste, and trust — a human and discreet approach. We act as a bridge of confidence between investors and the Portuguese market — orchestrating every project with refinement and stability.
-              </motion.p>
-            </motion.div>
-
-            {/* Visual Element */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20, scale: 0.9 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="relative aspect-[4/5] w-full max-w-[500px] mx-auto md:ml-auto md:mr-0"
-            >
-              <div className="group absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 rounded-3xl shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] overflow-hidden transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-black/[0.04] hover:border-black/[0.08]">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_40%,rgba(0,0,0,0.02)_0%,transparent_70%)] group-hover:bg-[radial-gradient(circle_at_70%_40%,rgba(0,0,0,0.04)_0%,transparent_70%)] transition-all duration-300"></div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Divider */}
-      <div className="border-t border-black/[0.03]"></div>
-
-      {/* Vincent Santos Section */}
-      <section className="relative py-20 md:py-28 bg-gray-50 overflow-visible">
-        <div className="max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible">
-          <div className="grid md:grid-cols-2 gap-12 md:gap-16 lg:gap-24 items-center overflow-visible px-0 py-4 md:p-8">
-            {/* Visual Element */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20, scale: 0.9 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="relative aspect-[4/5] w-full max-w-[500px] mx-auto md:mr-auto md:ml-0 order-2 md:order-1"
-            >
-              <div className="group absolute inset-0 bg-gradient-to-br from-gray-50 to-gray-150 rounded-3xl shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] overflow-hidden transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-black/[0.04] hover:border-black/[0.08]">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_60%,rgba(0,0,0,0.02)_0%,transparent_70%)] group-hover:bg-[radial-gradient(circle_at_30%_60%,rgba(0,0,0,0.04)_0%,transparent_70%)] transition-all duration-300"></div>
-              </div>
-            </motion.div>
-
-            {/* Content */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="max-w-[560px] order-1 md:order-2"
-            >
-              {/* Badge */}
-              <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
-                <span className="text-[12px] font-medium text-black/60">Founder</span>
-              </div>
-              
-              {/* Main Title */}
-              <motion.h2 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                className="text-[40px] md:text-[52px] font-semibold text-black mb-8 tracking-[-0.02em] leading-[1.1]"
-              >
-                Vincent Santos
-              </motion.h2>
-              
-              {/* Description */}
-              <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="text-[17px] md:text-[19px] font-normal text-black/60 mb-6 leading-[1.6]"
-              >
-                Founded by Vincent Santos, trained in International Business Law in France and specialized for almost ten years in real estate investment and project management, the company brings together expertise, taste, and strategy.
-              </motion.p>
-
-              <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                className="text-[17px] md:text-[19px] font-normal text-black/60 leading-[1.6]"
-              >
-                Vincent's professionalism, network, and experience with international clients make him a trusted advisor for investors seeking stability, rentability, and design-led value. Being an investor himself, he brings the perspective of someone who has been on both sides — understanding the importance of returns, discretion, and long-term vision.
-              </motion.p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Divider */}
-      <div className="border-t border-black/[0.03]"></div>
 
       {/* Our Values Section */}
       <section className="relative py-20 md:py-28 bg-white overflow-visible">
@@ -378,7 +200,7 @@ export default function AboutPage() {
           >
             {/* Badge */}
             <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
-              <span className="text-[12px] font-medium text-black/60">Our Values</span>
+              <span className="text-[12px] font-medium text-black/60">Our Values & Approach</span>
             </div>
 
             {/* Main Title */}
@@ -389,27 +211,36 @@ export default function AboutPage() {
               transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
               className="text-[40px] md:text-[56px] font-semibold text-black mb-8 tracking-[-0.02em] leading-[1.1] max-w-[900px] mx-auto"
             >
-              Trust, discretion, and long-term value
+              Our Values & Approach
             </motion.h2>
           </motion.div>
 
           {/* Values Grid */}
-          <div className="grid md:grid-cols-3 gap-6 md:gap-8 lg:gap-10 overflow-visible px-0 py-4 md:p-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-10 overflow-visible px-0 py-4 md:p-8">
             {[
               {
+                icon: MagnifyingGlass,
+                title: 'Clarity & Transparency',
+                subtitle: 'Clear process, clear costs, clear timelines.',
+                description: 'We guide every step with total visibility and honest communication.'
+              },
+              {
+                icon: Shield,
+                title: 'Integrity & Discretion',
+                subtitle: 'Ethical decisions and absolute confidentiality.',
+                description: 'Your privacy and long-term interests always come first.'
+              },
+              {
                 icon: Handshake,
-                title: 'Trusted Partners',
-                description: 'Surrounded by recognized professionals — architects, lawyers, designers, and financing partners — we act as a bridge of trust between international investors and the Portuguese market.'
+                title: 'Trusted Network',
+                subtitle: 'Architects, lawyers, designers and financial advisors.',
+                description: 'A curated ecosystem of excellence bridging international investors with the Portuguese market.'
               },
               {
-                icon: Eye,
-                title: 'Full Transparency',
-                description: 'Our role is to curate, coordinate, and optimize every stage of a project, ensuring transparency, aesthetic consistency, and sustainable performance.'
-              },
-              {
-                icon: Target,
-                title: 'Long-term Vision',
-                description: 'We believe the most successful investments are those that stand the test of time — both financially and aesthetically.'
+                icon: ChartLine,
+                title: 'Long-Term Vision',
+                subtitle: 'Strategy, optimization and enduring value.',
+                description: 'We craft and refine projects for lasting aesthetic and financial performance.'
               }
             ].map((value, index) => {
               const Icon = value.icon
@@ -425,9 +256,12 @@ export default function AboutPage() {
                   <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-black/5 group-hover:bg-black/10 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
                     <Icon className="w-8 h-8 text-black/70 group-hover:text-black transition-colors duration-300" weight="duotone" />
                   </div>
-                  <h3 className="text-[20px] font-semibold text-black mb-3 tracking-tight group-hover:text-black/80 transition-colors duration-300">
+                  <h3 className="text-[20px] font-semibold text-black mb-2 tracking-tight group-hover:text-black/80 transition-colors duration-300">
                     {value.title}
                   </h3>
+                  <p className="text-[14px] font-semibold text-black/80 mb-2 leading-[1.4]">
+                    {value.subtitle}
+                  </p>
                   <p className="text-[15px] font-normal text-black/60 leading-[1.6]">
                     {value.description}
                   </p>
@@ -438,94 +272,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Divider */}
-      <div className="border-t border-black/[0.03]"></div>
-
-      {/* Approach Section */}
-      <section className="relative py-20 md:py-28 bg-gray-50 overflow-visible">
-        <div className="max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-[560px] mx-auto text-center"
-          >
-            {/* Badge */}
-            <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
-              <span className="text-[12px] font-medium text-black/60">Our Approach</span>
-            </div>
-            
-            {/* Main Title */}
-            <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[40px] md:text-[52px] font-semibold text-black mb-8 tracking-[-0.02em] leading-[1.1]"
-            >
-              Strategic and human
-            </motion.h2>
-            
-            {/* Quote */}
-            <motion.div 
-              initial={{ opacity: 0, x: -10 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="relative pl-6 border-l-2 border-black/20 mb-12 text-left"
-            >
-              <p className="text-[19px] md:text-[21px] font-normal text-black/80 italic leading-[1.6]">
-                "We believe in strategy, discretion and beauty that endures."
-              </p>
-            </motion.div>
-
-            {/* Method Points */}
-            <div className="space-y-6 text-left">
-              {[
-                {
-                  title: "Personalized Strategy",
-                  description: "Every project begins with your goals"
-                },
-                {
-                  title: "Trusted Partners",
-                  description: "Legal, architectural, and financial experts with proven track records"
-                },
-                {
-                  title: "Full Transparency",
-                  description: "Clear costs, timelines, and objectives"
-                },
-                {
-                  title: "Continuous Optimization",
-                  description: "We refine, manage, and enhance value over time"
-                }
-              ].map((point, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.8, delay: 0.4 + index * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                  className="flex items-start gap-4"
-                >
-                  <CheckCircle className="w-6 h-6 text-black/60 flex-shrink-0 mt-0.5" weight="fill" />
-                  <div>
-                    <h3 className="text-[17px] font-semibold text-black mb-1">
-                      {point.title}
-                    </h3>
-                    <p className="text-[15px] font-normal text-black/60 leading-[1.6]">
-                      {point.description}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Divider */}
-      <div className="border-t border-black/[0.03]"></div>
 
       {/* Call to Action Section - Apple Style */}
       <section className="py-20 md:py-28 bg-black">

@@ -56,10 +56,10 @@ export default function PortfolioPage() {
               <span className="text-[12px] font-medium text-white/90">Portfolio</span>
             </div>
             <h1 className="text-[48px] md:text-[72px] lg:text-[80px] font-semibold tracking-[-0.03em] text-white leading-[1.05] mb-6">
-              Our Completed Projects
+              OUR PORTFOLIO
             </h1>
             <p className="text-[18px] md:text-[22px] font-normal text-white/85 max-w-[800px] mx-auto leading-[1.6]">
-              A curated selection of properties we've successfully sourced, structured, and delivered for our clients
+              A curated selection of projects led, coordinated or orchestrated by SUL — for our clients and our own portfolio.
             </p>
           </motion.div>
         </div>

@@ -6,7 +6,7 @@ import { Button } from '../../components/ui/button'
 import { GridPattern } from '../../components/ui/grid-pattern'
 import { Footer } from '../../components/Footer'
 import { useRouter } from 'next/navigation'
-import { Bank, Sparkle, PaintBrush } from '@phosphor-icons/react'
+import { Bank, Sparkle, PaintBrush, Buildings, Tree, ChartLine } from '@phosphor-icons/react'
 import Image from 'next/image'
 
 export default function PortugalPage() {
@@ -15,23 +15,43 @@ export default function PortugalPage() {
   const locations = [
     {
       name: 'Lisbon',
-      description: 'Historic charm meets cosmopolitan living',
+      description: 'Portugal\'s cultural and economic epicenter, where centuries-old architecture blends with modern design, global gastronomy and vibrant urban life. From historic Alfama to the riverfront of Belém and the cosmopolitan avenues of the city center, Lisbon offers a diverse property landscape with solid long-term fundamentals, sustained international demand and exceptional lifestyle convenience.',
       image: 'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=1200&h=800&fit=crop&q=80&auto=format'
     },
     {
-      name: 'Cascais Coast',
-      description: 'Riviera elegance by the Atlantic',
+      name: 'Cascais, Estoril & Sintra',
+      description: 'The Lisbon Riviera brings together refined coastal living, sandy beaches, international schools and a privileged outdoor lifestyle. Cascais and Estoril offer marinas, golf, tennis and safe, elegant neighborhoods, while Sintra adds a mystical dimension with its UNESCO palaces, forested hills and romantic estates. A deeply established premium region valued for family life, comfort and long-term stability.',
       image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1200&h=800&fit=crop&q=80&auto=format'
     },
     {
-      name: 'Comporta',
-      description: 'Untouched nature, sophisticated retreat',
+      name: 'South Lisbon & Arrábida',
+      description: 'Aroeira, Caparica, Sesimbra, Meco and Setúbal form a dynamic coastal corridor where nature meets contemporary living. Here, vast pine forests, surf spots, golf courses and modern villas coexist minutes from Lisbon. The Arrábida Natural Park elevates the area with turquoise bays, protected beaches and dramatic cliffs — making it one of the most attractive lifestyle regions for buyers seeking space, beauty and accessibility.',
+      image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=800&fit=crop&q=80&auto=format'
+    },
+    {
+      name: 'Comporta / Tróia / Melides',
+      description: 'The epitome of understated luxury, defined by raw landscapes, dunes, rice fields and minimalist architecture. This region attracts an international clientele seeking privacy, design-led homes and a slower, nature-driven rhythm. Strict planning rules preserve its authenticity, resulting in ultra-limited supply and one of Portugal\'s most coveted high-end markets, ideal for distinctive residences and signature retreats.',
       image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=800&fit=crop&q=80&auto=format'
     },
     {
       name: 'Algarve',
-      description: 'Sun, golf, and timeless beauty',
+      description: 'A globally recognised destination where year-round sunshine, golden beaches, golf resorts and gated communities create a world-class lifestyle environment. From the dramatic cliffs of Lagos to the exclusive enclaves of Quinta do Lago and Vale do Lobo, the Algarve offers mature infrastructure, premium services, strong rental performance and broad international appeal — perfect for both primary and investment-driven buyers.',
       image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&h=800&fit=crop&q=80&auto=format'
+    },
+    {
+      name: 'Porto & Douro',
+      description: 'Northern Portugal\'s cultural capital, blending historic architecture, modern riverfront regeneration, Michelin-starred cuisine and a growing luxury market. Porto provides urban sophistication and investment resilience, while the Douro Valley adds expansive vineyard estates, boutique hotel potential and breathtaking natural scenery. Together, they offer a compelling mix of heritage, lifestyle and opportunity.',
+      image: 'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=1200&h=800&fit=crop&q=80&auto=format'
+    },
+    {
+      name: 'Alentejo',
+      description: 'A vast territory of rolling plains, olive groves, cork forests and vineyards. Renowned for its quiet sophistication, Alentejo offers secluded estates, farmhouses, eco-retreats and boutique hospitality projects. Whether inland or along the untouched coastline, the region provides wide-open spaces, privacy, authenticity and a deep sense of slow-living luxury, increasingly sought after by international buyers.',
+      image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&h=800&fit=crop&q=80&auto=format'
+    },
+    {
+      name: 'Other Regions',
+      description: '(Silver Coast • Ericeira & Mafra • Madeira) A curated selection of additional territories serviced upon request. The Silver Coast offers dramatic cliffs, surf towns and contemporary villas with growing expatriate demand. Ericeira & Mafra deliver a surf-chic lifestyle, protected coastlines and a creative community just outside Lisbon. Madeira, with its subtropical climate and dramatic landscapes, provides exceptional oceanfront living and is rising as a premium retreat destination. Each region brings unique scenery, lifestyle character and investment potential within Portugal\'s diverse geography.',
+      image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1200&h=800&fit=crop&q=80&auto=format'
     }
   ]
 
@@ -39,17 +59,32 @@ export default function PortugalPage() {
     {
       icon: Bank,
       title: 'Stability & Safety',
-      description: 'Political and economic stability combined with one of the world\'s safest environments'
+      description: 'A secure and reliable environment for long-term living and investment.'
     },
     {
       icon: Sparkle,
       title: 'Quality of Life',
-      description: 'Exceptional climate, rich culture, and a lifestyle that balances tradition with modernity'
+      description: 'Exceptional climate, gastronomy and a warm, human-centered culture.'
     },
     {
       icon: PaintBrush,
       title: 'Architecture & Design',
-      description: 'From historic heritage to contemporary design, Portugal offers timeless aesthetic value'
+      description: 'From historic charm to modern elegance, a country shaped by timeless aesthetics.'
+    },
+    {
+      icon: Buildings,
+      title: 'Culture & Heritage',
+      description: 'Rich traditions, arts and craftsmanship that define Portugal\'s character.'
+    },
+    {
+      icon: Tree,
+      title: 'Lifestyle & Nature',
+      description: 'Oceanfront living, green landscapes and a relaxed Mediterranean rhythm.'
+    },
+    {
+      icon: ChartLine,
+      title: 'Investment Confidence',
+      description: 'A resilient market with strong demand and lasting value.'
     }
   ]
 
@@ -87,45 +122,15 @@ export default function PortugalPage() {
               <span className="text-[12px] font-medium text-white/90">About Portugal</span>
             </div>
             <h1 className="text-[48px] md:text-[72px] lg:text-[80px] font-semibold tracking-[-0.03em] text-white leading-[1.05] mb-6">
-              Discover Portugal
+            Welcome to Portugal
             </h1>
             <p className="text-[18px] md:text-[22px] font-normal text-white/85 max-w-[800px] mx-auto leading-[1.6]">
-              A rare equilibrium between lifestyle, stability, and opportunity in one of Europe's most attractive destinations
+            Portugal offers a rare balance of lifestyle, stability, safety, culture, authenticity, and opportunity. It’s a country where you can live beautifully — and invest wisely.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Content Section */}
-      <section className="relative pt-20 md:pt-28 pb-20 md:pb-28 bg-white">
-        <GridPattern
-          width={40}
-          height={40}
-          className="fill-black/[0.02] stroke-black/[0.02]"
-        />
-        
-        <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="text-center mb-16"
-          >
-            <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
-              <span className="text-[12px] font-medium text-black/60">Why Portugal</span>
-            </div>
-            <h1 className="text-[48px] md:text-[64px] lg:text-[72px] font-semibold text-black mb-8 tracking-[-0.03em] leading-[1.1]">
-              A rare equilibrium between lifestyle, stability and opportunity
-            </h1>
-            <p className="text-[17px] md:text-[21px] font-normal text-black/60 max-w-[760px] mx-auto leading-[1.6]">
-              Portugal offers a unique blend of quality living, architectural heritage, and strategic investment potential
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Divider */}
-      <div className="border-t border-black/[0.03]"></div>
 
       {/* Why Portugal Benefits Section */}
       <section className="relative py-20 md:py-28 bg-white overflow-visible">
@@ -137,7 +142,7 @@ export default function PortugalPage() {
         
         <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible">
           {/* Key Benefits Grid */}
-          <div className="relative z-10 grid md:grid-cols-3 gap-6 md:gap-8 lg:gap-10 mb-16 overflow-visible px-0 py-4 md:p-8">
+          <div className="relative z-10 grid md:grid-cols-3 gap-6 md:gap-8 lg:gap-10 mb-8 overflow-visible px-0 py-4 md:p-8">
             {benefits.map((benefit, index) => {
               const Icon = benefit.icon
               return (
@@ -186,9 +191,14 @@ export default function PortugalPage() {
       {/* Divider */}
       <div className="border-t border-black/[0.03]"></div>
 
-      {/* Visual Gallery Section */}
-      <section className="py-20 md:py-28 bg-white">
-        <div className="max-w-[1300px] mx-auto px-6 md:px-12">
+      {/* Regions Section */}
+      <section className="relative pt-12 md:pt-16 pb-20 md:pb-28 bg-white overflow-visible">
+        <GridPattern
+          width={40}
+          height={40}
+          className="fill-black/[0.02] stroke-black/[0.02]"
+        />
+        <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -197,38 +207,50 @@ export default function PortugalPage() {
             className="text-center mb-16"
           >
             <h2 className="text-[40px] md:text-[56px] font-semibold text-black mb-6 tracking-[-0.02em] leading-[1.1]">
-              Discover Portugal's Finest Regions
+              Regions covered by SUL
             </h2>
             <p className="text-[17px] md:text-[21px] font-normal text-black/60 max-w-[760px] mx-auto leading-[1.6]">
-              From historic cities to pristine coastlines, explore the diverse beauty of Portugal
+              SUL supports clients across these key regions of Portugal, leveraging deep local networks and hands-on knowledge of each territory
             </p>
           </motion.div>
-          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
-            {locations.map((location, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                className="group relative aspect-[16/10] rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300"
-              >
-                <img 
-                  src={location.image} 
-                  alt={location.name}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-600 ease-out group-hover:scale-[1.05]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-600"></div>
-                <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-600">
-                  <h3 className="text-[28px] md:text-[32px] font-bold text-white mb-2">
-                    {location.name}
-                  </h3>
-                  <p className="text-[16px] md:text-[18px] font-light text-white/90">
-                    {location.description}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
+          
+          <div className="space-y-16 md:space-y-24">
+            {locations.map((location, index) => {
+              const isEven = index % 2 === 0
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center"
+                >
+                  {/* Text Content */}
+                  <div className={isEven ? '' : 'md:order-2'}>
+                    <div className="border-t border-black/10 pt-6 mb-6">
+                      <h3 className="text-[40px] md:text-[52px] lg:text-[56px] font-semibold text-black mb-6 tracking-[-0.02em] leading-[1.1]">
+                        {location.name}
+                      </h3>
+                    </div>
+                    <p className="text-[17px] md:text-[19px] font-normal text-black/70 leading-[1.7]">
+                      {location.description}
+                    </p>
+                  </div>
+
+                  {/* Image */}
+                  <div className={isEven ? '' : 'md:order-1'}>
+                    <div className="relative aspect-[3/4] max-w-[500px] mx-auto rounded-2xl overflow-hidden bg-gray-100 group">
+                      <img 
+                        src={location.image} 
+                        alt={location.name}
+                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                      />
+                    </div>
+                  </div>
+                </motion.div>
+              )
+            })}
           </div>
         </div>
       </section>
