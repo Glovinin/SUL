@@ -356,24 +356,6 @@ export default function ContactPage() {
                     Avenida da Liberdade
                   </p>
                 </motion.div>
-
-                {/* Hours Card */}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.45 }}
-                  className="bg-white rounded-[24px] p-6 border border-black/10 shadow-sm hover:shadow-md transition-all duration-300"
-                >
-                  <div className="w-12 h-12 rounded-2xl bg-black/5 flex items-center justify-center mb-4">
-                    <Clock className="w-6 h-6 text-black/70" weight="duotone" />
-                  </div>
-                  <h3 className="text-[16px] font-semibold text-black mb-2">Hours</h3>
-                  <p className="text-[15px] text-black/60 leading-[1.6]">
-                    Monday - Friday<br />
-                    9:00 AM - 6:00 PM
-                  </p>
-                </motion.div>
               </div>
 
               {/* Social Links */}
@@ -413,65 +395,6 @@ export default function ContactPage() {
                 </div>
               </motion.div>
             </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="relative py-20 md:py-32 bg-gray-50 overflow-hidden">
-        <GridPattern
-          width={40}
-          height={40}
-          className="fill-black/[0.02] stroke-black/[0.02]"
-        />
-        
-        <div className="relative z-10 max-w-[900px] mx-auto px-6 md:px-12">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-[36px] md:text-[48px] font-semibold text-black mb-4 tracking-[-0.02em] leading-[1.1]">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-[17px] text-black/60 leading-[1.6]">
-              Quick answers to common questions
-            </p>
-          </motion.div>
-
-          <div className="space-y-4">
-            {[
-              {
-                question: 'How long does the property search process take?',
-                answer: 'The timeline varies based on your requirements, but typically ranges from 2-6 months. We work efficiently while ensuring we find the perfect match for your needs.'
-              },
-              {
-                question: 'Do you assist with financing and legal matters?',
-                answer: 'Yes, we coordinate with trusted banking and legal partners to help structure financing and handle all legal aspects of your property transaction in Portugal.'
-              },
-              {
-                question: 'Can you help with property renovation projects?',
-                answer: 'Absolutely. We provide full project supervision services, managing contractors, timelines, and quality control from concept to completion.'
-              },
-              {
-                question: 'What areas of Portugal do you cover?',
-                answer: 'We focus on premium locations including Lisbon, Comporta, Algarve, Ericeira, and the Douro Valley, with deep local expertise in each region.'
-              }
-            ].map((faq, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.97 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-white rounded-[20px] p-6 border border-black/5 hover:border-black/10 transition-all duration-300"
-              >
-                <h3 className="text-[17px] font-semibold text-black mb-3">{faq.question}</h3>
-                <p className="text-[15px] text-black/60 leading-[1.6]">{faq.answer}</p>
-              </motion.div>
-            ))}
           </div>
         </div>
       </section>

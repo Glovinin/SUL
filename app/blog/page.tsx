@@ -78,36 +78,6 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* Content Section */}
-      <section className="relative pt-20 md:pt-28 pb-16 md:pb-20 bg-white">
-        <GridPattern
-          width={40}
-          height={40}
-          className="fill-black/[0.02] stroke-black/[0.02]"
-        />
-        
-        <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="text-center mb-12 md:mb-16"
-          >
-            <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
-              <span className="text-[12px] font-medium text-black/60">Latest Insights</span>
-            </div>
-            
-            <h1 className="text-[40px] md:text-[64px] lg:text-[72px] font-semibold text-black mb-6 tracking-[-0.03em] leading-[1.1]">
-              Blog & Insights
-            </h1>
-            
-            <p className="text-[17px] md:text-[21px] font-normal text-black/60 max-w-[800px] mx-auto leading-[1.6]">
-              Expert perspectives on Portugal's real estate market, investment strategies, and lifestyle insights
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
       {/* Categories Filter */}
       <section className="relative py-12 bg-white border-b border-black/5">
         <div className="max-w-[1300px] mx-auto px-6 md:px-12">
@@ -271,8 +241,13 @@ export default function BlogPage() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="relative py-24 md:py-32 bg-black">
-        <div className="max-w-[900px] mx-auto px-6 md:px-12 text-center">
+      <section className="relative py-24 md:py-32 bg-white overflow-hidden">
+        <GridPattern
+          width={40}
+          height={40}
+          className="fill-black/[0.02] stroke-black/[0.02]"
+        />
+        <div className="relative z-10 max-w-[900px] mx-auto px-6 md:px-12 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -280,39 +255,57 @@ export default function BlogPage() {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-full mb-8"
+              className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6"
             >
-              <span className="text-[12px] font-medium text-white/90">Stay Updated</span>
+              <span className="text-[12px] font-medium text-black/60">Stay Updated</span>
             </motion.div>
 
-            <h2 className="text-[36px] md:text-[52px] font-semibold text-white mb-6 tracking-[-0.02em] leading-[1.1]">
+            <motion.h2
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[36px] md:text-[52px] font-semibold text-black mb-6 tracking-[-0.02em] leading-[1.1]"
+            >
               Subscribe to Our Newsletter
-            </h2>
-            <p className="text-[17px] md:text-[20px] font-normal text-white/80 mb-10 max-w-[700px] mx-auto leading-[1.6]">
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[17px] md:text-[20px] font-normal text-black/60 mb-12 max-w-[700px] mx-auto leading-[1.6]"
+            >
               Get the latest insights on Portugal's real estate market delivered directly to your inbox
-            </p>
+            </motion.p>
 
-            <form className="max-w-[500px] mx-auto">
-              <div className="flex flex-col sm:flex-row gap-3">
+            <motion.form
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="max-w-[600px] mx-auto"
+            >
+              <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
                 <input
                   type="email"
                   placeholder="Your email address"
-                  className="flex-1 bg-white/10 backdrop-blur-md border border-white/20 text-white placeholder-white/40 px-6 py-4 rounded-full focus:outline-none focus:border-white/40 focus:bg-white/15 transition-all duration-200 text-[15px]"
+                  className="flex-1 bg-white border-2 border-black/[0.08] text-black placeholder-black/40 px-6 py-4 rounded-full focus:outline-none focus:border-black/[0.25] transition-all duration-200 text-[15px] shadow-sm hover:shadow-md h-[52px]"
                   required
                 />
                 <Button 
                   type="submit"
-                  className="bg-white text-black hover:bg-white/90 border-0 px-8 py-4 rounded-full text-[15px] font-semibold transition-all duration-200 shadow-sm hover:shadow-md flex items-center justify-center gap-2 whitespace-nowrap"
+                  className="bg-black text-white hover:bg-black/90 border-0 px-8 py-4 rounded-full text-[15px] font-semibold transition-all duration-200 shadow-sm hover:shadow-md flex items-center justify-center gap-2 whitespace-nowrap h-[52px] sm:w-auto w-full"
                 >
                   Subscribe
                   <ArrowRight className="w-4 h-4" weight="bold" />
                 </Button>
               </div>
-            </form>
+            </motion.form>
           </motion.div>
         </div>
       </section>

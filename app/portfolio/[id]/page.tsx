@@ -332,7 +332,7 @@ export default function PortfolioDetailPage() {
                   {[
                     { icon: Bed, label: `${portfolioItem.beds} Bedrooms`, show: portfolioItem.beds && portfolioItem.beds !== '0' },
                     { icon: Bathtub, label: `${portfolioItem.baths} Bathrooms`, show: portfolioItem.baths && portfolioItem.baths !== '0' },
-                    { icon: Ruler, label: `${portfolioItem.sqft} sqft`, show: portfolioItem.sqft && portfolioItem.sqft !== '0' },
+                    { icon: Ruler, label: `${portfolioItem.sqft} m²`, show: portfolioItem.sqft && portfolioItem.sqft !== '0' },
                     { icon: CalendarBlank, label: portfolioItem.yearBuilt, show: portfolioItem.yearBuilt }
                   ].filter(item => item.show).map((item, idx) => (
                     <motion.div 
@@ -437,64 +437,60 @@ export default function PortfolioDetailPage() {
                 className="sticky top-24 md:top-32"
               >
                 <div className="bg-white rounded-[20px] md:rounded-[24px] p-6 md:p-8 border border-black/10 shadow-[0_4px_20px_rgba(0,0,0,0.06)] md:shadow-[0_8px_30px_rgba(0,0,0,0.08)]">
+                  {/* Badge */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.1 }}
+                    className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-5 md:mb-6"
+                  >
+                    <span className="text-[12px] font-medium text-black/60">Property Search</span>
+                  </motion.div>
+
+                  {/* Main Title */}
                   <motion.h3 
-                    className="text-[22px] md:text-[24px] font-semibold text-black mb-5 md:mb-6 tracking-[-0.02em]"
+                    className="text-[22px] md:text-[24px] font-semibold text-black mb-4 md:mb-5 tracking-[-0.02em]"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.3 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
                   >
-                    Interested in similar projects?
+                    Looking for your next home or investment?
                   </motion.h3>
                   
+                  {/* Description */}
                   <motion.p 
                     className="text-[14px] md:text-[15px] text-black/60 mb-7 md:mb-8 leading-[1.6]"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
                   >
-                    Contact our team to discover more exceptional projects or to discuss your real estate needs.
+                    Tell us about your project and what matters to you —
+                    we'll source the perfect property, tailored to your criteria.
                   </motion.p>
 
-                  <div className="space-y-3 mb-7 md:mb-8">
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: 0.5 }}
-                      whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-                      whileTap={{ scale: 0.98, transition: { duration: 0.1 } }}
+                  {/* Button */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                    whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+                    whileTap={{ scale: 0.98, transition: { duration: 0.1 } }}
+                  >
+                    <Button 
+                      onClick={() => router.push('/find-property')}
+                      className="w-full bg-black text-white hover:bg-black/90 border-0 px-6 py-3.5 rounded-full text-[15px] font-semibold transition-all duration-200 shadow-sm hover:shadow-md flex items-center justify-center gap-2"
                     >
-                      <Button 
-                        onClick={() => router.push('/properties')}
-                        className="w-full bg-black text-white hover:bg-black/90 border-0 px-6 py-3.5 rounded-full text-[15px] font-semibold transition-all duration-200 shadow-sm hover:shadow-md"
-                      >
-                        View Our Properties
-                      </Button>
-                    </motion.div>
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: 0.6 }}
-                      whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-                      whileTap={{ scale: 0.98, transition: { duration: 0.1 } }}
-                    >
-                      <Button 
-                        onClick={() => {
-                          if (typeof window !== 'undefined') {
-                            window.open('https://api.whatsapp.com/send/?phone=33662527879&text&type=phone_number&app_absent=0', '_blank')
-                          }
-                        }}
-                        className="w-full bg-[#404040] text-white hover:bg-[#4a4a4a] border-0 px-6 py-3.5 rounded-full text-[15px] font-semibold transition-all duration-200"
-                      >
-                        Request Information
-                      </Button>
-                    </motion.div>
-                  </div>
+                      Let's discuss your project
+                      <ArrowRight className="w-4 h-4" weight="bold" />
+                    </Button>
+                  </motion.div>
 
-                  <div className="pt-7 md:pt-8 border-t border-black/10">
+                  {/* Team Section */}
+                  <div className="pt-7 md:pt-8 border-t border-black/10 mt-7 md:mt-8">
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-11 h-11 md:w-12 md:h-12 rounded-full bg-black/5 flex items-center justify-center flex-shrink-0">
                         <Users className="w-5 h-5 md:w-6 md:h-6 text-black/70" weight="duotone" />
@@ -608,7 +604,7 @@ export default function PortfolioDetailPage() {
                         {item.sqft && item.sqft !== '0' && (
                           <div className="flex items-center gap-1.5">
                             <Ruler className="w-4 h-4 text-black/40" weight="duotone" />
-                            <span className="text-sm font-medium text-black/70">{item.sqft} sqft</span>
+                            <span className="text-sm font-medium text-black/70">{item.sqft} m²</span>
                           </div>
                         )}
                       </div>

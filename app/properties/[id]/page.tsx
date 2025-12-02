@@ -24,12 +24,13 @@ import {
   MagnifyingGlassMinus
 } from '@phosphor-icons/react'
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useProperty, useProperties } from '../../../lib/properties-client'
 import { formatPrice } from '../../../lib/format-price'
 
 export default function PropertyDetailPage() {
   const params = useParams()
+  const router = useRouter()
   const propertyId = params.id as string
   const [selectedImage, setSelectedImage] = useState(0)
   const [isFullscreen, setIsFullscreen] = useState(false)
@@ -328,7 +329,7 @@ export default function PropertyDetailPage() {
                   {[
                     { icon: Bed, label: `${property.beds} Bedrooms` },
                     { icon: Bathtub, label: `${property.baths} Bathrooms` },
-                    { icon: Ruler, label: `${property.sqft} sqft` },
+                    { icon: Ruler, label: `${property.sqft} m²` },
                     { icon: CalendarBlank, label: property.yearBuilt }
                   ].map((item, idx) => (
                     <motion.div 
@@ -481,11 +482,7 @@ export default function PropertyDetailPage() {
                       whileTap={{ scale: 0.98, transition: { duration: 0.1 } }}
                     >
                       <Button 
-                        onClick={() => {
-                          if (typeof window !== 'undefined') {
-                            window.open('https://api.whatsapp.com/send/?phone=33662527879&text&type=phone_number&app_absent=0', '_blank')
-                          }
-                        }}
+                        onClick={() => router.push('/contact')}
                         className="w-full bg-[#404040] text-white hover:bg-[#4a4a4a] border-0 px-6 py-3.5 rounded-full text-[15px] font-semibold transition-all duration-200"
                       >
                         Request Information
@@ -597,7 +594,7 @@ export default function PropertyDetailPage() {
                         </div>
                         <div className="flex items-center gap-1.5">
                           <Ruler className="w-4 h-4 text-black/40" weight="duotone" />
-                          <span className="text-sm font-medium text-black/70">{prop.sqft} sqft</span>
+                          <span className="text-sm font-medium text-black/70">{prop.sqft} m²</span>
                         </div>
                       </div>
 
