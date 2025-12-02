@@ -65,48 +65,6 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      {/* Content Section */}
-      <section className="relative pt-20 md:pt-28 pb-20 md:pb-28 bg-white overflow-hidden">
-        <GridPattern
-          width={40}
-          height={40}
-          className="fill-black/[0.015] stroke-black/[0.015]"
-        />
-        
-        <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="text-center mb-16 md:mb-20"
-          >
-            {/* Badge Premium */}
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-black/[0.08] rounded-full mb-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)]"
-            >
-              <div className="w-1.5 h-1.5 rounded-full bg-black animate-pulse"></div>
-              <span className="text-[11px] font-semibold text-black/70 tracking-[0.08em] uppercase">Our Portfolio</span>
-            </motion.div>
-            
-            {/* Título Principal - Hero */}
-            <h1 className="text-[48px] md:text-[76px] lg:text-[88px] font-semibold text-black mb-7 tracking-[-0.04em] leading-[0.95] bg-clip-text">
-              Our Portfolio
-            </h1>
-            
-            {/* Subtítulo Elegante */}
-            <p className="text-[16px] md:text-[20px] lg:text-[22px] font-normal text-black/70 max-w-[750px] mx-auto leading-[1.65] tracking-[-0.01em] mb-6">
-              A selection of projects led, coordinated, or orchestrated by SUL, for our clients or our own portfolio.
-            </p>
-            <p className="text-[16px] md:text-[18px] lg:text-[20px] font-normal text-black/60 max-w-[750px] mx-auto leading-[1.65] tracking-[-0.01em]">
-              Each project reflects our commitment to quality and excellence.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
       {/* Portfolio Grid */}
       <section className="relative py-12 md:py-20 bg-white">
         <div className="max-w-[1300px] mx-auto px-6 md:px-12">
