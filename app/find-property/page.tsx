@@ -175,7 +175,7 @@ export default function FindPropertyPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             >
-              Find Your Perfect Property
+              Looking for your next home or investment?
             </motion.h1>
             
             <motion.p 
@@ -184,14 +184,14 @@ export default function FindPropertyPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             >
-              Can't find what you're looking for? Let us help you find your dream property in Portugal
+              Fill out the form below and our team will help you find the perfect property that matches your criteria
             </motion.p>
           </motion.div>
         </div>
       </section>
 
       {/* Form Section */}
-      <section className="relative py-24 md:py-40 bg-white overflow-hidden">
+      <section className="relative pt-12 md:pt-20 pb-24 md:pb-40 bg-white overflow-hidden">
         <GridPattern
           width={40}
           height={40}
@@ -206,21 +206,6 @@ export default function FindPropertyPage() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="mb-16 text-center"
           >
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6"
-            >
-              <span className="text-[12px] font-medium text-black/60">Get Started</span>
-            </motion.div>
-            <h2 className="text-[40px] md:text-[56px] font-semibold text-black mb-6 tracking-[-0.02em] leading-[1.1]">
-              Tell us what you're looking for
-            </h2>
-            <p className="text-[18px] md:text-[20px] text-black/60 leading-[1.65] max-w-[700px] mx-auto">
-              Fill out the form below and our team will help you find the perfect property that matches your criteria
-            </p>
           </motion.div>
 
           <form onSubmit={handleSubmit} className="max-w-[900px] mx-auto bg-white rounded-[32px] border border-black/[0.06] shadow-[0_4px_24px_rgba(0,0,0,0.04)] p-8 md:p-12">

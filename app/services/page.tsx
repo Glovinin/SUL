@@ -149,86 +149,11 @@ export default function ServicesPage() {
               <span className="text-[12px] font-medium text-white/90">Our Services</span>
             </div>
             <h1 className="text-[48px] md:text-[72px] lg:text-[80px] font-semibold tracking-[-0.03em] text-white leading-[1.05] mb-6">
-              Comprehensive Real Estate Solutions
+            SUL ADVISORY & SERVICES
             </h1>
             <p className="text-[18px] md:text-[22px] font-normal text-white/85 max-w-[800px] mx-auto leading-[1.6]">
               From strategic guidance to project supervision, we provide end-to-end support for your Portuguese real estate journey
             </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* About SUL Section */}
-      <section className="relative py-24 md:py-32 bg-white overflow-visible">
-        <GridPattern
-          width={40}
-          height={40}
-          className="fill-black/[0.02] stroke-black/[0.02]"
-        />
-        
-        <div className="relative z-10 max-w-[1100px] mx-auto px-6 md:px-12">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="text-center"
-          >
-            <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
-              <span className="text-[12px] font-medium text-black/60">About SUL</span>
-            </div>
-            
-            <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[36px] md:text-[48px] font-semibold text-black mb-8 tracking-[-0.02em] leading-[1.1]"
-            >
-              Your Trusted Partner in Portuguese Real Estate
-            </motion.h2>
-            
-            <div className="space-y-6 text-[17px] md:text-[20px] font-normal text-black/70 leading-[1.7] max-w-[900px] mx-auto">
-              <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              >
-                Based in Lisbon, SUL supports clients throughout Portugal, combining local expertise, strategic insight, and trusted partnerships to deliver exceptional results.
-              </motion.p>
-              
-              <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              >
-                Our mission is to analyze, source, enhance, and manage properties of character and distinction. Whether you're looking for a smart investment or your ideal home, we act as your trusted advisor and orchestrator.
-              </motion.p>
-              
-              <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              >
-                We have guided numerous international clients from around the world in their real estate journeys across Portugal.
-              </motion.p>
-            </div>
-
-            {/* Quote */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-16 p-8 border-l-4 border-black/20 bg-gray-50 rounded-r-2xl max-w-[700px] mx-auto"
-            >
-              <p className="text-[20px] md:text-[24px] font-light italic text-black/80 leading-[1.6]">
-                "Our approach values clarity, discretion, and long-term perspective."
-              </p>
-            </motion.div>
           </motion.div>
         </div>
       </section>

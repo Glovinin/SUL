@@ -676,7 +676,7 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="text-[40px] md:text-[52px] font-semibold text-black mb-6 tracking-[-0.02em] leading-[1.1] max-w-[900px] mx-auto"
             >
-              Can't find what you're looking for?
+              Looking for your next home or investment?
             </motion.h2>
 
             {/* Description */}
@@ -687,8 +687,8 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className="text-[17px] md:text-[19px] font-normal text-black/60 leading-[1.6] mb-10 max-w-[700px] mx-auto"
             >
-              We help our clients find houses, apartments, or businesses to buy or invest in Portugal. 
-              Tell us what you're looking for and we'll help you find the perfect property.
+              Tell us about your project and what matters to you —
+              we’ll source the perfect property, tailored to your criteria.
             </motion.p>
 
             {/* Button */}
@@ -703,7 +703,7 @@ export default function Home() {
                 onClick={() => router.push('/find-property')}
                 className="bg-black text-white hover:bg-black/90 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2"
               >
-                Search for your property with us
+                Let’s discuss your project
                 <ArrowRight className="w-4 h-4" weight="bold" />
               </Button>
             </motion.div>
