@@ -133,7 +133,7 @@ export default function ContactPage() {
                   Send us a message
                 </h2>
                 <p className="text-[17px] text-black/60 leading-[1.6]">
-                  Fill out the form below and our team will get back to you within 24 hours
+                  Fill out the form below and our team will get back to you
                 </p>
               </motion.div>
 

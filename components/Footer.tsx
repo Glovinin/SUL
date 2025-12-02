@@ -165,9 +165,9 @@ export function Footer() {
           </div>
 
           {/* Get in Touch - QR Code */}
-          <div>
-            <h3 className="text-[28px] font-semibold mb-12 tracking-tight">Get in Touch</h3>
-            <p className="text-[16px] font-normal text-white/70 mb-8 leading-[1.6]">
+          <div className="flex flex-col items-center text-center">
+            <h3 className="text-[28px] font-semibold mb-6 tracking-tight">Get in Touch</h3>
+            <p className="text-[16px] font-normal text-white/70 mb-6 leading-[1.6] max-w-[300px]">
               Scan the QR code to contact us on WhatsApp
             </p>
             <motion.div
@@ -177,17 +177,17 @@ export function Footer() {
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               className="flex justify-center"
             >
-              <div className="bg-white p-4 rounded-2xl shadow-lg inline-block">
+              <div className="bg-white p-3 rounded-2xl shadow-lg inline-block">
                 <QRCodeSVG
                   value="https://wa.me/33662527879"
-                  size={200}
+                  size={120}
                   level="H"
                   includeMargin={true}
                   className="rounded-lg"
                 />
               </div>
             </motion.div>
-            <p className="text-[14px] font-normal text-white/50 mt-6 text-center">
+            <p className="text-[14px] font-normal text-white/50 mt-4">
               Scan with your phone camera
             </p>
           </div>
