@@ -26,71 +26,36 @@ const detailedServices = [
     number: '01',
     icon: Buildings,
     title: 'Strategy & Advisory',
-    subtitle: 'Strategic guidance for informed decisions',
-    description: 'We provide comprehensive analysis and strategic counsel to help you make informed real estate decisions in Portugal. From market analysis to investment strategy, we guide you through every consideration.',
-    features: [
-      'Market analysis and opportunity assessment',
-      'Investment strategy development',
-      'Portfolio optimization consulting',
-      'Risk assessment and mitigation',
-      'Long-term planning and projections'
-    ]
+    image: '/assets/services-images/Strategy & Advisory.jpg',
+    description: 'We deliver sharp market analysis and strategic guidance to help you make informed real estate decisions in Portugal — from identifying opportunities to optimizing your investments.'
   },
   {
     number: '02',
     icon: MagnifyingGlass,
     title: 'Property Search & Acquisition',
-    subtitle: 'Curated selection tailored to your vision',
-    description: 'We identify and secure properties that align with your specific requirements, leveraging our deep local knowledge and exclusive network to find opportunities that match your vision.',
-    features: [
-      'Personalized property search',
-      'Off-market opportunity access',
-      'Due diligence and verification',
-      'Negotiation and acquisition support',
-      'Legal and administrative coordination'
-    ]
+    image: '/assets/services-images/Property Search & Acquisition.jpg',
+    description: 'We source and secure properties tailored to your vision, combining deep local insight and off-market access with full support through due diligence, negotiation and all legal steps of the acquisition.'
   },
   {
     number: '03',
     icon: Eye,
     title: 'Project Supervision',
-    subtitle: 'Oversight from concept to completion',
-    description: 'From renovation to new construction, we oversee every aspect of your project, ensuring quality, timeline, and budget are maintained while you remain informed at every stage.',
-    features: [
-      'Project planning and design coordination',
-      'Contractor selection and management',
-      'Quality control and inspection',
-      'Timeline and budget oversight',
-      'Regular progress reporting'
-    ]
+    image: '/assets/services-images/Project Supervision.jpg',
+    description: 'We oversee your renovation or construction project from concept to completion, ensuring quality, timelines, and budget are respected — with clear coordination, rigorous control, and regular reporting at every stage.'
   },
   {
     number: '04',
     icon: Wallet,
     title: 'Financing & Structuring',
-    subtitle: 'Optimal financing solutions',
-    description: 'We help you navigate financing options and structure your investment optimally, working with trusted banking partners to secure favorable terms for your Portuguese real estate venture.',
-    features: [
-      'Financing options analysis',
-      'Banking relationship coordination',
-      'Investment structure optimization',
-      'Tax efficiency consulting',
-      'Documentation and compliance support'
-    ]
+    image: '/assets/services-images/Financing & Structuring.jpg',
+    description: 'We guide you in securing the best financing and structuring for your investment, coordinating with trusted banking partners to obtain optimal terms and ensure full compliance.'
   },
   {
     number: '05',
     icon: GearSix,
     title: 'Property Management & Optimization',
-    subtitle: 'Long-term value enhancement',
-    description: 'We ensure your property maintains its value and generates optimal returns through comprehensive management, from rental coordination to maintenance oversight and value enhancement strategies.',
-    features: [
-      'Rental management and tenant relations',
-      'Maintenance coordination and oversight',
-      'Financial reporting and analysis',
-      'Value enhancement recommendations',
-      'Local regulatory compliance'
-    ]
+    image: '/assets/services-images/Property Management & Optimization.jpg',
+    description: 'We manage and optimize your property to preserve its value and maximize returns, handling everything from rentals and maintenance to financial reporting and strategic enhancements — all in full regulatory compliance.'
   }
 ]
 
@@ -194,7 +159,7 @@ export default function ServicesPage() {
           </motion.div>
 
           {/* Services Cards */}
-          <div className="space-y-12 md:space-y-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {detailedServices.map((service, index) => {
               const Icon = service.icon
               return (
@@ -204,35 +169,35 @@ export default function ServicesPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                  className="group bg-white rounded-3xl p-8 md:p-12 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 border border-black/[0.06]"
+                  className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 border border-black/[0.06] hover:-translate-y-1 flex flex-col"
                 >
-                  <div className="grid md:grid-cols-[1fr_2fr] gap-8 md:gap-12">
-                    {/* Left: Icon & Number */}
-                    <div className="flex flex-col items-start">
-                      <div className="flex items-center gap-4 mb-6">
-                        <div className="w-16 h-16 rounded-2xl bg-black/5 group-hover:bg-black/10 flex items-center justify-center transition-all duration-300">
-                          <Icon className="w-8 h-8 text-black/70 group-hover:text-black transition-colors duration-300" weight="duotone" />
-                        </div>
-                        <span className="text-[48px] font-light text-black/10 group-hover:text-black/20 transition-colors duration-300 tabular-nums">{service.number}</span>
+                  {/* Image */}
+                  <div className="relative aspect-[4/5] overflow-hidden bg-gray-100">
+                    <img 
+                      src={service.image} 
+                      alt={service.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                    />
+                    {/* Overlay gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-6 md:p-8 flex flex-col flex-1">
+                    {/* Icon & Number */}
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-12 h-12 rounded-xl bg-black/5 group-hover:bg-black/10 flex items-center justify-center transition-all duration-300">
+                        <Icon className="w-6 h-6 text-black/70 group-hover:text-black transition-colors duration-300" weight="duotone" />
                       </div>
-                      <h3 className="text-[28px] md:text-[32px] font-semibold text-black mb-2 tracking-tight">{service.title}</h3>
-                      <p className="text-[16px] font-medium text-black/50">{service.subtitle}</p>
+                      <span className="text-[36px] font-light text-black/10 group-hover:text-black/20 transition-colors duration-300 tabular-nums">{service.number}</span>
                     </div>
 
-                    {/* Right: Description & Features */}
-                    <div>
-                      <p className="text-[17px] md:text-[18px] font-normal text-black/70 leading-[1.7] mb-8">
+                    {/* Title & Description */}
+                    <div className="flex-1">
+                      <h3 className="text-[22px] md:text-[24px] font-semibold text-black mb-3 tracking-tight leading-tight">{service.title}</h3>
+                      <p className="text-[15px] md:text-[16px] font-normal text-black/70 leading-[1.6]">
                         {service.description}
                       </p>
-                      
-                      <div className="space-y-3">
-                        {service.features.map((feature, featureIndex) => (
-                          <div key={featureIndex} className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-black/40 flex-shrink-0 mt-0.5" weight="fill" />
-                            <span className="text-[15px] md:text-[16px] font-normal text-black/70 leading-[1.6]">{feature}</span>
-                          </div>
-                        ))}
-                      </div>
                     </div>
                   </div>
                 </motion.div>
@@ -241,6 +206,161 @@ export default function ServicesPage() {
           </div>
         </div>
       </section>
+
+      {/* Divider */}
+      <div className="border-t border-black/[0.03]"></div>
+
+      {/* Partners & Network Section - Premium Apple Style */}
+      <section id="partners" className="relative py-32 md:py-40 bg-white overflow-visible">
+        {/* Static Grid Background */}
+        <GridPattern
+          width={40}
+          height={40}
+          className="fill-black/[0.03] stroke-black/[0.03]"
+        />
+        
+        <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible">
+          {/* Header Section */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center mb-20"
+          >
+            {/* Badge */}
+            <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
+              <span className="text-[12px] font-medium text-black/60">🎼 Trusted Ecosystem</span>
+            </div>
+            
+            {/* Main Title */}
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[40px] md:text-[56px] font-semibold text-black mb-8 tracking-[-0.02em] leading-[1.1] max-w-[900px] mx-auto"
+            >
+              Trusted Ecosystem
+            </motion.h2>
+            
+            {/* Subtitle */}
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[17px] md:text-[21px] font-normal text-black/60 max-w-[900px] mx-auto leading-[1.6]"
+            >
+              Surrounded by a handpicked network of professionals — lawyers, architects, engineers, designers and financial partners — SUL acts as the conductor of each project, from strategy to delivery.
+            </motion.p>
+          </motion.div>
+
+          {/* Partners Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mb-16 overflow-visible px-0 py-4 md:p-8">
+            {/* Legal Advisors */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="group bg-white border border-black/[0.06] hover:border-black/[0.12] rounded-3xl p-8 text-center transition-all duration-300 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer hover:-translate-y-1 z-[1] hover:z-[10]"
+            >
+              <div className="text-4xl mb-4">⚖️</div>
+              <h3 className="text-[18px] font-semibold text-black mb-3 tracking-tight group-hover:text-black/80 transition-colors duration-300">
+                Legal Advisors
+              </h3>
+              <p className="text-[14px] font-semibold text-black/80 mb-2 leading-[1.4]">
+                Secure Transactions
+              </p>
+              <p className="text-[14px] font-normal text-black/60 leading-[1.6]">
+                Expert lawyers ensuring safe, compliant and efficient legal processes from start to finish.
+              </p>
+            </motion.div>
+
+            {/* Architects & Engineers */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="group bg-white border border-black/[0.06] hover:border-black/[0.12] rounded-3xl p-8 text-center transition-all duration-300 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer hover:-translate-y-1 z-[1] hover:z-[10]"
+            >
+              <div className="text-4xl mb-4">🏛️</div>
+              <h3 className="text-[18px] font-semibold text-black mb-3 tracking-tight group-hover:text-black/80 transition-colors duration-300">
+                Architects & Engineers
+              </h3>
+              <p className="text-[14px] font-semibold text-black/80 mb-2 leading-[1.4]">
+                Structural & Architectural Excellence
+              </p>
+              <p className="text-[14px] font-normal text-black/60 leading-[1.6]">
+                Award-winning studios and engineering teams creating solid foundations and timeless, context-driven design.
+              </p>
+            </motion.div>
+
+            {/* Designers */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="group bg-white border border-black/[0.06] hover:border-black/[0.12] rounded-3xl p-8 text-center transition-all duration-300 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer hover:-translate-y-1 z-[1] hover:z-[10]"
+            >
+              <div className="text-4xl mb-4">🎨</div>
+              <h3 className="text-[18px] font-semibold text-black mb-3 tracking-tight group-hover:text-black/80 transition-colors duration-300">
+                Designers
+              </h3>
+              <p className="text-[14px] font-semibold text-black/80 mb-2 leading-[1.4]">
+                Refined Interior Aesthetics
+              </p>
+              <p className="text-[14px] font-normal text-black/60 leading-[1.6]">
+                Interior specialists crafting coherent, elegant and long-lasting atmospheres tailored to each project.
+              </p>
+            </motion.div>
+
+            {/* Financial Partners */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="group bg-white border border-black/[0.06] hover:border-black/[0.12] rounded-3xl p-8 text-center transition-all duration-300 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer hover:-translate-y-1 z-[1] hover:z-[10]"
+            >
+              <div className="text-4xl mb-4">💼</div>
+              <h3 className="text-[18px] font-semibold text-black mb-3 tracking-tight group-hover:text-black/80 transition-colors duration-300">
+                Financial Partners
+              </h3>
+              <p className="text-[14px] font-semibold text-black/80 mb-2 leading-[1.4]">
+                Strategic Financial Guidance
+              </p>
+              <p className="text-[14px] font-normal text-black/60 leading-[1.6]">
+                Banks and financial advisors providing optimal financing solutions, investment structure and long-term planning.
+              </p>
+            </motion.div>
+          </div>
+
+          {/* Values */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-wrap items-center justify-center gap-3 mt-8"
+          >
+            {['Quality', 'Discretion', 'Excellence'].map((value, index) => (
+              <span 
+                key={index}
+                className="px-5 py-2.5 bg-black/5 hover:bg-black/8 rounded-full text-[13px] font-medium text-black/70 transition-all duration-200"
+              >
+                {value}
+              </span>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Divider */}
+      <div className="border-t border-black/[0.03]"></div>
 
       {/* Call to Action Section - Apple Style */}
       <section className="py-20 md:py-28 bg-black">
