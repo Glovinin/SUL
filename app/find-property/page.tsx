@@ -8,7 +8,7 @@ import { Textarea } from '../../components/ui/textarea'
 import { Checkbox } from '../../components/ui/checkbox'
 import { GridPattern } from '../../components/ui/grid-pattern'
 import { Footer } from '../../components/Footer'
-import { 
+import {
   ArrowRight,
   MagnifyingGlass,
   MapPin,
@@ -105,7 +105,7 @@ export default function FindPropertyPage() {
       }
 
       setSubmitSuccess(true)
-      
+
       // Reset form after success
       setTimeout(() => {
         setFormData({
@@ -150,42 +150,21 @@ export default function FindPropertyPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/60" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
         </div>
-        
+
         {/* Hero Content */}
         <div className="relative z-10 w-full max-w-[1300px] mx-auto px-6 md:px-12 py-24 md:py-40">
           <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="text-center"
           >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.7, delay: 0.1 }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/10 rounded-full mb-8"
-            >
-              <MagnifyingGlass className="w-4 h-4 text-white/90" weight="bold" />
-              <span className="text-[12px] font-medium text-white/90 tracking-[0.05em]">Property Search</span>
-            </motion.div>
-            
-            <motion.h1 
-              className="text-[48px] md:text-[72px] lg:text-[88px] font-semibold tracking-[-0.03em] text-white leading-[1.05] mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            >
+            <h1 className="text-[48px] md:text-[72px] lg:text-[88px] font-semibold tracking-[-0.03em] text-white leading-[1.05] mb-8">
               Looking for your next home or investment?
-            </motion.h1>
-            
-            <motion.p 
-              className="text-[18px] md:text-[22px] lg:text-[24px] font-normal text-white/90 max-w-[800px] mx-auto leading-[1.65]"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            >
-              Fill out the form below and our team will help you find the perfect property that matches your criteria
-            </motion.p>
+            </h1>
+            <p className="text-[18px] md:text-[22px] lg:text-[24px] font-normal text-white/90 max-w-[800px] mx-auto leading-[1.65]">
+              Fill out the form below and our team will help you find the perfect property that matches your criteria.
+            </p>
           </motion.div>
         </div>
       </section>
@@ -197,7 +176,7 @@ export default function FindPropertyPage() {
           height={40}
           className="fill-black/[0.015] stroke-black/[0.015]"
         />
-        
+
         <div className="relative z-10 max-w-[1100px] mx-auto px-6 md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -243,7 +222,7 @@ export default function FindPropertyPage() {
               <label className="block text-[13px] font-semibold text-black mb-4 uppercase tracking-[0.12em]">
                 Property Features
               </label>
-              
+
               {/* Property Type */}
               <div className="mb-6">
                 <Select

@@ -1,82 +1,84 @@
 "use client"
 
 import React, { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useAnimation } from 'framer-motion'
+import { useInView } from 'framer-motion'
 
 interface TypingEffectProps {
   text: string
-  speed?: number // milliseconds per character
-  delay?: number // delay before starting (milliseconds)
+  speed?: number
+  delay?: number
   className?: string
-  onComplete?: () => void
+  staggerDelay?: number
 }
 
-export function TypingEffect({ 
-  text, 
-  speed = 50, 
+export function TypingEffect({
+  text,
+  speed = 0.03, // Faster defaults for premium feel
   delay = 0,
   className = '',
-  onComplete 
+  staggerDelay = 0.02
 }: TypingEffectProps) {
-  const [displayedText, setDisplayedText] = useState('')
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [isComplete, setIsComplete] = useState(false)
-  const [hasStarted, setHasStarted] = useState(false)
+  const letters = Array.from(text)
+  const container = {
+    hidden: { opacity: 0 },
+    visible: (i = 1) => ({
+      opacity: 1,
+      transition: { staggerChildren: staggerDelay, delayChildren: delay / 1000 }
+    })
+  }
 
-  useEffect(() => {
-    if (currentIndex >= text.length) {
-      setIsComplete(true)
-      if (onComplete) {
-        onComplete()
+  const child = {
+    hidden: {
+      opacity: 0,
+      y: 10,
+      filter: "blur(8px)",
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      transition: {
+        type: "spring" as const,
+        damping: 12,
+        stiffness: 100
       }
-      return
     }
+  }
 
-    const timeout = setTimeout(() => {
-      if (currentIndex === 0) {
-        setHasStarted(true)
-      }
-      setDisplayedText(text.slice(0, currentIndex + 1))
-      setCurrentIndex(currentIndex + 1)
-    }, currentIndex === 0 ? delay : speed)
-
-    return () => clearTimeout(timeout)
-  }, [currentIndex, text, speed, delay, onComplete])
+  // Ref for InView trigger
+  const ref = React.useRef(null)
+  const isInView = useInView(ref, { once: true, amount: 0.5 })
 
   return (
-    <>
-      <style>{`
-        @keyframes typing-blink {
-          0%, 50% { opacity: 1; }
-          51%, 100% { opacity: 0; }
-        }
-        .typing-cursor {
-          animation: typing-blink 1s infinite;
-          animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        }
-      `}</style>
-      <motion.span 
-        className={className}
+    <motion.div
+      ref={ref}
+      style={{ display: 'inline-block', overflow: 'hidden' }}
+      variants={container}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+      className={className}
+    >
+      {letters.map((letter, index) => (
+        <motion.span
+          key={index}
+          variants={child}
+          style={{ display: 'inline-block', whiteSpace: 'pre' }}
+        >
+          {letter}
+        </motion.span>
+      ))}
+      {/* Optional: subtle blinking cursor at the end that fades out */}
+      <motion.span
         initial={{ opacity: 0 }}
-        animate={{ opacity: hasStarted ? 1 : 0 }}
-        transition={{ 
-          duration: 0.3,
-          ease: [0.4, 0, 0.2, 1]
+        animate={{ opacity: [0, 1, 0] }}
+        transition={{
+          duration: 0.8,
+          repeat: 3,
+          delay: delay / 1000 + (letters.length * staggerDelay)
         }}
-      >
-        {displayedText}
-        {!isComplete && (
-          <motion.span 
-            className="typing-cursor inline-block ml-1"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.1 }}
-          >
-            |
-          </motion.span>
-        )}
-      </motion.span>
-    </>
+        className="inline-block ml-[1px] w-[2px] h-[1em] bg-white/50 align-middle"
+      />
+    </motion.div>
   )
 }
-

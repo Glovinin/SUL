@@ -6,6 +6,7 @@ import { MessageCircle, X, Send, ChevronDown } from 'lucide-react'
 import { User, EnvelopeSimple } from '@phosphor-icons/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
+import { useLoading } from '@/contexts/loading-context'
 
 interface Message {
   id: string
@@ -16,14 +17,33 @@ interface Message {
 
 export default function FloatingContactButton() {
   const pathname = usePathname()
-  
+
   // Não renderizar o chatbot nas páginas do admin (ANTES dos hooks!)
   if (pathname?.startsWith('/admin')) {
     return null
   }
 
+  const { isInitialLoading } = useLoading()
+  const [isPageVisible, setIsPageVisible] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [isMinimized, setIsMinimized] = useState(false)
+
+  // Wait for loading to finish before showing chat
+  useEffect(() => {
+    // If not initial loading (e.g. refresh on inner page), show immediately
+    if (!isInitialLoading) {
+      setIsPageVisible(true)
+      return
+    }
+
+    const handlePageAppear = () => {
+      setIsPageVisible(true)
+    }
+
+    window.addEventListener('page-can-appear', handlePageAppear)
+    return () => window.removeEventListener('page-can-appear', handlePageAppear)
+  }, [isInitialLoading])
+
   const [conversationId, setConversationId] = useState<string | null>(null)
   const [userName, setUserName] = useState('')
   const [userEmail, setUserEmail] = useState('')
@@ -43,17 +63,94 @@ export default function FloatingContactButton() {
   const emailInputRef = useRef<HTMLInputElement>(null)
   const notificationSoundRef = useRef<HTMLAudioElement | null>(null)
 
+  // Custom interaction state
+  const [activeMessageIndex, setActiveMessageIndex] = useState(0)
+  const [isAutoVisible, setIsAutoVisible] = useState(false)
+
+  const rotationMessages = [
+    <>Hi! Need any help? 👋</>,
+    <>Ask us about Golden Visa 🇵🇹</>,
+    <>Looking for luxury properties? 🏠</>,
+    <>Chat with our experts now 💬</>,
+    <>Discover exclusive opportunities ✨</>
+  ]
+
+  // Cycle Rotation Logic
+  useEffect(() => {
+    if (isOpen) {
+      setIsAutoVisible(false)
+      return
+    }
+
+    let timeoutId: NodeJS.Timeout
+
+    const scheduleNextMessage = () => {
+      // Random delay between 10s (10000ms) and 15s (15000ms)
+      const randomDelay = Math.floor(Math.random() * (15000 - 10000 + 1)) + 10000
+
+      timeoutId = setTimeout(() => {
+        // Show next message (sequential)
+        setActiveMessageIndex(prev => (prev + 1) % rotationMessages.length)
+        setIsAutoVisible(true)
+
+        // Sound removed - was annoying when chat is closed
+        // if (notificationSoundRef.current) {
+        //   notificationSoundRef.current.volume = 0.2
+        //   notificationSoundRef.current.play().catch(() => { })
+        // }
+
+        // Hide after 7s then schedule next
+        setTimeout(() => {
+          setIsAutoVisible(false)
+          scheduleNextMessage()
+        }, 7000)
+
+      }, randomDelay)
+    }
+
+    // Initial start
+    const startTimer = setTimeout(() => {
+      setIsAutoVisible(true)
+      setTimeout(() => {
+        setIsAutoVisible(false)
+        scheduleNextMessage()
+      }, 7000)
+    }, 2000)
+
+    return () => {
+      clearTimeout(startTimer)
+      clearTimeout(timeoutId)
+    }
+  }, [isOpen])
+
+  const [isHovered, setIsHovered] = useState(false)
+
+  const handleMouseEnter = () => {
+    setIsHovered(true)
+  }
+
+  const handleMouseLeave = () => {
+    setIsHovered(false)
+  }
+
+  // Fixed label text for hover state
+  const hoverMessage = <>Chat with <span className="font-semibold">{adminSettings?.name || 'SUL ESTATE'}</span></>
+
+  // Decide what to show: Hover has priority, otherwise auto cycle
+  const currentMessage = isHovered ? hoverMessage : rotationMessages[activeMessageIndex]
+  const isVisible = isHovered || isAutoVisible
+
   // Detect mobile
   useEffect(() => {
     if (typeof window === 'undefined') return
-    
+
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768)
     }
-    
+
     checkMobile()
     window.addEventListener('resize', checkMobile)
-    
+
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
@@ -71,7 +168,7 @@ export default function FloatingContactButton() {
       try {
         const response = await fetch('/api/chat/admin-settings')
         const data = await response.json()
-        
+
         if (data.success && data.settings) {
           setAdminSettings(data.settings)
         } else {
@@ -93,10 +190,10 @@ export default function FloatingContactButton() {
     }
 
     loadAdminSettings()
-    
+
     // Atualizar settings a cada 30 segundos
     const interval = setInterval(loadAdminSettings, 30000)
-    
+
     return () => clearInterval(interval)
   }, [])
 
@@ -132,7 +229,7 @@ export default function FloatingContactButton() {
               // Há novas mensagens - verificar se são do admin ou AI (não do próprio usuário)
               const newMessages = formattedMessages.slice(prevMessages.length)
               const hasNewIncomingMessage = newMessages.some(msg => msg.sender === 'admin' || msg.sender === 'ai')
-              
+
               if (hasNewIncomingMessage && notificationSoundRef.current) {
                 notificationSoundRef.current.play().catch(() => {
                   // Ignorar erros de autoplay
@@ -144,7 +241,7 @@ export default function FloatingContactButton() {
               // Verificar se última mensagem mudou (pode ser uma nova mensagem)
               const prevLastId = prevMessages[prevMessages.length - 1]?.id
               const newLastId = formattedMessages[formattedMessages.length - 1]?.id
-              
+
               if (prevLastId !== newLastId) {
                 const lastMessage = formattedMessages[formattedMessages.length - 1]
                 if (lastMessage && (lastMessage.sender === 'admin' || lastMessage.sender === 'ai') && notificationSoundRef.current) {
@@ -154,7 +251,7 @@ export default function FloatingContactButton() {
                 }
               }
             }
-            
+
             return formattedMessages
           })
         }
@@ -165,7 +262,7 @@ export default function FloatingContactButton() {
 
     // Poll a cada 2 segundos quando chat está aberto
     const interval = setInterval(pollMessages, 2000)
-    
+
     // Carregar imediatamente
     pollMessages()
 
@@ -290,7 +387,7 @@ export default function FloatingContactButton() {
         sender: 'ai',
         timestamp: new Date()
       }
-      
+
       setMessages(prev => [...prev, aiResponse])
 
       // Salvar resposta do AI também
@@ -335,7 +432,7 @@ export default function FloatingContactButton() {
       const savedConversationId = localStorage.getItem('chat_conversation_id')
       const savedUserName = localStorage.getItem('chat_user_name')
       const savedUserEmail = localStorage.getItem('chat_user_email')
-      
+
       if (savedConversationId && savedUserName && savedUserEmail) {
         setConversationId(savedConversationId)
         setUserName(savedUserName)
@@ -358,7 +455,7 @@ export default function FloatingContactButton() {
         const savedConversationId = localStorage.getItem('chat_conversation_id')
         const savedUserName = localStorage.getItem('chat_user_name')
         const savedUserEmail = localStorage.getItem('chat_user_email')
-        
+
         if (savedConversationId && savedUserName && savedUserEmail) {
           setConversationId(savedConversationId)
           setUserName(savedUserName)
@@ -377,7 +474,7 @@ export default function FloatingContactButton() {
 
   const handleUserFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (!userName.trim() || !userEmail.trim()) {
       return
     }
@@ -410,12 +507,12 @@ export default function FloatingContactButton() {
 
       setConversationId(data.conversationId)
       setShowUserForm(false)
-      
+
       // Salvar no localStorage
       localStorage.setItem('chat_conversation_id', data.conversationId)
       localStorage.setItem('chat_user_name', userName.trim())
       localStorage.setItem('chat_user_email', userEmail.trim())
-      
+
       // Carregar mensagens
       loadMessages(data.conversationId)
     } catch (error: any) {
@@ -435,14 +532,14 @@ export default function FloatingContactButton() {
           sender: msg.sender === 'admin' ? 'admin' : (msg.sender === 'user' ? 'user' : 'ai'),
           timestamp: msg.timestamp ? new Date(msg.timestamp) : new Date()
         }))
-        
+
         // Detectar novas mensagens comparando com mensagens anteriores
         setMessages(prevMessages => {
           if (prevMessages.length > 0 && formattedMessages.length > prevMessages.length) {
             // Há novas mensagens - verificar se são do admin ou AI (não do próprio usuário)
             const newMessages = formattedMessages.slice(prevMessages.length)
             const hasNewIncomingMessage = newMessages.some(msg => msg.sender === 'admin' || msg.sender === 'ai')
-            
+
             if (hasNewIncomingMessage && notificationSoundRef.current) {
               notificationSoundRef.current.play().catch(() => {
                 // Ignorar erros de autoplay
@@ -454,7 +551,7 @@ export default function FloatingContactButton() {
             // Verificar se última mensagem mudou (pode ser uma nova mensagem)
             const prevLastId = prevMessages[prevMessages.length - 1]?.id
             const newLastId = formattedMessages[formattedMessages.length - 1]?.id
-            
+
             if (prevLastId !== newLastId) {
               const lastMessage = formattedMessages[formattedMessages.length - 1]
               if (lastMessage && (lastMessage.sender === 'admin' || lastMessage.sender === 'ai') && notificationSoundRef.current) {
@@ -464,7 +561,7 @@ export default function FloatingContactButton() {
               }
             }
           }
-          
+
           return formattedMessages
         })
       }
@@ -485,74 +582,77 @@ export default function FloatingContactButton() {
   // Calculate unread count (messages after initial greeting)
   const unreadCount = Math.max(0, messages.length - 1)
 
+  // Don't render until page loading is complete
+  if (!isPageVisible) {
+    return null
+  }
+
   // Floating Button (when closed)
   if (!isOpen && !isMinimized) {
     return (
-      <div 
+      <div
         className={cn(
-          "fixed z-50 overflow-visible flex items-center gap-3",
-          isMobile 
-            ? "bottom-6 right-6" 
-            : "bottom-8 right-8"
+          "fixed z-50 overflow-visible flex items-center gap-4",
+          isMobile
+            ? "bottom-6 right-6"
+            : "bottom-10 right-10"
         )}
-        style={{ padding: '4px' }}
+        style={{ padding: '10px' }}
       >
-        {/* Text Label - "Chat with [name]" - Clicável */}
-        <motion.button
-          initial={{ opacity: 0, x: 10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.3, delay: 0.1 }}
-          onClick={toggleChat}
-          className="hidden sm:block cursor-pointer"
-        >
-          <div className="bg-white/95 backdrop-blur-xl rounded-xl px-4 py-2.5 shadow-lg border border-green-500/30 hover:border-green-500/50 transition-all duration-200">
-            <p className="text-[14px] font-medium text-black whitespace-nowrap">
-              Chat with <span className="font-semibold">{adminSettings?.name || 'SUL ESTATE'}</span>
-            </p>
-          </div>
-        </motion.button>
+        {/* Unique Floating Bubble - Apple Style Dark Glass */}
+        <div className="hidden sm:block absolute right-[100px] pointer-events-none">
+          <AnimatePresence mode="wait">
+            {isVisible && (
+              <motion.div
+                key={activeMessageIndex + (isHovered ? 'hover' : 'auto')}
+                initial={{ opacity: 0, x: 10, scale: 0.95 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                exit={{ opacity: 0, x: 5, scale: 0.95 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 30
+                }}
+                className={cn(
+                  "relative backdrop-blur-xl rounded-[20px] px-6 py-3.5 origin-right",
+                  "bg-neutral-900/90 shadow-2xl",
+                  "border border-white/10"
+                )}
+              >
+                <div className="relative z-10 flex items-center gap-2">
+                  <p className="text-[15px] font-normal text-white/95 whitespace-nowrap tracking-[-0.01em] antialiased">
+                    {currentMessage}
+                  </p>
+                </div>
 
-        {/* Container for button and pulse - com padding para overflow */}
-        <div className="relative" style={{ padding: '8px' }}>
-          {/* Subtle pulse animation */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-0 flex items-center justify-center pointer-events-none"
-            style={{ padding: '8px' }}
-          >
-            <motion.div
-              animate={{
-                scale: [1, 1.2, 1],
-                opacity: [0.2, 0.05, 0.2],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className={cn(
-                "absolute rounded-full bg-green-500/20",
-                isMobile ? "w-[72px] h-[72px]" : "w-[88px] h-[88px]"
-              )}
-            />
-          </motion.div>
+                {/* Apple-style Message Tail */}
+                <div className="absolute top-1/2 -right-[6px] -translate-y-1/2 w-3 h-3 bg-neutral-900/90 backdrop-blur-xl rotate-45 border-t border-r border-white/10 rounded-tr-[2px]" />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Container for button */}
+        <div
+          className="relative"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
 
           {/* Main Button */}
           <div className="relative">
             <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={toggleChat}
               className={cn(
-                "relative rounded-full transition-all duration-300",
-                "bg-white hover:bg-gray-50",
-                "shadow-[0_4px_20px_rgba(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.18)]",
-                "border border-black/8",
-                isMobile 
-                  ? "w-16 h-16" 
-                  : "w-20 h-20"
+                "relative rounded-full transition-all duration-500",
+                "bg-white",
+                "shadow-[0_10px_40px_rgba(0,0,0,0.2)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)]",
+                "border-[4px] border-white",
+                isMobile
+                  ? "w-16 h-16"
+                  : "w-[72px] h-[72px]"
               )}
               aria-label="Open chat"
             >
@@ -562,49 +662,32 @@ export default function FloatingContactButton() {
                   <img
                     src={adminSettings.avatar}
                     alt={adminSettings.name || 'Admin'}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                   />
                 </div>
               ) : (
-                <div className="relative w-full h-full rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
-                  <MessageCircle className="w-8 h-8 text-gray-400" />
+                <div className="relative w-full h-full rounded-full overflow-hidden bg-black flex items-center justify-center">
+                  <MessageCircle className="w-8 h-8 text-white" strokeWidth={1.5} />
                 </div>
               )}
             </motion.button>
-            
-            {/* Online Status Indicator - FORA do botão, no container pai */}
+
+            {/* Online Status Indicator - Minimalist */}
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ delay: 0.2, type: "spring", stiffness: 500, damping: 25 }}
+              transition={{ delay: 0.5, type: "spring", stiffness: 400, damping: 25 }}
               className={cn(
-                "absolute rounded-full border-2 border-white",
-                "bg-green-500 shadow-lg z-20",
-                isMobile 
-                  ? "bottom-0 right-0 w-3 h-3" 
-                  : "bottom-0 right-0 w-3.5 h-3.5"
+                "absolute rounded-full border-[2px] border-white",
+                "bg-[#4BB543] shadow-sm z-20",
+                isMobile
+                  ? "bottom-0 right-0 w-4 h-4"
+                  : "bottom-0 right-0 w-[18px] h-[18px]"
               )}
-              style={{ 
+              style={{
                 pointerEvents: 'none',
-                transform: 'translate(25%, 25%)'
               }}
             >
-              {/* Pulse effect */}
-              <motion.div
-                animate={{
-                  scale: [1, 2.5, 1],
-                  opacity: [0.6, 0, 0.6],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-                className="absolute inset-0 rounded-full bg-green-500"
-                style={{ 
-                  margin: '-4px'
-                }}
-              />
             </motion.div>
           </div>
         </div>
@@ -615,60 +698,36 @@ export default function FloatingContactButton() {
   // Minimized Ball (when minimized)
   if (isMinimized) {
     return (
-      <div 
+      <div
         className={cn(
           "fixed z-50 overflow-visible",
-          isMobile 
-            ? "bottom-6 right-6" 
-            : "bottom-8 right-8"
+          isMobile
+            ? "bottom-6 right-6"
+            : "bottom-10 right-10"
         )}
-        style={{ padding: '4px' }}
+        style={{ padding: '10px' }}
       >
-        {/* Container for button and pulse - com padding para overflow */}
-        <div className="relative" style={{ padding: '8px' }}>
-          {/* Subtle pulse animation */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-0 flex items-center justify-center pointer-events-none"
-            style={{ padding: '8px' }}
-          >
-            <motion.div
-              animate={{
-                scale: [1, 1.2, 1],
-                opacity: [0.2, 0.05, 0.2],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className={cn(
-                "absolute rounded-full bg-green-500/20",
-                isMobile ? "w-[60px] h-[60px]" : "w-[72px] h-[72px]"
-              )}
-            />
-          </motion.div>
+        {/* Container for button */}
+        <div className="relative">
 
-          {/* Container para botão e bolinha */}
+          {/* Main Button */}
           <div className="relative">
             <motion.button
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={expandChat}
               className={cn(
-                "relative rounded-full transition-all duration-300",
-                "bg-white hover:bg-gray-50",
-                "shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.22)]",
-                "border border-black/8",
+                "relative rounded-full transition-all duration-500",
+                "bg-white",
+                "shadow-[0_10px_40px_rgba(0,0,0,0.2)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)]",
+                "border-[4px] border-white",
                 "flex items-center justify-center",
-                isMobile 
-                  ? "w-14 h-14" 
-                  : "w-16 h-16"
+                isMobile
+                  ? "w-14 h-14"
+                  : "w-[60px] h-[60px]"
               )}
               aria-label="Expand chat"
             >
@@ -678,49 +737,32 @@ export default function FloatingContactButton() {
                   <img
                     src={adminSettings.avatar}
                     alt={adminSettings.name || 'Admin'}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                   />
                 </div>
               ) : (
-                <div className="relative w-full h-full rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
-                  <MessageCircle className="w-6 h-6 text-gray-400" />
+                <div className="relative w-full h-full rounded-full overflow-hidden bg-black flex items-center justify-center">
+                  <MessageCircle className="w-6 h-6 text-white" strokeWidth={1.5} />
                 </div>
               )}
             </motion.button>
-            
-            {/* Online Status Indicator - FORA do botão, no container pai */}
+
+            {/* Online Status Indicator - Minimalist */}
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ delay: 0.2, type: "spring", stiffness: 500, damping: 25 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 400, damping: 25 }}
               className={cn(
-                "absolute rounded-full border-2 border-white",
-                "bg-green-500 shadow-lg z-20",
-                isMobile 
-                  ? "bottom-0 right-0 w-3 h-3" 
-                  : "bottom-0 right-0 w-3.5 h-3.5"
+                "absolute rounded-full border-[2px] border-white",
+                "bg-[#4BB543] shadow-sm z-20",
+                isMobile
+                  ? "bottom-0 right-0 w-3 h-3"
+                  : "bottom-0 right-0 w-[16px] h-[16px]"
               )}
-              style={{ 
+              style={{
                 pointerEvents: 'none',
-                transform: 'translate(25%, 25%)'
               }}
             >
-              {/* Pulse effect */}
-              <motion.div
-                animate={{
-                  scale: [1, 2.5, 1],
-                  opacity: [0.6, 0, 0.6],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-                className="absolute inset-0 rounded-full bg-green-500"
-                style={{ 
-                  margin: '-4px'
-                }}
-              />
             </motion.div>
           </div>
         </div>
@@ -740,8 +782,8 @@ export default function FloatingContactButton() {
           className={cn(
             "fixed bg-white flex flex-col overflow-hidden",
             "border border-black/[0.08] shadow-[0_20px_60px_rgba(0,0,0,0.15)]",
-            isMobile 
-              ? "inset-0 rounded-none z-[9999]" 
+            isMobile
+              ? "inset-0 rounded-none z-[9999]"
               : "bottom-8 right-8 w-[420px] h-[600px] rounded-2xl z-50"
           )}
         >
@@ -767,7 +809,7 @@ export default function FloatingContactButton() {
                 <p className="text-[12px] text-black/50 font-normal">{adminSettings?.title || 'Real Estate Consultant'}</p>
               </div>
             </div>
-            
+
             <div className="flex items-center gap-1">
               <button
                 onClick={minimizeChat}
@@ -872,21 +914,21 @@ export default function FloatingContactButton() {
                         </p>
                       )}
                       <p className="font-normal">{message.text}</p>
-                      <p 
+                      <p
                         className={cn(
                           "text-[11px] mt-2 font-normal",
                           message.sender === 'user' ? "text-white/50" : "text-black/40"
                         )}
                       >
-                        {message.timestamp instanceof Date 
-                          ? message.timestamp.toLocaleTimeString('en-US', { 
-                              hour: '2-digit', 
-                              minute: '2-digit' 
-                            })
-                          : new Date(message.timestamp).toLocaleTimeString('en-US', { 
-                              hour: '2-digit', 
-                              minute: '2-digit' 
-                            })
+                        {message.timestamp instanceof Date
+                          ? message.timestamp.toLocaleTimeString('en-US', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })
+                          : new Date(message.timestamp).toLocaleTimeString('en-US', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })
                         }
                       </p>
                     </div>
@@ -894,34 +936,34 @@ export default function FloatingContactButton() {
                 ))
               )}
 
-            {/* Typing indicator */}
-            {isTyping && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="flex justify-start"
-              >
-                <div className="bg-gray-100 text-black rounded-2xl rounded-bl-md px-4 py-3">
-                  <div className="flex gap-1.5">
-                    <motion.div
-                      className="w-2 h-2 bg-black/50 rounded-full"
-                      animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.8, 0.4] }}
-                      transition={{ duration: 1, repeat: Infinity, delay: 0 }}
-                    />
-                    <motion.div
-                      className="w-2 h-2 bg-black/50 rounded-full"
-                      animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.8, 0.4] }}
-                      transition={{ duration: 1, repeat: Infinity, delay: 0.2 }}
-                    />
-                    <motion.div
-                      className="w-2 h-2 bg-black/50 rounded-full"
-                      animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.8, 0.4] }}
-                      transition={{ duration: 1, repeat: Infinity, delay: 0.4 }}
-                    />
+              {/* Typing indicator */}
+              {isTyping && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex justify-start"
+                >
+                  <div className="bg-gray-100 text-black rounded-2xl rounded-bl-md px-4 py-3">
+                    <div className="flex gap-1.5">
+                      <motion.div
+                        className="w-2 h-2 bg-black/50 rounded-full"
+                        animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.8, 0.4] }}
+                        transition={{ duration: 1, repeat: Infinity, delay: 0 }}
+                      />
+                      <motion.div
+                        className="w-2 h-2 bg-black/50 rounded-full"
+                        animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.8, 0.4] }}
+                        transition={{ duration: 1, repeat: Infinity, delay: 0.2 }}
+                      />
+                      <motion.div
+                        className="w-2 h-2 bg-black/50 rounded-full"
+                        animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.8, 0.4] }}
+                        transition={{ duration: 1, repeat: Infinity, delay: 0.4 }}
+                      />
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            )}
+                </motion.div>
+              )}
               <div ref={messagesEndRef} />
             </div>
           )}
@@ -929,30 +971,30 @@ export default function FloatingContactButton() {
           {/* Input Area */}
           {!showUserForm && (
             <div className="px-6 py-5 bg-white border-t border-black/[0.06] rounded-b-2xl">
-            <div className="flex gap-3 items-end">
-              <input
-                ref={inputRef}
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="Type your message here..."
-                className="flex-1 px-5 py-3.5 rounded-xl border border-black/[0.1] focus:outline-none focus:border-black/20 transition-all duration-200 text-[14px] text-black bg-gray-50 placeholder:text-black/40 font-normal"
-              />
-              <button
-                onClick={handleSendMessage}
-                disabled={!inputValue.trim()}
-                className={cn(
-                  "w-11 h-11 rounded-xl transition-all duration-200 flex items-center justify-center",
-                  "bg-black hover:bg-black/90",
-                  "disabled:opacity-30 disabled:cursor-not-allowed"
-                )}
-                aria-label="Send message"
-              >
-                <Send className="w-4 h-4 text-white" />
-              </button>
+              <div className="flex gap-3 items-end">
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  placeholder="Type your message here..."
+                  className="flex-1 px-5 py-3.5 rounded-xl border border-black/[0.1] focus:outline-none focus:border-black/20 transition-all duration-200 text-[14px] text-black bg-gray-50 placeholder:text-black/40 font-normal"
+                />
+                <button
+                  onClick={handleSendMessage}
+                  disabled={!inputValue.trim()}
+                  className={cn(
+                    "w-11 h-11 rounded-xl transition-all duration-200 flex items-center justify-center",
+                    "bg-black hover:bg-black/90",
+                    "disabled:opacity-30 disabled:cursor-not-allowed"
+                  )}
+                  aria-label="Send message"
+                >
+                  <Send className="w-4 h-4 text-white" />
+                </button>
+              </div>
             </div>
-          </div>
           )}
         </motion.div>
       )}

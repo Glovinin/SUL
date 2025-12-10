@@ -3,11 +3,11 @@
 import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { toast } from 'sonner'
-import { 
-  ArrowLeft, 
-  Upload, 
-  X, 
-  Plus, 
+import {
+  ArrowLeft,
+  Upload,
+  X,
+  Plus,
   Buildings,
   MapPin,
   CurrencyEur,
@@ -21,8 +21,25 @@ import {
   Star,
   Sparkle,
   CheckCircle,
-  Trash
+  Trash,
 } from '@phosphor-icons/react'
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core'
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  rectSortingStrategy,
+} from '@dnd-kit/sortable'
+import { SortableItem } from '../../../../components/admin/SortableItem'
+import { Checkbox } from '../../../../components/ui/checkbox'
 import { Button } from '../../../../components/ui/button'
 import {
   getProperty,
@@ -81,11 +98,39 @@ export default function PropertyEditPage() {
     amenities: [],
     yearBuilt: '',
     featured: false,
+    showInPortfolio: false,
   })
 
   const [newFeature, setNewFeature] = useState('')
   const [newAmenity, setNewAmenity] = useState('')
   const [customTags, setCustomTags] = useState<string[]>([])
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event
+    if (active.id !== over?.id) {
+      const oldIndex = (property.images || []).indexOf(active.id as string)
+      const newIndex = (property.images || []).indexOf(over?.id as string)
+
+      const newImages = arrayMove(property.images || [], oldIndex, newIndex)
+
+      setProperty({
+        ...property,
+        images: newImages,
+        image: newImages[0] || ''
+      })
+    }
+  }
 
   // Format price with euro symbol and thousand separators
   const formatPrice = (value: string): string => {
@@ -118,7 +163,7 @@ export default function PropertyEditPage() {
       const data = await getProperty(id)
       if (data) {
         const tags = data.tag ? data.tag.split(',').map(t => t.trim()).filter(Boolean) : []
-        
+
         // Garante que a imagem principal está na galeria como primeira imagem
         let galleryImages = data.images || []
         if (data.image) {
@@ -127,10 +172,10 @@ export default function PropertyEditPage() {
           // Adiciona a imagem principal no início da galeria
           galleryImages = [data.image, ...galleryImages]
         }
-        
+
         // Garante que description e longDescription sejam iguais
         const description = data.longDescription || data.description || ''
-        
+
         setProperty({
           ...data,
           images: galleryImages,
@@ -155,10 +200,10 @@ export default function PropertyEditPage() {
     const filesArray = Array.from(files)
     const maxFiles = 20
     const currentImages = property.images?.length || 0
-    
+
     // Se for imagem principal, conta como 1 imagem adicional na galeria
     const imagesToAdd = isMain ? filesArray.length : filesArray.length
-    
+
     if (currentImages + imagesToAdd > maxFiles) {
       toast.warning('Limite de imagens atingido', {
         description: `Você pode adicionar no máximo ${maxFiles} imagens. Você pode adicionar mais ${maxFiles - currentImages}.`,
@@ -168,11 +213,11 @@ export default function PropertyEditPage() {
 
     try {
       setUploading(isMain ? 'main' : 'gallery')
-      
+
       // Comprimir imagens antes do upload
       const { compressImages } = await import('../../../../lib/utils')
       const compressedFiles = await compressImages(filesArray, 1920, 0.85) // maxWidth 1920px, quality 85%
-      
+
       const propertyId = isNew ? 'temp' : id
       const uploadPromises = compressedFiles.map(file => uploadPropertyImage(file, propertyId))
       const urls = await Promise.all(uploadPromises)
@@ -181,19 +226,19 @@ export default function PropertyEditPage() {
         // Adiciona a imagem principal como primeira imagem da galeria também
         const mainImageUrl = urls[0]
         const existingImages = property.images || []
-        
+
         // Remove a imagem principal anterior da galeria se existir
         const filteredImages = existingImages.filter(img => img !== property.image)
-        
+
         // Adiciona a nova imagem principal no início da galeria
-        setProperty({ 
-          ...property, 
+        setProperty({
+          ...property,
           image: mainImageUrl,
           images: [mainImageUrl, ...filteredImages]
         })
       } else {
-        setProperty({ 
-          ...property, 
+        setProperty({
+          ...property,
           images: [...(property.images || []), ...urls],
           image: property.image || urls[0]
         })
@@ -213,12 +258,12 @@ export default function PropertyEditPage() {
       // Remove a imagem principal e também da galeria (primeira imagem)
       const galleryImages = property.images || []
       const filteredGallery = galleryImages.filter((img, idx) => idx !== 0)
-      
+
       // Se houver imagens restantes, define a primeira como nova imagem principal
       const newMainImage = filteredGallery.length > 0 ? filteredGallery[0] : ''
-      
-      setProperty({ 
-        ...property, 
+
+      setProperty({
+        ...property,
         image: newMainImage,
         images: filteredGallery
       })
@@ -226,19 +271,19 @@ export default function PropertyEditPage() {
       const newImages = [...(property.images || [])]
       const removedImage = newImages[index]
       newImages.splice(index, 1)
-      
+
       // Se a imagem removida era a imagem principal (primeira da galeria)
       if (index === 0 && property.image === removedImage) {
         // Define a próxima imagem como principal, ou vazio se não houver mais
         const newMainImage = newImages.length > 0 ? newImages[0] : ''
-        setProperty({ 
-          ...property, 
+        setProperty({
+          ...property,
           images: newImages,
           image: newMainImage
         })
       } else {
-        setProperty({ 
-          ...property, 
+        setProperty({
+          ...property,
           images: newImages
         })
       }
@@ -421,7 +466,7 @@ export default function PropertyEditPage() {
               <p className="text-sm text-black/50">Essential property details</p>
             </div>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="md:col-span-2">
               <label className="flex items-center gap-2 text-sm font-semibold text-black mb-2.5">
@@ -547,9 +592,29 @@ export default function PropertyEditPage() {
                 type="text"
                 value={property.yearBuilt || ''}
                 onChange={(e) => setProperty({ ...property, yearBuilt: e.target.value })}
-                className="w-full px-4 py-3 bg-white border-2 border-black/10 rounded-xl focus:outline-none focus:border-black/30 focus:ring-2 focus:ring-black/5 text-black placeholder:text-black/40 transition-all"
-                placeholder="2020"
               />
+            </div>
+
+            <div className="md:col-span-2 flex items-center gap-6 pt-2">
+              <label className="flex items-center gap-3 cursor-pointer group">
+                <Checkbox
+                  checked={property.featured || false}
+                  onCheckedChange={(checked) => setProperty({ ...property, featured: checked as boolean })}
+                />
+                <span className="text-sm font-medium text-black/80 group-hover:text-black transition-colors">
+                  Featured Property
+                </span>
+              </label>
+
+              <label className="flex items-center gap-3 cursor-pointer group">
+                <Checkbox
+                  checked={property.showInPortfolio || false}
+                  onCheckedChange={(checked) => setProperty({ ...property, showInPortfolio: checked as boolean })}
+                />
+                <span className="text-sm font-medium text-black/80 group-hover:text-black transition-colors">
+                  Show in Portfolio
+                </span>
+              </label>
             </div>
           </div>
         </div>
@@ -573,11 +638,10 @@ export default function PropertyEditPage() {
                   key={tag}
                   type="button"
                   onClick={() => toggleTag(tag)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-2 ${
-                    customTags.includes(tag)
-                      ? 'bg-black text-white shadow-md'
-                      : 'bg-black/5 text-black/70 hover:bg-black/10'
-                  }`}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-2 ${customTags.includes(tag)
+                    ? 'bg-black text-white shadow-md'
+                    : 'bg-black/5 text-black/70 hover:bg-black/10'
+                    }`}
                 >
                   {customTags.includes(tag) && <CheckCircle className="w-4 h-4" weight="fill" />}
                   {tag}
@@ -630,7 +694,7 @@ export default function PropertyEditPage() {
               <p className="text-sm text-black/50">Upload up to 20 images</p>
             </div>
           </div>
-          
+
           {/* Main Image */}
           <div className="mb-8">
             <label className="block text-sm font-semibold text-black mb-3">Main Image *</label>
@@ -685,32 +749,49 @@ export default function PropertyEditPage() {
               )}
             </div>
             {allImages.length > 0 && (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {allImages.map((img, index) => {
-                  const isMainImage = index === 0 && img === property.image
-                  return (
-                    <div key={index} className="relative aspect-square rounded-xl overflow-hidden bg-gray-100 border-2 border-black/10 shadow-sm group">
-                      <img src={img} alt={`Gallery ${index + 1}`} className="w-full h-full object-cover" />
-                      {isMainImage && (
-                        <div className="absolute top-2 left-2 bg-black text-white text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1">
-                          <Star className="w-3 h-3" weight="fill" />
-                          Main
-                        </div>
-                      )}
-                      <button
-                        type="button"
-                        onClick={() => removeImage(index)}
-                        className="absolute top-2 right-2 bg-black/80 text-white rounded-full p-1.5 hover:bg-black transition-colors opacity-0 group-hover:opacity-100"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                      <div className="absolute bottom-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
-                        {index + 1}
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+              >
+                <SortableContext
+                  items={allImages}
+                  strategy={rectSortingStrategy}
+                >
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {allImages.map((img, index) => {
+                      const isMainImage = index === 0 && img === property.image
+                      return (
+                        <SortableItem key={img} id={img}>
+                          <div className="relative aspect-square rounded-xl overflow-hidden bg-gray-100 border-2 border-black/10 shadow-sm group">
+                            <img src={img} alt={`Gallery ${index + 1}`} className="w-full h-full object-cover" />
+                            {isMainImage && (
+                              <div className="absolute top-2 left-2 bg-black text-white text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1">
+                                <Star className="w-3 h-3" weight="fill" />
+                                Main
+                              </div>
+                            )}
+                            <button
+                              type="button"
+                              onPointerDown={(e) => e.stopPropagation()}
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                removeImage(index)
+                              }}
+                              className="absolute top-2 right-2 bg-black/80 text-white rounded-full p-1.5 hover:bg-black transition-colors opacity-0 group-hover:opacity-100"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                            <div className="absolute bottom-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
+                              {index + 1}
+                            </div>
+                          </div>
+                        </SortableItem>
+                      )
+                    })}
+                  </div>
+                </SortableContext>
+              </DndContext>
             )}
             {allImages.length === 0 && (
               <div className="border-2 border-dashed border-black/20 rounded-xl p-12 text-center">
@@ -746,15 +827,15 @@ export default function PropertyEditPage() {
               <p className="text-sm text-black/50">Property details and information</p>
             </div>
           </div>
-          
+
           <div>
             <label className="block text-sm font-semibold text-black mb-2.5">Description</label>
             <textarea
               value={property.longDescription || property.description || ''}
               onChange={(e) => {
                 const value = e.target.value
-                setProperty({ 
-                  ...property, 
+                setProperty({
+                  ...property,
                   description: value,
                   longDescription: value
                 })
@@ -778,7 +859,7 @@ export default function PropertyEditPage() {
               <p className="text-sm text-black/50">Property highlights and features</p>
             </div>
           </div>
-          
+
           <div className="space-y-4">
             {/* Preset Features Tags */}
             <div>
@@ -791,11 +872,10 @@ export default function PropertyEditPage() {
                       key={feature}
                       type="button"
                       onClick={() => toggleFeature(feature)}
-                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                        isSelected
-                          ? 'bg-black text-white shadow-md'
-                          : 'bg-black/5 text-black hover:bg-black/10 border border-black/10'
-                      }`}
+                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${isSelected
+                        ? 'bg-black text-white shadow-md'
+                        : 'bg-black/5 text-black hover:bg-black/10 border border-black/10'
+                        }`}
                     >
                       {isSelected && <CheckCircle className="w-3 h-3 inline mr-1.5" weight="fill" />}
                       {feature}
@@ -857,7 +937,7 @@ export default function PropertyEditPage() {
               <p className="text-sm text-black/50">Facilities and services available</p>
             </div>
           </div>
-          
+
           <div className="space-y-4">
             {/* Preset Amenities Tags */}
             <div>
@@ -870,11 +950,10 @@ export default function PropertyEditPage() {
                       key={amenity}
                       type="button"
                       onClick={() => toggleAmenity(amenity)}
-                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                        isSelected
-                          ? 'bg-black text-white shadow-md'
-                          : 'bg-black/5 text-black hover:bg-black/10 border border-black/10'
-                      }`}
+                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${isSelected
+                        ? 'bg-black text-white shadow-md'
+                        : 'bg-black/5 text-black hover:bg-black/10 border border-black/10'
+                        }`}
                     >
                       {isSelected && <CheckCircle className="w-3 h-3 inline mr-1.5" weight="fill" />}
                       {amenity}
@@ -939,17 +1018,15 @@ export default function PropertyEditPage() {
           <button
             type="button"
             onClick={() => setProperty({ ...property, featured: !property.featured })}
-            className={`w-full flex items-center gap-3 p-4 rounded-xl border-2 transition-all ${
-              property.featured 
-                ? 'bg-black text-white border-black shadow-md' 
-                : 'bg-black/5 text-black border-black/10 hover:bg-black/10'
-            }`}
+            className={`w-full flex items-center gap-3 p-4 rounded-xl border-2 transition-all ${property.featured
+              ? 'bg-black text-white border-black shadow-md'
+              : 'bg-black/5 text-black border-black/10 hover:bg-black/10'
+              }`}
           >
-            <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
-              property.featured 
-                ? 'border-white bg-white' 
-                : 'border-black/30 bg-white'
-            }`}>
+            <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${property.featured
+              ? 'border-white bg-white'
+              : 'border-black/30 bg-white'
+              }`}>
               {property.featured && (
                 <CheckCircle className="w-4 h-4 text-black" weight="fill" />
               )}

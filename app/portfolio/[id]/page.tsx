@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '../../../components/ui/button'
 import { GridPattern } from '../../../components/ui/grid-pattern'
 import { Footer } from '../../../components/Footer'
-import { 
+import {
   Bed,
   Bathtub,
   Ruler,
@@ -26,6 +26,89 @@ import {
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
 import { usePortfolioItem, usePortfolio } from '../../../lib/properties-client'
+import { Skeleton } from '../../../components/ui/skeleton'
+import { cn } from '../../../lib/utils'
+import { useDraggableScroll } from '../../../hooks/use-draggable-scroll'
+
+function PortfolioCard({ item }: { item: any }) {
+  const [isImageLoaded, setIsImageLoaded] = useState(false)
+
+  return (
+    <Link href={`/portfolio/${item.id}`}>
+      <div className="group bg-white rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer">
+        {/* Image */}
+        <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+          {!isImageLoaded && <Skeleton className="absolute inset-0 w-full h-full" />}
+          <img
+            src={item.image}
+            alt={item.title}
+            className={cn(
+              "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500",
+              isImageLoaded ? "opacity-100" : "opacity-0"
+            )}
+            onLoad={() => setIsImageLoaded(true)}
+          />
+          {item.featured && (
+            <div className="absolute top-4 left-4 bg-black text-white text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1.5 z-10">
+              <Heart className="w-3 h-3" weight="fill" />
+              Featured
+            </div>
+          )}
+          {item.tag && (
+            <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-md text-black text-xs font-semibold px-3 py-1.5 rounded-full z-10">
+              {item.tag}
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        </div>
+
+        {/* Content */}
+        <div className="p-6">
+          <div className="flex items-center gap-1.5 mb-2">
+            <MapPin className="w-4 h-4 text-black/40" weight="fill" />
+            <span className="text-xs font-medium text-black/50 uppercase tracking-wider">
+              {item.location}
+            </span>
+          </div>
+
+          <h3 className="text-xl font-semibold text-black mb-3 line-clamp-2 group-hover:text-black/70 transition-colors">
+            {item.title}
+          </h3>
+
+          <div className="flex items-center gap-4 mb-4 pb-4 border-b border-black/5">
+            {item.beds && item.beds !== '0' && (
+              <div className="flex items-center gap-1.5">
+                <Bed className="w-4 h-4 text-black/40" weight="duotone" />
+                <span className="text-sm font-medium text-black/70">{item.beds}</span>
+              </div>
+            )}
+            {item.baths && item.baths !== '0' && (
+              <div className="flex items-center gap-1.5">
+                <Bathtub className="w-4 h-4 text-black/40" weight="duotone" />
+                <span className="text-sm font-medium text-black/70">{item.baths}</span>
+              </div>
+            )}
+            {item.sqft && item.sqft !== '0' && (
+              <div className="flex items-center gap-1.5">
+                <Ruler className="w-4 h-4 text-black/40" weight="duotone" />
+                <span className="text-sm font-medium text-black/70">{item.sqft} m²</span>
+              </div>
+            )}
+          </div>
+
+          <div className="flex items-center justify-between">
+            {item.tag && (
+              <p className="text-sm font-semibold text-black/70 uppercase tracking-wider">
+                {item.tag}
+              </p>
+            )}
+            <ArrowRight className="w-5 h-5 text-black/40 group-hover:text-black group-hover:translate-x-1 transition-all" weight="bold" />
+          </div>
+        </div>
+      </div>
+    </Link>
+  )
+}
 
 export default function PortfolioDetailPage() {
   const params = useParams()
@@ -36,10 +119,14 @@ export default function PortfolioDetailPage() {
   const [zoom, setZoom] = useState(1)
   const { portfolioItem, loading } = usePortfolioItem(portfolioId)
   const { portfolioItems: allPortfolioItems } = usePortfolio()
-  
+
+  // Refs for draggable scroll
+  const galleryRef = useDraggableScroll()
+  const fullscreenGalleryRef = useDraggableScroll()
+
   // Get all images
   const allImages = portfolioItem ? (portfolioItem.gallery && portfolioItem.gallery.length > 0 ? portfolioItem.gallery : [portfolioItem.image]) : []
-  
+
   // Get other portfolio items (exclude current one, limit to 6)
   const otherPortfolioItems = allPortfolioItems
     .filter(p => p.id !== portfolioId)
@@ -63,6 +150,28 @@ export default function PortfolioDetailPage() {
     setZoom((prev) => Math.max(prev - 0.25, 1))
   }
 
+  const handleShare = async (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (typeof window === 'undefined') return
+
+    const shareData = {
+      title: portfolioItem?.title || 'SUL Project',
+      text: `Check out ${portfolioItem?.title} on SUL`,
+      url: window.location.href,
+    }
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData)
+      } else {
+        await navigator.clipboard.writeText(window.location.href)
+        alert('Link copied to clipboard!')
+      }
+    } catch (err) {
+      console.error('Error sharing:', err)
+    }
+  }
+
   // Keyboard navigation
   useEffect(() => {
     if (!isFullscreen) return
@@ -79,7 +188,7 @@ export default function PortfolioDetailPage() {
     }
 
     if (typeof window === 'undefined') return
-    
+
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [isFullscreen, handleNext, handlePrevious])
@@ -136,82 +245,67 @@ export default function PortfolioDetailPage() {
             </Link>
           </motion.div>
           {/* Main Image */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ 
-              duration: 1, 
-              ease: [0.16, 1, 0.3, 1]
-            }}
-            className="relative aspect-[16/10] md:aspect-[21/10] lg:aspect-[21/9] rounded-[20px] md:rounded-[28px] overflow-hidden mb-5 md:mb-6 group cursor-pointer"
+          <div
+            className="relative aspect-[16/10] md:aspect-[21/10] lg:aspect-[21/9] rounded-[20px] md:rounded-[28px] overflow-hidden mb-5 md:mb-6 group cursor-pointer bg-gray-100"
             onClick={() => setIsFullscreen(true)}
           >
-            <motion.img 
-              key={selectedImage}
-              src={allImages[selectedImage] || portfolioItem.image || '/images/placeholder.jpg'} 
-              alt={portfolioItem.title}
-              initial={{ opacity: 0, scale: 1.05 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ 
-                duration: 0.7,
-                ease: [0.16, 1, 0.3, 1]
-              }}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            />
-            
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={selectedImage}
+                src={allImages[selectedImage] || portfolioItem.image || '/images/placeholder.jpg'}
+                alt={portfolioItem.title}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="w-full h-full object-cover"
+              />
+            </AnimatePresence>
+
             {/* Status Badge */}
-            <motion.div 
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            <div
               className="absolute top-5 left-5 md:top-6 md:left-6 px-3.5 py-1.5 md:px-4 md:py-2 bg-white/95 backdrop-blur-md rounded-full shadow-md border border-white/50 z-10"
             >
               <span className="text-[12px] md:text-[13px] font-semibold text-black">{portfolioItem.tag || 'Sold'}</span>
-            </motion.div>
+            </div>
+
+            {/* Navigation Arrows (Desktop overlay) */}
+            {allImages.length > 1 && (
+              <>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handlePrevious()
+                  }}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110 z-20"
+                >
+                  <ArrowLeft className="w-5 h-5 text-black" weight="bold" />
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleNext()
+                  }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110 z-20"
+                >
+                  <ArrowRight className="w-5 h-5 text-black" weight="bold" />
+                </button>
+              </>
+            )}
 
             {/* Action Buttons */}
             <div className="absolute top-5 right-5 md:top-6 md:right-6 flex items-center gap-2.5 md:gap-3 z-10">
               <motion.button
-                initial={{ opacity: 0, scale: 0.5, y: -10 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ 
-                  duration: 0.6, 
-                  delay: 0.5,
-                  ease: [0.16, 1, 0.3, 1]
-                }}
-                whileHover={{ scale: 1.08, transition: { duration: 0.2 } }}
-                whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.95 }}
                 className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-white/95 backdrop-blur-md flex items-center justify-center hover:bg-white transition-all duration-300 shadow-md hover:shadow-lg border border-white/50"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <Heart className="w-4 h-4 md:w-5 md:h-5 text-black/70" weight="bold" />
-              </motion.button>
-              <motion.button
-                initial={{ opacity: 0, scale: 0.5, y: -10 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ 
-                  duration: 0.6, 
-                  delay: 0.6,
-                  ease: [0.16, 1, 0.3, 1]
-                }}
-                whileHover={{ scale: 1.08, transition: { duration: 0.2 } }}
-                whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
-                className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-white/95 backdrop-blur-md flex items-center justify-center hover:bg-white transition-all duration-300 shadow-md hover:shadow-lg border border-white/50"
-                onClick={(e) => e.stopPropagation()}
+                onClick={handleShare}
               >
                 <ShareNetwork className="w-4 h-4 md:w-5 md:h-5 text-black/70" weight="bold" />
               </motion.button>
               <motion.button
-                initial={{ opacity: 0, scale: 0.5, y: -10 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ 
-                  duration: 0.6, 
-                  delay: 0.7,
-                  ease: [0.16, 1, 0.3, 1]
-                }}
-                whileHover={{ scale: 1.08, transition: { duration: 0.2 } }}
-                whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.95 }}
                 className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-white/95 backdrop-blur-md flex items-center justify-center hover:bg-white transition-all duration-300 shadow-md hover:shadow-lg border border-white/50"
                 onClick={(e) => {
                   e.stopPropagation()
@@ -223,13 +317,13 @@ export default function PortfolioDetailPage() {
             </div>
 
             {/* Hover overlay hint */}
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100 pointer-events-none">
               <div className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full flex items-center gap-2 shadow-lg">
                 <ArrowsOut className="w-4 h-4 text-black" weight="bold" />
                 <span className="text-sm font-medium text-black">Click to view fullscreen</span>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Gallery Thumbnails - Scrollable */}
           {allImages.length > 1 && (
@@ -239,28 +333,30 @@ export default function PortfolioDetailPage() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="relative"
             >
-              <div className="flex gap-3 md:gap-4 overflow-x-auto scrollbar-hide pb-2 pt-2 -mx-2 px-2">
+              <div
+                ref={galleryRef}
+                className="flex gap-3 md:gap-4 overflow-x-auto scrollbar-hide pb-2 pt-2 -mx-2 px-2 cursor-grab active:cursor-grabbing"
+              >
                 {allImages.map((img, index) => (
                   <motion.button
                     key={index}
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ 
-                      duration: 0.5, 
-                      delay: 0.4 + (index * 0.06), 
-                      ease: [0.22, 1, 0.36, 1] 
+                    transition={{
+                      duration: 0.5,
+                      delay: 0.4 + (index * 0.06),
+                      ease: [0.22, 1, 0.36, 1]
                     }}
                     onClick={() => setSelectedImage(index)}
-                    className={`relative flex-shrink-0 w-24 md:w-32 aspect-video cursor-pointer rounded-xl transition-all duration-300 ${
-                      selectedImage === index 
-                        ? 'ring-2 ring-black ring-offset-2 ring-offset-white scale-105' 
-                        : 'opacity-60 hover:opacity-80'
-                    }`}
+                    className={`relative flex-shrink-0 w-24 md:w-32 aspect-video cursor-pointer rounded-xl transition-all duration-300 ${selectedImage === index
+                      ? 'ring-2 ring-black ring-offset-2 ring-offset-white scale-105'
+                      : 'opacity-60 hover:opacity-80'
+                      }`}
                   >
                     <div className="w-full h-full rounded-xl overflow-hidden">
-                      <img 
-                        src={img} 
-                        alt={`Gallery ${index + 1}`} 
+                      <img
+                        src={img}
+                        alt={`Gallery ${index + 1}`}
                         className="w-full h-full object-cover"
                       />
                     </div>
@@ -282,7 +378,7 @@ export default function PortfolioDetailPage() {
           height={40}
           className="fill-black/[0.02] stroke-black/[0.02]"
         />
-        
+
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-12">
           <div className="grid lg:grid-cols-[1fr_420px] gap-10 lg:gap-20 xl:gap-24">
             {/* Left Column - Details */}
@@ -295,7 +391,7 @@ export default function PortfolioDetailPage() {
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                 className="mb-12 md:mb-14"
               >
-                <motion.div 
+                <motion.div
                   className="flex items-center gap-2.5 mb-5 md:mb-6"
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
@@ -312,7 +408,7 @@ export default function PortfolioDetailPage() {
                   )}
                 </motion.div>
 
-                <motion.h1 
+                <motion.h1
                   className="text-[32px] md:text-[44px] lg:text-[48px] font-semibold text-black mb-6 md:mb-8 tracking-[-0.03em] leading-[1.1]"
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
@@ -322,7 +418,7 @@ export default function PortfolioDetailPage() {
                   {portfolioItem.title}
                 </motion.h1>
 
-                <motion.div 
+                <motion.div
                   className="flex flex-wrap items-center gap-4 md:gap-6 mb-8 md:mb-10 pb-8 md:pb-10 border-b border-black/10"
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
@@ -335,14 +431,14 @@ export default function PortfolioDetailPage() {
                     { icon: Ruler, label: `${portfolioItem.sqft} m²`, show: portfolioItem.sqft && portfolioItem.sqft !== '0' },
                     { icon: CalendarBlank, label: portfolioItem.yearBuilt, show: portfolioItem.yearBuilt }
                   ].filter(item => item.show).map((item, idx) => (
-                    <motion.div 
+                    <motion.div
                       key={idx}
                       className="flex items-center gap-2.5"
                       initial={{ opacity: 0, scale: 0.9 }}
                       whileInView={{ opacity: 1, scale: 1 }}
                       viewport={{ once: true }}
-                      transition={{ 
-                        duration: 0.4, 
+                      transition={{
+                        duration: 0.4,
                         delay: 0.4 + (idx * 0.05),
                         ease: [0.22, 1, 0.36, 1]
                       }}
@@ -355,7 +451,7 @@ export default function PortfolioDetailPage() {
 
                 {/* Sold Date if available */}
                 {portfolioItem.soldDate && (
-                  <motion.div 
+                  <motion.div
                     className="text-[18px] md:text-[20px] font-medium text-black/60 mb-4"
                     initial={{ opacity: 0, scale: 0.95 }}
                     whileInView={{ opacity: 1, scale: 1 }}
@@ -449,7 +545,7 @@ export default function PortfolioDetailPage() {
                   </motion.div>
 
                   {/* Main Title */}
-                  <motion.h3 
+                  <motion.h3
                     className="text-[22px] md:text-[24px] font-semibold text-black mb-4 md:mb-5 tracking-[-0.02em]"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
@@ -458,9 +554,9 @@ export default function PortfolioDetailPage() {
                   >
                     Looking for your next home or investment?
                   </motion.h3>
-                  
+
                   {/* Description */}
-                  <motion.p 
+                  <motion.p
                     className="text-[14px] md:text-[15px] text-black/60 mb-7 md:mb-8 leading-[1.6]"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
@@ -480,7 +576,7 @@ export default function PortfolioDetailPage() {
                     whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
                     whileTap={{ scale: 0.98, transition: { duration: 0.1 } }}
                   >
-                    <Button 
+                    <Button
                       onClick={() => router.push('/find-property')}
                       className="w-full bg-black text-white hover:bg-black/90 border-0 px-6 py-3.5 rounded-full text-[15px] font-semibold transition-all duration-200 shadow-sm hover:shadow-md flex items-center justify-center gap-2"
                     >
@@ -500,7 +596,7 @@ export default function PortfolioDetailPage() {
                         <div className="text-[12px] md:text-[13px] text-black/50">Property Specialists</div>
                       </div>
                     </div>
-                    
+
                     <p className="text-[13px] md:text-[14px] text-black/60 leading-[1.6]">
                       Our expert advisors are ready to guide you through every step of your property journey.
                     </p>
@@ -516,14 +612,14 @@ export default function PortfolioDetailPage() {
       {otherPortfolioItems.length > 0 && (
         <section className="py-24 md:py-32 bg-black overflow-hidden">
           <div className="max-w-[1400px] mx-auto px-6 md:px-12">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.98 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
               className="text-center mb-12 md:mb-16"
             >
-              <motion.h2 
+              <motion.h2
                 className="text-[36px] md:text-[52px] font-semibold text-white mb-6 tracking-[-0.02em] leading-[1.1]"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
@@ -532,7 +628,7 @@ export default function PortfolioDetailPage() {
               >
                 Explore More Projects
               </motion.h2>
-              <motion.p 
+              <motion.p
                 className="text-[17px] md:text-[20px] font-normal text-white/80 mb-10 max-w-[700px] mx-auto leading-[1.6]"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
@@ -546,100 +642,21 @@ export default function PortfolioDetailPage() {
             {/* Portfolio Grid */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12">
               {otherPortfolioItems.map((item, index) => (
-                <Link key={item.id} href={`/portfolio/${item.id}`}>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    className="group bg-white rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer"
-                  >
-                    {/* Image */}
-                    <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
-                      <img 
-                        src={item.image} 
-                        alt={item.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      {item.featured && (
-                        <div className="absolute top-4 left-4 bg-black text-white text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1.5">
-                          <Heart className="w-3 h-3" weight="fill" />
-                          Featured
-                        </div>
-                      )}
-                      {item.tag && (
-                        <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-md text-black text-xs font-semibold px-3 py-1.5 rounded-full">
-                          {item.tag}
-                        </div>
-                      )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-6">
-                      <div className="flex items-center gap-1.5 mb-2">
-                        <MapPin className="w-4 h-4 text-black/40" weight="fill" />
-                        <span className="text-xs font-medium text-black/50 uppercase tracking-wider">
-                          {item.location}
-                        </span>
-                      </div>
-                      
-                      <h3 className="text-xl font-semibold text-black mb-3 line-clamp-2 group-hover:text-black/70 transition-colors">
-                        {item.title}
-                      </h3>
-                      
-                      <div className="flex items-center gap-4 mb-4 pb-4 border-b border-black/5">
-                        {item.beds && item.beds !== '0' && (
-                          <div className="flex items-center gap-1.5">
-                            <Bed className="w-4 h-4 text-black/40" weight="duotone" />
-                            <span className="text-sm font-medium text-black/70">{item.beds}</span>
-                          </div>
-                        )}
-                        {item.baths && item.baths !== '0' && (
-                          <div className="flex items-center gap-1.5">
-                            <Bathtub className="w-4 h-4 text-black/40" weight="duotone" />
-                            <span className="text-sm font-medium text-black/70">{item.baths}</span>
-                          </div>
-                        )}
-                        {item.sqft && item.sqft !== '0' && (
-                          <div className="flex items-center gap-1.5">
-                            <Ruler className="w-4 h-4 text-black/40" weight="duotone" />
-                            <span className="text-sm font-medium text-black/70">{item.sqft} m²</span>
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="flex items-center justify-between">
-                        {item.tag && (
-                          <p className="text-sm font-semibold text-black/70 uppercase tracking-wider">
-                            {item.tag}
-                          </p>
-                        )}
-                        <ArrowRight className="w-5 h-5 text-black/40 group-hover:text-black group-hover:translate-x-1 transition-all" weight="bold" />
-                      </div>
-                    </div>
-                  </motion.div>
-                </Link>
+                <PortfolioCard key={item.id} item={item} />
               ))}
             </div>
 
             {/* View All Button */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="text-center"
-            >
+            <div className="text-center">
               <Link href="/portfolio">
-                <Button 
+                <Button
                   className="bg-white text-black hover:bg-white/90 border-0 px-8 py-3 rounded-full text-[15px] font-semibold transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2 mx-auto"
                 >
                   View All Projects
                   <ArrowRight className="w-4 h-4" weight="bold" />
                 </Button>
               </Link>
-            </motion.div>
+            </div>
           </div>
         </section>
       )}
@@ -714,7 +731,7 @@ export default function PortfolioDetailPage() {
               </div>
 
               {/* Main Image Container */}
-              <div 
+              <div
                 className="relative w-full h-full flex items-center justify-center p-6 md:p-12"
                 onClick={(e) => e.stopPropagation()}
               >
@@ -770,10 +787,13 @@ export default function PortfolioDetailPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 20 }}
                   transition={{ delay: 0.2 }}
-                  className="absolute bottom-6 left-1/2 -translate-x-1/2 z-50 max-w-[90%]"
+                  className="absolute bottom-4 left-0 right-0 z-50 flex justify-center px-4 md:bottom-8"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="flex gap-3 overflow-x-auto scrollbar-hide px-4 py-2 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20">
+                  <div
+                    ref={fullscreenGalleryRef}
+                    className="flex gap-2 md:gap-3 overflow-x-auto scrollbar-hide p-2 bg-white/10 backdrop-blur-md rounded-xl border border-white/20 max-w-full cursor-grab active:cursor-grabbing"
+                  >
                     {allImages.map((img, index) => (
                       <button
                         key={index}
@@ -781,11 +801,10 @@ export default function PortfolioDetailPage() {
                           setSelectedImage(index)
                           setZoom(1)
                         }}
-                        className={`relative flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-lg overflow-hidden transition-all duration-300 ${
-                          selectedImage === index
-                            ? 'ring-2 ring-white scale-110'
-                            : 'opacity-50 hover:opacity-75'
-                        }`}
+                        className={`relative flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-lg overflow-hidden transition-all duration-300 ${selectedImage === index
+                          ? 'ring-2 ring-white scale-110'
+                          : 'opacity-50 hover:opacity-75'
+                          }`}
                       >
                         <img
                           src={img}

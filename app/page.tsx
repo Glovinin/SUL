@@ -5,13 +5,14 @@ import { motion, AnimatePresence, useInView } from 'framer-motion'
 import { Button } from '../components/ui/button'
 import { GridPattern } from '../components/ui/grid-pattern'
 import { Footer } from '../components/Footer'
+import { CallToAction } from '../components/CallToAction'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useFeaturedProperties, useProperties, useHomepageSettings, usePortfolio } from '../lib/properties-client'
+import { useFeaturedProperties, useProperties, usePortfolio } from '../lib/properties-client'
 import { formatPrice } from '../lib/format-price'
 import { useLoading } from '../contexts/loading-context'
 import { TypingEffect } from '../components/typing-effect'
-import { 
+import {
   ArrowRight,
   Bed,
   Bathtub,
@@ -20,6 +21,7 @@ import {
   Star,
   Buildings
 } from '@phosphor-icons/react'
+import { ListingCard } from '@/components/listing-card'
 
 // Featured projects will be loaded from Firebase
 
@@ -32,7 +34,7 @@ export default function Home() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return
-    
+
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768)
     }
@@ -55,206 +57,65 @@ export default function Home() {
     }
   })
   const videoRef = React.useRef<HTMLVideoElement>(null)
+  // We can assume local files load reliably, simplified state
   const [videoLoaded, setVideoLoaded] = useState(false)
-  const [videoError, setVideoError] = useState(false)
-  const { settings: homepageSettings } = useHomepageSettings()
+  // Direct local video source - utilizing the optimized WebM first
+  const heroVideoWebM = '/videos/herovideo.webm'
+  const heroVideoMp4 = '/videos/herovideo.mp4'
+  const heroVideoPoster = '/images/hero-poster.jpg'
+
   const { isInitialLoading } = useLoading()
   const [pageCanAppear, setPageCanAppear] = useState(false)
 
   // Escutar evento para permitir que a página apareça suavemente
   React.useEffect(() => {
     if (typeof window === 'undefined') return
-    
+
     const handlePageCanAppear = () => {
       setPageCanAppear(true)
     }
-    
+
     window.addEventListener('page-can-appear', handlePageCanAppear)
-    
+
     // Se o loading já terminou, permitir que a página apareça
     if (!isInitialLoading) {
       setPageCanAppear(true)
     }
-    
+
     return () => {
       window.removeEventListener('page-can-appear', handlePageCanAppear)
     }
   }, [isInitialLoading])
 
-  // Use homepage settings video or fallback to default
-  const heroVideo = homepageSettings?.heroVideo || '/videos/video.mp4'
-  const heroVideoPoster = homepageSettings?.heroVideoPoster || '/images/hero-poster.jpg'
-  
-  // Cache do vídeo usando Cache API
-  const cacheVideo = React.useCallback(async (videoUrl: string) => {
-    if (typeof window === 'undefined' || !('caches' in window)) return false
-    
-    try {
-      const cache = await caches.open('sul-estate-video-cache-v1')
-      const cachedResponse = await cache.match(videoUrl)
-      
-      if (cachedResponse) {
-        // Vídeo já está em cache
-        return true
-      }
-      
-      // Baixar e armazenar no cache
-      const response = await fetch(videoUrl)
-      if (response.ok) {
-        await cache.put(videoUrl, response.clone())
-        localStorage.setItem('sul_estate_hero_video_url', videoUrl)
-        localStorage.setItem('sul_estate_hero_video_cached', 'true')
-        return true
-      }
-    } catch (error) {
-      console.error('Error caching video:', error)
-    }
-    
-    return false
-  }, [])
-  
-  // Verificar e carregar vídeo do cache
-  React.useEffect(() => {
-    if (!heroVideo || typeof window === 'undefined') return
-    
-    const loadVideoFromCache = async () => {
-      try {
-        // Verificar se está em cache
-        if ('caches' in window) {
-          const cache = await caches.open('sul-estate-video-cache-v1')
-          const cachedResponse = await cache.match(heroVideo)
-          
-          if (cachedResponse) {
-            // Criar blob URL do cache
-            const blob = await cachedResponse.blob()
-            const blobUrl = URL.createObjectURL(blob)
-            
-            if (videoRef.current) {
-              videoRef.current.src = blobUrl
-              setVideoLoaded(true)
-              return
-            }
-          }
-        }
-        
-        // Se não estiver em cache, verificar localStorage e tentar cachear
-        const cached = localStorage.getItem('sul_estate_hero_video_cached')
-        const cachedUrl = localStorage.getItem('sul_estate_hero_video_url')
-        
-        if (cached === 'true' && cachedUrl === heroVideo) {
-          // Tentar cachear em background para próxima vez
-          cacheVideo(heroVideo)
-        } else {
-          // Cachear o vídeo em background
-          cacheVideo(heroVideo)
-        }
-      } catch (error) {
-        // Silent error handling
-      }
-    }
-    
-    loadVideoFromCache()
-  }, [heroVideo, cacheVideo])
-  
-  // Optimized video loading - carrega apenas quando necessário
+  // Instant visual feedback when video is ready
   React.useEffect(() => {
     const video = videoRef.current
-    if (!video || !heroVideo) return
+    if (!video) return
 
-    // Reset states quando vídeo muda
-    setVideoError(false)
-
-    // Preload agressivo
-    video.preload = 'auto'
-    
-    // Event listeners para otimização
-    const handleCanPlay = async () => {
-      setVideoLoaded(true)
-      setVideoError(false)
-      video.muted = true
-      
-      // Salvar no cache após carregar
+    // Force play on mount to ensure autoplay works
+    const playVideo = async () => {
       try {
-        await cacheVideo(heroVideo)
-      } catch (error) {
-        // Silent error
-      }
-      
-      const playPromise = video.play()
-      
-      if (playPromise !== undefined) {
-        playPromise
-          .catch(() => {
-            // Autoplay prevented - tentar novamente silenciosamente
-            setTimeout(() => {
-              video.play().catch(() => {
-                // Falha silenciosa - autoplay não permitido
-              })
-            }, 1000)
-          })
+        await video.play()
+        setVideoLoaded(true)
+      } catch (err) {
+        console.error("Video play failed:", err)
       }
     }
 
-    const handleError = () => {
-      setVideoError(true)
-    }
-
-    const handleLoadedData = async () => {
-      setVideoLoaded(true)
-      // Salvar no cache quando dados carregarem
-      try {
-        await cacheVideo(heroVideo)
-      } catch (error) {
-        // Silent error
-      }
-    }
-
-    video.addEventListener('canplay', handleCanPlay)
-    video.addEventListener('loadeddata', handleLoadedData)
-    video.addEventListener('error', handleError)
-
-    return () => {
-      video.removeEventListener('canplay', handleCanPlay)
-      video.removeEventListener('loadeddata', handleLoadedData)
-      video.removeEventListener('error', handleError)
-    }
-  }, [heroVideo, cacheVideo])
+    playVideo()
+  }, [])
 
   return (
-    <AnimatePresence mode="wait">
-      {pageCanAppear && (
-        <motion.div
-          key="homepage"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="min-h-screen bg-white"
-        >
+    <div className="min-h-screen bg-white">
 
       {/* Hero Section - Ultra-Premium Design */}
-      <section className="relative min-h-screen flex items-center justify-center bg-black">
+      <section className="relative min-h-screen flex items-center justify-center bg-black overflow-hidden">
         {/* Background Video with Elegant Overlay */}
         <div className="absolute inset-0 overflow-hidden">
-          {/* Loading state - mostra poster enquanto carrega */}
-          {!videoLoaded && !videoError && (
-            <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-              {heroVideoPoster && (
-                <img 
-                  src={heroVideoPoster} 
-                  alt="Loading video" 
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-              )}
-              <div className="relative z-10 flex flex-col items-center gap-3">
-                <div className="animate-spin rounded-full h-8 w-8 border-2 border-white/30 border-t-white"></div>
-                <p className="text-white/70 text-sm">Loading video...</p>
-              </div>
-            </div>
-          )}
-          
+          {/* Black fallback / Poster while loading */}
+          <div className="absolute inset-0 bg-black z-0" />
+
           <video
-            key={heroVideo}
             ref={videoRef}
             autoPlay
             loop
@@ -262,137 +123,82 @@ export default function Home() {
             playsInline
             preload="auto"
             poster={heroVideoPoster}
-            className={`absolute inset-0 w-full h-full object-cover scale-110 transition-opacity duration-500 transition-transform duration-20000 ease-out hover:scale-105 ${
-              videoLoaded ? 'opacity-100' : 'opacity-0'
-            }`}
-            onLoadedData={() => {
-              // Garantir que o vídeo está pronto antes de mostrar
-              if (videoRef.current) {
-                setVideoLoaded(true)
-              }
-            }}
-            onCanPlay={() => {
-              // Mostrar vídeo quando estiver pronto para reproduzir
-              if (videoRef.current) {
-                setVideoLoaded(true)
-              }
-            }}
+            className="absolute inset-0 w-full h-full object-cover scale-105 z-0"
           >
-            <source src={heroVideo} type="video/mp4" />
-            Your browser does not support the video tag.
+            <source src={heroVideoWebM} type="video/webm" />
+            <source src={heroVideoMp4} type="video/mp4" />
           </video>
-          
-          {/* Fallback se vídeo falhar */}
-          {videoError && heroVideoPoster && (
-            <img 
-              src={heroVideoPoster} 
-              alt="Hero background" 
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-          )}
+
           {/* Vignette effect - Premium depth */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,transparent_40%,rgba(0,0,0,0.4)_100%)]" />
-          {/* Modern gradient overlays */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/50" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.2)_60%,rgba(0,0,0,0.6)_100%)] z-1" />
+          {/* Subtle cinematic grain */}
+          <div className="absolute inset-0 opacity-[0.03] bg-[url('/noise.png')] z-1 mix-blend-overlay pointer-events-none" />
+          {/* Modern gradient overlays - Refined for readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent z-1" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/20 z-1" />
         </div>
-        
+
+
+
         {/* Hero Content - Ultra Elegant Typography - iOS Style */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
+          animate={{ opacity: pageCanAppear ? 1 : 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }} // Slightly smoother entry after loading
           className="relative z-10 w-full max-w-[1400px] mx-auto px-6 md:px-12 pt-32 pb-20"
         >
-          <div className="text-center flex flex-col items-center justify-center min-h-[60vh]">
+          <div className="text-center flex flex-col items-center justify-center min-h-[60vh] gap-10">
             {/* Main Heading - Large, Elegant, Minimalist - iOS Spring Animation */}
             <motion.h1
-              initial={{ opacity: 0, y: 40, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ 
-                type: "spring",
-                stiffness: 100,
-                damping: 20,
-                mass: 1,
+              initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+              animate={pageCanAppear ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
+              transition={{
+                duration: 1.2,
+                ease: [0.25, 0.1, 0.25, 1],
                 delay: 0.2
               }}
-              className="text-[40px] sm:text-[52px] md:text-[64px] lg:text-[72px] xl:text-[80px] font-light tracking-[-0.02em] text-white leading-[1.05] mb-8 md:mb-12 max-w-[1200px] mx-auto"
-              style={{ 
-                letterSpacing: '-0.02em',
-                fontWeight: 300,
-                textShadow: '0 2px 40px rgba(0,0,0,0.3), 0 1px 20px rgba(0,0,0,0.2)'
-              }}
+              className="text-[40px] sm:text-[52px] md:text-[64px] lg:text-[72px] xl:text-[80px] font-light tracking-[-0.03em] text-white leading-[1.05] max-w-[1200px] mx-auto"
             >
-              <motion.span
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ 
-                  type: "spring",
-                  stiffness: 120,
-                  damping: 25,
-                  mass: 0.8,
-                  delay: 0.4
-                }}
-                className="inline-block"
-              >
+              <span className="inline-block drop-shadow-2xl">
                 Real Estate & Investment<br className="hidden md:block" /> in Portugal
-              </motion.span>
+              </span>
             </motion.h1>
 
             {/* Subtitle - Refined, Harmonious - iOS Fade with Typing */}
-            <motion.p
-              initial={{ opacity: 0, y: 30, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ 
-                type: "spring",
-                stiffness: 100,
-                damping: 20,
-                mass: 0.9,
-                delay: 0.7
-              }}
-              className="text-[18px] md:text-[22px] lg:text-[24px] font-light text-white/90 leading-[1.5] max-w-[680px] mx-auto tracking-[-0.01em]"
-              style={{ 
-                fontWeight: 300,
-                textShadow: '0 2px 30px rgba(0,0,0,0.25), 0 1px 15px rgba(0,0,0,0.15)'
-              }}
+            <div
+              className="text-[18px] md:text-[22px] lg:text-[24px] font-light text-white/90 leading-[1.5] max-w-[720px] mx-auto tracking-[-0.02em] drop-shadow-lg"
             >
-              <TypingEffect 
-                text="We assist international clients finding their ideal home or investment."
-                speed={35}
-                delay={1100}
-              />
-            </motion.p>
+              {pageCanAppear && (
+                <TypingEffect
+                  text="We assist international clients finding their ideal home or investment."
+                  speed={0.03}
+                  delay={800} // This delay runs AFTER mount, so it adds to the fade-in time nicely
+                  staggerDelay={0.02}
+                />
+              )}
+            </div>
           </div>
 
         </motion.div>
 
         {/* Scroll Indicator - Premium - iOS Style */}
         <motion.div
-          initial={{ opacity: 0, y: 20, scale: 0.9 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ 
-            type: "spring",
-            stiffness: 100,
-            damping: 20,
-            mass: 0.8,
-            delay: 1.4
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{
+            duration: 1,
+            delay: 2.5,
+            ease: "easeOut"
           }}
-          className="absolute bottom-14 left-1/2 -translate-x-1/2 z-[10] hidden md:block"
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[10] hidden md:block"
         >
           <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ 
-              duration: 2.5, 
-              repeat: Infinity, 
-              ease: [0.4, 0, 0.2, 1],
-              repeatDelay: 0.5
-            }}
-            className="w-7 h-11 rounded-full border-2 border-white/30 flex items-start justify-center p-2.5 backdrop-blur-sm bg-white/5 shadow-lg"
+            className="w-[1px] h-16 bg-gradient-to-b from-transparent via-white/30 to-transparent relative overflow-hidden"
           >
             <motion.div
-              animate={{ y: [0, 14, 0], opacity: [1, 0.3, 1] }}
-              transition={{ duration: 2, repeat: Infinity, ease: [0.22, 1, 0.36, 1] }}
-              className="w-1.5 h-2.5 bg-white/70 rounded-full shadow-[0_0_10px_rgba(255,255,255,0.5)]"
+              animate={{ top: ["-100%", "100%"] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "linear", repeatDelay: 1 }}
+              className="absolute w-full h-1/2 bg-gradient-to-b from-transparent to-white"
             />
           </motion.div>
         </motion.div>
@@ -402,16 +208,16 @@ export default function Home() {
       <div className="border-t border-black/[0.03] bg-white"></div>
 
       {/* About SUL Section - Premium Design */}
-      <section className="relative py-20 md:py-28 bg-white overflow-visible">
+      <section className="relative py-12 md:py-20 bg-white overflow-hidden">
         <GridPattern
           width={40}
           height={40}
           className="fill-black/[0.015] stroke-black/[0.015]"
         />
-        
+
         {/* Ambient Light Effect */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-radial from-black/[0.02] via-transparent to-transparent blur-3xl pointer-events-none"></div>
-        
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] max-w-full h-[400px] bg-gradient-radial from-black/[0.02] via-transparent to-transparent blur-3xl pointer-events-none"></div>
+
         <div className="relative z-10 max-w-[1000px] mx-auto px-6 md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -420,27 +226,16 @@ export default function Home() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="text-center"
           >
-            {/* Badge */}
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-8"
-            >
-              <span className="text-[12px] font-medium text-black/60">About SUL</span>
-            </motion.div>
-
-            {/* Main Description */}
-            <motion.p
+            {/* Main Description - Title replaced by text as primary focus */}
+            <motion.h2
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="text-[18px] md:text-[20px] lg:text-[22px] font-normal text-black/70 leading-[1.8] max-w-[900px] mx-auto"
+              transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[24px] md:text-[32px] lg:text-[36px] font-normal text-black/80 leading-[1.3] max-w-[900px] mx-auto"
             >
-              SUL is an independent boutique real estate advisory, offering bespoke guidance in property acquisition, development, and management across Portugal. We assist international clients in finding and shaping their ideal home or investment — from strategic sourcing to full project coordination and long-term value enhancement.
-            </motion.p>
+              SUL is an independent boutique real estate advisory, offering bespoke guidance in property acquisition, development, and management across Portugal.
+            </motion.h2>
           </motion.div>
         </div>
       </section>
@@ -449,58 +244,41 @@ export default function Home() {
       <div className="border-t border-black/[0.03]"></div>
 
       {/* Portfolio Section - Modern Apple Grid */}
-      <section id="portfolio" className="py-20 md:py-28 bg-white overflow-visible">
+      <section id="portfolio" className="py-12 md:py-20 bg-white overflow-visible">
         <div className="max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible pb-8">
           {/* Header Section */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="text-center mb-16"
+            className="text-center mb-10"
           >
-            {/* Badge */}
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
+            {/* Main Title */}
+            <motion.h2
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6"
+              transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[36px] md:text-[48px] font-semibold text-black mb-4 tracking-[-0.02em] leading-[1.1] max-w-[900px] mx-auto"
             >
-              <span className="text-[12px] font-medium text-black/60">Portfolio</span>
-            </motion.div>
-            
-            {/* Main Title */}
-            <motion.h2 
+              SUL Collection Success Stories
+            </motion.h2>
+
+            {/* Subtitle */}
+            <motion.p
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="text-[40px] md:text-[52px] font-semibold text-black mb-6 tracking-[-0.02em] leading-[1.1] max-w-[900px] mx-auto"
-            >
-              SUL Collection: Success Stories.
-            </motion.h2>
-            
-            {/* Subtitle */}
-            <motion.p 
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className="text-[17px] md:text-[19px] font-normal text-black/60 leading-[1.6] mb-8 max-w-[700px] mx-auto"
             >
-              A selection of projects led, coordinated, or orchestrated by SUL, for our clients or our own portfolio
+              A selection of projects led, coordinated, or orchestrated by SUL, for our clients or our own portfolio.
             </motion.p>
           </motion.div>
 
-          {/* Sort portfolio items: featured first */}
+          {/* Sort portfolio items: respect admin order */}
           {(() => {
-            const sortedPortfolioItems = [...portfolioItems].sort((a, b) => {
-              if (a.featured && !b.featured) return -1
-              if (!a.featured && b.featured) return 1
-              return 0
-            })
-
             return (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10 px-0 py-4 md:p-8 lg:p-12 overflow-visible">
                 {portfolioLoading ? (
@@ -508,119 +286,33 @@ export default function Home() {
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto mb-4"></div>
                     <p className="text-black/60">Loading portfolio...</p>
                   </div>
-                ) : sortedPortfolioItems.length === 0 ? (
+                ) : portfolioItems.length === 0 ? (
                   <div className="col-span-full text-center py-20">
                     <p className="text-black/60">No portfolio items available yet.</p>
                   </div>
                 ) : (
-                  sortedPortfolioItems.slice(0, 3).map((item, index) => (
-                    <Link key={item.id} href={`/portfolio/${item.id}`}>
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.96 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{
-                          once: true,
-                          margin: isMobile ? '0px' : '-50px',
-                          amount: isMobile ? 0.2 : undefined
-                        }}
-                        transition={{
-                          duration: isMobile ? 0.4 : 0.6,
-                          delay: isMobile ? index * 0.02 : index * 0.05,
-                          ease: isMobile ? [0.25, 0.1, 0.25, 1] : [0.22, 1, 0.36, 1]
-                        }}
-                        className="group cursor-pointer z-[1] hover:z-[10] hover:-translate-y-1 transition-all duration-300"
-                        style={{ willChange: 'transform, opacity' }}
-                      >
-                        {/* Portfolio Image Container - Premium Apple Style */}
-                        <div className="relative aspect-[4/5] md:aspect-[16/11] lg:aspect-[4/5] overflow-hidden mb-7 rounded-[24px] shadow-sm group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 ease-out bg-gray-100">
-                          {/* Image com zoom suave */}
-                          <img 
-                            src={item.image} 
-                            alt={item.title}
-                            className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-800 ease-out group-hover:scale-[1.08]"
-                            style={{ 
-                              objectFit: 'cover',
-                              objectPosition: 'center',
-                              minWidth: '100%',
-                              minHeight: '100%'
-                            }}
-                          />
-                          
-                          {/* Tag Badge - Ultra Premium */}
-                          <div className="absolute top-6 left-6 z-20 flex flex-col gap-2">
-                            {item.featured && (
-                              <div className="bg-black text-white px-4 py-2 rounded-full shadow-[0_2px_12px_rgba(0,0,0,0.2)] flex items-center gap-1.5">
-                                <Star className="w-3 h-3" weight="fill" />
-                                <span className="text-[10px] font-semibold tracking-[0.08em] uppercase">Featured</span>
-                              </div>
-                            )}
-                            {item.tag && item.tag !== 'Featured' && (
-                              <div className="bg-white/95 backdrop-blur-2xl px-4 py-2 rounded-full shadow-[0_2px_12px_rgba(0,0,0,0.08)]">
-                                <span className="text-[10px] font-semibold text-black tracking-[0.08em] uppercase">{item.tag}</span>
-                              </div>
-                            )}
-                          </div>
-                          
-                          {/* Overlay Premium - Aparece no hover */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10"></div>
-                          
-                          {/* Shine Effect - Apple Style */}
-                          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10">
-                            <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent"></div>
-                          </div>
-                        </div>
-                        
-                        {/* Portfolio Details - Ultra Clean Typography */}
-                        <div className="px-1">
-                          {/* Location - Subtle */}
-                          <div className="flex items-center gap-2 mb-3">
-                            <div className="w-1 h-1 rounded-full bg-black/20"></div>
-                            <p className="text-[11px] font-medium text-black/40 tracking-[0.1em] uppercase">
-                              {item.location}
-                            </p>
-                          </div>
-                          
-                          {/* Title - Bold & Clean */}
-                          <h3 className="text-[20px] md:text-[22px] font-semibold text-black mb-4 tracking-[-0.02em] leading-[1.2] group-hover:text-black/60 transition-colors duration-500">
-                            {item.title}
-                          </h3>
-                          
-                          {/* Portfolio Stats - Refined */}
-                          <div className="flex items-center gap-6 pt-5 border-t border-black/[0.06]">
-                            {item.beds && item.beds !== '0' && (
-                              <div className="flex items-center gap-2.5">
-                                <div className="w-9 h-9 rounded-full bg-black/[0.03] flex items-center justify-center group-hover:bg-black/[0.05] transition-colors duration-300">
-                                  <Bed className="w-[17px] h-[17px] text-black/50" weight="duotone" />
-                                </div>
-                                <span className="text-[14px] font-medium text-black/70">{item.beds}</span>
-                              </div>
-                            )}
-                            {item.baths && item.baths !== '0' && (
-                              <div className="flex items-center gap-2.5">
-                                <div className="w-9 h-9 rounded-full bg-black/[0.03] flex items-center justify-center group-hover:bg-black/[0.05] transition-colors duration-300">
-                                  <Bathtub className="w-[17px] h-[17px] text-black/50" weight="duotone" />
-                                </div>
-                                <span className="text-[14px] font-medium text-black/70">{item.baths}</span>
-                              </div>
-                            )}
-                            {item.sqft && item.sqft !== '0' && (
-                              <div className="flex items-center gap-2.5">
-                                <div className="w-9 h-9 rounded-full bg-black/[0.03] flex items-center justify-center group-hover:bg-black/[0.05] transition-colors duration-300">
-                                  <ArrowsOut className="w-[17px] h-[17px] text-black/50" weight="duotone" />
-                                </div>
-                                <span className="text-[14px] font-medium text-black/70">{item.sqft}</span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </motion.div>
-                    </Link>
+                  portfolioItems.slice(0, 3).map((item, index) => (
+                    <ListingCard
+                      key={item.id}
+                      id={item.id}
+                      href={`/ portfolio / ${item.id} `}
+                      image={item.image}
+                      title={item.title}
+                      location={item.location}
+                      tag={item.tag}
+                      featured={item.featured}
+                      stats={{
+                        beds: item.beds,
+                        baths: item.baths,
+                        sqft: item.sqft
+                      }}
+                    />
                   ))
                 )}
               </div>
             )
           })()}
-          
+
           {/* View Portfolio Button */}
           {portfolioItems.length > 0 && (
             <motion.div
@@ -630,7 +322,7 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-center mt-12"
             >
-              <Button 
+              <Button
                 onClick={() => router.push('/portfolio')}
                 className="bg-black text-white hover:bg-black/90 border-0 px-8 py-3 rounded-full text-[15px] font-semibold transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2 mx-auto"
               >
@@ -643,7 +335,7 @@ export default function Home() {
       </section>
 
       {/* Find Property Section */}
-      <section className="py-20 md:py-28 bg-white relative overflow-x-hidden">
+      <section className="py-12 md:py-20 bg-white relative overflow-x-hidden">
         <GridPattern
           width={40}
           height={40}
@@ -657,24 +349,13 @@ export default function Home() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="text-center"
           >
-            {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6"
-            >
-              <span className="text-[12px] font-medium text-black/60">Property Search</span>
-            </motion.div>
-
             {/* Main Title */}
             <motion.h2
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="text-[40px] md:text-[52px] font-semibold text-black mb-6 tracking-[-0.02em] leading-[1.1] max-w-[900px] mx-auto"
+              transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[36px] md:text-[48px] font-semibold text-black mb-4 tracking-[-0.02em] leading-[1.1] max-w-[900px] mx-auto"
             >
               Looking for your next home or investment?
             </motion.h2>
@@ -684,10 +365,10 @@ export default function Home() {
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="text-[17px] md:text-[19px] font-normal text-black/60 leading-[1.6] mb-10 max-w-[700px] mx-auto"
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[17px] md:text-[19px] font-normal text-black/60 leading-[1.6] mb-8 max-w-[700px] mx-auto"
             >
-              Tell us about your project and what matters to you —
+              Tell us about your project and what matters to you,
               we’ll source the perfect property, tailored to your criteria.
             </motion.p>
 
@@ -696,7 +377,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
               className="flex justify-center"
             >
               <Button
@@ -715,47 +396,36 @@ export default function Home() {
       <div className="border-t border-black/[0.03]"></div>
 
       {/* Featured Projects Section - Modern Apple Grid */}
-      <section id="projects" className="py-20 md:py-28 bg-white overflow-visible">
+      <section id="projects" className="py-12 md:py-20 bg-white overflow-visible">
         <div className="max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible pb-8">
           {/* Header Section */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="text-center mb-16"
+            className="text-center mb-10"
           >
-            {/* Badge */}
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
+            {/* Main Title */}
+            <motion.h2
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6"
+              transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[36px] md:text-[48px] font-semibold text-black mb-4 tracking-[-0.02em] leading-[1.1] max-w-[900px] mx-auto"
             >
-              <span className="text-[12px] font-medium text-black/60">Properties</span>
-            </motion.div>
-            
-            {/* Main Title */}
-            <motion.h2 
+              Exclusive collection of Properties
+            </motion.h2>
+
+            {/* Subtitle */}
+            <motion.p
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="text-[40px] md:text-[52px] font-semibold text-black mb-6 tracking-[-0.02em] leading-[1.1] max-w-[900px] mx-auto"
-            >
-              Exclusive collection of Properties
-            </motion.h2>
-            
-            {/* Subtitle */}
-            <motion.p 
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className="text-[17px] md:text-[19px] font-normal text-black/60 leading-[1.6] mb-8 max-w-[700px] mx-auto"
             >
-              Discover our curated selection of premium properties across Portugal
+              Discover our curated selection of premium properties across Portugal.
             </motion.p>
           </motion.div>
 
@@ -771,112 +441,26 @@ export default function Home() {
               </div>
             ) : (
               featuredProperties.slice(0, 3).map((project, index) => (
-              <Link key={project.id} href={`/properties/${project.id}`}>
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{
-                    once: true,
-                    margin: isMobile ? '0px' : '-50px',
-                    amount: isMobile ? 0.2 : undefined
+                <ListingCard
+                  key={project.id}
+                  id={project.id}
+                  href={`/ properties / ${project.id} `}
+                  image={project.image}
+                  title={project.title}
+                  location={project.location}
+                  tag={project.tag}
+                  featured={project.featured}
+                  price={project.price}
+                  stats={{
+                    beds: project.beds,
+                    baths: project.baths,
+                    sqft: project.sqft
                   }}
-                  transition={{
-                    duration: isMobile ? 0.4 : 0.6,
-                    delay: isMobile ? index * 0.02 : index * 0.05,
-                    ease: isMobile ? [0.25, 0.1, 0.25, 1] : [0.22, 1, 0.36, 1]
-                  }}
-                  className="group cursor-pointer z-[1] hover:z-[10] hover:-translate-y-1 transition-all duration-300"
-                  style={{ willChange: 'transform, opacity' }}
-                >
-                {/* Property Image Container - Premium Apple Style */}
-                <div className="relative aspect-[4/5] md:aspect-[16/11] lg:aspect-[4/5] overflow-hidden mb-7 rounded-[24px] shadow-sm group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 ease-out bg-gray-100">
-                  {/* Image com zoom suave */}
-                  <img 
-                    src={project.image} 
-                    alt={project.title}
-                    className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-800 ease-out group-hover:scale-[1.08]"
-                    style={{ 
-                      objectFit: 'cover',
-                      objectPosition: 'center',
-                      minWidth: '100%',
-                      minHeight: '100%'
-                    }}
-                  />
-                  
-                  {/* Tag Badge - Ultra Premium */}
-                  <div className="absolute top-6 left-6 z-20 flex flex-col gap-2">
-                    {project.featured && (
-                      <div className="bg-black text-white px-4 py-2 rounded-full shadow-[0_2px_12px_rgba(0,0,0,0.2)] flex items-center gap-1.5">
-                        <Star className="w-3 h-3" weight="fill" />
-                        <span className="text-[10px] font-semibold tracking-[0.08em] uppercase">Featured</span>
-                      </div>
-                    )}
-                    {project.tag && project.tag !== 'Featured' && (
-                      <div className="bg-white/95 backdrop-blur-2xl px-4 py-2 rounded-full shadow-[0_2px_12px_rgba(0,0,0,0.08)]">
-                        <span className="text-[10px] font-semibold text-black tracking-[0.08em] uppercase">{project.tag}</span>
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* Overlay Premium - Aparece no hover */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10"></div>
-                  
-                  {/* Shine Effect - Apple Style */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10">
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent"></div>
-                  </div>
-                </div>
-                
-                {/* Property Details - Ultra Clean Typography */}
-                <div className="px-1">
-                  {/* Location - Subtle */}
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-1 h-1 rounded-full bg-black/20"></div>
-                    <p className="text-[11px] font-medium text-black/40 tracking-[0.1em] uppercase">
-                      {project.location}
-                    </p>
-                  </div>
-                  
-                  {/* Title - Bold & Clean */}
-                  <h3 className="text-[20px] md:text-[22px] font-semibold text-black mb-4 tracking-[-0.02em] leading-[1.2] group-hover:text-black/60 transition-colors duration-500">
-                    {project.title}
-                  </h3>
-                  
-                  {/* Price - Hero Element */}
-                  <div className="mb-6">
-                    <p className="text-[32px] md:text-[36px] font-semibold text-black tracking-[-0.02em] leading-none">
-                      {formatPrice(project.price)}
-                    </p>
-                  </div>
-                  
-                  {/* Property Stats - Refined */}
-                  <div className="flex items-center gap-6 pt-5 border-t border-black/[0.06]">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-9 h-9 rounded-full bg-black/[0.03] flex items-center justify-center group-hover:bg-black/[0.05] transition-colors duration-300">
-                        <Bed className="w-[17px] h-[17px] text-black/50" weight="duotone" />
-                      </div>
-                      <span className="text-[14px] font-medium text-black/70">{project.beds}</span>
-                    </div>
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-9 h-9 rounded-full bg-black/[0.03] flex items-center justify-center group-hover:bg-black/[0.05] transition-colors duration-300">
-                        <Bathtub className="w-[17px] h-[17px] text-black/50" weight="duotone" />
-                      </div>
-                      <span className="text-[14px] font-medium text-black/70">{project.baths}</span>
-                    </div>
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-9 h-9 rounded-full bg-black/[0.03] flex items-center justify-center group-hover:bg-black/[0.05] transition-colors duration-300">
-                        <ArrowsOut className="w-[17px] h-[17px] text-black/50" weight="duotone" />
-                      </div>
-                      <span className="text-[14px] font-medium text-black/70">{project.sqft}</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-              </Link>
-            ))
+                />
+              ))
             )}
           </div>
-          
+
           {/* View All Properties Button */}
           {featuredProperties.length > 0 && (
             <motion.div
@@ -886,7 +470,7 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-center mt-12"
             >
-              <Button 
+              <Button
                 onClick={() => router.push('/properties')}
                 className="bg-black text-white hover:bg-black/90 border-0 px-8 py-3 rounded-full text-[15px] font-semibold transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2 mx-auto"
               >
@@ -899,62 +483,10 @@ export default function Home() {
       </section>
 
       {/* Call to Action Section - Apple Style */}
-      <section className="py-20 md:py-28 bg-black">
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.98 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="max-w-[900px] mx-auto px-6 md:px-12 text-center"
-        >
-          <h2 className="text-[40px] md:text-[56px] font-semibold text-white mb-8 tracking-[-0.02em] leading-[1.15]">
-            Every search is unique.
-          </h2>
-          <p className="text-[17px] md:text-[21px] font-normal text-white/80 mb-12 max-w-[640px] mx-auto leading-[1.5]">
-            Share your vision — we'll curate a personalized selection for you.
-          </p>
-          <div className="flex flex-col items-center justify-center gap-4 mb-8">
-            <Button 
-              onClick={() => router.push('/find-property')}
-              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
-            >
-              Invest / Buy with us
-            </Button>
-            <Button 
-              onClick={() => router.push('/find-property')}
-              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
-            >
-              Sell with us
-            </Button>
-            <Button 
-              onClick={() => {
-                if (typeof window !== 'undefined') {
-                  window.open('https://calendly.com/jules-portugal/45min', '_blank')
-                }
-              }}
-              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
-            >
-              Book a free call
-            </Button>
-            <Button 
-              onClick={() => {
-                if (typeof window !== 'undefined') {
-                  window.open('https://wa.me/33662527879', '_blank')
-                }
-              }}
-              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
-            >
-              Speak with us on WhatsApp
-            </Button>
-          </div>
-        </motion.div>
-      </section>
+      <CallToAction />
 
       {/* Footer */}
       <Footer />
-        </motion.div>
-      )}
-    </AnimatePresence>
+    </div>
   )
 }
-

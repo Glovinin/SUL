@@ -1,6 +1,6 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Outfit } from 'next/font/google'
 
 import { Toaster } from '../components/ui/toaster'
 import InitialLoading from '../components/initial-loading'
@@ -10,7 +10,11 @@ import { AudioController } from '../components/audio-controller'
 import FloatingContactButton from '../components/FloatingContactButton'
 import { NavBar } from '../components/navbar'
 
-const inter = Inter({ subsets: ['latin'] })
+const outfit = Outfit({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-outfit',
+})
 
 // SEO Metadata otimizado para SUL ESTATE - Real Estate Portugal
 export const metadata: Metadata = {
@@ -28,7 +32,7 @@ export const metadata: Metadata = {
     'property sourcing Portugal',
     'real estate investment consultancy',
     'property management Portugal',
-    
+
     // Location Keywords - High Volume
     'real estate Lisbon',
     'property investment Lisbon',
@@ -38,7 +42,7 @@ export const metadata: Metadata = {
     'property investment Azeitão',
     'Portuguese real estate',
     'Portugal property market',
-    
+
     // Investment Keywords
     'property investment strategy',
     'real estate investment advisory',
@@ -47,7 +51,7 @@ export const metadata: Metadata = {
     'property investment consultancy',
     'real estate investment guidance',
     'property investment planning',
-    
+
     // International Keywords
     'international property investment',
     'foreign investment Portugal',
@@ -56,7 +60,7 @@ export const metadata: Metadata = {
     'European property investment',
     'Portugal investment opportunities',
     'real estate for foreigners',
-    
+
     // Premium Keywords
     'luxury real estate Portugal',
     'premium property Portugal',
@@ -65,7 +69,7 @@ export const metadata: Metadata = {
     'exclusive real estate',
     'premium property investment',
     'luxury property management',
-    
+
     // Service Keywords
     'property sourcing service',
     'real estate project oversight',
@@ -74,7 +78,7 @@ export const metadata: Metadata = {
     'property due diligence',
     'real estate legal support',
     'property financing assistance',
-    
+
     // Long-tail Keywords
     'how to invest in Portugal real estate',
     'best real estate investment Portugal',
@@ -188,19 +192,19 @@ export default function RootLayout({
         <meta name="theme-color" content="#2C5F7C" />
         <meta name="apple-mobile-web-app-title" content="SUL ESTATE" />
         <meta name="application-name" content="SUL ESTATE" />
-        
+
         {/* Preload crítico para otimizar carregamento inicial - removido preload do favicon para evitar warning */}
         <link rel="preconnect" href="https://my.spline.design" />
         <link rel="dns-prefetch" href="https://my.spline.design" />
         {/* Firebase Storage preconnect for faster video/image loading */}
         <link rel="preconnect" href="https://firebasestorage.googleapis.com" />
         <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />
-        
+
         {/* Links de favicon para máxima compatibilidade */}
         <link rel="icon" href="/favicon.png" type="image/png" />
         <link rel="apple-touch-icon" href="/favicon.png" />
         <link rel="mask-icon" href="/favicon.png" color="#2C5F7C" />
-        
+
         {/* Meta tags sociais adicionais para máxima compatibilidade */}
         <meta property="og:image" content="/images/herobg.jpg" />
         <meta property="og:image:width" content="1200" />
@@ -209,7 +213,7 @@ export default function RootLayout({
         <meta property="og:image:alt" content="SUL ESTATE - Boutique Real Estate & Investment Consultancy in Portugal" />
         <meta name="twitter:image" content="/images/herobg.jpg" />
         <meta name="twitter:image:alt" content="SUL ESTATE - Boutique Real Estate & Investment Consultancy in Portugal" />
-        
+
         {/* Structured Data (JSON-LD) para Google Rich Snippets */}
         <script
           suppressHydrationWarning
@@ -278,7 +282,7 @@ export default function RootLayout({
             })
           }}
         />
-        
+
         {/* Organization Schema for Brand Recognition */}
         <script
           suppressHydrationWarning
@@ -326,7 +330,7 @@ export default function RootLayout({
             })
           }}
         />
-        
+
         {/* Service Schema for SEO */}
         <script
           suppressHydrationWarning
@@ -402,7 +406,7 @@ export default function RootLayout({
             })
           }}
         />
-        
+
         {/* FAQ Schema for Rich Snippets */}
         <script
           suppressHydrationWarning
@@ -457,12 +461,11 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body 
-        className={`${inter.className} overflow-x-hidden overflow-y-auto bg-white antialiased`}
-        style={{ 
+      <body
+        className={`${outfit.className} overflow-x-hidden overflow-y-auto bg-white antialiased`}
+        style={{
           backgroundColor: '#ffffff',
           background: '#ffffff',
-          fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif',
           overscrollBehavior: 'none'
         }}
       >

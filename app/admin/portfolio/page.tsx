@@ -4,24 +4,37 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { 
-  Plus, 
-  Pencil, 
-  Trash, 
+import {
+  Plus,
+  Pencil,
+  Trash,
   Buildings,
   MapPin,
   Bed,
   Bathtub,
   Ruler,
-  CurrencyEur,
   Star,
-  Tag,
-  X
 } from '@phosphor-icons/react'
 import { Button } from '../../../components/ui/button'
-import { getPortfolioItems, deletePortfolioItem } from '../../../lib/admin-helpers'
+import { getPortfolioItems, deletePortfolioItem, updatePortfolioItemOrder } from '../../../lib/admin-helpers'
 import { PortfolioItem } from '../../../lib/admin-types'
 import { formatPrice } from '../../../lib/format-price'
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent
+} from '@dnd-kit/core'
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  rectSortingStrategy,
+} from '@dnd-kit/sortable'
+import { SortableItem } from '../../../components/admin/SortableItem'
 
 export default function PortfolioPage() {
   const router = useRouter()
@@ -66,10 +79,48 @@ export default function PortfolioPage() {
       },
       cancel: {
         label: 'Cancelar',
-        onClick: () => {},
+        onClick: () => { },
       },
       duration: 5000,
     })
+  }
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8, // Require 8px movement to start drag, prevents accidental drags on clicks
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
+
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event
+
+    if (over && active.id !== over.id) {
+      setPortfolioItems((items) => {
+        const oldIndex = items.findIndex((item) => item.id === active.id)
+        const newIndex = items.findIndex((item) => item.id === over.id)
+
+        const newItems = arrayMove(items, oldIndex, newIndex)
+
+        // Prepare updates for Firebase
+        const updates = newItems.map((item, index) => ({
+          id: item.id!,
+          order: index
+        }))
+
+        // Fire and forget (or handle error with toast)
+        updatePortfolioItemOrder(updates).catch(err => {
+          console.error('Failed to update order', err)
+          toast.error('Failed to save new order')
+        })
+
+        return newItems
+      })
+    }
   }
 
   if (loading) {
@@ -144,136 +195,164 @@ export default function PortfolioPage() {
           </Button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {portfolioItems.map((item) => {
-            const tags = item.tag ? item.tag.split(',').map(t => t.trim()).filter(Boolean) : []
-            
-            return (
-              <div
-                key={item.id}
-                className="bg-white rounded-2xl border border-black/10 overflow-hidden hover:shadow-xl transition-all duration-300 group"
-              >
-                {/* Image Section */}
-                <div className="aspect-[4/3] bg-gray-100 relative overflow-hidden">
-                  {item.image ? (
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-black/20 bg-gradient-to-br from-black/5 to-black/10">
-                      <Buildings className="w-12 h-12" weight="duotone" />
-                    </div>
-                  )}
-                  
-                  {/* Overlay Gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  
-                  {/* Badges */}
-                  <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                    {item.featured && (
-                      <div className="bg-black text-white text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md">
-                        <Star className="w-3 h-3" weight="fill" />
-                        Featured
-                      </div>
-                    )}
-                    {tags.slice(0, 2).map((tag, idx) => (
-                      <div key={idx} className="bg-white/95 backdrop-blur-sm text-black text-xs font-semibold px-3 py-1.5 rounded-full shadow-md">
-                        {tag}
-                      </div>
-                    ))}
-                  </div>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={portfolioItems.map(p => p.id!)}
+            strategy={rectSortingStrategy}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {portfolioItems.map((item) => {
+                const tags = item.tag ? item.tag.split(',').map(t => t.trim()).filter(Boolean) : []
 
-                  {/* Quick Actions on Hover */}
-                  <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <button
-                      onClick={() => router.push(`/admin/portfolio/${item.id}`)}
-                      className="w-9 h-9 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white shadow-md transition-all hover:scale-110"
-                      title="Edit"
+                return (
+                  <SortableItem key={item.id} id={item.id!}>
+                    {/* Existing Card Content Wrapper */}
+                    <div
+                      className="bg-white rounded-2xl border border-black/10 overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-grab active:cursor-grabbing"
                     >
-                      <Pencil className="w-4 h-4 text-black" weight="bold" />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(item.id!)}
-                      className="w-9 h-9 bg-red-500/95 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-red-500 shadow-md transition-all hover:scale-110"
-                      title="Delete"
-                    >
-                      <Trash className="w-4 h-4 text-white" weight="bold" />
-                    </button>
-                  </div>
-                </div>
+                      {/* Image Section */}
+                      <div className="aspect-[4/3] bg-gray-100 relative overflow-hidden">
+                        {item.image ? (
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-black/20 bg-gradient-to-br from-black/5 to-black/10">
+                            <Buildings className="w-12 h-12" weight="duotone" />
+                          </div>
+                        )}
 
-                {/* Content Section */}
-                <div className="p-5">
-                  {/* Location */}
-                  <div className="flex items-center gap-1.5 mb-2">
-                    <MapPin className="w-4 h-4 text-black/40" weight="fill" />
-                    <span className="text-xs font-medium text-black/50 uppercase tracking-wider">
-                      {item.location}
-                    </span>
-                  </div>
+                        {/* Overlay Gradient */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                  {/* Title */}
-                  <h3 className="font-semibold text-black mb-3 line-clamp-2 text-lg leading-tight group-hover:text-black/70 transition-colors">
-                    {item.title}
-                  </h3>
+                        {/* Badges */}
+                        <div className="absolute top-4 left-4 flex flex-wrap gap-2">
+                          {item.featured && (
+                            <div className="bg-black text-white text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md">
+                              <Star className="w-3 h-3" weight="fill" />
+                              Featured
+                            </div>
+                          )}
+                          {tags.slice(0, 2).map((tag, idx) => (
+                            <div key={idx} className="bg-white/95 backdrop-blur-sm text-black text-xs font-semibold px-3 py-1.5 rounded-full shadow-md">
+                              {tag}
+                            </div>
+                          ))}
+                        </div>
 
-                  {/* Property Details */}
-                  <div className="flex items-center gap-4 mb-4 pb-4 border-b border-black/5">
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-7 h-7 rounded-lg bg-black/5 flex items-center justify-center">
-                        <Bed className="w-3.5 h-3.5 text-black/50" weight="duotone" />
+                        {/* Quick Actions on Hover */}
+                        <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent drag
+                              router.push(`/admin/portfolio/${item.id}`)
+                            }}
+                            onPointerDown={(e) => e.stopPropagation()} // Prevent drag start
+                            className="w-9 h-9 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white shadow-md transition-all hover:scale-110"
+                            title="Edit"
+                          >
+                            <Pencil className="w-4 h-4 text-black" weight="bold" />
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent drag
+                              handleDelete(item.id!)
+                            }}
+                            onPointerDown={(e) => e.stopPropagation()} // Prevent drag start
+                            className="w-9 h-9 bg-red-500/95 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-red-500 shadow-md transition-all hover:scale-110"
+                            title="Delete"
+                          >
+                            <Trash className="w-4 h-4 text-white" weight="bold" />
+                          </button>
+                        </div>
                       </div>
-                      <span className="text-sm font-medium text-black/70">{item.beds}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-7 h-7 rounded-lg bg-black/5 flex items-center justify-center">
-                        <Bathtub className="w-3.5 h-3.5 text-black/50" weight="duotone" />
-                      </div>
-                      <span className="text-sm font-medium text-black/70">{item.baths}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-7 h-7 rounded-lg bg-black/5 flex items-center justify-center">
-                        <Ruler className="w-3.5 h-3.5 text-black/50" weight="duotone" />
-                      </div>
-                      <span className="text-sm font-medium text-black/70">{item.area} sqft</span>
-                    </div>
-                  </div>
 
-                  {/* Sold Date */}
-                  {item.soldDate && (
-                    <div className="mb-4 pb-4 border-b border-black/5">
-                      <p className="text-xs text-black/40 mb-1">Sold Date</p>
-                      <p className="text-sm font-medium text-black/70">{item.soldDate}</p>
-                    </div>
-                  )}
+                      {/* Content Section */}
+                      <div className="p-5">
+                        {/* Location */}
+                        <div className="flex items-center gap-1.5 mb-2">
+                          <MapPin className="w-4 h-4 text-black/40" weight="fill" />
+                          <span className="text-xs font-medium text-black/50 uppercase tracking-wider">
+                            {item.location}
+                          </span>
+                        </div>
 
-                  {/* Actions */}
-                  <div className="flex items-center gap-2">
-                    <Button
-                      onClick={() => router.push(`/admin/portfolio/${item.id}`)}
-                      className="flex-1 bg-black/5 text-black hover:bg-black/10 rounded-xl transition-all"
-                      size="sm"
-                    >
-                      <Pencil className="w-4 h-4 mr-2" weight="bold" />
-                      Edit
-                    </Button>
-                    <Button
-                      onClick={() => handleDelete(item.id!)}
-                      className="bg-red-50 text-red-600 hover:bg-red-100 rounded-xl transition-all"
-                      size="sm"
-                    >
-                      <Trash className="w-4 h-4" weight="bold" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            )
-          })}
-        </div>
+                        {/* Title */}
+                        <h3 className="font-semibold text-black mb-3 line-clamp-2 text-lg leading-tight group-hover:text-black/70 transition-colors">
+                          {item.title}
+                        </h3>
+
+                        {/* Property Details */}
+                        <div className="flex items-center gap-4 mb-4 pb-4 border-b border-black/5">
+                          <div className="flex items-center gap-1.5">
+                            <div className="w-7 h-7 rounded-lg bg-black/5 flex items-center justify-center">
+                              <Bed className="w-3.5 h-3.5 text-black/50" weight="duotone" />
+                            </div>
+                            <span className="text-sm font-medium text-black/70">{item.beds}</span>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <div className="w-7 h-7 rounded-lg bg-black/5 flex items-center justify-center">
+                              <Bathtub className="w-3.5 h-3.5 text-black/50" weight="duotone" />
+                            </div>
+                            <span className="text-sm font-medium text-black/70">{item.baths}</span>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <div className="w-7 h-7 rounded-lg bg-black/5 flex items-center justify-center">
+                              <Ruler className="w-3.5 h-3.5 text-black/50" weight="duotone" />
+                            </div>
+                            <span className="text-sm font-medium text-black/70">{item.area} sqft</span>
+                          </div>
+                        </div>
+
+                        {/* Sold Date */}
+                        {item.soldDate && (
+                          <div className="mb-4 pb-4 border-b border-black/5">
+                            <p className="text-xs text-black/40 mb-1">Sold Date</p>
+                            <p className="text-sm font-medium text-black/70">{item.soldDate}</p>
+                          </div>
+                        )}
+
+                        {/* Actions */}
+                        <div className="flex items-center gap-2">
+                          <Button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              router.push(`/admin/portfolio/${item.id}`)
+                            }}
+                            onPointerDown={(e) => e.stopPropagation()}
+                            className="flex-1 bg-black/5 text-black hover:bg-black/10 rounded-xl transition-all"
+                            size="sm"
+                          >
+                            <Pencil className="w-4 h-4 mr-2" weight="bold" />
+                            Edit
+                          </Button>
+                          <Button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDelete(item.id!)
+                            }}
+                            onPointerDown={(e) => e.stopPropagation()}
+                            className="bg-red-50 text-red-600 hover:bg-red-100 rounded-xl transition-all"
+                            size="sm"
+                          >
+                            <Trash className="w-4 h-4" weight="bold" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </SortableItem>
+                )
+              })}
+            </div>
+          </SortableContext>
+        </DndContext>
       )}
     </div>
   )
 }
-

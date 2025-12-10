@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '../../components/ui/button'
 import { GridPattern } from '../../components/ui/grid-pattern'
 import { Footer } from '../../components/Footer'
-import { 
+import {
   Bed,
   Bathtub,
   ArrowsOut,
@@ -14,9 +14,11 @@ import {
 } from '@phosphor-icons/react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { CallToAction } from '../../components/CallToAction'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { useProperties } from '../../lib/properties-client'
 import { formatPrice } from '../../lib/format-price'
+import { ListingCard } from '@/components/listing-card'
 
 export default function PropertiesPage() {
   const router = useRouter()
@@ -25,30 +27,23 @@ export default function PropertiesPage() {
   const [selectedType, setSelectedType] = useState<string>('All')
   const [selectedLocation, setSelectedLocation] = useState<string>('All')
   const [selectedPriceRange, setSelectedPriceRange] = useState<string>('')
-  
+
   // Apply URL params on mount
   useEffect(() => {
     const typeParam = searchParams.get('type')
     const locationParam = searchParams.get('location')
     const priceParam = searchParams.get('price')
-    
+
     if (typeParam) setSelectedType(typeParam)
     if (locationParam) setSelectedLocation(locationParam)
     if (priceParam) setSelectedPriceRange(priceParam)
   }, [searchParams])
 
-  // Sort properties: featured first, then by creation date
-  const sortedProperties = [...properties].sort((a, b) => {
-    if (a.featured && !b.featured) return -1
-    if (!a.featured && b.featured) return 1
-    return 0
-  })
-
-  // Filter properties
-  const filteredProperties = sortedProperties.filter(property => {
+  // Use properties directly (sorted by order from the hook)
+  const filteredProperties = properties.filter(property => {
     const matchesType = selectedType === 'All' || property.type === selectedType
     const matchesLocation = selectedLocation === 'All' || property.location === selectedLocation
-    
+
     // Price filter logic
     let matchesPrice = true
     if (selectedPriceRange) {
@@ -70,7 +65,7 @@ export default function PropertiesPage() {
           matchesPrice = true
       }
     }
-    
+
     return matchesType && matchesLocation && matchesPrice
   })
 
@@ -80,7 +75,7 @@ export default function PropertiesPage() {
     if (selectedType !== 'All') params.append('type', selectedType)
     if (selectedLocation !== 'All') params.append('location', selectedLocation)
     if (selectedPriceRange) params.append('price', selectedPriceRange)
-    
+
     const queryString = params.toString()
     const newUrl = queryString ? `/properties?${queryString}` : '/properties'
     window.history.replaceState({}, '', newUrl)
@@ -98,7 +93,7 @@ export default function PropertiesPage() {
       <section className="relative min-h-[60vh] flex items-center justify-center bg-black pt-[72px]">
         {/* Background Image */}
         <div className="absolute inset-0 overflow-hidden">
-          <img 
+          <img
             src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1920&h=1080&fit=crop&q=80"
             alt="Properties"
             className="absolute inset-0 w-full h-full object-cover"
@@ -106,23 +101,23 @@ export default function PropertiesPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_100%)]"></div>
         </div>
-        
+
         {/* Hero Content */}
         <div className="relative z-10 w-full max-w-[1300px] mx-auto px-6 md:px-12 py-20 md:py-32">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="text-center"
           >
-            <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-full mb-8">
+            {/* <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-full mb-8">
               <span className="text-[12px] font-medium text-white/90">Premium Properties</span>
-            </div>
+            </div> */ /* Removed to match Homepage clean style */}
             <h1 className="text-[48px] md:text-[72px] lg:text-[80px] font-semibold tracking-[-0.03em] text-white leading-[1.05] mb-6">
               PROPERTIES
             </h1>
             <p className="text-[18px] md:text-[22px] font-normal text-white/85 max-w-[800px] mx-auto leading-[1.6]">
-              Discover our curated selection of premium properties across Portugal
+              Discover our curated selection of premium properties across Portugal.
             </p>
           </motion.div>
         </div>
@@ -155,7 +150,7 @@ export default function PropertiesPage() {
                       </p>
                     </div>
                   </div>
-                  
+
                   {/* Clear Filters - Apenas se houver filtros ativos */}
                   <AnimatePresence>
                     {(selectedType !== 'All' || selectedLocation !== 'All' || selectedPriceRange) && (
@@ -176,7 +171,7 @@ export default function PropertiesPage() {
                     )}
                   </AnimatePresence>
                 </div>
-                
+
                 {/* Grid de Filtros */}
                 <div className="grid md:grid-cols-3 gap-4">
                   {/* Type Filter */}
@@ -250,7 +245,7 @@ export default function PropertiesPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Active Filters Tags */}
                 <AnimatePresence>
                   {(selectedType !== 'All' || selectedLocation !== 'All' || selectedPriceRange) && (
@@ -318,92 +313,23 @@ export default function PropertiesPage() {
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10 px-0 py-4 md:p-8 lg:p-12 overflow-visible">
               {filteredProperties.map((property, index) => (
-                <Link key={property.id} href={`/properties/${property.id}`}>
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
-                  className="group cursor-pointer z-[1] hover:z-[10] hover:-translate-y-1 transition-all duration-300"
-                >
-                {/* Property Image Container - Premium Apple Style */}
-                <div className="relative aspect-[4/5] md:aspect-[16/11] lg:aspect-[4/5] overflow-hidden mb-7 rounded-[24px] shadow-sm group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 ease-out bg-gray-100">
-                  {/* Image com zoom suave */}
-                  <Image
-                    src={property.image}
-                    alt={property.title}
-                    fill
-                    className="object-cover object-center transition-transform duration-800 ease-out group-hover:scale-[1.08]"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    style={{ 
-                      objectFit: 'cover',
-                      objectPosition: 'center'
-                    }}
-                  />
-                  
-                  {/* Tag Badge - Ultra Premium */}
-                  <div className="absolute top-6 left-6 z-20">
-                    <div className="bg-white/95 backdrop-blur-2xl px-4 py-2 rounded-full shadow-[0_2px_12px_rgba(0,0,0,0.08)]">
-                      <span className="text-[10px] font-semibold text-black tracking-[0.08em] uppercase">{property.tag}</span>
-                    </div>
-                  </div>
-                  
-                  {/* Overlay Premium - Aparece no hover */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10"></div>
-                  
-                  {/* Shine Effect - Apple Style */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10">
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent"></div>
-                  </div>
-                </div>
-                
-                {/* Property Details - Ultra Clean Typography */}
-                <div className="px-1">
-                  {/* Location - Subtle */}
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-1 h-1 rounded-full bg-black/20"></div>
-                    <p className="text-[11px] font-medium text-black/40 tracking-[0.1em] uppercase">
-                      {property.location}
-                    </p>
-                  </div>
-                  
-                  {/* Title - Bold & Clean */}
-                  <h3 className="text-[20px] md:text-[22px] font-semibold text-black mb-4 tracking-[-0.02em] leading-[1.2] group-hover:text-black/60 transition-colors duration-500">
-                    {property.title}
-                  </h3>
-                  
-                  {/* Price - Hero Element */}
-                  <div className="mb-6">
-                    <p className="text-[32px] md:text-[36px] font-semibold text-black tracking-[-0.02em] leading-none">
-                      {formatPrice(property.price)}
-                    </p>
-                  </div>
-                  
-                  {/* Property Stats - Refined */}
-                  <div className="flex items-center gap-6 pt-5 border-t border-black/[0.06]">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-9 h-9 rounded-full bg-black/[0.03] flex items-center justify-center group-hover:bg-black/[0.05] transition-colors duration-300">
-                        <Bed className="w-[17px] h-[17px] text-black/50" weight="duotone" />
-                      </div>
-                      <span className="text-[14px] font-medium text-black/70">{property.beds}</span>
-                    </div>
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-9 h-9 rounded-full bg-black/[0.03] flex items-center justify-center group-hover:bg-black/[0.05] transition-colors duration-300">
-                        <Bathtub className="w-[17px] h-[17px] text-black/50" weight="duotone" />
-                      </div>
-                      <span className="text-[14px] font-medium text-black/70">{property.baths}</span>
-                    </div>
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-9 h-9 rounded-full bg-black/[0.03] flex items-center justify-center group-hover:bg-black/[0.05] transition-colors duration-300">
-                        <ArrowsOut className="w-[17px] h-[17px] text-black/50" weight="duotone" />
-                      </div>
-                      <span className="text-[14px] font-medium text-black/70">{property.sqft}</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-              </Link>
-            ))}
+                <ListingCard
+                  key={property.id}
+                  id={property.id}
+                  href={`/properties/${property.id}`}
+                  image={property.image}
+                  title={property.title}
+                  location={property.location}
+                  tag={property.tag}
+                  price={property.price}
+                  featured={property.featured}
+                  stats={{
+                    beds: property.beds,
+                    baths: property.baths,
+                    sqft: property.sqft
+                  }}
+                />
+              ))}
             </div>
           )}
 
@@ -435,7 +361,7 @@ export default function PropertiesPage() {
             className="text-center"
           >
             {/* Badge */}
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -443,7 +369,7 @@ export default function PropertiesPage() {
               className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6"
             >
               <span className="text-[12px] font-medium text-black/60">Property Search</span>
-            </motion.div>
+            </motion.div> */}
 
             {/* Main Title */}
             <motion.h2
@@ -489,56 +415,7 @@ export default function PropertiesPage() {
       </section>
 
       {/* Call to Action Section - Apple Style */}
-      <section className="py-20 md:py-28 bg-black">
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.98 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="max-w-[900px] mx-auto px-6 md:px-12 text-center"
-        >
-          <h2 className="text-[40px] md:text-[56px] font-semibold text-white mb-8 tracking-[-0.02em] leading-[1.15]">
-            Every search is unique.
-          </h2>
-          <p className="text-[17px] md:text-[21px] font-normal text-white/80 mb-12 max-w-[640px] mx-auto leading-[1.5]">
-            Share your vision — we'll curate a personalized selection for you.
-          </p>
-          <div className="flex flex-col items-center justify-center gap-4 mb-8">
-            <Button 
-              onClick={() => router.push('/find-property')}
-              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
-            >
-              Invest / Buy with us
-            </Button>
-            <Button 
-              onClick={() => router.push('/find-property')}
-              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
-            >
-              Sell with us
-            </Button>
-            <Button 
-              onClick={() => {
-                if (typeof window !== 'undefined') {
-                  window.open('https://calendly.com/jules-portugal/45min', '_blank')
-                }
-              }}
-              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
-            >
-              Book a free call
-            </Button>
-            <Button 
-              onClick={() => {
-                if (typeof window !== 'undefined') {
-                  window.open('https://wa.me/33662527879', '_blank')
-                }
-              }}
-              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
-            >
-              Speak with us on WhatsApp
-            </Button>
-          </div>
-        </motion.div>
-      </section>
+      <CallToAction />
 
       {/* Footer */}
       <Footer />

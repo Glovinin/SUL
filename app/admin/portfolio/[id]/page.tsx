@@ -3,11 +3,11 @@
 import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { toast } from 'sonner'
-import { 
-  ArrowLeft, 
-  Upload, 
-  X, 
-  Plus, 
+import {
+  ArrowLeft,
+  Upload,
+  X,
+  Plus,
   Buildings,
   MapPin,
   Bed,
@@ -20,8 +20,25 @@ import {
   Sparkle,
   CheckCircle,
   Trash,
-  Star
+  Star,
 } from '@phosphor-icons/react'
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core'
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  rectSortingStrategy,
+} from '@dnd-kit/sortable'
+import { SortableItem } from '../../../../components/admin/SortableItem'
+import { Checkbox } from '../../../../components/ui/checkbox'
 import { Button } from '../../../../components/ui/button'
 import {
   getPortfolioItem,
@@ -32,16 +49,16 @@ import {
 import { PortfolioItem } from '../../../../lib/admin-types'
 
 const PRESET_TAGS = [
-  'Featured', 
-  'Sold', 
-  'In Progress', 
-  'Under Construction', 
-  'Completed', 
-  'Luxury', 
-  'Exclusive', 
-  'Waterfront', 
-  'Historic', 
-  'Modern', 
+  'Featured',
+  'Sold',
+  'In Progress',
+  'Under Construction',
+  'Completed',
+  'Luxury',
+  'Exclusive',
+  'Waterfront',
+  'Historic',
+  'Modern',
   'Contemporary',
   'Renovated',
   'New Construction',
@@ -107,11 +124,39 @@ export default function PortfolioEditPage() {
     yearBuilt: '',
     soldDate: '',
     featured: false,
+    showInProperties: false,
   })
 
   const [newFeature, setNewFeature] = useState('')
   const [newAmenity, setNewAmenity] = useState('')
   const [customTags, setCustomTags] = useState<string[]>(['Sold'])
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event
+    if (active.id !== over?.id) {
+      const oldIndex = (portfolioItem.images || []).indexOf(active.id as string)
+      const newIndex = (portfolioItem.images || []).indexOf(over?.id as string)
+
+      const newImages = arrayMove(portfolioItem.images || [], oldIndex, newIndex)
+
+      setPortfolioItem({
+        ...portfolioItem,
+        images: newImages,
+        image: newImages[0] || ''
+      })
+    }
+  }
 
   useEffect(() => {
     if (!isNew) {
@@ -125,16 +170,16 @@ export default function PortfolioEditPage() {
       const data = await getPortfolioItem(id)
       if (data) {
         const tags = data.tag ? data.tag.split(',').map(t => t.trim()).filter(Boolean) : ['Sold']
-        
+
         // Garante que a imagem principal está na galeria como primeira imagem
         let galleryImages = data.images || []
         if (data.image) {
           galleryImages = galleryImages.filter(img => img !== data.image)
           galleryImages = [data.image, ...galleryImages]
         }
-        
+
         const description = data.longDescription || data.description || ''
-        
+
         setPortfolioItem({
           ...data,
           images: galleryImages,
@@ -160,7 +205,7 @@ export default function PortfolioEditPage() {
     const maxFiles = 20
     const currentImages = portfolioItem.images?.length || 0
     const imagesToAdd = isMain ? filesArray.length : filesArray.length
-    
+
     if (currentImages + imagesToAdd > maxFiles) {
       toast.warning('Limite de imagens atingido', {
         description: `Você pode adicionar no máximo ${maxFiles} imagens. Você pode adicionar mais ${maxFiles - currentImages}.`,
@@ -170,10 +215,10 @@ export default function PortfolioEditPage() {
 
     try {
       setUploading(isMain ? 'main' : 'gallery')
-      
+
       const { compressImages } = await import('../../../../lib/utils')
       const compressedFiles = await compressImages(filesArray, 1920, 0.85)
-      
+
       const portfolioId = isNew ? 'temp' : id
       const uploadPromises = compressedFiles.map(file => uploadPortfolioImage(file, portfolioId))
       const urls = await Promise.all(uploadPromises)
@@ -182,15 +227,15 @@ export default function PortfolioEditPage() {
         const mainImageUrl = urls[0]
         const existingImages = portfolioItem.images || []
         const filteredImages = existingImages.filter(img => img !== portfolioItem.image)
-        
-        setPortfolioItem({ 
-          ...portfolioItem, 
+
+        setPortfolioItem({
+          ...portfolioItem,
           image: mainImageUrl,
           images: [mainImageUrl, ...filteredImages]
         })
       } else {
-        setPortfolioItem({ 
-          ...portfolioItem, 
+        setPortfolioItem({
+          ...portfolioItem,
           images: [...(portfolioItem.images || []), ...urls],
           image: portfolioItem.image || urls[0]
         })
@@ -210,9 +255,9 @@ export default function PortfolioEditPage() {
       const galleryImages = portfolioItem.images || []
       const filteredGallery = galleryImages.filter((img, idx) => idx !== 0)
       const newMainImage = filteredGallery.length > 0 ? filteredGallery[0] : ''
-      
-      setPortfolioItem({ 
-        ...portfolioItem, 
+
+      setPortfolioItem({
+        ...portfolioItem,
         image: newMainImage,
         images: filteredGallery
       })
@@ -220,17 +265,17 @@ export default function PortfolioEditPage() {
       const newImages = [...(portfolioItem.images || [])]
       const removedImage = newImages[index]
       newImages.splice(index, 1)
-      
+
       if (index === 0 && portfolioItem.image === removedImage) {
         const newMainImage = newImages.length > 0 ? newImages[0] : ''
-        setPortfolioItem({ 
-          ...portfolioItem, 
+        setPortfolioItem({
+          ...portfolioItem,
           images: newImages,
           image: newMainImage
         })
       } else {
-        setPortfolioItem({ 
-          ...portfolioItem, 
+        setPortfolioItem({
+          ...portfolioItem,
           images: newImages
         })
       }
@@ -412,7 +457,7 @@ export default function PortfolioEditPage() {
               <p className="text-sm text-black/50">Essential property details</p>
             </div>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="md:col-span-2">
               <label className="flex items-center gap-2 text-sm font-semibold text-black mb-2.5">
@@ -526,6 +571,28 @@ export default function PortfolioEditPage() {
                 placeholder="2020"
               />
             </div>
+
+            <div className="md:col-span-2 flex items-center gap-6 pt-2">
+              <label className="flex items-center gap-3 cursor-pointer group">
+                <Checkbox
+                  checked={portfolioItem.featured || false}
+                  onCheckedChange={(checked) => setPortfolioItem({ ...portfolioItem, featured: checked as boolean })}
+                />
+                <span className="text-sm font-medium text-black/80 group-hover:text-black transition-colors">
+                  Featured Item
+                </span>
+              </label>
+
+              <label className="flex items-center gap-3 cursor-pointer group">
+                <Checkbox
+                  checked={portfolioItem.showInProperties || false}
+                  onCheckedChange={(checked) => setPortfolioItem({ ...portfolioItem, showInProperties: checked as boolean })}
+                />
+                <span className="text-sm font-medium text-black/80 group-hover:text-black transition-colors">
+                  Show in Properties
+                </span>
+              </label>
+            </div>
           </div>
         </div>
 
@@ -548,11 +615,10 @@ export default function PortfolioEditPage() {
                   key={tag}
                   type="button"
                   onClick={() => toggleTag(tag)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-2 ${
-                    customTags.includes(tag)
-                      ? 'bg-black text-white shadow-md'
-                      : 'bg-black/5 text-black/70 hover:bg-black/10'
-                  }`}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-2 ${customTags.includes(tag)
+                    ? 'bg-black text-white shadow-md'
+                    : 'bg-black/5 text-black/70 hover:bg-black/10'
+                    }`}
                 >
                   {customTags.includes(tag) && <CheckCircle className="w-4 h-4" weight="fill" />}
                   {tag}
@@ -605,7 +671,7 @@ export default function PortfolioEditPage() {
               <p className="text-sm text-black/50">Upload up to 20 images</p>
             </div>
           </div>
-          
+
           {/* Main Image */}
           <div className="mb-8">
             <label className="block text-sm font-semibold text-black mb-3">Main Image *</label>
@@ -660,32 +726,49 @@ export default function PortfolioEditPage() {
               )}
             </div>
             {allImages.length > 0 && (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {allImages.map((img, index) => {
-                  const isMainImage = index === 0 && img === portfolioItem.image
-                  return (
-                    <div key={index} className="relative aspect-square rounded-xl overflow-hidden bg-gray-100 border-2 border-black/10 shadow-sm group">
-                      <img src={img} alt={`Gallery ${index + 1}`} className="w-full h-full object-cover" />
-                      {isMainImage && (
-                        <div className="absolute top-2 left-2 bg-black text-white text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1">
-                          <Star className="w-3 h-3" weight="fill" />
-                          Main
-                        </div>
-                      )}
-                      <button
-                        type="button"
-                        onClick={() => removeImage(index)}
-                        className="absolute top-2 right-2 bg-black/80 text-white rounded-full p-1.5 hover:bg-black transition-colors opacity-0 group-hover:opacity-100"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                      <div className="absolute bottom-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
-                        {index + 1}
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+              >
+                <SortableContext
+                  items={allImages}
+                  strategy={rectSortingStrategy}
+                >
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {allImages.map((img, index) => {
+                      const isMainImage = index === 0 && img === portfolioItem.image
+                      return (
+                        <SortableItem key={img} id={img}>
+                          <div className="relative aspect-square rounded-xl overflow-hidden bg-gray-100 border-2 border-black/10 shadow-sm group">
+                            <img src={img} alt={`Gallery ${index + 1}`} className="w-full h-full object-cover" />
+                            {isMainImage && (
+                              <div className="absolute top-2 left-2 bg-black text-white text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1">
+                                <Star className="w-3 h-3" weight="fill" />
+                                Main
+                              </div>
+                            )}
+                            <button
+                              type="button"
+                              onPointerDown={(e) => e.stopPropagation()}
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                removeImage(index)
+                              }}
+                              className="absolute top-2 right-2 bg-black/80 text-white rounded-full p-1.5 hover:bg-black transition-colors opacity-0 group-hover:opacity-100"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                            <div className="absolute bottom-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
+                              {index + 1}
+                            </div>
+                          </div>
+                        </SortableItem>
+                      )
+                    })}
+                  </div>
+                </SortableContext>
+              </DndContext>
             )}
             {allImages.length === 0 && (
               <div className="border-2 border-dashed border-black/20 rounded-xl p-12 text-center">
@@ -721,15 +804,15 @@ export default function PortfolioEditPage() {
               <p className="text-sm text-black/50">Property details and information</p>
             </div>
           </div>
-          
+
           <div>
             <label className="block text-sm font-semibold text-black mb-2.5">Description</label>
             <textarea
               value={portfolioItem.longDescription || portfolioItem.description || ''}
               onChange={(e) => {
                 const value = e.target.value
-                setPortfolioItem({ 
-                  ...portfolioItem, 
+                setPortfolioItem({
+                  ...portfolioItem,
                   description: value,
                   longDescription: value
                 })
@@ -753,7 +836,7 @@ export default function PortfolioEditPage() {
               <p className="text-sm text-black/50">Property highlights and features</p>
             </div>
           </div>
-          
+
           <div className="space-y-4">
             <div>
               <p className="text-sm font-medium text-black/60 mb-3">Quick Select:</p>
@@ -765,11 +848,10 @@ export default function PortfolioEditPage() {
                       key={feature}
                       type="button"
                       onClick={() => toggleFeature(feature)}
-                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                        isSelected
-                          ? 'bg-black text-white shadow-md'
-                          : 'bg-black/5 text-black hover:bg-black/10 border border-black/10'
-                      }`}
+                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${isSelected
+                        ? 'bg-black text-white shadow-md'
+                        : 'bg-black/5 text-black hover:bg-black/10 border border-black/10'
+                        }`}
                     >
                       {isSelected && <CheckCircle className="w-3 h-3 inline mr-1.5" weight="fill" />}
                       {feature}
@@ -829,7 +911,7 @@ export default function PortfolioEditPage() {
               <p className="text-sm text-black/50">Facilities and services available</p>
             </div>
           </div>
-          
+
           <div className="space-y-4">
             <div>
               <p className="text-sm font-medium text-black/60 mb-3">Quick Select:</p>
@@ -841,11 +923,10 @@ export default function PortfolioEditPage() {
                       key={amenity}
                       type="button"
                       onClick={() => toggleAmenity(amenity)}
-                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                        isSelected
-                          ? 'bg-black text-white shadow-md'
-                          : 'bg-black/5 text-black hover:bg-black/10 border border-black/10'
-                      }`}
+                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${isSelected
+                        ? 'bg-black text-white shadow-md'
+                        : 'bg-black/5 text-black hover:bg-black/10 border border-black/10'
+                        }`}
                     >
                       {isSelected && <CheckCircle className="w-3 h-3 inline mr-1.5" weight="fill" />}
                       {amenity}

@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '../../components/ui/button'
 import { GridPattern } from '../../components/ui/grid-pattern'
 import { Footer } from '../../components/Footer'
-import { 
+import {
   ArrowRight,
   Buildings,
   MagnifyingGlass,
@@ -22,6 +22,7 @@ import {
 } from '@phosphor-icons/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { CallToAction } from '../../components/CallToAction'
 
 // Detailed services data
 const detailedServices = [
@@ -30,7 +31,7 @@ const detailedServices = [
     icon: Buildings,
     title: 'Strategy & Advisory',
     image: '/assets/services-images/Strategy & Advisory.jpg',
-    description: 'We deliver sharp market analysis and strategic guidance to help you make informed real estate decisions in Portugal — from identifying opportunities to optimizing your investments.'
+    description: 'We deliver sharp market analysis and strategic guidance to help you make informed real estate decisions in Portugal, from identifying opportunities to optimizing your investments.'
   },
   {
     number: '02',
@@ -44,7 +45,7 @@ const detailedServices = [
     icon: Eye,
     title: 'Project Supervision',
     image: '/assets/services-images/Project Supervision.jpg',
-    description: 'We oversee your renovation or construction project from concept to completion, ensuring quality, timelines, and budget are respected — with clear coordination, rigorous control, and regular reporting at every stage.'
+    description: 'We oversee your renovation or construction project from concept to completion, ensuring quality, timelines, and budget are respected, with clear coordination, rigorous control, and regular reporting at every stage.'
   },
   {
     number: '04',
@@ -58,7 +59,7 @@ const detailedServices = [
     icon: GearSix,
     title: 'Property Management & Optimization',
     image: '/assets/services-images/Property Management & Optimization.jpg',
-    description: 'We manage and optimize your property to preserve its value and maximize returns, handling everything from rentals and maintenance to financial reporting and strategic enhancements — all in full regulatory compliance.'
+    description: 'We manage and optimize your property to preserve its value and maximize returns, handling everything from rentals and maintenance to financial reporting and strategic enhancements, all in full regulatory compliance.'
   }
 ]
 
@@ -87,7 +88,7 @@ const whyChooseUs = [
 
 export default function ServicesPage() {
   const router = useRouter()
-  
+
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
@@ -96,7 +97,7 @@ export default function ServicesPage() {
       <section className="relative min-h-[60vh] flex items-center justify-center bg-black pt-[72px]">
         {/* Background Image */}
         <div className="absolute inset-0 overflow-hidden">
-          <img 
+          <img
             src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1920&h=1080&fit=crop&q=80"
             alt="Luxury Real Estate"
             className="absolute inset-0 w-full h-full object-cover"
@@ -104,20 +105,20 @@ export default function ServicesPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_100%)]"></div>
         </div>
-        
+
         {/* Hero Content */}
         <div className="relative z-10 w-full max-w-[1300px] mx-auto px-6 md:px-12 py-20 md:py-32">
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="text-center"
           >
-            <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-full mb-8">
+            {/* <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-full mb-8">
               <span className="text-[12px] font-medium text-white/90">Our Services</span>
-            </div>
+            </div> */ /* Removed to match Homepage clean style */}
             <h1 className="text-[48px] md:text-[72px] lg:text-[80px] font-semibold tracking-[-0.03em] text-white leading-[1.05] mb-6">
-            SUL ADVISORY & SERVICES
+              SUL ADVISORY & SERVICES
             </h1>
             <p className="text-[18px] md:text-[22px] font-normal text-white/85 max-w-[800px] mx-auto leading-[1.6]">
               From strategic guidance to project supervision, we provide end-to-end support for your Portuguese real estate journey
@@ -127,23 +128,24 @@ export default function ServicesPage() {
       </section>
 
       {/* Detailed Services Section */}
-      <section className="py-24 md:py-32 bg-gray-50 overflow-visible">
+      {/* Detailed Services Section */}
+      <section className="py-12 md:py-20 bg-gray-50 overflow-visible">
         <div className="max-w-[1300px] mx-auto px-6 md:px-12">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6 }}
             className="text-center mb-20"
           >
-            <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
+            {/* <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
               <span className="text-[12px] font-medium text-black/60">Services</span>
-            </div>
-            
+            </div> */ /* Removed to match Homepage clean style */}
+
             <h2 className="text-[36px] md:text-[48px] font-semibold text-black mb-6 tracking-[-0.02em] leading-[1.1]">
               What We Offer
             </h2>
-            
+
             <p className="text-[17px] md:text-[20px] font-normal text-black/60 max-w-[700px] mx-auto leading-[1.6]">
               Five core services designed to guide you through every stage of your real estate journey in Portugal
             </p>
@@ -156,16 +158,14 @@ export default function ServicesPage() {
               return (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
+                  /* Removed entrance animation to match homepage performance */
                   viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.5, delay: index * 0.05 }}
                   className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 border border-black/[0.06] hover:-translate-y-1 flex flex-col"
                 >
                   {/* Image */}
                   <div className="relative aspect-[4/5] overflow-hidden bg-gray-100">
-                    <img 
-                      src={service.image} 
+                    <img
+                      src={service.image}
                       alt={service.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                     />
@@ -202,36 +202,36 @@ export default function ServicesPage() {
       <div className="border-t border-black/[0.03]"></div>
 
       {/* Partners & Network Section - Premium Apple Style */}
-      <section id="partners" className="relative py-32 md:py-40 bg-white overflow-visible">
+      <section id="partners" className="relative py-12 md:py-20 bg-white overflow-visible">
         {/* Static Grid Background */}
         <GridPattern
           width={40}
           height={40}
           className="fill-black/[0.03] stroke-black/[0.03]"
         />
-        
+
         <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible">
           {/* Header Section */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6 }}
             className="text-center mb-20"
           >
-            {/* Badge */}
-            <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
+            {/* Badge Removed */}
+            {/* <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
               <span className="text-[12px] font-medium text-black/60">Trusted Ecosystem</span>
-            </div>
-            
+            </div> */}
+
             {/* Main Title */}
             <h2 className="text-[40px] md:text-[56px] font-semibold text-black mb-8 tracking-[-0.02em] leading-[1.1] max-w-[900px] mx-auto">
               Trusted Ecosystem
             </h2>
-            
+
             {/* Subtitle */}
             <p className="text-[17px] md:text-[21px] font-normal text-black/60 max-w-[900px] mx-auto leading-[1.6]">
-              Surrounded by a handpicked network of professionals — lawyers, architects, engineers, designers and financial partners — SUL acts as the conductor of each project, from strategy to delivery.
+              Surrounded by a handpicked network of professionals (lawyers, architects, engineers, designers and financial partners), SUL acts as the conductor of each project, from strategy to delivery.
             </p>
           </motion.div>
 
@@ -335,7 +335,7 @@ export default function ServicesPage() {
             className="flex flex-wrap items-center justify-center gap-3 mt-8"
           >
             {['Quality', 'Discretion', 'Excellence'].map((value, index) => (
-              <span 
+              <span
                 key={index}
                 className="px-5 py-2.5 bg-black/5 hover:bg-black/8 rounded-full text-[13px] font-medium text-black/70 transition-all duration-200"
               >
@@ -350,56 +350,7 @@ export default function ServicesPage() {
       <div className="border-t border-black/[0.03]"></div>
 
       {/* Call to Action Section - Apple Style */}
-      <section className="py-20 md:py-28 bg-black">
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.6 }}
-          className="max-w-[900px] mx-auto px-6 md:px-12 text-center"
-        >
-          <h2 className="text-[40px] md:text-[56px] font-semibold text-white mb-8 tracking-[-0.02em] leading-[1.15]">
-            Every search is unique.
-          </h2>
-          <p className="text-[17px] md:text-[21px] font-normal text-white/80 mb-12 max-w-[640px] mx-auto leading-[1.5]">
-            Share your vision — we'll curate a personalized selection for you.
-          </p>
-          <div className="flex flex-col items-center justify-center gap-4 mb-8">
-            <Button 
-              onClick={() => router.push('/find-property')}
-              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
-            >
-              Invest / Buy with us
-            </Button>
-            <Button 
-              onClick={() => router.push('/find-property')}
-              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
-            >
-              Sell with us
-            </Button>
-            <Button 
-              onClick={() => {
-                if (typeof window !== 'undefined') {
-                  window.open('https://calendly.com/jules-portugal/45min', '_blank')
-                }
-              }}
-              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
-            >
-              Book a free call
-            </Button>
-            <Button 
-              onClick={() => {
-                if (typeof window !== 'undefined') {
-                  window.open('https://wa.me/33662527879', '_blank')
-                }
-              }}
-              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
-            >
-              Speak with us on WhatsApp
-            </Button>
-          </div>
-        </motion.div>
-      </section>
+      <CallToAction />
 
       {/* Footer */}
       <Footer />

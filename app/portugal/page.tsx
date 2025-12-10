@@ -8,10 +8,11 @@ import { Footer } from '../../components/Footer'
 import { useRouter } from 'next/navigation'
 import { Bank, Sparkle, PaintBrush, Buildings, Tree, ChartLine } from '@phosphor-icons/react'
 import Image from 'next/image'
+import { CallToAction } from '../../components/CallToAction'
 
 export default function PortugalPage() {
   const router = useRouter()
-  
+
   const locations = [
     {
       name: 'Lisbon',
@@ -25,7 +26,7 @@ export default function PortugalPage() {
     },
     {
       name: 'South Lisbon & Arrábida',
-      description: 'Aroeira, Caparica, Sesimbra, Meco and Setúbal form a dynamic coastal corridor where nature meets contemporary living. Here, vast pine forests, surf spots, golf courses and modern villas coexist minutes from Lisbon. The Arrábida Natural Park elevates the area with turquoise bays, protected beaches and dramatic cliffs — making it one of the most attractive lifestyle regions for buyers seeking space, beauty and accessibility.',
+      description: 'Aroeira, Caparica, Sesimbra, Meco and Setúbal form a dynamic coastal corridor where nature meets contemporary living. Here, vast pine forests, surf spots, golf courses and modern villas coexist minutes from Lisbon. The Arrábida Natural Park elevates the area with turquoise bays, protected beaches and dramatic cliffs, making it one of the most attractive lifestyle regions for buyers seeking space, beauty and accessibility.',
       image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=800&fit=crop&q=80&auto=format'
     },
     {
@@ -35,7 +36,7 @@ export default function PortugalPage() {
     },
     {
       name: 'Algarve',
-      description: 'A globally recognised destination where year-round sunshine, golden beaches, golf resorts and gated communities create a world-class lifestyle environment. From the dramatic cliffs of Lagos to the exclusive enclaves of Quinta do Lago and Vale do Lobo, the Algarve offers mature infrastructure, premium services, strong rental performance and broad international appeal — perfect for both primary and investment-driven buyers.',
+      description: 'A globally recognised destination where year-round sunshine, golden beaches, golf resorts and gated communities create a world-class lifestyle environment. From the dramatic cliffs of Lagos to the exclusive enclaves of Quinta do Lago and Vale do Lobo, the Algarve offers mature infrastructure, premium services, strong rental performance and broad international appeal, perfect for both primary and investment-driven buyers.',
       image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&h=800&fit=crop&q=80&auto=format'
     },
     {
@@ -109,23 +110,23 @@ export default function PortugalPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60"></div>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_80%)]"></div>
         </div>
-        
+
         {/* Hero Content */}
         <div className="relative z-10 w-full max-w-[1300px] mx-auto px-6 md:px-12 py-20 md:py-32">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="text-center"
           >
-            <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-full mb-8">
+            {/* <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-full mb-8">
               <span className="text-[12px] font-medium text-white/90">About Portugal</span>
-            </div>
+            </div> */ /* Removed to match Homepage clean style */}
             <h1 className="text-[48px] md:text-[72px] lg:text-[80px] font-semibold tracking-[-0.03em] text-white leading-[1.05] mb-6">
-            Welcome to Portugal
+              Welcome to Portugal
             </h1>
             <p className="text-[18px] md:text-[22px] font-normal text-white/85 max-w-[800px] mx-auto leading-[1.6]">
-            Portugal offers a rare balance of lifestyle, stability, safety, culture, authenticity, and opportunity. It’s a country where you can live beautifully — and invest wisely.
+              Portugal offers a rare balance of lifestyle, stability, safety, culture, authenticity, and opportunity. It's a country where you can live beautifully and invest wisely.
             </p>
           </motion.div>
         </div>
@@ -133,13 +134,13 @@ export default function PortugalPage() {
 
 
       {/* Why Portugal Benefits Section */}
-      <section className="relative py-20 md:py-28 bg-white overflow-visible">
+      <section className="relative py-12 md:py-20 bg-white overflow-visible">
         <GridPattern
           width={40}
           height={40}
           className="fill-black/[0.03] stroke-black/[0.03]"
         />
-        
+
         <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible">
           {/* Key Benefits Grid */}
           <div className="relative z-10 grid md:grid-cols-3 gap-6 md:gap-8 lg:gap-10 mb-8 overflow-visible px-0 py-4 md:p-8">
@@ -148,10 +149,8 @@ export default function PortugalPage() {
               return (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  /* Removed entrance animation to match homepage performance */
                   viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
                   className="group relative bg-white rounded-3xl p-8 text-center cursor-pointer shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 border border-black/[0.06] hover:border-black/[0.1] hover:-translate-y-1"
                 >
                   <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-black/5 group-hover:bg-black/10 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
@@ -177,7 +176,7 @@ export default function PortugalPage() {
             className="flex flex-wrap items-center justify-center gap-3 mt-12"
           >
             {keywords.map((keyword, index) => (
-              <span 
+              <span
                 key={index}
                 className="px-5 py-2.5 bg-black/5 hover:bg-black/8 rounded-full text-[13px] font-medium text-black/70 transition-all duration-200"
               >
@@ -192,7 +191,7 @@ export default function PortugalPage() {
       <div className="border-t border-black/[0.03]"></div>
 
       {/* Regions Section */}
-      <section className="relative pt-12 md:pt-16 pb-20 md:pb-28 bg-white overflow-visible">
+      <section className="relative py-12 md:py-20 bg-white overflow-visible">
         <GridPattern
           width={40}
           height={40}
@@ -213,17 +212,15 @@ export default function PortugalPage() {
               SUL supports clients across these key regions of Portugal, leveraging deep local networks and hands-on knowledge of each territory
             </p>
           </motion.div>
-          
+
           <div className="space-y-16 md:space-y-24">
             {locations.map((location, index) => {
               const isEven = index % 2 === 0
               return (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  /* Removed entrance animation to match homepage performance */
                   viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
                   className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center"
                 >
                   {/* Text Content */}
@@ -241,8 +238,8 @@ export default function PortugalPage() {
                   {/* Image */}
                   <div className={isEven ? '' : 'md:order-1'}>
                     <div className="relative aspect-[3/4] max-w-[500px] mx-auto rounded-2xl overflow-hidden bg-gray-100 group">
-                      <img 
-                        src={location.image} 
+                      <img
+                        src={location.image}
                         alt={location.name}
                         className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                       />
@@ -259,56 +256,7 @@ export default function PortugalPage() {
       <div className="border-t border-black/[0.03]"></div>
 
       {/* Call to Action Section - Apple Style */}
-      <section className="py-20 md:py-28 bg-black">
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.98 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="max-w-[900px] mx-auto px-6 md:px-12 text-center"
-        >
-          <h2 className="text-[40px] md:text-[56px] font-semibold text-white mb-8 tracking-[-0.02em] leading-[1.15]">
-            Every search is unique.
-          </h2>
-          <p className="text-[17px] md:text-[21px] font-normal text-white/80 mb-12 max-w-[640px] mx-auto leading-[1.5]">
-            Share your vision — we'll curate a personalized selection for you.
-          </p>
-          <div className="flex flex-col items-center justify-center gap-4 mb-8">
-            <Button 
-              onClick={() => router.push('/find-property')}
-              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
-            >
-              Invest / Buy with us
-            </Button>
-            <Button 
-              onClick={() => router.push('/find-property')}
-              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
-            >
-              Sell with us
-            </Button>
-            <Button 
-              onClick={() => {
-                if (typeof window !== 'undefined') {
-                  window.open('https://calendly.com/jules-portugal/45min', '_blank')
-                }
-              }}
-              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
-            >
-              Book a free call
-            </Button>
-            <Button 
-              onClick={() => {
-                if (typeof window !== 'undefined') {
-                  window.open('https://wa.me/33662527879', '_blank')
-                }
-              }}
-              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
-            >
-              Speak with us on WhatsApp
-            </Button>
-          </div>
-        </motion.div>
-      </section>
+      <CallToAction />
 
       {/* Footer */}
       <Footer />

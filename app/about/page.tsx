@@ -8,8 +8,9 @@ import { Footer } from '../../components/Footer'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { NumberTicker } from '../../components/ui/number-ticker'
+import { CallToAction } from '../../components/CallToAction'
 import { useHomepageSettings } from '../../lib/properties-client'
-import { 
+import {
   ArrowRight,
   User,
   Sparkle,
@@ -25,7 +26,7 @@ import {
 export default function AboutPage() {
   const router = useRouter()
   const { settings: homepageSettings } = useHomepageSettings()
-  
+
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
@@ -34,7 +35,7 @@ export default function AboutPage() {
       <section className="relative min-h-[60vh] flex items-center justify-center bg-black pt-[72px]">
         {/* Background Image */}
         <div className="absolute inset-0 overflow-hidden">
-          <img 
+          <img
             src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&h=1080&fit=crop&q=80"
             alt="About SUL"
             className="absolute inset-0 w-full h-full object-cover"
@@ -42,23 +43,23 @@ export default function AboutPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_100%)]"></div>
         </div>
-        
+
         {/* Hero Content */}
         <div className="relative z-10 w-full max-w-[1300px] mx-auto px-6 md:px-12 py-20 md:py-32">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="text-center"
           >
-            <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-full mb-8">
+            {/* <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-full mb-8">
               <span className="text-[12px] font-medium text-white/90">About SUL</span>
-            </div>
+            </div> */ /* Removed to match Homepage clean style */}
             <h1 className="text-[48px] md:text-[72px] lg:text-[80px] font-semibold tracking-[-0.03em] text-white leading-[1.05] mb-6">
-            The Story Behind SUL
+              The Story Behind SUL
             </h1>
             <p className="text-[18px] md:text-[22px] font-normal text-white/85 max-w-[800px] mx-auto leading-[1.6]">
-              Local expertise with a global perspective — delivering discreet, tailored and detail-driven property advisory for exceptional opportunities in Portugal.
+              Local expertise with a global perspective, delivering discreet, tailored and detail-driven property advisory for exceptional opportunities in Portugal.
             </p>
           </motion.div>
         </div>
@@ -66,28 +67,26 @@ export default function AboutPage() {
 
 
       {/* About SUL Section - From Homepage */}
-      <section id="about" className="relative py-20 md:py-28 bg-white overflow-visible">
+      <section id="about" className="relative py-12 md:py-20 bg-white overflow-visible">
         {/* Static Grid Background */}
         <GridPattern
           width={40}
           height={40}
           className="fill-black/[0.03] stroke-black/[0.03]"
         />
-        
+
         <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12 overflow-visible">
           <div className="grid md:grid-cols-2 gap-12 md:gap-16 lg:gap-24 items-center overflow-visible px-0 py-4 md:p-8">
             {/* Founder Image */}
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.96 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+            <motion.div
+              /* Removed entrance animation to match homepage performance */
               viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               className="group relative aspect-[4/5] w-full max-w-[500px] mx-auto bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl overflow-hidden shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-black/[0.04] hover:border-black/[0.08]"
             >
               {homepageSettings?.aboutUsImage ? (
-                <img 
-                  src={homepageSettings.aboutUsImage} 
-                  alt="About Us" 
+                <img
+                  src={homepageSettings.aboutUsImage}
+                  alt="About Us"
                   className="w-full h-full object-cover"
                 />
               ) : (
@@ -98,7 +97,7 @@ export default function AboutPage() {
             </motion.div>
 
             {/* About Content */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -106,12 +105,12 @@ export default function AboutPage() {
               className="max-w-[560px]"
             >
               {/* Badge */}
-              <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
+              {/* <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
                 <span className="text-[12px] font-medium text-black/60">About Us</span>
-              </div>
-              
+              </div> */}
+
               {/* Main Title */}
-              <motion.h2 
+              <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -120,27 +119,27 @@ export default function AboutPage() {
               >
                 About SUL
               </motion.h2>
-              
+
               {/* Content Paragraphs */}
               <div className="space-y-6 text-black/70 leading-[1.7]">
-                <motion.p 
+                <motion.p
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
                   className="text-[17px] md:text-[19px] font-normal"
                 >
-                  Founded by Vincent Santos, trained in International Business Law, SUL brings over a decade of experience in real estate investment, project management, and premium property advisory in Portugal. Living in Lisbon with his family, Vincent has invested personally in key regions such as Lisboa (Estrela, Chiado), the Algarve (Lagos), Azeitão (vineyard estates), and Sesimbra (South Coast) — combining local experience with international perspective.
+                  Founded by Vincent Santos, trained in International Business Law, SUL brings over a decade of experience in real estate investment, project management, and premium property advisory in Portugal. Living in Lisbon with his family, Vincent has invested personally in key regions such as Lisboa (Estrela, Chiado), the Algarve (Lagos), Azeitão (vineyard estates), and Sesimbra (South Coast), combining local experience with international perspective.
                 </motion.p>
-                
-                <motion.p 
+
+                <motion.p
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
                   className="text-[17px] md:text-[19px] font-normal"
                 >
-                  Surrounded by a handpicked network of professionals — lawyers, architects, engineers, designers, and bankers — SUL acts as the conductor of each project, from strategy to delivery. SUL believes in a human, bespoke, and demanding approach.
+                  Surrounded by a handpicked network of professionals (lawyers, architects, engineers, designers, and bankers), SUL acts as the conductor of each project, from strategy to delivery. SUL believes in a human, bespoke, and demanding approach.
                 </motion.p>
               </div>
 
@@ -182,16 +181,16 @@ export default function AboutPage() {
 
 
       {/* Our Values Section */}
-      <section className="relative py-20 md:py-28 bg-white overflow-visible">
+      <section className="relative py-12 md:py-20 bg-white overflow-visible">
         <GridPattern
           width={40}
           height={40}
           className="fill-black/[0.02] stroke-black/[0.02]"
         />
-        
+
         <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-12">
           {/* Header Section */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -199,12 +198,12 @@ export default function AboutPage() {
             className="text-center mb-20"
           >
             {/* Badge */}
-            <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
+            {/* <div className="inline-flex items-center px-3 py-1 bg-black/5 rounded-full mb-6">
               <span className="text-[12px] font-medium text-black/60">Our Values & Approach</span>
-            </div>
+            </div> */}
 
             {/* Main Title */}
-            <motion.h2 
+            <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -247,10 +246,8 @@ export default function AboutPage() {
               return (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  /* Removed entrance animation to match homepage performance */
                   viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.1 + index * 0.1, ease: [0.22, 1, 0.36, 1] }}
                   className="group relative bg-white rounded-3xl p-8 text-center cursor-pointer shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 border border-black/[0.06] hover:border-black/[0.1] hover:-translate-y-1"
                 >
                   <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-black/5 group-hover:bg-black/10 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
@@ -274,56 +271,7 @@ export default function AboutPage() {
 
 
       {/* Call to Action Section - Apple Style */}
-      <section className="py-20 md:py-28 bg-black">
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.98 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="max-w-[900px] mx-auto px-6 md:px-12 text-center"
-        >
-          <h2 className="text-[40px] md:text-[56px] font-semibold text-white mb-8 tracking-[-0.02em] leading-[1.15]">
-            Every search is unique.
-          </h2>
-          <p className="text-[17px] md:text-[21px] font-normal text-white/80 mb-12 max-w-[640px] mx-auto leading-[1.5]">
-            Share your vision — we'll curate a personalized selection for you.
-          </p>
-          <div className="flex flex-col items-center justify-center gap-4 mb-8">
-            <Button 
-              onClick={() => router.push('/find-property')}
-              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
-            >
-              Invest / Buy with us
-            </Button>
-            <Button 
-              onClick={() => router.push('/find-property')}
-              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
-            >
-              Sell with us
-            </Button>
-            <Button 
-              onClick={() => {
-                if (typeof window !== 'undefined') {
-                  window.open('https://calendly.com/jules-portugal/45min', '_blank')
-                }
-              }}
-              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
-            >
-              Book a free call
-            </Button>
-            <Button 
-              onClick={() => {
-                if (typeof window !== 'undefined') {
-                  window.open('https://wa.me/33662527879', '_blank')
-                }
-              }}
-              className="bg-white text-black hover:bg-white/95 border-0 px-8 py-3.5 rounded-full text-[16px] font-medium transition-all duration-200 w-[280px] shadow-sm hover:shadow-md"
-            >
-              Speak with us on WhatsApp
-            </Button>
-          </div>
-        </motion.div>
-      </section>
+      <CallToAction />
 
       {/* Footer */}
       <Footer />

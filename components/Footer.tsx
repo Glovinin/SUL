@@ -5,206 +5,132 @@ import { Button } from './ui/button'
 import Link from 'next/link'
 import { QRCodeSVG } from 'qrcode.react'
 import { motion } from 'framer-motion'
-import { 
+import {
   EnvelopeSimple,
   Phone as PhoneIcon,
   MapPin,
-  ArrowRight
+  ArrowRight,
+  InstagramLogo,
+  LinkedinLogo,
+  WhatsappLogo
 } from '@phosphor-icons/react'
 
 export function Footer() {
 
   return (
-    <footer id="contact" className="bg-black text-white py-24 md:py-32">
+    <footer id="contact" className="bg-black text-white pt-12 pb-24 md:pt-16 md:pb-32">
       <div className="max-w-[1300px] mx-auto px-6 md:px-12">
-        {/* Navigation Links */}
-        <div className="mb-20 pb-20 border-b border-white/10">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-12">
-            {/* Services */}
-            <div>
-              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-6">Services</h4>
-              <ul className="space-y-4">
-                <li>
-                  <Link href="/services" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
-                    Investment Strategy
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/services" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
-                    Property Sourcing
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/services" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
-                    Project Oversight
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/services" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
-                    Management
-                  </Link>
-                </li>
-              </ul>
-            </div>
+        <div className="flex flex-col md:flex-row justify-between items-start gap-12 md:gap-0 mb-32 pt-10">
 
-            {/* About Portugal */}
-            <div>
-              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-6">About Portugal</h4>
-              <ul className="space-y-4">
-                <li>
-                  <Link href="/portugal" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
-                    Why Portugal
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/portugal" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
-                    Regions
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/portugal" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
-                    Investment Guide
-                  </Link>
-                </li>
-              </ul>
-            </div>
+          {/* Contact Info - Aligned Left */}
+          <div className="flex flex-col gap-6 max-w-[280px]">
+            <h3 className="text-[24px] font-medium tracking-tight mb-2">Contact</h3>
 
-            {/* About */}
-            <div>
-              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-6">About</h4>
-              <ul className="space-y-4">
-                <li>
-                  <Link href="/about" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
-                    Our Story
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/about" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
-                    Approach
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/contact" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
-                    Contact
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Collection */}
-            <div>
-              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-6">Collection</h4>
-              <ul className="space-y-4">
-                <li>
-                  <Link href="/properties" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
-                    All Properties
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/properties" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
-                    Featured
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/properties" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
-                    New Listings
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Blog */}
-            <div>
-              <h4 className="text-xs font-medium text-white uppercase tracking-wider mb-6">Blog</h4>
-              <ul className="space-y-4">
-                <li>
-                  <Link href="/blog" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
-                    Latest Posts
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/blog" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
-                    Market Insights
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/blog" className="text-sm text-white/70 hover:text-white transition-colors duration-200 font-light">
-                    Guides
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-16 md:gap-24 mb-20">
-          {/* Contact Info */}
-          <div>
-            <h3 className="text-[28px] font-semibold mb-12 tracking-tight">Contact</h3>
-            <div className="space-y-8">
-              <div className="flex items-start space-x-4">
-                <MapPin className="w-5 h-5 text-white/50 mt-0.5 flex-shrink-0" weight="duotone" />
-                <div>
-                  <p className="text-[16px] font-normal text-white/70 leading-[1.6]">Portugal</p>
-                  <p className="text-[16px] font-normal text-white/70 leading-[1.6]">Lisbon • Comporta • Algarve</p>
-                </div>
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 text-white/60 hover:text-white transition-colors duration-300 group cursor-default">
+                <MapPin className="w-5 h-5 text-white/40 group-hover:text-white transition-colors duration-300" weight="light" />
+                <span className="text-[15px] font-light tracking-wide">Portugal • Lisboa</span>
               </div>
-              <div className="flex items-start space-x-4">
-                <EnvelopeSimple className="w-5 h-5 text-white/50 mt-0.5 flex-shrink-0" weight="duotone" />
-                <a href="mailto:info@sul.pt" className="text-[16px] font-normal text-white/70 hover:text-white transition-colors duration-200">
-                  info@sul.pt
-                </a>
-              </div>
-              <div className="flex items-start space-x-4">
-                <PhoneIcon className="w-5 h-5 text-white/50 mt-0.5 flex-shrink-0" weight="duotone" />
-                <a href="tel:+351" className="text-[16px] font-normal text-white/70 hover:text-white transition-colors duration-200">
-                  +351 XXX XXX XXX
-                </a>
-              </div>
+
+              <a href="mailto:vinsvs@hotmail.com" className="flex items-center gap-3 text-white/60 hover:text-white transition-colors duration-300 group">
+                <EnvelopeSimple className="w-5 h-5 text-white/40 group-hover:text-white transition-colors duration-300" weight="light" />
+                <span className="text-[15px] font-light tracking-wide">vinsvs@hotmail.com</span>
+              </a>
+
+              <a href="tel:+33662527879" className="flex items-center gap-3 text-white/60 hover:text-white transition-colors duration-300 group">
+                <PhoneIcon className="w-5 h-5 text-white/40 group-hover:text-white transition-colors duration-300" weight="light" />
+                <span className="text-[15px] font-light tracking-wide">+33 6 62 52 78 79</span>
+              </a>
+            </div>
+
+            {/* Social Icons */}
+            <div className="flex items-center gap-5 mt-4 pt-6 border-t border-white/10">
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white transition-colors duration-300 hover:scale-110 transform">
+                <InstagramLogo className="w-6 h-6" weight="regular" />
+              </a>
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white transition-colors duration-300 hover:scale-110 transform">
+                <LinkedinLogo className="w-6 h-6" weight="regular" />
+              </a>
+              <a href="https://wa.me/33662527879" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white transition-colors duration-300 hover:scale-110 transform">
+                <WhatsappLogo className="w-6 h-6" weight="regular" />
+              </a>
             </div>
           </div>
 
-          {/* Get in Touch - QR Code */}
-          <div className="flex flex-col items-center text-center">
-            <h3 className="text-[28px] font-semibold mb-6 tracking-tight">Get in Touch</h3>
-            <p className="text-[16px] font-normal text-white/70 mb-6 leading-[1.6] max-w-[300px]">
-              Scan the QR code to contact us on WhatsApp
+          {/* Navigation - Centered */}
+          <div className="flex flex-col gap-6">
+            <h3 className="text-[24px] font-medium tracking-tight mb-2">Explore</h3>
+            <div className="grid grid-cols-2 gap-x-12 gap-y-3">
+              <Link href="/" className="text-[15px] font-light text-white/50 hover:text-white transition-colors duration-300">Home</Link>
+              <Link href="/portfolio" className="text-[15px] font-light text-white/50 hover:text-white transition-colors duration-300">Portfolio</Link>
+              <Link href="/services" className="text-[15px] font-light text-white/50 hover:text-white transition-colors duration-300">Services</Link>
+              <Link href="/properties" className="text-[15px] font-light text-white/50 hover:text-white transition-colors duration-300">Properties</Link>
+              <Link href="/portugal" className="text-[15px] font-light text-white/50 hover:text-white transition-colors duration-300">Portugal</Link>
+              <Link href="/blog" className="text-[15px] font-light text-white/50 hover:text-white transition-colors duration-300">Blog</Link>
+              <Link href="/about" className="text-[15px] font-light text-white/50 hover:text-white transition-colors duration-300">About</Link>
+              <Link href="/login" className="text-[15px] font-light text-white/50 hover:text-white transition-colors duration-300">Login</Link>
+            </div>
+          </div>
+
+          {/* Get in Touch - Aligned Right */}
+          <div className="flex flex-col items-start md:items-end text-left md:text-right">
+            <h3 className="text-[24px] font-medium tracking-tight mb-2">Get in Touch</h3>
+            <p className="text-[15px] font-light text-white/50 mb-6 max-w-[200px] leading-relaxed">
+              Scan via WhatsApp for direct assistance
             </p>
+
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="flex justify-center"
             >
-              <div className="bg-white p-3 rounded-2xl shadow-lg inline-block">
+              <div className="bg-white p-2.5 rounded-xl shadow-2xl relative group">
+                {/* Decorative corner accent */}
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-white/20 rounded-full blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <QRCodeSVG
                   value="https://wa.me/33662527879"
-                  size={120}
+                  size={100}
                   level="H"
-                  includeMargin={true}
+                  includeMargin={false}
                   className="rounded-lg"
                 />
               </div>
             </motion.div>
-            <p className="text-[14px] font-normal text-white/50 mt-4">
-              Scan with your phone camera
-            </p>
           </div>
         </div>
 
-        {/* Footer Bottom */}
-        <div className="pt-12 border-t border-white/10">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="text-[14px] font-normal text-white/50">
-              © {new Date().getFullYear()} SUL. All rights reserved.
-            </div>
-            <div className="flex items-center space-x-8">
-              <a href="#" className="text-[14px] font-normal text-white/50 hover:text-white/70 transition-colors duration-200">Privacy</a>
-              <a href="#" className="text-[14px] font-normal text-white/50 hover:text-white/70 transition-colors duration-200">Terms</a>
-            </div>
+        {/* Footer Bottom - Minimalist Divider */}
+        <div className="border-t border-white/5 pt-8 flex flex-col items-center justify-center text-center">
+          <p className="text-[12px] font-light text-white/30 tracking-wider uppercase">
+            © {new Date().getFullYear()} SUL Estate • All rights reserved
+          </p>
+          <div className="flex gap-6 mt-4">
+            <a href="#" className="text-[12px] text-white/20 hover:text-white/50 transition-colors">Privacy</a>
+            <a href="#" className="text-[12px] text-white/20 hover:text-white/50 transition-colors">Terms</a>
           </div>
         </div>
+      </div>
+
+      {/* Elegant Infinite Scrolling Text */}
+      <div className="w-full overflow-hidden pt-20 pb-0 mt-auto select-none pointer-events-none fade-mask relative z-0">
+        <motion.div
+          className="flex whitespace-nowrap"
+          animate={{ x: "-50%" }}
+          transition={{
+            repeat: Infinity,
+            ease: "linear",
+            duration: 5
+          }}
+          style={{ willChange: "transform" }}
+        >
+          {/* Duplicated text for seamless loop - Premium Apple aesthetic */}
+          {[...Array(12)].map((_, i) => (
+            <span key={i} className="text-[8vh] md:text-[13vh] font-semibold text-white/90 leading-none mr-16 md:mr-32 tracking-[-0.03em] antialiased">
+              SUL • Exclusive Real Estate
+            </span>
+          ))}
+        </motion.div>
       </div>
     </footer>
   )

@@ -1,14 +1,15 @@
 "use client"
 
 import React, { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Button } from './ui/button'
+import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { 
+import {
   List,
-  UserCircle,
-  CaretDown
+  CaretDown,
+  InstagramLogo,
+  WhatsappLogo,
+  LinkedinLogo
 } from '@phosphor-icons/react'
 import { MobileMenu } from './MobileMenu'
 import {
@@ -17,46 +18,73 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu'
-import GB from 'country-flag-icons/react/3x2/GB'
-import PT from 'country-flag-icons/react/3x2/PT'
-import FR from 'country-flag-icons/react/3x2/FR'
-import ES from 'country-flag-icons/react/3x2/ES'
+import { useLoading } from '@/contexts/loading-context'
 
 export function NavBar() {
   const pathname = usePathname()
-  
-  // Detect homepage internally using pathname
-  const isHomePage = pathname === '/'
+
+  // Do not render navbar on admin/dashboard pages
+  if (pathname?.startsWith('/admin') || pathname?.startsWith('/dashboard')) {
+    return null
+  }
+
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+  // State for the dynamic theme detection
+  // 'dark' background means we need 'light' text (White)
+  // 'light' background means we need 'dark' text (Black)
+  const [isDarkBg, setIsDarkBg] = useState(true)
   const [isScrolled, setIsScrolled] = useState(false)
-  const [currentLang, setCurrentLang] = useState<'EN' | 'PT' | 'FR' | 'ES'>('EN')
+
+  const [currentLang, setCurrentLang] = useState<'EN' | 'PT' | 'FR'>('EN')
   const [shouldAnimateLogo, setShouldAnimateLogo] = useState(false)
-  
+
+  // Initial setup per page type
+  useEffect(() => {
+    // Pages with dark hero sections
+    const pagesWithDarkHero = [
+      '/',
+      '/services',
+      '/portugal',
+      '/about',
+      '/portfolio',
+      '/properties',
+      '/blog',
+      '/contact',
+      '/find-property'
+    ]
+
+    const hasDarkHero = pagesWithDarkHero.some(path => {
+      if (path === '/') return pathname === '/'
+      return pathname?.startsWith(path)
+    })
+
+    // Determine initial state: pages with hero sections start Dark, others Light
+    setIsDarkBg(hasDarkHero)
+  }, [pathname])
+
   // Load language from localStorage on mount
   useEffect(() => {
-    const savedLang = localStorage.getItem('language') as 'EN' | 'PT' | 'FR' | 'ES' | null
-    if (savedLang && ['EN', 'PT', 'FR', 'ES'].includes(savedLang)) {
+    const savedLang = localStorage.getItem('language') as 'EN' | 'PT' | 'FR' | null
+    if (savedLang && ['EN', 'PT', 'FR'].includes(savedLang)) {
       setCurrentLang(savedLang)
     }
   }, [])
-  
+
   // Save language to localStorage when it changes
-  const handleLanguageChange = (lang: 'EN' | 'PT' | 'FR' | 'ES') => {
+  const handleLanguageChange = (lang: 'EN' | 'PT' | 'FR') => {
     setCurrentLang(lang)
     localStorage.setItem('language', lang)
   }
-  
+
   // Language configuration
   const languages = {
-    EN: { flag: GB, name: 'English', code: 'EN' },
-    PT: { flag: PT, name: 'Português', code: 'PT' },
-    FR: { flag: FR, name: 'Français', code: 'FR' },
-    ES: { flag: ES, name: 'Español', code: 'ES' },
+    EN: { name: 'English', code: 'EN' },
+    PT: { name: 'Português', code: 'PT' },
+    FR: { name: 'Français', code: 'FR' },
   }
-  
-  const CurrentFlag = languages[currentLang].flag
-  
-  // Only animate logo on very first page load, not on navigation
+
+  // Logo Animation
   useEffect(() => {
     const hasAnimatedBefore = sessionStorage.getItem('sul_navbar_logo_animated')
     if (!hasAnimatedBefore) {
@@ -64,357 +92,268 @@ export function NavBar() {
       sessionStorage.setItem('sul_navbar_logo_animated', 'true')
     }
   }, [])
-  
-  // Handle scroll detection
+
+  // ---------------------------------------------------------------------------
+  // DYNAMIC BACKGROUND & SCROLL DETECTION
+  // ---------------------------------------------------------------------------
   useEffect(() => {
     if (typeof window === 'undefined') return
-    
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY
-      setIsScrolled(scrollPosition > 50)
+
+    const handleScrollAndDetection = () => {
+      // 1. Scroll Detection
+      const scrollY = window.scrollY
+      const isTop = scrollY < 50
+      setIsScrolled(!isTop)
+
+      // 2. Dynamic Background Detection
+      // Sample a point in the middle of the navbar
+      const x = window.innerWidth / 2
+      const y = 50
+
+      const elements = document.elementsFromPoint(x, y)
+
+      let foundColor = false
+      for (const el of elements) {
+        if (el.tagName === 'NAV' || el.closest('nav')) continue
+
+        const style = window.getComputedStyle(el)
+        const bgColor = style.backgroundColor
+        const match = bgColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/)
+
+        if (match) {
+          const r = parseInt(match[1])
+          const g = parseInt(match[2])
+          const b = parseInt(match[3])
+          const alpha = match[4] ? parseFloat(match[4]) : 1
+
+          if (alpha > 0.1) {
+            const brightness = (r * 299 + g * 587 + b * 114) / 1000
+            setIsDarkBg(brightness < 128)
+            foundColor = true
+            return
+          }
+        }
+      }
+
+      // If we couldn't determine color (e.g. white body), default based on expectation
+      if (!foundColor) {
+        setIsDarkBg(false)
+      }
     }
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    let ticking = false
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScrollAndDetection()
+          ticking = false
+        })
+        ticking = true
+      }
+    }
 
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll, { passive: true })
 
-  // Determine if we should use transparent styling (only on homepage when not scrolled)
-  const useTransparentStyle = isHomePage && !isScrolled
+    // Initial Check
+    setTimeout(handleScrollAndDetection, 100)
+
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
+  }, [pathname])
+
+  // Computed visual states
+  const isHomePage = pathname === '/'
+
+  // Pages with hero sections that should have transparent navbar at top
+  const pagesWithHero = [
+    '/',
+    '/services',
+    '/portugal',
+    '/about',
+    '/portfolio',
+    '/properties',
+    '/blog',
+    '/contact',
+    '/find-property'
+  ]
+
+  const hasHeroSection = pagesWithHero.some(path => {
+    if (path === '/') return pathname === '/'
+    return pathname.startsWith(path)
+  })
+
+  // Special Rule: If page has hero section AND Not Scrolled -> Force Transparent
+  const isHeroSection = hasHeroSection && !isScrolled
+
+  // Text Color:
+  // If Hero Section -> Force White (Dark detection usually handles this, but forcing ensures reliability on load)
+  // Else -> Use Dynamic Detection
+  const isLightModeText = isHeroSection ? true : isDarkBg
+
+  // Navbar Background:
+  // If Hero Section -> Transparent (No Blur, No Border)
+  // Else -> Adaptive Glass (Tinted + Blur)
+  const navbarBgStyle = isHeroSection
+    ? 'transparent'
+    : isDarkBg
+      ? 'rgba(0, 0, 0, 0.2)'
+      : 'rgba(255, 255, 255, 0.8)'
+
+  const navbarBlur = isHeroSection ? 'blur(0px)' : (isDarkBg ? 'blur(10px)' : 'blur(20px)')
+  const navbarBorder = isHeroSection ? 'transparent' : (isDarkBg ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)')
 
   // Determine active link based on pathname
   const isActiveLink = (path: string) => {
-    if (path === '/') {
-      return pathname === '/'
-    }
+    if (path === '/') return pathname === '/'
     return pathname.startsWith(path)
   }
 
+  // Styles
+  const linkStyles = `text-[16px] font-medium tracking-[-0.01em] transition-all duration-200 ${isLightModeText
+    ? 'text-white/80 hover:text-white'
+    : 'text-black/60 hover:text-black'
+    }`
+
+  const activeLinkStyles = `text-[16px] font-medium tracking-[-0.01em] transition-all duration-200 ${isLightModeText ? 'text-white' : 'text-black'
+    }`
+
+  const iconStyles = `w-5 h-5 transition-colors duration-200 ${isLightModeText ? 'text-white/80 hover:text-white' : 'text-black/60 hover:text-black'
+    }`
+
+  const logoStyles = `text-[40px] md:text-[40px] font-semibold tracking-[-0.03em] transition-colors duration-200 ${isLightModeText ? 'text-white' : 'text-black hover:text-black/70'
+    }`
+
+  const [isVisible, setIsVisible] = useState(false)
+  const { isInitialLoading } = useLoading()
+
+  useEffect(() => {
+    if (!isInitialLoading) {
+      setIsVisible(true)
+      return
+    }
+    const handlePageAppear = () => { setIsVisible(true) }
+    window.addEventListener('page-can-appear', handlePageAppear)
+    return () => window.removeEventListener('page-can-appear', handlePageAppear)
+  }, [isInitialLoading])
+
   return (
-    <motion.nav 
-      initial={false}
+    <motion.nav
+      initial={{ opacity: 0, y: -20 }}
       animate={{
-        backgroundColor: useTransparentStyle 
-          ? 'transparent' 
-          : isScrolled 
-            ? 'rgba(255, 255, 255, 0.85)' 
-            : 'rgba(255, 255, 255, 0.98)',
-        backdropFilter: useTransparentStyle 
-          ? 'blur(0px)' 
-          : 'blur(20px)',
-        borderBottomColor: useTransparentStyle 
-          ? 'transparent' 
-          : 'rgba(0, 0, 0, 0.04)',
-        boxShadow: useTransparentStyle 
-          ? 'none' 
-          : '0 1px 0 rgba(0, 0, 0, 0.02)'
+        opacity: isVisible ? 1 : 0,
+        y: isVisible ? 0 : -20,
+        backgroundColor: navbarBgStyle,
+        backdropFilter: navbarBlur,
+        borderBottomColor: navbarBorder,
       }}
-      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-      className="fixed top-0 left-0 right-0 z-[100] border-b"
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      className="fixed top-0 left-0 right-0 z-[100] border-b transition-colors duration-200 from-transparent"
     >
-      <div className="max-w-[1400px] mx-auto px-6 md:px-8 lg:px-12">
-        <div className="flex items-center justify-between h-[100px] md:h-[108px]">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+        <div className="flex items-center justify-between h-[90px] md:h-[100px]">
           {/* Logo */}
           <Link href="/">
             <motion.div
               initial={shouldAnimateLogo ? { opacity: 0, y: -10 } : false}
               animate={shouldAnimateLogo ? { opacity: 1, y: 0 } : {}}
               transition={shouldAnimateLogo ? { duration: 0.5, ease: [0.22, 1, 0.36, 1] } : {}}
-              className={`text-[34px] md:text-[38px] lg:text-[42px] font-semibold tracking-[-0.02em] transition-colors duration-300 pt-1 ${
-                useTransparentStyle 
-                  ? 'text-white' 
-                  : 'text-black hover:text-black/60'
-              }`}
+              className={logoStyles}
             >
               SUL
             </motion.div>
           </Link>
 
-          {/* Desktop Navigation Links - Only visible on large screens (lg+) */}
-          <div className="hidden lg:flex items-center gap-6 lg:gap-8">
-            <Link 
-              href="/" 
-              className="relative group"
-            >
-              <span className={`text-[16px] font-medium tracking-[-0.01em] transition-all duration-300 ${
-                useTransparentStyle
-                  ? isActiveLink('/') 
-                    ? 'text-white' 
-                    : 'text-white/70 hover:text-white'
-                  : isActiveLink('/')
-                    ? 'text-black'
-                    : 'text-black/60 hover:text-black'
-              }`}>
-                Home
-              </span>
-              {isActiveLink('/') && (
-                <motion.div
-                  layoutId="activeIndicator"
-                  initial={false}
-                  className={`absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${
-                    useTransparentStyle ? 'bg-white' : 'bg-black'
-                  }`}
-                  transition={{ type: "spring", stiffness: 500, damping: 35, mass: 0.5 }}
-                />
-              )}
-            </Link>
-            <Link 
-              href="/services" 
-              className="relative group"
-            >
-              <span className={`text-[16px] font-medium tracking-[-0.01em] transition-all duration-300 ${
-                useTransparentStyle
-                  ? isActiveLink('/services')
-                    ? 'text-white'
-                    : 'text-white/70 hover:text-white'
-                  : isActiveLink('/services')
-                    ? 'text-black'
-                    : 'text-black/60 hover:text-black'
-              }`}>
-                Services
-              </span>
-              {isActiveLink('/services') && (
-                <motion.div
-                  layoutId="activeIndicator"
-                  initial={false}
-                  className={`absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${
-                    useTransparentStyle ? 'bg-white' : 'bg-black'
-                  }`}
-                  transition={{ type: "spring", stiffness: 500, damping: 35, mass: 0.5 }}
-                />
-              )}
-            </Link>
-            <Link 
-              href="/portugal" 
-              className="relative group"
-            >
-              <span className={`text-[16px] font-medium tracking-[-0.01em] transition-all duration-300 ${
-                useTransparentStyle
-                  ? isActiveLink('/portugal')
-                    ? 'text-white'
-                    : 'text-white/70 hover:text-white'
-                  : isActiveLink('/portugal')
-                    ? 'text-black'
-                    : 'text-black/60 hover:text-black'
-              }`}>
-                About Portugal
-              </span>
-              {isActiveLink('/portugal') && (
-                <motion.div
-                  layoutId="activeIndicator"
-                  initial={false}
-                  className={`absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${
-                    useTransparentStyle ? 'bg-white' : 'bg-black'
-                  }`}
-                  transition={{ type: "spring", stiffness: 500, damping: 35, mass: 0.5 }}
-                />
-              )}
-            </Link>
-            <Link 
-              href="/about" 
-              className="relative group"
-            >
-              <span className={`text-[16px] font-medium tracking-[-0.01em] transition-all duration-300 ${
-                useTransparentStyle
-                  ? isActiveLink('/about')
-                    ? 'text-white'
-                    : 'text-white/70 hover:text-white'
-                  : isActiveLink('/about')
-                    ? 'text-black'
-                    : 'text-black/60 hover:text-black'
-              }`}>
-                About Sul
-              </span>
-              {isActiveLink('/about') && (
-                <motion.div
-                  layoutId="activeIndicator"
-                  initial={false}
-                  className={`absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${
-                    useTransparentStyle ? 'bg-white' : 'bg-black'
-                  }`}
-                  transition={{ type: "spring", stiffness: 500, damping: 35, mass: 0.5 }}
-                />
-              )}
-            </Link>
-            <Link 
-              href="/portfolio" 
-              className="relative group"
-            >
-              <span className={`text-[16px] font-medium tracking-[-0.01em] transition-all duration-300 ${
-                useTransparentStyle
-                  ? isActiveLink('/portfolio')
-                    ? 'text-white'
-                    : 'text-white/70 hover:text-white'
-                  : isActiveLink('/portfolio')
-                    ? 'text-black'
-                    : 'text-black/60 hover:text-black'
-              }`}>
-                Portfolio
-              </span>
-              {isActiveLink('/portfolio') && (
-                <motion.div
-                  layoutId="activeIndicator"
-                  initial={false}
-                  className={`absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${
-                    useTransparentStyle ? 'bg-white' : 'bg-black'
-                  }`}
-                  transition={{ type: "spring", stiffness: 500, damping: 35, mass: 0.5 }}
-                />
-              )}
-            </Link>
-            <Link 
-              href="/properties" 
-              className="relative group"
-            >
-              <span className={`text-[16px] font-medium tracking-[-0.01em] transition-all duration-300 ${
-                useTransparentStyle
-                  ? isActiveLink('/properties')
-                    ? 'text-white'
-                    : 'text-white/70 hover:text-white'
-                  : isActiveLink('/properties')
-                    ? 'text-black'
-                    : 'text-black/60 hover:text-black'
-              }`}>
-                Properties
-              </span>
-              {isActiveLink('/properties') && (
-                <motion.div
-                  layoutId="activeIndicator"
-                  initial={false}
-                  className={`absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${
-                    useTransparentStyle ? 'bg-white' : 'bg-black'
-                  }`}
-                  transition={{ type: "spring", stiffness: 500, damping: 35, mass: 0.5 }}
-                />
-              )}
-            </Link>
-            <Link 
-              href="/blog" 
-              className="relative group"
-            >
-              <span className={`text-[16px] font-medium tracking-[-0.01em] transition-all duration-300 ${
-                useTransparentStyle
-                  ? isActiveLink('/blog')
-                    ? 'text-white'
-                    : 'text-white/70 hover:text-white'
-                  : isActiveLink('/blog')
-                    ? 'text-black'
-                    : 'text-black/60 hover:text-black'
-              }`}>
-                Blog
-              </span>
-              {isActiveLink('/blog') && (
-                <motion.div
-                  layoutId="activeIndicator"
-                  initial={false}
-                  className={`absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${
-                    useTransparentStyle ? 'bg-white' : 'bg-black'
-                  }`}
-                  transition={{ type: "spring", stiffness: 500, damping: 35, mass: 0.5 }}
-                />
-              )}
-            </Link>
+          {/* Desktop Navigation Links */}
+          <div className="hidden lg:flex items-center gap-10">
+            {['Home', 'Services', 'About Portugal', 'About Sul', 'Portfolio', 'Properties', 'Blog'].map((item) => {
+              const path = item === 'Home' ? '/'
+                : item === 'About Portugal' ? '/portugal'
+                  : item === 'About Sul' ? '/about'
+                    : `/${item.toLowerCase()}`
+
+              const active = isActiveLink(path)
+
+              return (
+                <Link key={item} href={path} className="relative group">
+                  <span className={active ? activeLinkStyles : linkStyles}>
+                    {item === 'About Sul' ? 'About' : item}
+                  </span>
+                  {active && (
+                    <motion.div
+                      layoutId="activeIndicator"
+                      className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full ${isLightModeText ? 'bg-white' : 'bg-black'
+                        }`}
+                      transition={{ type: "spring", stiffness: 500, damping: 35 }}
+                    />
+                  )}
+                </Link>
+              )
+            })}
           </div>
 
-          {/* Right Side Actions - Visible on tablet (md) and desktop */}
-          <div className="hidden md:flex items-center gap-4">
-            {/* Language Dropdown */}
+          {/* Right Side Actions */}
+          <div className="hidden md:flex items-center gap-6">
+            <div className={`flex items-center gap-4 border-r pr-6 transition-colors duration-200 ${isLightModeText ? 'border-white/20' : 'border-black/10'
+              }`}>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                <InstagramLogo className={iconStyles} weight="regular" />
+              </a>
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+                <LinkedinLogo className={iconStyles} weight="regular" />
+              </a>
+              <a href="https://wa.me/33662527879" target="_blank" rel="noopener noreferrer">
+                <WhatsappLogo className={iconStyles} weight="regular" />
+              </a>
+            </div>
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
-                  className={`flex items-center gap-2 px-3 py-2 rounded-full transition-all duration-200 ${
-                    useTransparentStyle
-                      ? 'text-white/70 hover:text-white hover:bg-white/5'
-                      : 'text-black/60 hover:text-black hover:bg-black/5'
-                  }`}
+                  className={`flex items-center gap-1 transition-colors duration-200 ${isLightModeText ? 'text-white/90 hover:text-white' : 'text-black/70 hover:text-black'
+                    }`}
                 >
-                  <div className="w-5 h-5 rounded overflow-hidden flex-shrink-0">
-                    <CurrentFlag className="w-full h-full object-cover" />
-                  </div>
-                  <span className="text-[15px] font-normal tracking-[-0.01em]">
+                  <span className="text-[14px] font-medium tracking-[-0.01em]">
                     {currentLang}
                   </span>
-                  <CaretDown 
-                    className={`w-3 h-3 transition-transform duration-200 ${
-                      useTransparentStyle ? 'text-white/60' : 'text-black/40'
-                    }`} 
-                    weight="regular" 
-                  />
+                  <CaretDown className={`w-2.5 h-2.5 opacity-60 ml-0.5 ${isLightModeText ? 'text-white' : 'text-black'}`} weight="bold" />
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="min-w-[160px]">
-                {(Object.keys(languages) as Array<'EN' | 'PT' | 'FR' | 'ES'>).map((langCode) => {
-                  const LangFlag = languages[langCode].flag
+              <DropdownMenuContent align="end" className="min-w-[120px] bg-white/95 backdrop-blur-md border border-black/10 shadow-lg rounded-xl p-1.5 z-[9999]">
+                {(Object.keys(languages) as Array<'EN' | 'PT' | 'FR'>).map((langCode) => {
                   const isSelected = currentLang === langCode
                   return (
                     <DropdownMenuItem
                       key={langCode}
                       onClick={() => handleLanguageChange(langCode)}
-                      className={`flex items-center gap-3 cursor-pointer ${
-                        isSelected ? 'bg-black/5' : ''
-                      }`}
+                      className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all duration-200 ${isSelected ? 'bg-black/10 text-black' : 'text-black/60 hover:text-black hover:bg-black/5'
+                        }`}
                     >
-                      <div className="w-5 h-5 rounded overflow-hidden flex-shrink-0">
-                        <LangFlag className="w-full h-full object-cover" />
-                      </div>
-                      <span className="text-[14px] font-medium tracking-[-0.01em]">
-                        {languages[langCode].name}
-                      </span>
-                      {isSelected && (
-                        <span className="ml-auto text-[12px] text-black/40">
-                          ✓
-                        </span>
-                      )}
+                      {langCode}
+                      {isSelected && <span className="text-[10px]">●</span>}
                     </DropdownMenuItem>
                   )
                 })}
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Login Button */}
-            <Link href="/login">
-              <button 
-                className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 ${
-                  useTransparentStyle
-                    ? 'text-white/70 hover:text-white hover:bg-white/5'
-                    : 'text-black/60 hover:text-black hover:bg-black/5'
-                }`}
-              >
-                <UserCircle className="w-4 h-4" weight="regular" />
-              </button>
-            </Link>
-            
-            {/* Contact Button */}
-            <Link href="/contact">
-              <button 
-                className={`px-4 py-2 rounded-full text-[16px] font-medium tracking-[-0.01em] transition-all duration-200 ${
-                  useTransparentStyle
-                    ? 'bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-white/30'
-                    : 'bg-black hover:bg-black/90 text-white border border-black/10'
-                }`}
-              >
-                Contact
-              </button>
-            </Link>
+            <Link href="/contact" className={linkStyles}>Contact</Link>
           </div>
 
-          {/* Hamburger Menu Button - Visible on mobile and tablet (up to lg) */}
-          <button 
-            className={`lg:hidden transition-colors duration-200 ${
-              useTransparentStyle
-                ? 'text-white/70 hover:text-white'
-                : 'text-black/60 hover:text-black'
-            }`}
+          <button
+            className={`lg:hidden transition-colors duration-200 ${isLightModeText ? 'text-white hover:text-white/80' : 'text-black hover:text-black/70'
+              }`}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
-            <List size={20} weight="regular" />
+            <List size={24} weight="light" />
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu Full Screen Component */}
-      <MobileMenu 
+      <MobileMenu
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
         currentLang={currentLang}
@@ -423,4 +362,3 @@ export function NavBar() {
     </motion.nav>
   )
 }
-

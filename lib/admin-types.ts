@@ -2,6 +2,7 @@
 
 export interface Property {
   id?: string
+  order?: number
   title: string
   location: string
   type: string
@@ -18,6 +19,7 @@ export interface Property {
   amenities?: string[]
   yearBuilt?: string
   featured?: boolean
+  showInPortfolio?: boolean
   createdAt?: Date
   updatedAt?: Date
 }
@@ -73,6 +75,7 @@ export interface HomepageSettings {
 
 export interface PortfolioItem {
   id?: string
+  order?: number
   title: string
   location: string
   type: string
@@ -90,6 +93,7 @@ export interface PortfolioItem {
   yearBuilt?: string
   soldDate?: string
   featured?: boolean
+  showInProperties?: boolean
   createdAt?: Date
   updatedAt?: Date
 }

@@ -10,10 +10,10 @@ interface MainContentProps {
 export default function MainContent({ children }: MainContentProps) {
   const { isInitialLoading } = useLoading()
 
-  // Durante o loading inicial, não renderizar o conteúdo principal
-  if (isInitialLoading) {
-    return null
-  }
+  // Renderizar sempre o conteúdo para permitir que o vídeo toque no fundo (InitialLoading fica por cima)
+  // if (isInitialLoading) {
+  //   return null
+  // }
 
   return <>{children}</>
 }

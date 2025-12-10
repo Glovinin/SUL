@@ -2,16 +2,16 @@
 "use client"
 
 import { useEffect, useState } from 'react'
-import { getProperties, getHomepageSettings, getPortfolioItems, getPortfolioItem, getPublishedBlogPosts, getBlogPost } from './admin-helpers'
+import { getProperties, getHomepageSettings, getPortfolioItems, getPortfolioItem, getPublishedBlogPosts, getBlogPost, getPublicProperties, getPublicPortfolioItems } from './admin-helpers'
 import { Property as AdminProperty, HomepageSettings, PortfolioItem as AdminPortfolioItem, BlogPost as AdminBlogPost } from './admin-types'
 
 // Convert admin property to display property format
 function convertToDisplayProperty(prop: AdminProperty): any {
   // Create gallery array from images array or single image
-  const gallery = prop.images && prop.images.length > 0 
-    ? prop.images 
-    : prop.image 
-      ? [prop.image] 
+  const gallery = prop.images && prop.images.length > 0
+    ? prop.images
+    : prop.image
+      ? [prop.image]
       : ['/images/placeholder.jpg']
 
   return {
@@ -46,7 +46,7 @@ export function useProperties() {
     async function loadProperties() {
       try {
         setLoading(true)
-        const data = await getProperties()
+        const data = await getPublicProperties()
         const converted = data.map(convertToDisplayProperty)
         setProperties(converted)
       } catch (err: any) {
@@ -66,21 +66,20 @@ export function useProperties() {
 
 export function useFeaturedProperties() {
   const { properties, loading, error } = useProperties()
-  
-  // Prioriza propriedades featured, depois as não-featured
-  const featured = properties.filter(p => p.featured)
-  const nonFeatured = properties.filter(p => !p.featured)
-  
-  // Combina: primeiro as featured, depois as não-featured
-  const allProperties = [...featured, ...nonFeatured]
-  
-  // Limita a 9 propriedades para a homepage
-  const limitedProperties = allProperties.slice(0, 9)
-  
-  return { 
+
+  // Return the first 9 properties, respecting the admin order
+  // (filtering for featured only if that was the original intent, but the variable says 'featuredProperties')
+  // The original code merged featured + nonFeatured. This means it showed ALL properties but prioritized featured.
+  // If we want to respect MANUAL order, we should just take the properties as they are returned (sorted by order).
+  // However, if the section is TITLED "Exclusive collection of Properties" (generic), maybe it just wants the top items.
+
+  // If the user wants to prioritize featured items, they should drag them to the top.
+  const limitedProperties = properties.slice(0, 9)
+
+  return {
     featuredProperties: limitedProperties,
-    loading, 
-    error 
+    loading,
+    error
   }
 }
 
@@ -145,10 +144,10 @@ export function useProperty(id: string | null) {
 
 // Convert admin portfolio item to display format
 function convertToDisplayPortfolioItem(item: AdminPortfolioItem): any {
-  const gallery = item.images && item.images.length > 0 
-    ? item.images 
-    : item.image 
-      ? [item.image] 
+  const gallery = item.images && item.images.length > 0
+    ? item.images
+    : item.image
+      ? [item.image]
       : ['/images/placeholder.jpg']
 
   return {
@@ -184,7 +183,7 @@ export function usePortfolio() {
     async function loadPortfolio() {
       try {
         setLoading(true)
-        const data = await getPortfolioItems()
+        const data = await getPublicPortfolioItems()
         const converted = data.map(convertToDisplayPortfolioItem)
         setPortfolioItems(converted)
       } catch (err: any) {
