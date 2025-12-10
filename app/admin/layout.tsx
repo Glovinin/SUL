@@ -4,18 +4,19 @@ import { useEffect, useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { signOut } from 'firebase/auth'
 import { auth } from '../../lib/firebase'
-import { 
-  Layout, 
-  ChartLine, 
-  Buildings, 
-  Article, 
+import {
+  Layout,
+  ChartLine,
+  Buildings,
+  Article,
   SignOut,
   X,
   List,
   House,
   Clock,
   Briefcase,
-  ChatCircle
+  ChatCircle,
+  Image as ImageIcon
 } from '@phosphor-icons/react'
 import Link from 'next/link'
 import { Toaster } from 'sonner'
@@ -122,6 +123,12 @@ export default function AdminLayout({
       href: '/admin/chat',
       active: pathname?.startsWith('/admin/chat'),
     },
+    {
+      icon: ImageIcon,
+      label: 'Hero Images',
+      href: '/admin/hero-images',
+      active: pathname?.startsWith('/admin/hero-images'),
+    },
   ]
 
   // Allow register page without authentication
@@ -142,8 +149,8 @@ export default function AdminLayout({
 
   // Formatar data e hora
   const formatTime = (date: Date) => {
-    return date.toLocaleTimeString('en-US', { 
-      hour: '2-digit', 
+    return date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
       hour12: false
@@ -201,21 +208,18 @@ export default function AdminLayout({
               <Link
                 key={item.href}
                 href={item.href}
-                className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-                  item.active
-                    ? 'bg-black text-white shadow-md shadow-black/10'
-                    : 'text-black/60 hover:bg-black/5 hover:text-black'
-                }`}
+                className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${item.active
+                  ? 'bg-black text-white shadow-md shadow-black/10'
+                  : 'text-black/60 hover:bg-black/5 hover:text-black'
+                  }`}
               >
-                <Icon 
-                  className={`w-5 h-5 flex-shrink-0 transition-transform duration-200 ${
-                    item.active ? '' : 'group-hover:scale-110'
-                  }`} 
-                  weight={item.active ? 'fill' : 'regular'} 
+                <Icon
+                  className={`w-5 h-5 flex-shrink-0 transition-transform duration-200 ${item.active ? '' : 'group-hover:scale-110'
+                    }`}
+                  weight={item.active ? 'fill' : 'regular'}
                 />
-                <span className={`text-sm font-medium tracking-tight ${
-                  item.active ? 'font-semibold' : ''
-                }`}>{item.label}</span>
+                <span className={`text-sm font-medium tracking-tight ${item.active ? 'font-semibold' : ''
+                  }`}>{item.label}</span>
               </Link>
             )
           })}
@@ -311,21 +315,18 @@ export default function AdminLayout({
                     key={item.href}
                     href={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-                      item.active
-                        ? 'bg-black text-white shadow-md shadow-black/10'
-                        : 'text-black/60 hover:bg-black/5 hover:text-black'
-                    }`}
+                    className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${item.active
+                      ? 'bg-black text-white shadow-md shadow-black/10'
+                      : 'text-black/60 hover:bg-black/5 hover:text-black'
+                      }`}
                   >
-                    <Icon 
-                      className={`w-5 h-5 flex-shrink-0 transition-transform duration-200 ${
-                        item.active ? '' : 'group-hover:scale-110'
-                      }`} 
-                      weight={item.active ? 'fill' : 'regular'} 
+                    <Icon
+                      className={`w-5 h-5 flex-shrink-0 transition-transform duration-200 ${item.active ? '' : 'group-hover:scale-110'
+                        }`}
+                      weight={item.active ? 'fill' : 'regular'}
                     />
-                    <span className={`text-sm font-medium tracking-tight ${
-                      item.active ? 'font-semibold' : ''
-                    }`}>{item.label}</span>
+                    <span className={`text-sm font-medium tracking-tight ${item.active ? 'font-semibold' : ''
+                      }`}>{item.label}</span>
                   </Link>
                 )
               })}
@@ -400,7 +401,7 @@ export default function AdminLayout({
         {/* Page Content */}
         <main className="p-6">{children}</main>
       </div>
-      <Toaster 
+      <Toaster
         position="top-right"
         richColors
         closeButton

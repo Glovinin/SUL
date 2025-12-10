@@ -17,25 +17,25 @@ export function Footer() {
     return (
         <footer id="contact" className="bg-black text-white py-24 md:py-32">
             <div className="max-w-[1300px] mx-auto px-6 md:px-12">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-24 mb-16">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-24 mb-16 text-center md:text-left">
                     {/* Contact Info */}
                     <div>
                         <h4 className="text-[17px] font-medium text-white mb-8 tracking-wide">Contact</h4>
                         <div className="space-y-6">
-                            <div className="flex items-start space-x-4 group">
-                                <MapPin className="w-5 h-5 text-white/40 group-hover:text-white/80 transition-colors mt-0.5" weight="duotone" />
+                            <div className="flex items-center justify-center md:justify-start space-x-4 group">
+                                <MapPin className="w-5 h-5 text-white/40 group-hover:text-white/80 transition-colors" weight="duotone" />
                                 <div>
                                     <p className="text-[15px] font-normal text-white/60 leading-[1.6]">Lisboa</p>
                                 </div>
                             </div>
-                            <div className="flex items-start space-x-4 group">
-                                <EnvelopeSimple className="w-5 h-5 text-white/40 group-hover:text-white/80 transition-colors mt-0.5" weight="duotone" />
+                            <div className="flex items-center justify-center md:justify-start space-x-4 group">
+                                <EnvelopeSimple className="w-5 h-5 text-white/40 group-hover:text-white/80 transition-colors" weight="duotone" />
                                 <a href="mailto:vinsvs@hotmail.com" className="text-[15px] font-normal text-white/60 hover:text-white transition-colors duration-200">
                                     vinsvs@hotmail.com
                                 </a>
                             </div>
-                            <div className="flex items-start space-x-4 group">
-                                <PhoneIcon className="w-5 h-5 text-white/40 group-hover:text-white/80 transition-colors mt-0.5" weight="duotone" />
+                            <div className="flex items-center justify-center md:justify-start space-x-4 group">
+                                <PhoneIcon className="w-5 h-5 text-white/40 group-hover:text-white/80 transition-colors" weight="duotone" />
                                 <a href="tel:+33662527879" className="text-[15px] font-normal text-white/60 hover:text-white transition-colors duration-200">
                                     +33 6 62 52 78 79
                                 </a>
@@ -78,7 +78,7 @@ export function Footer() {
                     </div>
 
                     {/* Get in Touch - QR Code */}
-                    <div className="flex flex-col items-start md:items-center text-left md:text-center">
+                    <div className="flex flex-col items-center md:items-center text-center md:text-center">
                         <h4 className="text-[17px] font-medium text-white mb-8 tracking-wide">Get in Touch</h4>
 
                         <motion.div
@@ -96,7 +96,7 @@ export function Footer() {
                                 className="rounded-lg"
                             />
                         </motion.div>
-                        <p className="text-[13px] font-normal text-white/40 max-w-[200px] leading-relaxed">
+                        <p className="text-[13px] font-normal text-white/40 max-w-[200px] leading-relaxed mx-auto">
                             Scan to chat on WhatsApp
                         </p>
                     </div>

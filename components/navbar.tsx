@@ -56,6 +56,10 @@ export function NavBar() {
 
     const hasDarkHero = pagesWithDarkHero.some(path => {
       if (path === '/') return pathname === '/'
+      // Sub-pages of portfolio and properties (detail pages) do NOT have a dark hero
+      if (path === '/portfolio' || path === '/properties' || path === '/blog') {
+        return pathname === path
+      }
       return pathname?.startsWith(path)
     })
 
@@ -182,6 +186,10 @@ export function NavBar() {
 
   const hasHeroSection = pagesWithHero.some(path => {
     if (path === '/') return pathname === '/'
+    // Sub-pages of portfolio and properties (detail pages) do NOT have a hero
+    if (path === '/portfolio' || path === '/properties' || path === '/blog') {
+      return pathname === path
+    }
     return pathname.startsWith(path)
   })
 

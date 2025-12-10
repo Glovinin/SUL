@@ -16,10 +16,12 @@ import {
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useBlogPosts } from '../../lib/properties-client'
+import { useHeroImage } from '../../hooks/useHeroImage'
 
 export default function BlogPage() {
   const router = useRouter()
   const { blogPosts, loading } = useBlogPosts()
+  const heroImage = useHeroImage('blog', 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&h=1080&fit=crop&q=80')
   const [selectedCategory, setSelectedCategory] = useState('All')
 
   // Extract unique categories from posts
@@ -50,7 +52,7 @@ export default function BlogPage() {
         {/* Background Image */}
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&h=1080&fit=crop&q=80"
+            src={heroImage}
             alt="Blog"
             className="absolute inset-0 w-full h-full object-cover"
           />

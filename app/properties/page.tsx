@@ -19,11 +19,13 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import { useProperties } from '../../lib/properties-client'
 import { formatPrice } from '../../lib/format-price'
 import { ListingCard } from '@/components/listing-card'
+import { useHeroImage } from '../../hooks/useHeroImage'
 
 export default function PropertiesPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { properties, loading } = useProperties()
+  const heroImage = useHeroImage('properties', 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1920&h=1080&fit=crop&q=80')
   const [selectedType, setSelectedType] = useState<string>('All')
   const [selectedLocation, setSelectedLocation] = useState<string>('All')
   const [selectedPriceRange, setSelectedPriceRange] = useState<string>('')
@@ -94,7 +96,7 @@ export default function PropertiesPage() {
         {/* Background Image */}
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1920&h=1080&fit=crop&q=80"
+            src={heroImage}
             alt="Properties"
             className="absolute inset-0 w-full h-full object-cover"
           />

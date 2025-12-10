@@ -22,10 +22,12 @@ import {
   Shield,
   ChartLine
 } from '@phosphor-icons/react'
+import { useHeroImage } from '../../hooks/useHeroImage'
 
 export default function AboutPage() {
   const router = useRouter()
   const { settings: homepageSettings } = useHomepageSettings()
+  const heroImage = useHeroImage('about', 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&h=1080&fit=crop&q=80')
 
   return (
     <div className="min-h-screen bg-white">
@@ -36,7 +38,7 @@ export default function AboutPage() {
         {/* Background Image */}
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&h=1080&fit=crop&q=80"
+            src={heroImage}
             alt="About SUL"
             className="absolute inset-0 w-full h-full object-cover"
           />

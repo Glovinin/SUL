@@ -9,50 +9,52 @@ import { useRouter } from 'next/navigation'
 import { Bank, Sparkle, PaintBrush, Buildings, Tree, ChartLine } from '@phosphor-icons/react'
 import Image from 'next/image'
 import { CallToAction } from '../../components/CallToAction'
+import { useHeroImage } from '../../hooks/useHeroImage'
 
 export default function PortugalPage() {
   const router = useRouter()
+  const heroImage = useHeroImage('portugal', 'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=1920&h=1080&fit=crop&q=80')
 
   const locations = [
     {
       name: 'Lisbon',
       description: 'Portugal\'s cultural and economic epicenter, where centuries-old architecture blends with modern design, global gastronomy and vibrant urban life. From historic Alfama to the riverfront of Belém and the cosmopolitan avenues of the city center, Lisbon offers a diverse property landscape with solid long-term fundamentals, sustained international demand and exceptional lifestyle convenience.',
-      image: 'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=1200&h=800&fit=crop&q=80&auto=format'
+      image: '/assets/portugal-images/Lisbon.jpg'
     },
     {
       name: 'Cascais, Estoril & Sintra',
       description: 'The Lisbon Riviera brings together refined coastal living, sandy beaches, international schools and a privileged outdoor lifestyle. Cascais and Estoril offer marinas, golf, tennis and safe, elegant neighborhoods, while Sintra adds a mystical dimension with its UNESCO palaces, forested hills and romantic estates. A deeply established premium region valued for family life, comfort and long-term stability.',
-      image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1200&h=800&fit=crop&q=80&auto=format'
+      image: '/assets/portugal-images/Cascais, Estoril & Sintra.jpg'
     },
     {
       name: 'South Lisbon & Arrábida',
       description: 'Aroeira, Caparica, Sesimbra, Meco and Setúbal form a dynamic coastal corridor where nature meets contemporary living. Here, vast pine forests, surf spots, golf courses and modern villas coexist minutes from Lisbon. The Arrábida Natural Park elevates the area with turquoise bays, protected beaches and dramatic cliffs, making it one of the most attractive lifestyle regions for buyers seeking space, beauty and accessibility.',
-      image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=800&fit=crop&q=80&auto=format'
+      image: '/assets/portugal-images/South Lisbon & Arrábida.jpg'
     },
     {
       name: 'Comporta / Tróia / Melides',
       description: 'The epitome of understated luxury, defined by raw landscapes, dunes, rice fields and minimalist architecture. This region attracts an international clientele seeking privacy, design-led homes and a slower, nature-driven rhythm. Strict planning rules preserve its authenticity, resulting in ultra-limited supply and one of Portugal\'s most coveted high-end markets, ideal for distinctive residences and signature retreats.',
-      image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=800&fit=crop&q=80&auto=format'
+      image: '/assets/portugal-images/Comporta, Tróia, Melides.jpg'
     },
     {
       name: 'Algarve',
       description: 'A globally recognised destination where year-round sunshine, golden beaches, golf resorts and gated communities create a world-class lifestyle environment. From the dramatic cliffs of Lagos to the exclusive enclaves of Quinta do Lago and Vale do Lobo, the Algarve offers mature infrastructure, premium services, strong rental performance and broad international appeal, perfect for both primary and investment-driven buyers.',
-      image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&h=800&fit=crop&q=80&auto=format'
+      image: '/assets/portugal-images/Algarve.jpg'
     },
     {
       name: 'Porto & Douro',
       description: 'Northern Portugal\'s cultural capital, blending historic architecture, modern riverfront regeneration, Michelin-starred cuisine and a growing luxury market. Porto provides urban sophistication and investment resilience, while the Douro Valley adds expansive vineyard estates, boutique hotel potential and breathtaking natural scenery. Together, they offer a compelling mix of heritage, lifestyle and opportunity.',
-      image: 'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=1200&h=800&fit=crop&q=80&auto=format'
+      image: '/assets/portugal-images/Porto & Douro.jpg'
     },
     {
       name: 'Alentejo',
       description: 'A vast territory of rolling plains, olive groves, cork forests and vineyards. Renowned for its quiet sophistication, Alentejo offers secluded estates, farmhouses, eco-retreats and boutique hospitality projects. Whether inland or along the untouched coastline, the region provides wide-open spaces, privacy, authenticity and a deep sense of slow-living luxury, increasingly sought after by international buyers.',
-      image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&h=800&fit=crop&q=80&auto=format'
+      image: '/assets/portugal-images/Alentejo.jpg'
     },
     {
       name: 'Other Regions',
       description: '(Silver Coast • Ericeira & Mafra • Madeira) A curated selection of additional territories serviced upon request. The Silver Coast offers dramatic cliffs, surf towns and contemporary villas with growing expatriate demand. Ericeira & Mafra deliver a surf-chic lifestyle, protected coastlines and a creative community just outside Lisbon. Madeira, with its subtropical climate and dramatic landscapes, provides exceptional oceanfront living and is rising as a premium retreat destination. Each region brings unique scenery, lifestyle character and investment potential within Portugal\'s diverse geography.',
-      image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1200&h=800&fit=crop&q=80&auto=format'
+      image: '/assets/portugal-images/Other Regions.jpg'
     }
   ]
 
@@ -100,7 +102,7 @@ export default function PortugalPage() {
         {/* Background Image */}
         <div className="absolute inset-0 overflow-hidden">
           <Image
-            src="https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=1920&h=1080&fit=crop&q=80"
+            src={heroImage}
             alt="Lisbon, Portugal"
             fill
             priority
@@ -237,11 +239,13 @@ export default function PortugalPage() {
 
                   {/* Image */}
                   <div className={isEven ? '' : 'md:order-1'}>
-                    <div className="relative aspect-[3/4] max-w-[500px] mx-auto rounded-2xl overflow-hidden bg-gray-100 group">
-                      <img
+                    <div className="relative aspect-[3/2] w-full rounded-2xl overflow-hidden bg-gray-100 group shadow-sm">
+                      <Image
                         src={location.image}
                         alt={location.name}
-                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                        fill
+                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, 50vw"
                       />
                     </div>
                   </div>

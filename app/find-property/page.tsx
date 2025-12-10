@@ -29,8 +29,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../../components/ui/select'
+import { useHeroImage } from '../../hooks/useHeroImage'
 
 export default function FindPropertyPage() {
+  const heroImage = useHeroImage('find_property', 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&h=1080&fit=crop&q=80')
   const [formData, setFormData] = useState({
     location: '',
     propertyType: '',
@@ -140,7 +142,7 @@ export default function FindPropertyPage() {
         {/* Background Image */}
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&h=1080&fit=crop&q=80"
+            src={heroImage}
             alt="Find Your Property"
             className="absolute inset-0 w-full h-full object-cover scale-105"
           />

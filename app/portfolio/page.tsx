@@ -17,10 +17,12 @@ import { useRouter } from 'next/navigation'
 import { CallToAction } from '../../components/CallToAction'
 import { usePortfolio } from '../../lib/properties-client'
 import { ListingCard } from '@/components/listing-card'
+import { useHeroImage } from '../../hooks/useHeroImage'
 
 export default function PortfolioPage() {
   const router = useRouter()
   const { portfolioItems, loading } = usePortfolio()
+  const heroImage = useHeroImage('portfolio', 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&h=1080&fit=crop&q=80')
 
 
 
@@ -33,7 +35,7 @@ export default function PortfolioPage() {
         {/* Background Image */}
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&h=1080&fit=crop&q=80"
+            src={heroImage}
             alt="Portfolio"
             className="absolute inset-0 w-full h-full object-cover"
           />

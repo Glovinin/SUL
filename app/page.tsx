@@ -23,8 +23,6 @@ import {
 } from '@phosphor-icons/react'
 import { ListingCard } from '@/components/listing-card'
 
-// Featured projects will be loaded from Firebase
-
 export default function Home() {
   const router = useRouter()
   const [isMobile, setIsMobile] = useState(false)
@@ -295,7 +293,7 @@ export default function Home() {
                     <ListingCard
                       key={item.id}
                       id={item.id}
-                      href={`/ portfolio / ${item.id} `}
+                      href={`/portfolio/${item.id}`}
                       image={item.image}
                       title={item.title}
                       location={item.location}
@@ -444,7 +442,7 @@ export default function Home() {
                 <ListingCard
                   key={project.id}
                   id={project.id}
-                  href={`/ properties / ${project.id} `}
+                  href={`/properties/${project.id}`}
                   image={project.image}
                   title={project.title}
                   location={project.location}
