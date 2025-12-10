@@ -59,9 +59,8 @@ export default function Home() {
   const videoRef = React.useRef<HTMLVideoElement>(null)
   // We can assume local files load reliably, simplified state
   const [videoLoaded, setVideoLoaded] = useState(false)
-  // Direct local video source - utilizing the optimized WebM first
+  // Direct local video source - utilizing the optimized WebM
   const heroVideoWebM = '/videos/herovideo.webm'
-  const heroVideoMp4 = '/videos/herovideo.mp4'
   const heroVideoPoster = '/images/hero-poster.jpg'
 
   const { isInitialLoading } = useLoading()
@@ -126,7 +125,6 @@ export default function Home() {
             className="absolute inset-0 w-full h-full object-cover scale-105 z-0"
           >
             <source src={heroVideoWebM} type="video/webm" />
-            <source src={heroVideoMp4} type="video/mp4" />
           </video>
 
           {/* Vignette effect - Premium depth */}
